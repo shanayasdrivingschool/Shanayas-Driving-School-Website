@@ -1,4 +1,4 @@
-import { CreditCard, Gavel, ShieldCheck } from "lucide-react";
+import { CreditCard, Gavel, ShieldCheck, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageNameSection from "@/components/PageNameSection";
 import SiteFooter from "@/components/SiteFooter";
@@ -7,6 +7,7 @@ import { sitePolicies } from "@/data/policies";
 const policyIconMap = {
   "privacy-policy": ShieldCheck,
   "installment-policy": CreditCard,
+  "in-vehicle-passenger-policy": Users,
   "terms-and-conditions": Gavel,
 } as const;
 const publicPolicies = sitePolicies.filter((policy) => policy.id !== "installment-policy");

@@ -1,4 +1,4 @@
-import { AlertTriangle, CreditCard, Gavel, ShieldCheck } from "lucide-react";
+import { AlertTriangle, CreditCard, Gavel, ShieldCheck, Users } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import NotFound from "@/pages/NotFound";
 import PageNameSection from "@/components/PageNameSection";
@@ -9,6 +9,7 @@ import { sitePolicies } from "@/data/policies";
 const policyIconMap = {
   "privacy-policy": ShieldCheck,
   "installment-policy": CreditCard,
+  "in-vehicle-passenger-policy": Users,
   "terms-and-conditions": Gavel,
 } as const;
 

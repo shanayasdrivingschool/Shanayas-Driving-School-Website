@@ -261,6 +261,71 @@ const allSitePolicies: SitePolicy[] = [
     ],
   },
   {
+    id: 'in-vehicle-passenger-policy',
+    label: 'In-Vehicle Passenger Policy',
+    href: '/policies/in-vehicle-passenger-policy',
+    cardDescription: 'Why driving lessons are conducted one-on-one between the student and certified instructor, with no ride-along passengers, and how we keep parents informed.',
+    intro:
+      'At Shanaya\'s Driving School, every lesson is carefully designed to provide students with a safe, professional, and distraction-free learning environment. Our goal is not only to help students pass their road test, but also to develop the confidence, judgment, and defensive driving skills needed to become safe, responsible drivers for life.',
+    highlights: ['One-on-one instruction only', 'Distraction-free vehicle environment', 'Parents updated before and after lessons'],
+    sections: [
+      {
+        title: 'Our In-Vehicle Passenger Policy',
+        paragraphs: [
+          'To ensure the highest quality of instruction, all driving lessons are conducted exclusively between the student and the certified driving instructor. Parents, guardians, family members, friends, or other passengers are not permitted to ride along during scheduled driving lessons.',
+          'This policy is applied consistently to every student and is an important part of our teaching philosophy.',
+        ],
+      },
+      {
+        title: 'Why We Follow This Policy',
+        paragraphs: [
+          'Learning to drive requires concentration, clear communication, and the ability for students to make decisions independently. Experience has shown that students often learn more effectively and gain confidence more quickly when they are able to focus solely on the instructor\'s guidance without the added pressure or distraction of having family members or other passengers in the vehicle.',
+        ],
+      },
+      {
+        title: 'Maintaining a Focused Learning Environment',
+        paragraphs: [
+          'While we greatly value the support and encouragement of parents and guardians, the presence of additional passengers—even with the best intentions—can unintentionally affect a student\'s learning experience.',
+          'Parents or visitors may naturally ask questions during the lesson, offer suggestions, provide praise or encouragement, or attempt to motivate the student while they are driving. Although these interactions come from a place of care and support, they can unintentionally divide the student\'s attention at moments when their full concentration should be on the road and the instructor\'s guidance.',
+          'Driving is a complex skill that requires students to process traffic conditions, hazards, vehicle control, and instructor feedback simultaneously. Receiving instruction or commentary from multiple people at once can create confusion, increase pressure, and make it more difficult for the student to develop sound decision-making skills.',
+          'Our instructors use a structured coaching method that includes carefully timed instruction, observation, and constructive feedback. Maintaining one clear source of instruction allows students to better absorb new skills, build confidence, and make independent driving decisions without unnecessary distractions.',
+          'Parents and guardians remain an essential part of the learning process. We encourage questions and discussions before or after each lesson, when we can provide our full attention, review the student\'s progress, address concerns, and offer personalized recommendations for at-home practice. This approach ensures that both the student and their family receive the greatest benefit from each professional driving lesson.',
+        ],
+      },
+      {
+        title: 'What One-on-One Instruction Allows',
+        paragraphs: [
+          'A one-on-one learning environment allows the instructor to:',
+        ],
+        bullets: [
+          'Provide individualized coaching and immediate feedback.',
+          'Minimize distractions inside the vehicle.',
+          'Build the student\'s confidence and independent decision-making skills.',
+          'Maintain consistent teaching methods throughout each lesson.',
+          'Create a calm, supportive, and professional learning environment.',
+          'Focus entirely on the student\'s progress, safety, and specific learning needs.',
+        ],
+        note: 'Every student learns differently. By eliminating unnecessary distractions, we can better adapt each lesson to the student\'s pace, helping them develop safe driving habits that will benefit them well beyond their road test.',
+      },
+      {
+        title: 'Parent & Guardian Communication',
+        paragraphs: [
+          'We understand that parents and guardians play an important role in a new driver\'s success and appreciate the trust you place in us.',
+          'Although ride-alongs are not permitted, we are committed to keeping families informed. We are happy to discuss your child\'s progress before or after lessons, answer questions, and provide recommendations for practice between professional driving sessions.',
+          'Our objective is to work as a team with both students and parents while maintaining an environment that allows every student to learn with confidence and independence.',
+        ],
+      },
+      {
+        title: 'Safety & Professional Standards',
+        paragraphs: [
+          'Safety is our highest priority. Conducting lessons with only the instructor and student helps maintain a focused environment where the instructor can effectively observe, coach, and respond to changing road conditions without unnecessary distractions.',
+          'This policy is part of our commitment to providing consistent, professional, and high-quality driver education for every student.',
+          'We appreciate your understanding, cooperation, and support. By following this policy, we are able to deliver the best possible learning experience and help every student become a safe, confident, and responsible driver.',
+        ],
+      },
+    ],
+  },
+  {
     id: 'cookie-policy',
     label: 'Cookie Policy',
     href: '/policies/cookie-policy',
