@@ -57,6 +57,17 @@
       name="twitter:image:alt"
       content="Shanaya's Driving School branded social preview"
     />
+
+    <!-- Hide the SEO / no-JS fallback (#seo-fallback) so it doesn't flash unstyled before React mounts.
+         React replaces #root on load; no-JS users still get the fallback via the noscript override. -->
+    <style>
+      #seo-fallback { display: none; }
+    </style>
+    <noscript>
+      <style>
+        #seo-fallback { display: block; }
+      </style>
+    </noscript>
   </head>
 
   <body>
@@ -65,7 +76,7 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root">
-      <main>
+      <main id="seo-fallback">
         <h1>Driving Lessons Victoria BC</h1>
         <p>
           Shanaya's Driving School provides ICBC-aligned driving lessons, road test prep,
