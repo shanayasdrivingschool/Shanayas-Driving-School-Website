@@ -36,6 +36,17 @@
     <meta name="twitter:description" content="Perfect for drivers with basic skills who need a confidence boost to feel comfortable and safe on the road." />
     <meta name="twitter:image" content="https://www.drivingschoolbc.ca/logos/For%20Social%20Media.jpg" />
     <meta name="twitter:image:alt" content="Shanaya's Driving School branded social preview" />
+
+    <!-- Hide the SEO / no-JS fallback (#seo-fallback) so it doesn't flash unstyled before React mounts.
+         React replaces #root on load; no-JS users still get the fallback via the noscript override. -->
+    <style>
+      #seo-fallback { display: none; }
+    </style>
+    <noscript>
+      <style>
+        #seo-fallback { display: block; }
+      </style>
+    </noscript>
     <script type="module" crossorigin src="/assets/index-qsDPKRHF.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-CG6oaCo3.css">
       <script id="local-business-schema" type="application/ld+json">{"@context":"https://schema.org","@type":["LocalBusiness","DrivingSchool"],"@id":"https://www.drivingschoolbc.ca/#localbusiness","name":"Shanaya's Driving School","url":"https://www.drivingschoolbc.ca/","image":"https://www.drivingschoolbc.ca/logos/For%20Social%20Media.jpg","logo":"https://www.drivingschoolbc.ca/logos/Driving%20School%20Logo%20Horizontal.png","description":"ICBC-aligned driving lessons, road test prep, knowledge test support, and confidence-building training in Langford, Victoria, and across Greater Victoria.","telephone":"+1-250-542-3673","email":"book@drivingschoolbc.ca","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"Unit 124, 2770 Leigh Rd","addressLocality":"Langford","addressRegion":"BC","postalCode":"V9B 4G1","addressCountry":"CA"},"areaServed":["Victoria, BC","Langford, BC","Colwood, BC","Sidney, BC","Metchosin, BC","Sooke, BC","Duncan, BC","Salt Spring Island, BC"],"sameAs":["https://www.facebook.com/drivingschoolvictoria","https://www.instagram.com/drivingschoolvictoria"]}</script>
@@ -47,7 +58,7 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root">
-      <main>
+      <main id="seo-fallback">
         <h1>Confidence Booster Course</h1>
         <p>Perfect for drivers with basic skills who need a confidence boost to feel comfortable and safe on the road.</p>
         <section aria-labelledby="fallback-lessons-heading">
