@@ -1,0 +1,236 @@
+import {
+  DEFAULT_CHECKOUT_PAYMENT_SELECTION,
+  isCheckoutInstallmentCount,
+  type CheckoutInstallmentCount,
+  type CheckoutPaymentMode,
+} from "@/lib/checkoutPaymentPlan";
+
+export type CheckoutFormValues = {
+  fullName: string;
+  email: string;
+  phone: string;
+  addressLine1: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+  preferredContactMethods: string[];
+  studentName: string;
+  studentAge: string;
+  licenceStatus: string;
+  hasValidBCLearnerLicence: string;
+  drivingExperienceLevel: string;
+  roadTestBookingStatus: string;
+  preferredRoadTestLocation: string;
+  trainingGoals: string;
+  preferredLessonTimes: string[];
+  pickupLocation: string;
+  preferredStartDate: string;
+  schedulingNotes: string;
+  additionalNotes: string;
+  paymentMode: CheckoutPaymentMode;
+  installmentCount: CheckoutInstallmentCount;
+  consent: boolean;
+};
+
+export type MultiSelectField = "preferredContactMethods" | "preferredLessonTimes";
+export type SingleSelectField =
+  | "licenceStatus"
+  | "hasValidBCLearnerLicence"
+  | "drivingExperienceLevel"
+  | "roadTestBookingStatus";
+export type CheckoutField = keyof CheckoutFormValues;
+export type CheckoutFormErrors = Partial<Record<CheckoutField, string>>;
+
+export const CHECKOUT_FORM_STORAGE_KEY = "driving-school-checkout-form.v1";
+
+export const contactMethodOptions = [
+  { value: "call", label: "Call" },
+  { value: "text", label: "Text" },
+  { value: "email", label: "Email" },
+] as const;
+
+export const licenceStatusOptions = [
+  { value: "no-licence", label: "No Licence Yet" },
+  { value: "class-7l", label: "Learner (Class 7L)" },
+  { value: "class-7n", label: "Novice (Class 7N)" },
+  { value: "class-5", label: "Class 5" },
+  { value: "international", label: "International Licence" },
+] as const;
+
+export const bcLearnerOptions = [
+  { value: "yes", label: "Yes" },
+  { value: "no", label: "No" },
+] as const;
+
+export const experienceOptions = [
+  { value: "none", label: "No driving experience" },
+  { value: "limited", label: "Limited practice" },
+  { value: "comfortable", label: "Comfortable but need improvement" },
+  { value: "road-test", label: "Preparing for road test" },
+  { value: "refresher", label: "Refresher training" },
+] as const;
+
+export const roadTestBookingOptions = [
+  { value: "yes", label: "Yes" },
+  { value: "no", label: "No" },
+  { value: "need-help", label: "Need assistance booking" },
+] as const;
+
+export const preferredLessonTimeOptions = [
+  { value: "weekday-mornings", label: "Weekday Mornings" },
+  { value: "weekday-afternoons", label: "Weekday Afternoons" },
+  { value: "evenings", label: "Evenings" },
+  { value: "weekends", label: "Weekends" },
+] as const;
+
+export const initialFormValues: CheckoutFormValues = {
+  fullName: "",
+  email: "",
+  phone: "",
+  addressLine1: "",
+  city: "",
+  province: "",
+  postalCode: "",
+  country: "",
+  preferredContactMethods: [],
+  studentName: "",
+  studentAge: "",
+  licenceStatus: "",
+  hasValidBCLearnerLicence: "",
+  drivingExperienceLevel: "",
+  roadTestBookingStatus: "",
+  preferredRoadTestLocation: "",
+  trainingGoals: "",
+  preferredLessonTimes: [],
+  pickupLocation: "",
+  preferredStartDate: "",
+  schedulingNotes: "",
+  additionalNotes: "",
+  paymentMode: DEFAULT_CHECKOUT_PAYMENT_SELECTION.paymentMode,
+  installmentCount: DEFAULT_CHECKOUT_PAYMENT_SELECTION.installmentCount,
+  consent: false,
+};
+
+export const readStoredCheckoutFormValues = (): CheckoutFormValues => {
+  if (typeof window === "undefined") {
+    return initialFormValues;
+  }
+
+  try {
+    const raw = window.sessionStorage.getItem(CHECKOUT_FORM_STORAGE_KEY);
+    if (!raw) {
+      return initialFormValues;
+    }
+
+    const parsed = JSON.parse(raw) as Partial<CheckoutFormValues>;
+
+    return {
+      ...initialFormValues,
+      ...parsed,
+      preferredContactMethods: Array.isArray(parsed.preferredContactMethods)
+        ? parsed.preferredContactMethods.map(String)
+        : [],
+      preferredLessonTimes: Array.isArray(parsed.preferredLessonTimes)
+        ? parsed.preferredLessonTimes.map(String)
+        : [],
+      paymentMode: parsed.paymentMode === "installment" ? "installment" : DEFAULT_CHECKOUT_PAYMENT_SELECTION.paymentMode,
+      installmentCount: isCheckoutInstallmentCount(parsed.installmentCount)
+        ? parsed.installmentCount
+        : DEFAULT_CHECKOUT_PAYMENT_SELECTION.installmentCount,
+      consent: Boolean(parsed.consent),
+    };
+  } catch {
+    return initialFormValues;
+  }
+};
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const getPhoneDigits = (value: string) => value.replace(/\D/g, "");
+
+export const validateCheckoutForm = (values: CheckoutFormValues): CheckoutFormErrors => {
+  const errors: CheckoutFormErrors = {};
+
+  if (!values.fullName.trim()) {
+    errors.fullName = "Enter the student or primary booking name.";
+  }
+
+  if (!values.email.trim()) {
+    errors.email = "Enter an email address for booking updates.";
+  } else if (!emailPattern.test(values.email.trim())) {
+    errors.email = "Enter a valid email address.";
+  }
+
+  if (!values.phone.trim()) {
+    errors.phone = "Enter a phone number for booking confirmation.";
+  } else if (getPhoneDigits(values.phone).length < 10) {
+    errors.phone = "Enter a valid phone number.";
+  }
+
+  if (!values.addressLine1.trim()) {
+    errors.addressLine1 = "Enter the billing address.";
+  }
+
+  if (!values.city.trim()) {
+    errors.city = "Enter the billing city.";
+  }
+
+  if (!values.province.trim()) {
+    errors.province = "Enter the province or state.";
+  }
+
+  if (!values.postalCode.trim()) {
+    errors.postalCode = "Enter the postal or ZIP code.";
+  }
+
+  if (!values.country.trim()) {
+    errors.country = "Select the billing country.";
+  }
+
+  if (values.preferredContactMethods.length === 0) {
+    errors.preferredContactMethods = "Choose at least one preferred contact method.";
+  }
+
+  if (!values.studentAge.trim()) {
+    errors.studentAge = "Enter the student age.";
+  }
+
+  if (!values.licenceStatus) {
+    errors.licenceStatus = "Select the current BC licence status.";
+  }
+
+  if (!values.hasValidBCLearnerLicence) {
+    errors.hasValidBCLearnerLicence = "Confirm whether the student holds a valid BC learner's licence.";
+  }
+
+  if (!values.drivingExperienceLevel) {
+    errors.drivingExperienceLevel = "Select the current driving experience level.";
+  }
+
+  if (!values.roadTestBookingStatus) {
+    errors.roadTestBookingStatus = "Select the current road test booking status.";
+  }
+
+  if (!values.preferredRoadTestLocation.trim()) {
+    errors.preferredRoadTestLocation = "Enter the preferred ICBC road test location.";
+  }
+
+  if (!values.trainingGoals.trim()) {
+    errors.trainingGoals = "Enter the primary training goals.";
+  }
+
+  if (values.preferredLessonTimes.length === 0) {
+    errors.preferredLessonTimes = "Choose at least one preferred lesson time.";
+  }
+
+  if (!values.pickupLocation.trim()) {
+    errors.pickupLocation = "Enter the preferred pickup location.";
+  }
+
+  if (!values.consent) {
+    errors.consent = "You must agree to the Terms and Conditions and Payment Policy before continuing.";
+  }
+
+  return errors;
+};

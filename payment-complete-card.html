@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Complete</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        document.documentElement.classList.add(prefersReducedMotion ? "reduced-motion" : "motion-enabled");
+      })();
+    </script>
+    <style>
+      :root {
+        --brand-primary: #1d4ed8;
+        --brand-primary-rgb: 29, 78, 216;
+        --brand-light: #eff6ff;
+        --success: #16a34a;
+        --success-rgb: 22, 163, 74;
+        --success-light: #dcfce7;
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --text-tertiary: #94a3b8;
+        --border: #e2e8f0;
+        --surface: #ffffff;
+        --page-bg: #f8fafc;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        min-width: 320px;
+        overflow-x: hidden;
+        background: var(--page-bg);
+        color: var(--text-primary);
+        font-family: "Inter", sans-serif;
+        font-size: 16px;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      button:focus-visible,
+      [tabindex]:focus-visible {
+        outline: 2px solid var(--brand-primary);
+        outline-offset: 2px;
+      }
+
+      .page {
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        padding: 24px 16px;
+      }
+
+      .card {
+        width: min(100%, 480px);
+        padding: 40px 36px;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: var(--surface);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+      }
+
+      .motion-enabled .card {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      .motion-enabled.is-ready .card {
+        animation: card-enter 0.45s ease-out 0.05s forwards;
+      }
+
+      [data-reveal] {
+        will-change: opacity, transform;
+      }
+
+      .motion-enabled [data-reveal] {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      .motion-enabled.is-ready [data-reveal] {
+        animation: block-enter 0.45s ease-out var(--delay, 0s) forwards;
+      }
+
+      .icon-area {
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .success-icon {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        color: var(--success);
+      }
+
+      .success-icon svg {
+        width: 80px;
+        height: 80px;
+        display: block;
+      }
+
+      .success-ring {
+        fill: none;
+        stroke: rgba(var(--success-rgb), 0.3);
+        stroke-width: 1.5;
+        stroke-linecap: round;
+      }
+
+      .success-fill {
+        fill: var(--success-light);
+        transform-origin: 40px 40px;
+      }
+
+      .success-check {
+        fill: none;
+        stroke: var(--success);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .motion-enabled .success-ring {
+        stroke-dasharray: 239;
+        stroke-dashoffset: 239;
+      }
+
+      .motion-enabled .success-fill {
+        transform: scale(0);
+      }
+
+      .motion-enabled .success-check {
+        stroke-dasharray: 46;
+        stroke-dashoffset: 46;
+      }
+
+      .motion-enabled.is-ready .success-ring {
+        animation: ring-draw 0.5s ease-out forwards;
+      }
+
+      .motion-enabled.is-ready .success-fill {
+        animation: fill-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
+      }
+
+      .motion-enabled.is-ready .success-check {
+        animation: check-draw 0.35s ease-out 0.75s forwards;
+      }
+
+      .confetti-dot {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        opacity: 0;
+        transform: translate(-50%, -50%);
+      }
+
+      .confetti-dot:nth-child(2n) {
+        background: var(--success);
+      }
+
+      .confetti-dot:nth-child(2n + 1) {
+        background: var(--brand-primary);
+      }
+
+      .motion-enabled.is-ready .confetti-dot {
+        animation: confetti-burst 0.5s ease-out 1.1s forwards;
+      }
+
+      .title {
+        margin: 0 0 8px;
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 1.2;
+        text-align: center;
+        color: var(--text-primary);
+      }
+
+      .subtext {
+        max-width: 360px;
+        margin: 0 auto 28px;
+        font-size: 15px;
+        line-height: 1.65;
+        text-align: center;
+        color: var(--text-secondary);
+      }
+
+      .reference-block {
+        width: fit-content;
+        margin: 0 auto 28px;
+        padding: 16px 20px;
+        border: 1px solid rgba(var(--brand-primary-rgb), 0.2);
+        border-radius: 12px;
+        background: var(--brand-light);
+      }
+
+      .reference-label {
+        margin: 0;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--text-tertiary);
+      }
+
+      .reference-code {
+        margin: 8px 0 10px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: 0.05em;
+        text-align: center;
+        color: var(--brand-primary);
+      }
+
+      .copy-button {
+        margin: 0 auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--text-tertiary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        cursor: pointer;
+      }
+
+      .copy-button:hover {
+        color: var(--brand-primary);
+      }
+
+      .copy-icon {
+        width: 16px;
+        height: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .copy-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .copy-text {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .icon-checkmark,
+      .copy-button.is-copied .icon-copy {
+        display: none;
+      }
+
+      .copy-button.is-copied {
+        color: var(--success);
+      }
+
+      .copy-button.is-copied .icon-checkmark {
+        display: block;
+      }
+
+      .copy-button.is-copied .copy-text {
+        color: var(--success);
+      }
+
+      .button-row {
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .button {
+        min-width: 160px;
+        padding: 12px 24px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.2;
+        transition:
+          background-color 150ms ease,
+          border-color 150ms ease,
+          color 150ms ease,
+          transform 100ms ease;
+        cursor: pointer;
+      }
+
+      .button:active {
+        transform: scale(0.97);
+      }
+
+      .button-primary {
+        background: var(--brand-primary);
+        color: #ffffff;
+      }
+
+      .button-primary:hover {
+        background: #1e40af;
+      }
+
+      .button-secondary {
+        background: #ffffff;
+        border-color: var(--border);
+        color: var(--text-primary);
+      }
+
+      .button-secondary:hover {
+        background: var(--page-bg);
+        border-color: #cbd5e1;
+      }
+
+      .divider-dots {
+        margin: 4px auto 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .divider-dots span {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--border);
+      }
+
+      .next-label {
+        margin: 0 0 16px;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--brand-primary);
+      }
+
+      .steps {
+        max-width: 340px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 12px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .step-number {
+        flex: 0 0 24px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--brand-light);
+        color: var(--brand-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .step-text {
+        margin: 2px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+      }
+
+      @keyframes card-enter {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes block-enter {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes ring-draw {
+        from {
+          stroke-dashoffset: 239;
+        }
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes fill-bounce {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes check-draw {
+        from {
+          stroke-dashoffset: 46;
+        }
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes confetti-burst {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(0.8);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(
+              calc(-50% + var(--x)),
+              calc(-50% + var(--y))
+            )
+            scale(1);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .page {
+          padding: 16px;
+        }
+
+        .card {
+          width: 100%;
+          padding: 32px 20px;
+        }
+
+        .button-row {
+          flex-direction: column;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+        }
+
+        .card,
+        [data-reveal],
+        .success-ring,
+        .success-fill,
+        .success-check,
+        .confetti-dot {
+          animation: none !important;
+          transition: none !important;
+        }
+
+        .success-ring {
+          stroke-dasharray: none;
+          stroke-dashoffset: 0;
+        }
+
+        .success-fill {
+          transform: scale(1);
+        }
+
+        .success-check {
+          stroke-dasharray: none;
+          stroke-dashoffset: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page" role="main">
+      <section
+        class="card"
+        role="dialog"
+        aria-label="Payment confirmation"
+        aria-labelledby="paymentCompleteHeading"
+        aria-describedby="paymentCompleteSubtext"
+      >
+        <div class="icon-area" data-reveal style="--delay: 0.14s;">
+          <div class="success-icon" role="img" aria-label="Payment successful">
+            <svg viewBox="0 0 80 80" aria-hidden="true">
+              <circle class="success-ring" cx="40" cy="40" r="38"></circle>
+              <circle class="success-fill" cx="40" cy="40" r="30"></circle>
+              <polyline class="success-check" points="24,40 35,52 56,28"></polyline>
+            </svg>
+            <span class="confetti-dot" aria-hidden="true" style="--x: 28px; --y: 0px;"></span>
+            <span class="confetti-dot" aria-hidden="true" style="--x: 14px; --y: -24px;"></span>
+            <span class="confetti-dot" aria-hidden="true" style="--x: -14px; --y: -24px;"></span>
+            <span class="confetti-dot" aria-hidden="true" style="--x: -28px; --y: 0px;"></span>
+            <span class="confetti-dot" aria-hidden="true" style="--x: -14px; --y: 24px;"></span>
+            <span class="confetti-dot" aria-hidden="true" style="--x: 14px; --y: 24px;"></span>
+          </div>
+        </div>
+
+        <h1 class="title" id="paymentCompleteHeading" data-reveal style="--delay: 0.22s;">Payment complete</h1>
+
+        <p class="subtext" id="paymentCompleteSubtext" data-reveal style="--delay: 0.3s;">
+          Your booking payment was received successfully. The order has been submitted and the team will contact
+          you shortly.
+        </p>
+
+        <div
+          class="reference-block"
+          data-reveal
+          style="--delay: 0.38s;"
+          tabindex="0"
+          aria-label="Booking reference SDS-C693-726F"
+        >
+          <p class="reference-label">Booking reference</p>
+          <p class="reference-code" id="bookingReference">SDS-C693-726F</p>
+          <button
+            class="copy-button"
+            id="copyButton"
+            type="button"
+            aria-label="Copy booking reference"
+          >
+            <span class="copy-icon" aria-hidden="true">
+              <svg class="icon-copy" viewBox="0 0 16 16" fill="none">
+                <rect x="5" y="3" width="8" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"></rect>
+                <path d="M3.5 10.5H3A1.5 1.5 0 0 1 1.5 9V4A1.5 1.5 0 0 1 3 2.5H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+              <svg class="icon-checkmark" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8.5L6.25 11.5L13 4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="copy-text" id="copyStatus" aria-live="polite">Copy</span>
+          </button>
+        </div>
+
+        <div class="button-row" data-reveal style="--delay: 0.46s;">
+          <button
+            class="button button-primary"
+            type="button"
+            aria-label="Continue browsing available packages"
+          >
+            Continue browsing
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            aria-label="Contact the school for support"
+          >
+            Contact the school
+          </button>
+        </div>
+
+        <div class="divider-dots" data-reveal style="--delay: 0.54s;" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div data-reveal style="--delay: 0.62s;">
+          <p class="next-label">What happens next</p>
+          <ol class="steps">
+            <li class="step">
+              <span class="step-number" aria-hidden="true">1</span>
+              <p class="step-text">Our team will call you to confirm your booking details.</p>
+            </li>
+            <li class="step">
+              <span class="step-number" aria-hidden="true">2</span>
+              <p class="step-text">You'll receive a confirmation email with your schedule.</p>
+            </li>
+            <li class="step">
+              <span class="step-number" aria-hidden="true">3</span>
+              <p class="step-text">Complete your remaining documents before your first session.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const root = document.documentElement;
+      const copyButton = document.getElementById("copyButton");
+      const copyStatus = document.getElementById("copyStatus");
+      const bookingReference = document.getElementById("bookingReference");
+      let copiedResetTimer = null;
+
+      const copyFallback = (text) => {
+        const helper = document.createElement("textarea");
+        helper.value = text;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "absolute";
+        helper.style.left = "-9999px";
+        document.body.appendChild(helper);
+        helper.select();
+        document.execCommand("copy");
+        document.body.removeChild(helper);
+      };
+
+      const setCopiedState = () => {
+        copyButton.classList.add("is-copied");
+        copyStatus.textContent = "Copied!";
+
+        if (copiedResetTimer) {
+          window.clearTimeout(copiedResetTimer);
+        }
+
+        copiedResetTimer = window.setTimeout(() => {
+          copyButton.classList.remove("is-copied");
+          copyStatus.textContent = "Copy";
+        }, 2000);
+      };
+
+      copyButton.addEventListener("click", async () => {
+        const text = bookingReference.textContent.trim();
+
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            copyFallback(text);
+          }
+
+          setCopiedState();
+        } catch (error) {
+          copyFallback(text);
+          setCopiedState();
+        }
+      });
+
+      if (root.classList.contains("motion-enabled")) {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            root.classList.add("is-ready");
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

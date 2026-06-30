@@ -1,0 +1,187 @@
+import { FunctionsFetchError, FunctionsHttpError, FunctionsRelayError } from "@supabase/supabase-js";
+import type { CartItem } from "@/lib/cart";
+import type { CheckoutPaymentSelection } from "@/lib/checkoutPaymentPlan";
+import { supabase } from "@/lib/supabaseClient";
+
+type PaymentIntentCartItem = Pick<CartItem, "itemType" | "productId" | "locationId" | "quantity">;
+
+type BillingDetailsInput = {
+  addressLine1: string;
+  city: string;
+  country: string;
+  email: string;
+  fullName: string;
+  phone: string;
+  postalCode: string;
+  province: string;
+};
+
+type CreateCheckoutPaymentIntentInput = {
+  billingDetails: BillingDetailsInput;
+  items: PaymentIntentCartItem[];
+  orderId: string;
+  paymentSelection: CheckoutPaymentSelection;
+};
+
+type CreateCheckoutPaymentIntentResult = {
+  amountDueToday: number;
+  clientSecret: string;
+  estimatedTaxes: number;
+  installmentCount: 2 | 3 | null;
+  orderId: string;
+  paymentIntentId: string;
+  paymentMode: "full" | "installment";
+  remainingBalance: number;
+  subtotal: number;
+  total: number;
+};
+
+const CREATE_PAYMENT_INTENT_FUNCTION = "create-payment-intent";
+
+const ensureSupabase = () => {
+  if (!supabase) {
+    throw new Error("Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
+  }
+
+  return supabase;
+};
+
+const getResponseErrorMessage = async (response?: Response) => {
+  if (!response) return null;
+
+  try {
+    const raw = await response.text();
+    if (!raw.trim()) return null;
+
+    try {
+      const payload = JSON.parse(raw) as {
+        error?: string;
+        reason?: string;
+        message?: string;
+      };
+
+      const parts = [payload.error, payload.reason, payload.message].filter(
+        (value): value is string => typeof value === "string" && value.length > 0,
+      );
+
+      if (parts.length > 0) {
+        return parts.join(" ");
+      }
+    } catch {
+      return raw.trim();
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+};
+
+const getFunctionErrorMessage = async (error: unknown, response?: Response) => {
+  const responseMessage = await getResponseErrorMessage(response);
+  if (responseMessage) {
+    return responseMessage;
+  }
+
+  if (error instanceof FunctionsHttpError) {
+    const contextMessage = await getResponseErrorMessage(error.context);
+    if (contextMessage) {
+      return contextMessage;
+    }
+
+    return "edge_function_http_error";
+  }
+
+  if (error instanceof FunctionsRelayError) {
+    return "edge_function_relay_error";
+  }
+
+  if (error instanceof FunctionsFetchError) {
+    const siteOrigin = typeof window !== "undefined" ? window.location.origin : "this site origin";
+    return `Unable to reach the payment intent API. Confirm the create-payment-intent edge function is deployed and that its CORS configuration allows ${siteOrigin}.`;
+  }
+
+  if (error instanceof Error && error.message.trim().length > 0) {
+    return error.message;
+  }
+
+  return "payment_intent_create_failed";
+};
+
+export const createCheckoutPaymentIntent = async (
+  input: CreateCheckoutPaymentIntentInput,
+): Promise<CreateCheckoutPaymentIntentResult> => {
+  const client = ensureSupabase();
+
+  const { data, error: functionError, response } = await client.functions.invoke(CREATE_PAYMENT_INTENT_FUNCTION, {
+    body: {
+      order_id: input.orderId,
+      payment_mode: input.paymentSelection.paymentMode,
+      installment_count: input.paymentSelection.installmentCount,
+      billing_details: {
+        full_name: input.billingDetails.fullName,
+        email: input.billingDetails.email,
+        phone: input.billingDetails.phone,
+        address_line1: input.billingDetails.addressLine1,
+        city: input.billingDetails.city,
+        province: input.billingDetails.province,
+        postal_code: input.billingDetails.postalCode,
+        country: input.billingDetails.country,
+      },
+      items: input.items.map((item) => ({
+        item_type: item.itemType,
+        product_id: item.productId,
+        location_id: item.locationId,
+        quantity: item.quantity,
+      })),
+    },
+  });
+
+  if (functionError) {
+    throw new Error(await getFunctionErrorMessage(functionError, response));
+  }
+
+  const payload = data as Record<string, unknown> | null;
+
+  const hasLegacyPaymentIntentShape =
+    payload &&
+    typeof payload.client_secret === "string" &&
+    typeof payload.order_id === "string" &&
+    typeof payload.payment_intent_id === "string" &&
+    typeof payload.subtotal === "number" &&
+    typeof payload.estimated_taxes === "number" &&
+    typeof payload.total === "number";
+
+  if (
+    !payload ||
+    typeof payload.client_secret !== "string" ||
+    typeof payload.order_id !== "string" ||
+    typeof payload.payment_intent_id !== "string" ||
+    typeof payload.subtotal !== "number" ||
+    typeof payload.estimated_taxes !== "number" ||
+    typeof payload.total !== "number" ||
+    typeof payload.amount_due_today !== "number" ||
+    typeof payload.remaining_balance !== "number"
+  ) {
+    if (hasLegacyPaymentIntentShape) {
+      throw new Error(
+        "The deployed create-payment-intent function is outdated. Redeploy create-payment-intent and stripe-webhook so installment fields are returned.",
+      );
+    }
+
+    throw new Error("payment_intent_create_failed");
+  }
+
+  return {
+    amountDueToday: payload.amount_due_today,
+    clientSecret: payload.client_secret,
+    orderId: payload.order_id,
+    paymentIntentId: payload.payment_intent_id,
+    subtotal: payload.subtotal,
+    estimatedTaxes: payload.estimated_taxes,
+    total: payload.total,
+    paymentMode: payload.payment_mode === "installment" ? "installment" : "full",
+    installmentCount: payload.installment_count === 2 || payload.installment_count === 3 ? payload.installment_count : null,
+    remainingBalance: payload.remaining_balance,
+  };
+};

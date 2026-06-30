@@ -1,0 +1,182 @@
+import { useEffect, useState } from "react";
+import { CheckCircle2, Clock3, CreditCard } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import PageNameSection from "@/components/PageNameSection";
+import SiteFooter from "@/components/SiteFooter";
+import { useCart } from "@/components/cart/CartProvider";
+import { CHECKOUT_FORM_STORAGE_KEY } from "@/lib/checkoutForm";
+import { getCheckoutInstallmentLabel } from "@/lib/checkoutPaymentPlan";
+import { CHECKOUT_PAYMENT_SESSION_STORAGE_KEY } from "@/lib/checkoutPaymentSession";
+import { stripePromise } from "@/lib/stripeClient";
+
+type PaymentState = "loading" | "succeeded" | "processing" | "failed";
+
+const CheckoutSuccess = () => {
+  const [searchParams] = useSearchParams();
+  const { clearCart } = useCart();
+  const [paymentState, setPaymentState] = useState<PaymentState>(
+    searchParams.get("status") === "succeeded"
+      ? "succeeded"
+      : searchParams.get("status") === "processing"
+        ? "processing"
+        : "loading",
+  );
+
+  const orderId = searchParams.get("order_id");
+  const paymentMode = searchParams.get("payment_mode") === "installment" ? "installment" : "full";
+  const installmentCountValue = Number(searchParams.get("installment_count"));
+  const installmentCount = installmentCountValue === 2 || installmentCountValue === 3 ? installmentCountValue : null;
+  const installmentLabel =
+    paymentMode === "installment" && installmentCount ? getCheckoutInstallmentLabel(installmentCount) : null;
+  const paymentIntentClientSecret = searchParams.get("payment_intent_client_secret");
+  const retrySearchParams = new URLSearchParams(searchParams);
+
+  retrySearchParams.delete("payment_intent");
+  retrySearchParams.delete("payment_intent_client_secret");
+  retrySearchParams.delete("redirect_status");
+  retrySearchParams.delete("status");
+  retrySearchParams.delete("order_id");
+
+  const retryQuery = retrySearchParams.toString();
+
+  useEffect(() => {
+    let ignore = false;
+
+    const resolvePaymentState = async () => {
+      if (!paymentIntentClientSecret) {
+        if (!ignore) {
+          setPaymentState((current) => (current === "loading" ? "processing" : current));
+        }
+        return;
+      }
+
+      const stripe = await stripePromise;
+      if (!stripe) {
+        if (!ignore) {
+          setPaymentState("failed");
+        }
+        return;
+      }
+
+      const { paymentIntent } = await stripe.retrievePaymentIntent(paymentIntentClientSecret);
+      if (ignore) {
+        return;
+      }
+
+      if (paymentIntent?.status === "succeeded") {
+        setPaymentState("succeeded");
+      } else if (paymentIntent?.status === "processing") {
+        setPaymentState("processing");
+      } else {
+        setPaymentState("failed");
+      }
+    };
+
+    void resolvePaymentState();
+
+    return () => {
+      ignore = true;
+    };
+  }, [paymentIntentClientSecret]);
+
+  useEffect(() => {
+    if (paymentState !== "succeeded") {
+      return;
+    }
+
+    clearCart();
+
+    if (typeof window !== "undefined") {
+      window.sessionStorage.removeItem(CHECKOUT_FORM_STORAGE_KEY);
+      window.sessionStorage.removeItem(CHECKOUT_PAYMENT_SESSION_STORAGE_KEY);
+    }
+  }, [clearCart, paymentState]);
+
+  const content =
+    paymentState === "succeeded"
+      ? {
+          icon: <CheckCircle2 className="h-8 w-8" />,
+          title: paymentMode === "installment" ? "First installment received" : "Payment complete",
+          description:
+            paymentMode === "installment"
+              ? `Your first payment${installmentLabel ? ` for the ${installmentLabel.toLowerCase()} plan` : ""} was received successfully. The booking is recorded and the remaining balance stays on the installment plan.`
+              : "Your booking payment was received successfully. The order has been submitted and the team can continue with the booking process.",
+        }
+      : paymentState === "processing"
+        ? {
+            icon: <Clock3 className="h-8 w-8" />,
+            title: paymentMode === "installment" ? "Installment processing" : "Payment processing",
+            description:
+              paymentMode === "installment"
+                ? "Stripe is still finalizing the installment payment. If you completed authentication already, the booking should update shortly."
+                : "Stripe is still finalizing the payment. If you completed authentication already, the booking should update shortly.",
+          }
+        : {
+            icon: <CreditCard className="h-8 w-8" />,
+            title: paymentMode === "installment" ? "Installment needs attention" : "Payment needs attention",
+            description:
+              paymentMode === "installment"
+                ? "The installment payment did not finish successfully. Return to the payment page and try again with the secure Stripe form."
+                : "The payment did not finish successfully. Return to the payment page and try again with the secure Stripe form.",
+        };
+
+  return (
+    <main className="bg-white text-[#202121]">
+      <PageNameSection
+        eyebrow="Checkout update"
+        title={<span className="text-white">Payment Status</span>}
+        description="Review the current payment result for your booking."
+        backgroundImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80"
+        minHeightClassName="min-h-[420px] md:min-h-[500px]"
+        contentLayout="center"
+      />
+
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <div className="rounded-[32px] border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
+            <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#1d52a1]/15 text-[#1d52a1]">
+              {content.icon}
+            </span>
+            <h1 className="mt-5 text-3xl font-black text-slate-900 sm:text-4xl">{content.title}</h1>
+            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{content.description}</p>
+
+            {orderId ? (
+              <p className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                Order ID: {orderId}
+              </p>
+            ) : null}
+
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              {paymentState === "failed" ? (
+                <Link
+                  to={retryQuery ? `/checkout?${retryQuery}` : "/checkout"}
+                  className="inline-flex items-center justify-center rounded-full bg-[#E6242A] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
+                >
+                  Return to payment
+                </Link>
+              ) : (
+                <Link
+                  to="/packages"
+                  className="inline-flex items-center justify-center rounded-full bg-[#1d52a1] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                >
+                  Continue browsing
+                </Link>
+              )}
+
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center rounded-full border-2 border-slate-300 px-8 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
+              >
+                Contact the school
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <SiteFooter />
+    </main>
+  );
+};
+
+export default CheckoutSuccess;

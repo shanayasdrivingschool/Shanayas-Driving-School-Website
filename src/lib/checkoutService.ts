@@ -1,0 +1,387 @@
+import { FunctionsFetchError, FunctionsHttpError, FunctionsRelayError } from "@supabase/supabase-js";
+import type { CartItem } from "@/lib/cart";
+import { calculateCheckoutPaymentPlan } from "@/lib/checkoutPaymentPlan";
+import { supabase } from "@/lib/supabaseClient";
+
+type CaptchaProvider = "turnstile" | "recaptcha";
+
+type CheckoutSubmissionItem = {
+  key: string;
+  itemType: CartItem["itemType"];
+  productId: string;
+  title: string;
+  image: string;
+  locationId: string;
+  locationName: string;
+  pricingTier: CartItem["pricingTier"];
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+  sessionCount: number;
+  sessionDetail: string;
+  secondaryMetricLabel: string;
+  secondaryMetricValue: string;
+  secondaryMetricDetail: string;
+  levelLabel: string;
+  deliveryFormat: CartItem["deliveryFormat"] | null;
+  editHref: string;
+  customization: CartItem["customization"] | null;
+};
+
+export type CheckoutAssessmentInput = {
+  preferredContactMethods: string[];
+  studentName: string;
+  studentAge: string;
+  licenceStatus: string;
+  hasValidBCLearnerLicence: string;
+  drivingExperienceLevel: string;
+  roadTestBookingStatus: string;
+  preferredRoadTestLocation: string;
+  trainingGoals: string;
+  preferredLessonTimes: string[];
+  pickupLocation: string;
+  preferredStartDate: string;
+  schedulingNotes: string;
+  additionalNotes: string;
+  consentAcceptedAt: string;
+};
+
+export type CheckoutBillingAddressInput = {
+  addressLine1: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  province: string;
+};
+
+export type SubmitCheckoutInput = {
+  appliedCouponCodes?: string[];
+  bundleDiscountAmount?: number;
+  bundleDiscountPercent?: number;
+  couponDiscountAmount?: number;
+  couponDiscountPercent?: number;
+  invoiceToken?: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  billingAddress: CheckoutBillingAddressInput;
+  sourcePage: string;
+  items: CartItem[];
+  subtotalBeforeDiscount?: number;
+  subtotalAfterBundleDiscount?: number;
+  subtotal: number;
+  estimatedTaxes: number;
+  total: number;
+  assessment: CheckoutAssessmentInput;
+  captchaProvider?: CaptchaProvider;
+  captchaToken?: string;
+  captchaAction?: string;
+};
+
+type SubmitCheckoutResult = {
+  orderId: string;
+};
+
+const CHECKOUT_SUBMIT_FUNCTION = "submit-checkout";
+
+const studentCheckboxOptions = {
+  preferredContactMethods: ["call", "text", "email"] as const,
+  licenceStatus: ["no-licence", "class-7l", "class-7n", "class-5", "international"] as const,
+  hasValidBCLearnerLicence: ["yes", "no"] as const,
+  drivingExperienceLevel: ["none", "limited", "comfortable", "road-test", "refresher"] as const,
+  roadTestBookingStatus: ["yes", "no", "need-help"] as const,
+  preferredLessonTimes: ["weekday-mornings", "weekday-afternoons", "evenings", "weekends"] as const,
+} as const;
+
+const ensureSupabase = () => {
+  if (!supabase) {
+    throw new Error("Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
+  }
+
+  return supabase;
+};
+
+const normalizeSingle = (value: string) => value.trim();
+const normalizeCountry = (value: string) => value.trim().toUpperCase();
+
+const normalizeMulti = (values: string[]) =>
+  Array.from(new Set(values.map((value) => value.trim()).filter((value) => value.length > 0)));
+
+const toCheckboxState = (selected: string[] | string, options: readonly string[]) => {
+  const selectedSet = new Set(Array.isArray(selected) ? selected : [selected]);
+
+  return options.reduce<Record<string, boolean>>((accumulator, option) => {
+    accumulator[option] = selectedSet.has(option);
+    return accumulator;
+  }, {});
+};
+
+const getResponseErrorMessage = async (response?: Response) => {
+  if (!response) return null;
+
+  try {
+    const raw = await response.text();
+    if (!raw.trim()) return null;
+
+    try {
+      const payload = JSON.parse(raw) as {
+        error?: string;
+        reason?: string;
+        message?: string;
+      };
+
+      const parts = [payload.error, payload.reason, payload.message].filter(
+        (value): value is string => typeof value === "string" && value.length > 0,
+      );
+
+      if (parts.length > 0) {
+        return parts.join(" ");
+      }
+    } catch {
+      return raw.trim();
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+};
+
+const getFunctionErrorMessage = async (error: unknown, response?: Response) => {
+  const responseMessage = await getResponseErrorMessage(response);
+  if (responseMessage) {
+    return responseMessage;
+  }
+
+  if (error instanceof FunctionsHttpError) {
+    const contextMessage = await getResponseErrorMessage(error.context);
+    if (contextMessage) {
+      return contextMessage;
+    }
+
+    return "edge_function_http_error";
+  }
+
+  if (error instanceof FunctionsRelayError) {
+    return "edge_function_relay_error";
+  }
+
+  if (error instanceof FunctionsFetchError) {
+    const siteOrigin = typeof window !== "undefined" ? window.location.origin : "this site origin";
+    return `Unable to reach the checkout API. Confirm the submit-checkout edge function is deployed and that its CORS configuration allows ${siteOrigin}.`;
+  }
+
+  if (error instanceof Error && error.message.trim().length > 0) {
+    return error.message;
+  }
+
+  return "checkout_submit_failed";
+};
+
+const buildOrderName = (items: CartItem[]) => {
+  if (items.length === 0) {
+    return "Checkout submission";
+  }
+
+  if (items.length === 1) {
+    return items[0].title;
+  }
+
+  return `${items[0].title} + ${items.length - 1} more`;
+};
+
+const mapCheckoutItem = (item: CartItem): CheckoutSubmissionItem => ({
+  key: item.key,
+  itemType: item.itemType,
+  productId: item.productId,
+  title: item.title,
+  image: item.image,
+  locationId: item.locationId,
+  locationName: item.locationName,
+  pricingTier: item.pricingTier,
+  unitPrice: item.price,
+  quantity: item.quantity,
+  lineTotal: Number((item.price * item.quantity).toFixed(2)),
+  sessionCount: item.sessionCount,
+  sessionDetail: item.sessionDetail,
+  secondaryMetricLabel: item.secondaryMetricLabel,
+  secondaryMetricValue: item.secondaryMetricValue,
+  secondaryMetricDetail: item.secondaryMetricDetail,
+  levelLabel: item.levelLabel,
+  deliveryFormat: item.deliveryFormat ?? null,
+  editHref: item.editHref,
+  customization: item.customization ?? null,
+});
+
+export const submitCheckoutOrder = async (input: SubmitCheckoutInput): Promise<SubmitCheckoutResult> => {
+  const client = ensureSupabase();
+  const paymentPlan = calculateCheckoutPaymentPlan(input.total, null);
+  const appliedCouponCodes = normalizeMulti(input.appliedCouponCodes ?? []);
+  const preferredContactMethods = normalizeMulti(input.assessment.preferredContactMethods);
+  const preferredLessonTimes = normalizeMulti(input.assessment.preferredLessonTimes);
+  const licenceStatus = normalizeSingle(input.assessment.licenceStatus);
+  const hasValidBCLearnerLicence = normalizeSingle(input.assessment.hasValidBCLearnerLicence);
+  const drivingExperienceLevel = normalizeSingle(input.assessment.drivingExperienceLevel);
+  const roadTestBookingStatus = normalizeSingle(input.assessment.roadTestBookingStatus);
+  const packageName = input.invoiceToken ? "Private invoice" : buildOrderName(input.items);
+  const normalizedAppliedCouponCodes = input.invoiceToken ? [] : appliedCouponCodes;
+  const requestType = input.invoiceToken ? "checkout_invoice" : "checkout_submission";
+  const customClassPlans = input.items
+    .filter((item) => item.productId === "make-your-own-class")
+    .map((item) => ({
+      course_id: item.productId,
+      location_id: item.locationId,
+      location_name: item.locationName,
+      quantity: item.quantity,
+      lesson_duration_minutes: item.customization?.lessonDurationMinutes ?? null,
+      learning_objective: item.customization?.learningObjective ?? "",
+      class_objectives:
+        item.customization?.classObjectives?.map((objective) => ({
+          class_number: objective.classNumber,
+          objective: objective.objective,
+        })) ?? [],
+    }));
+
+  const metadata = {
+    request_type: requestType,
+    source_page: input.sourcePage,
+    invoice: input.invoiceToken
+      ? {
+          public_token: input.invoiceToken.trim(),
+        }
+      : undefined,
+    pricing_summary: {
+      subtotal_before_discount: Number((input.subtotalBeforeDiscount ?? input.subtotal).toFixed(2)),
+      subtotal_after_bundle_discount: Number((input.subtotalAfterBundleDiscount ?? input.subtotal).toFixed(2)),
+      bundle_discount_amount: Number((input.bundleDiscountAmount ?? 0).toFixed(2)),
+      bundle_discount_percent: Number((input.bundleDiscountPercent ?? 0).toFixed(2)),
+      coupon_discount_amount: Number((input.couponDiscountAmount ?? 0).toFixed(2)),
+      coupon_discount_percent: Number((input.couponDiscountPercent ?? 0).toFixed(2)),
+      subtotal: Number(input.subtotal.toFixed(2)),
+      estimated_taxes: Number(input.estimatedTaxes.toFixed(2)),
+      total: Number(input.total.toFixed(2)),
+      currency: "CAD",
+    },
+    applied_coupon_codes: normalizedAppliedCouponCodes,
+    payment_plan: {
+      payment_mode: paymentPlan.paymentMode,
+      installment_count: paymentPlan.installmentCount,
+      installment_amounts: paymentPlan.installmentAmounts,
+      amount_due_today: paymentPlan.amountDueToday,
+      remaining_balance: paymentPlan.remainingBalance,
+      remaining_installments: paymentPlan.remainingInstallments,
+      order_total: paymentPlan.orderTotal,
+      status: paymentPlan.paymentMode === "installment" ? "initial_payment_pending" : "awaiting_full_payment",
+    },
+    selected_items: input.items.map(mapCheckoutItem),
+    custom_class_plans: customClassPlans,
+    contact: {
+      full_name: normalizeSingle(input.fullName),
+      email: normalizeSingle(input.email).toLowerCase(),
+      phone: normalizeSingle(input.phone),
+      address_line1: normalizeSingle(input.billingAddress.addressLine1),
+      city: normalizeSingle(input.billingAddress.city),
+      province: normalizeSingle(input.billingAddress.province),
+      postal_code: normalizeSingle(input.billingAddress.postalCode),
+      country: normalizeCountry(input.billingAddress.country),
+    },
+    preferred_contact_methods: preferredContactMethods,
+    preferred_contact_methods_state: toCheckboxState(
+      preferredContactMethods,
+      studentCheckboxOptions.preferredContactMethods,
+    ),
+    student_name: normalizeSingle(input.assessment.studentName),
+    student_age: normalizeSingle(input.assessment.studentAge),
+    licence_status: licenceStatus,
+    licence_status_state: toCheckboxState(licenceStatus, studentCheckboxOptions.licenceStatus),
+    has_valid_bc_learner_licence: hasValidBCLearnerLicence,
+    has_valid_bc_learner_licence_state: toCheckboxState(
+      hasValidBCLearnerLicence,
+      studentCheckboxOptions.hasValidBCLearnerLicence,
+    ),
+    driving_experience_level: drivingExperienceLevel,
+    driving_experience_level_state: toCheckboxState(
+      drivingExperienceLevel,
+      studentCheckboxOptions.drivingExperienceLevel,
+    ),
+    road_test_booking_status: roadTestBookingStatus,
+    road_test_booking_status_state: toCheckboxState(
+      roadTestBookingStatus,
+      studentCheckboxOptions.roadTestBookingStatus,
+    ),
+    preferred_road_test_location: normalizeSingle(input.assessment.preferredRoadTestLocation),
+    training_goals: normalizeSingle(input.assessment.trainingGoals),
+    preferred_lesson_times: preferredLessonTimes,
+    preferred_lesson_times_state: toCheckboxState(
+      preferredLessonTimes,
+      studentCheckboxOptions.preferredLessonTimes,
+    ),
+    pickup_location: normalizeSingle(input.assessment.pickupLocation),
+    preferred_start_date: normalizeSingle(input.assessment.preferredStartDate),
+    scheduling_notes: normalizeSingle(input.assessment.schedulingNotes),
+    additional_notes: normalizeSingle(input.assessment.additionalNotes),
+    consent_accepted_at: normalizeSingle(input.assessment.consentAcceptedAt),
+    form_snapshot: {
+      fullName: normalizeSingle(input.fullName),
+      phone: normalizeSingle(input.phone),
+      email: normalizeSingle(input.email).toLowerCase(),
+      addressLine1: normalizeSingle(input.billingAddress.addressLine1),
+      city: normalizeSingle(input.billingAddress.city),
+      province: normalizeSingle(input.billingAddress.province),
+      postalCode: normalizeSingle(input.billingAddress.postalCode),
+      country: normalizeCountry(input.billingAddress.country),
+      appliedCouponCodes: normalizedAppliedCouponCodes,
+      invoiceToken: input.invoiceToken?.trim() ?? null,
+      preferredContactMethods,
+      studentName: normalizeSingle(input.assessment.studentName),
+      studentAge: normalizeSingle(input.assessment.studentAge),
+      licenceStatus,
+      hasValidBCLearnerLicence,
+      drivingExperienceLevel,
+      roadTestBookingStatus,
+      preferredRoadTestLocation: normalizeSingle(input.assessment.preferredRoadTestLocation),
+      trainingGoals: normalizeSingle(input.assessment.trainingGoals),
+      preferredLessonTimes,
+      pickupLocation: normalizeSingle(input.assessment.pickupLocation),
+      preferredStartDate: normalizeSingle(input.assessment.preferredStartDate),
+      schedulingNotes: normalizeSingle(input.assessment.schedulingNotes),
+      additionalNotes: normalizeSingle(input.assessment.additionalNotes),
+    },
+  };
+
+  const { data, error: functionError, response } = await client.functions.invoke(CHECKOUT_SUBMIT_FUNCTION, {
+    body: {
+      full_name: normalizeSingle(input.fullName),
+      email: normalizeSingle(input.email).toLowerCase(),
+      phone: normalizeSingle(input.phone),
+      address_line1: normalizeSingle(input.billingAddress.addressLine1),
+      city: normalizeSingle(input.billingAddress.city),
+      province: normalizeSingle(input.billingAddress.province),
+      postal_code: normalizeSingle(input.billingAddress.postalCode),
+      country: normalizeCountry(input.billingAddress.country),
+      source_page: input.sourcePage,
+      package_name: packageName,
+      amount: Number(input.total.toFixed(2)),
+      metadata,
+      invoice_token: input.invoiceToken?.trim() || null,
+      captcha_provider: input.captchaProvider ?? null,
+      captcha_token: input.captchaToken ?? null,
+      captcha_action: input.captchaAction ?? null,
+    },
+  });
+
+  if (functionError) {
+    throw new Error(await getFunctionErrorMessage(functionError, response));
+  }
+
+  const orderId =
+    data && typeof data === "object" && "order_id" in data && typeof data.order_id === "string"
+      ? data.order_id
+      : null;
+
+  if (!orderId) {
+    throw new Error("checkout_submit_failed");
+  }
+
+  return { orderId };
+};

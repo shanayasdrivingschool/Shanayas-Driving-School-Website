@@ -1,0 +1,1079 @@
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { CheckCircle2, ChevronRight, CreditCard } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import BookingFlowTopBar from "@/components/BookingFlowTopBar";
+import SiteFooter from "@/components/SiteFooter";
+import { useCheckoutSelection } from "@/hooks/useCheckoutSelection";
+import { formatCoursePrice } from "@/data/coursePricing";
+import { getCaptchaVerification } from "@/lib/captcha";
+import {
+  CHECKOUT_FORM_STORAGE_KEY,
+  readStoredCheckoutFormValues,
+  type CheckoutFormValues,
+} from "@/lib/checkoutForm";
+import {
+  calculateCheckoutPaymentPlan,
+  CHECKOUT_INSTALLMENT_OPTIONS,
+  getCheckoutInstallmentLabel,
+} from "@/lib/checkoutPaymentPlan";
+import {
+  clearCheckoutPaymentSession,
+  readCheckoutPaymentSession,
+  writeCheckoutPaymentSession,
+  type CheckoutPaymentSession,
+} from "@/lib/checkoutPaymentSession";
+import { createCheckoutPaymentIntent } from "@/lib/stripeCheckoutService";
+import { submitCheckoutOrder, type CheckoutAssessmentInput } from "@/lib/checkoutService";
+import { isStripeConfigured, stripePromise } from "@/lib/stripeClient";
+
+const cardClassName = "rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8";
+const sectionHeadingClassName = "text-2xl font-black text-slate-900 sm:text-3xl";
+const inputClass =
+  "h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-slate-800 outline-none transition-colors focus:border-[#1d52a1]";
+
+type CheckoutInputErrorKey =
+  | "addressLine1"
+  | "city"
+  | "consent"
+  | "country"
+  | "email"
+  | "fullName"
+  | "phone"
+  | "postalCode"
+  | "province";
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const countryOptions = [
+  { label: "Canada", value: "CA" },
+  { label: "United States", value: "US" },
+] as const;
+type PreferredPaymentMethod = "affirm" | "card" | "klarna";
+
+const buildMinimalAssessment = (): CheckoutAssessmentInput => ({
+  preferredContactMethods: ["email", "call"],
+  studentName: "",
+  studentAge: "",
+  licenceStatus: "",
+  hasValidBCLearnerLicence: "",
+  drivingExperienceLevel: "",
+  roadTestBookingStatus: "",
+  preferredRoadTestLocation: "",
+  trainingGoals: "",
+  preferredLessonTimes: [],
+  pickupLocation: "",
+  preferredStartDate: "",
+  schedulingNotes: "",
+  additionalNotes: "",
+  consentAcceptedAt: new Date().toISOString(),
+});
+
+const previewFieldClassName =
+  "rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-400";
+
+const paymentMethodPreviewOptions = [
+  {
+    id: "card" as const,
+    description: "Pay with debit or credit card",
+    label: "Card",
+    status: "Always available",
+  },
+  {
+    id: "klarna" as const,
+    description: "Buy now, pay later when eligible",
+    label: "Klarna",
+    status: "Shows when eligible",
+  },
+  {
+    id: "affirm" as const,
+    description: "Split payments over time when eligible",
+    label: "Affirm",
+    status: "Shows when eligible",
+  },
+] as const;
+
+const SupportedPaymentMethods = ({
+  compact = false,
+  onSelect,
+  selectedMethod,
+}: {
+  compact?: boolean;
+  onSelect: (method: PreferredPaymentMethod) => void;
+  selectedMethod: PreferredPaymentMethod;
+}) => (
+  <div className={`rounded-2xl border border-slate-200 bg-white ${compact ? "p-4" : "p-5"}`}>
+    <div className="space-y-0" role="radiogroup" aria-label="Preferred payment method">
+      {paymentMethodPreviewOptions.map((option, index) => (
+        <button
+          key={option.id}
+          type="button"
+          role="radio"
+          aria-checked={selectedMethod === option.id}
+          onClick={() => onSelect(option.id)}
+          className={`flex w-full items-center justify-between gap-4 py-3 text-left transition-colors ${
+            index === 0 ? "" : "border-t border-slate-200"
+          } ${selectedMethod === option.id ? "bg-[#1d52a1]/[0.04]" : "hover:bg-slate-50"}`}
+        >
+          <div className="flex items-center gap-3">
+            <span
+              className={`flex h-5 w-5 items-center justify-center rounded-full border ${
+                selectedMethod === option.id ? "border-[#1d52a1]" : "border-slate-300"
+              }`}
+              aria-hidden="true"
+            >
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${
+                  selectedMethod === option.id ? "bg-[#1d52a1]" : "bg-transparent"
+                }`}
+              />
+            </span>
+            <div>
+              <p className="text-sm font-bold text-slate-900">{option.label}</p>
+              <p className="text-xs text-slate-500">{option.description}</p>
+            </div>
+          </div>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+            {option.status}
+          </span>
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
+const PaymentFormPreview = ({
+  isBillingDetailsComplete,
+  isPreparingPayment,
+  onSelectMethod,
+  selectedMethod,
+}: {
+  isBillingDetailsComplete: boolean;
+  isPreparingPayment: boolean;
+  onSelectMethod: (method: PreferredPaymentMethod) => void;
+  selectedMethod: PreferredPaymentMethod;
+}) => (
+  <div className="mt-6 space-y-4">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">Payment methods preview</p>
+        <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+          Eligible methods
+        </span>
+      </div>
+
+      <div className="mt-4">
+        <SupportedPaymentMethods compact selectedMethod={selectedMethod} onSelect={onSelectMethod} />
+      </div>
+      <p className="mt-3 text-xs leading-relaxed text-slate-500">
+        Select a preferred method now. Stripe will prioritize it in the secure payment form when it is supported for this order.
+      </p>
+
+      <div className="mt-4 space-y-3">
+        <div className={previewFieldClassName}>1234 1234 1234 1234</div>
+        <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_140px_140px]">
+          <div className={previewFieldClassName}>Cardholder name</div>
+          <div className={previewFieldClassName}>MM / YY</div>
+          <div className={previewFieldClassName}>CVC</div>
+        </div>
+      </div>
+    </div>
+
+    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+      <p className="text-base font-bold text-slate-900">
+        {isPreparingPayment
+          ? "Loading secure payment methods..."
+          : isBillingDetailsComplete
+            ? "Secure payment methods are loading."
+            : "Complete the billing details above to activate cards, Klarna, and other eligible payment methods."}
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+        {isPreparingPayment
+          ? "Stripe is preparing the live card, Klarna, Affirm, and other eligible payment methods for this order."
+          : isBillingDetailsComplete
+            ? "The live Stripe payment form will replace this preview automatically."
+            : "The preview is shown now so customers can see the payment step before entering their billing details."}
+      </p>
+    </div>
+  </div>
+);
+
+const PaymentSubmissionPanel = ({
+  amountDueToday,
+  billingDetails,
+  canSubmit,
+  getBlockingMessage,
+  installmentCount,
+  onInvalidSubmit,
+  orderId,
+  paymentMode,
+  querySuffix,
+}: {
+  amountDueToday: number;
+  billingDetails: {
+    addressLine1: string;
+    city: string;
+    country: string;
+    email: string;
+    fullName: string;
+    phone: string;
+    postalCode: string;
+    province: string;
+  };
+  canSubmit: boolean;
+  getBlockingMessage: () => string;
+  installmentCount: 2 | 3 | null;
+  onInvalidSubmit: () => void;
+  orderId: string;
+  paymentMode: "full" | "installment";
+  querySuffix: string;
+}) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrorMessage("");
+
+    if (!canSubmit) {
+      onInvalidSubmit();
+      setErrorMessage(getBlockingMessage());
+      return;
+    }
+
+    if (!stripe || !elements || isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const successSearchParams = new URLSearchParams(querySuffix.startsWith("?") ? querySuffix.slice(1) : "");
+      successSearchParams.set("order_id", orderId);
+      successSearchParams.set("payment_mode", paymentMode);
+      if (installmentCount) successSearchParams.set("installment_count", String(installmentCount));
+
+      const returnUrl = new URL("/checkout/success", window.location.origin);
+      returnUrl.search = successSearchParams.toString();
+
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: returnUrl.toString(),
+          payment_method_data: {
+            billing_details: {
+              address: {
+                city: billingDetails.city,
+                country: billingDetails.country,
+                line1: billingDetails.addressLine1,
+                postal_code: billingDetails.postalCode,
+                state: billingDetails.province,
+              },
+              email: billingDetails.email,
+              name: billingDetails.fullName,
+              phone: billingDetails.phone,
+            },
+          },
+        },
+        redirect: "if_required",
+      });
+
+      if (error) {
+        setErrorMessage(error.message ?? "Payment could not be completed. Please review the details and try again.");
+        return;
+      }
+
+      const nextSearchParams = new URLSearchParams(successSearchParams);
+      if (paymentIntent?.client_secret) nextSearchParams.set("payment_intent_client_secret", paymentIntent.client_secret);
+      if (paymentIntent?.status) nextSearchParams.set("status", paymentIntent.status);
+      navigate(`/checkout/success?${nextSearchParams.toString()}`);
+    } catch (error) {
+      console.error("Stripe confirmation failed:", error);
+      setErrorMessage("Stripe could not confirm the payment. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+        <PaymentElement options={{ layout: "tabs" }} />
+      </div>
+
+      <button
+        type="submit"
+        disabled={!stripe || !elements || isSubmitting}
+        className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3 text-sm font-bold text-white transition-colors ${
+          !stripe || !elements || isSubmitting ? "cursor-not-allowed bg-slate-300" : "bg-[#E6242A] hover:bg-[#C41E23]"
+        }`}
+      >
+        {isSubmitting ? "Processing payment..." : `Pay ${formatCoursePrice(amountDueToday)} now`}
+        <ChevronRight className="h-4 w-4" />
+      </button>
+
+      {errorMessage ? <p className="text-sm font-semibold text-[#E6242A]">{errorMessage}</p> : null}
+    </form>
+  );
+};
+
+const Checkout = () => {
+  const {
+    activeItems,
+    estimatedTaxes,
+    goToCart,
+    isUsingDirectSelection,
+    querySuffix,
+    subtotal,
+    total,
+  } = useCheckoutSelection();
+  const [formValues, setFormValues] = useState<CheckoutFormValues>(readStoredCheckoutFormValues);
+  const [touchedFields, setTouchedFields] = useState<Partial<Record<CheckoutInputErrorKey, boolean>>>({});
+  const [prepareError, setPrepareError] = useState("");
+  const [isPreparingPayment, setIsPreparingPayment] = useState(false);
+  const [preparedPaymentSession, setPreparedPaymentSession] = useState<CheckoutPaymentSession | null>(() =>
+    readCheckoutPaymentSession(),
+  );
+  const [preferredPaymentMethod, setPreferredPaymentMethod] = useState<PreferredPaymentMethod>("card");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.sessionStorage.setItem(CHECKOUT_FORM_STORAGE_KEY, JSON.stringify(formValues));
+  }, [formValues]);
+
+  const errors = useMemo(() => {
+    const nextErrors: Partial<Record<CheckoutInputErrorKey, string>> = {};
+    if (!formValues.fullName.trim()) nextErrors.fullName = "Enter the billing name.";
+    if (!formValues.email.trim()) nextErrors.email = "Enter an email address for updates.";
+    else if (!emailPattern.test(formValues.email.trim())) nextErrors.email = "Enter a valid email address.";
+    if (!formValues.phone.trim()) nextErrors.phone = "Enter a phone number for follow-up.";
+    else if (formValues.phone.replace(/\D/g, "").length < 10) nextErrors.phone = "Enter a valid phone number.";
+    if (!formValues.addressLine1.trim()) nextErrors.addressLine1 = "Enter the billing address.";
+    if (!formValues.city.trim()) nextErrors.city = "Enter the billing city.";
+    if (!formValues.province.trim()) nextErrors.province = "Enter the province or state.";
+    if (!formValues.postalCode.trim()) nextErrors.postalCode = "Enter the postal or ZIP code.";
+    if (!formValues.country.trim()) nextErrors.country = "Select the billing country.";
+    if (!formValues.consent) nextErrors.consent = "You must agree before completing payment.";
+    return nextErrors;
+  }, [
+    formValues.addressLine1,
+    formValues.city,
+    formValues.consent,
+    formValues.country,
+    formValues.email,
+    formValues.fullName,
+    formValues.phone,
+    formValues.postalCode,
+    formValues.province,
+  ]);
+
+  const hasValidationErrors = Object.keys(errors).length > 0;
+  const isBillingDetailsComplete =
+    !errors.fullName &&
+    !errors.email &&
+    !errors.phone &&
+    !errors.addressLine1 &&
+    !errors.city &&
+    !errors.province &&
+    !errors.postalCode &&
+    !errors.country;
+  const paymentPlanSummary = useMemo(
+    () =>
+      calculateCheckoutPaymentPlan(total, {
+        paymentMode: formValues.paymentMode,
+        installmentCount: formValues.installmentCount,
+      }),
+    [formValues.installmentCount, formValues.paymentMode, total],
+  );
+
+  const paymentSessionMatchesSelection =
+    preparedPaymentSession &&
+    preparedPaymentSession.itemSnapshot.length === activeItems.length &&
+    preparedPaymentSession.itemSnapshot.every((snapshot) =>
+      activeItems.some((item) => item.key === snapshot.key && item.quantity === snapshot.quantity),
+    );
+
+  const activePaymentSession = paymentSessionMatchesSelection ? preparedPaymentSession : null;
+  const preferredPaymentMethodOrder = useMemo(
+    () => [
+      preferredPaymentMethod,
+      ...(["card", "klarna", "affirm"] as const).filter((method) => method !== preferredPaymentMethod),
+    ],
+    [preferredPaymentMethod],
+  );
+  const stripeOptions = activePaymentSession
+    ? {
+        clientSecret: activePaymentSession.clientSecret,
+        appearance: {
+          theme: "stripe" as const,
+          variables: {
+            colorPrimary: "#1d52a1",
+            colorText: "#0f172a",
+            colorDanger: "#E6242A",
+            borderRadius: "18px",
+          },
+        },
+        paymentMethodOrder: preferredPaymentMethodOrder,
+      }
+    : null;
+
+  useEffect(() => {
+    if (preparedPaymentSession && !paymentSessionMatchesSelection) {
+      clearCheckoutPaymentSession();
+      setPreparedPaymentSession(null);
+    }
+  }, [paymentSessionMatchesSelection, preparedPaymentSession]);
+
+  const shouldShowError = (field: CheckoutInputErrorKey) => Boolean(touchedFields[field]);
+
+  const resetPreparedPayment = () => {
+    clearCheckoutPaymentSession();
+    setPreparedPaymentSession(null);
+  };
+
+  const updateField = <Field extends keyof CheckoutFormValues,>(field: Field, value: CheckoutFormValues[Field]) => {
+    setFormValues((current) => ({ ...current, [field]: value }));
+    if (field === "paymentMode" || field === "installmentCount") {
+      resetPreparedPayment();
+    }
+  };
+
+  const markTouched = (field: CheckoutInputErrorKey) => {
+    setTouchedFields((current) => ({ ...current, [field]: true }));
+  };
+
+  const preparePayment = async () => {
+    setPrepareError("");
+
+    if (activeItems.length === 0 || isPreparingPayment) return;
+    if (!isStripeConfigured) {
+      setPrepareError("Stripe is not configured. Add the publishable key and try again.");
+      return;
+    }
+    if (!isBillingDetailsComplete) {
+      return;
+    }
+
+    setIsPreparingPayment(true);
+
+    try {
+      const captcha = await getCaptchaVerification("checkout_submit");
+      const order = await submitCheckoutOrder({
+        fullName: formValues.fullName,
+        email: formValues.email,
+        phone: formValues.phone,
+        billingAddress: {
+          addressLine1: formValues.addressLine1,
+          city: formValues.city,
+          country: formValues.country,
+          postalCode: formValues.postalCode,
+          province: formValues.province,
+        },
+        paymentSelection: {
+          paymentMode: formValues.paymentMode,
+          installmentCount: formValues.installmentCount,
+        },
+        sourcePage: "/checkout",
+        items: activeItems,
+        subtotal,
+        estimatedTaxes,
+        total,
+        assessment: buildMinimalAssessment(),
+        captchaProvider: captcha.provider ?? undefined,
+        captchaToken: captcha.token ?? undefined,
+        captchaAction: captcha.action ?? undefined,
+      });
+
+      const paymentIntent = await createCheckoutPaymentIntent({
+        billingDetails: {
+          addressLine1: formValues.addressLine1,
+          city: formValues.city,
+          country: formValues.country,
+          email: formValues.email,
+          fullName: formValues.fullName,
+          phone: formValues.phone,
+          postalCode: formValues.postalCode,
+          province: formValues.province,
+        },
+        orderId: order.orderId,
+        items: activeItems,
+        paymentSelection: {
+          paymentMode: formValues.paymentMode,
+          installmentCount: formValues.installmentCount,
+        },
+      });
+
+      const nextPaymentSession: CheckoutPaymentSession = {
+        amountDueToday: paymentIntent.amountDueToday,
+        clientSecret: paymentIntent.clientSecret,
+        estimatedTaxes: paymentIntent.estimatedTaxes,
+        installmentCount: paymentIntent.installmentCount,
+        itemSnapshot: activeItems.map((item) => ({ key: item.key, quantity: item.quantity })),
+        orderId: paymentIntent.orderId,
+        paymentMode: paymentIntent.paymentMode,
+        remainingBalance: paymentIntent.remainingBalance,
+        subtotal: paymentIntent.subtotal,
+        total: paymentIntent.total,
+      };
+
+      writeCheckoutPaymentSession(nextPaymentSession);
+      setPreparedPaymentSession(nextPaymentSession);
+    } catch (error) {
+      console.error("Payment preparation failed:", error);
+      if (import.meta.env.DEV && error instanceof Error && error.message.trim().length > 0) {
+        setPrepareError(error.message);
+      } else {
+        setPrepareError("The payment details could not be loaded. Please retry or call us at +1 (250) 542-3673.");
+      }
+    } finally {
+      setIsPreparingPayment(false);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      activeItems.length === 0 ||
+      !isStripeConfigured ||
+      activePaymentSession ||
+      isPreparingPayment ||
+      !isBillingDetailsComplete
+    ) {
+      return;
+    }
+
+    void preparePayment();
+  }, [
+    activeItems.length,
+    activePaymentSession,
+    isBillingDetailsComplete,
+    isPreparingPayment,
+    isStripeConfigured,
+  ]);
+
+  const handleInvalidPaymentSubmit = () => {
+    setTouchedFields({
+      addressLine1: true,
+      city: true,
+      consent: true,
+      country: true,
+      email: true,
+      fullName: true,
+      phone: true,
+      postalCode: true,
+      province: true,
+    });
+  };
+
+  const getPaymentBlockingMessage = () =>
+    errors.fullName ??
+    errors.phone ??
+    errors.email ??
+    errors.addressLine1 ??
+    errors.city ??
+    errors.province ??
+    errors.postalCode ??
+    errors.country ??
+    errors.consent ??
+    "Complete the billing details before paying.";
+
+  const summaryValues = activePaymentSession
+    ? {
+        subtotal: activePaymentSession.subtotal,
+        estimatedTaxes: activePaymentSession.estimatedTaxes,
+        total: activePaymentSession.total,
+      }
+    : { subtotal, estimatedTaxes, total };
+
+  const editSelectionHref = isUsingDirectSelection ? activeItems[0]?.editHref ?? "/packages" : null;
+
+  return (
+    <main className="bg-white text-[#202121]">
+      <section className="bg-white py-10 sm:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <BookingFlowTopBar backTo="/cart" backLabel="Back to cart" />
+
+          <div className="mt-8">
+          {activeItems.length === 0 ? (
+            <div className="mx-auto max-w-3xl rounded-[32px] border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
+              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#1d52a1]/15 text-[#1d52a1]">
+                <CheckCircle2 className="h-8 w-8" />
+              </span>
+              <h2 className="mt-5 text-3xl font-black text-slate-900">Choose a course or package before checkout</h2>
+              <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+                Select one of the available training options first so the checkout page can show the correct order summary and payment amount.
+              </p>
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  to="/packages"
+                  className="inline-flex items-center justify-center rounded-full bg-[#1d52a1] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                >
+                  Browse packages
+                </Link>
+                <Link
+                  to="/courses"
+                  className="inline-flex items-center justify-center rounded-full border-2 border-slate-300 px-8 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
+                >
+                  Browse courses
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="mb-8 border-b border-slate-200 pb-6">
+                <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Checkout</p>
+                <h1 className="mt-2 text-3xl font-black text-slate-900 sm:text-4xl">Secure checkout</h1>
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                  Enter your billing details and payment on the left. Review the order summary and booked items on the right.
+                </p>
+              </div>
+
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.75fr)] lg:items-start">
+              <div className="space-y-6">
+                <div className="space-y-6">
+                  <section className={cardClassName}>
+                    <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Billing details</p>
+                    <h2 className="mt-3 text-2xl font-black text-slate-900 sm:text-3xl">Billing information</h2>
+                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                      Enter your billing contact details and address so the secure payment methods can load correctly.
+                    </p>
+
+                    <div className="mt-6 space-y-5">
+                      <div>
+                        <label htmlFor="checkout-full-name" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                          Full name <span className="text-[#E6242A]">*</span>
+                        </label>
+                        <input
+                          id="checkout-full-name"
+                          type="text"
+                          value={formValues.fullName}
+                          onBlur={() => markTouched("fullName")}
+                          onChange={(event) => updateField("fullName", event.target.value)}
+                          placeholder="Enter your billing name"
+                          className={inputClass}
+                        />
+                        {shouldShowError("fullName") && errors.fullName ? (
+                          <p className="mt-2 text-sm text-red-500">{errors.fullName}</p>
+                        ) : null}
+                      </div>
+
+                      <div className="grid gap-5 sm:grid-cols-2">
+                        <div>
+                          <label htmlFor="checkout-phone" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                            Phone number <span className="text-[#E6242A]">*</span>
+                          </label>
+                          <input
+                            id="checkout-phone"
+                            type="tel"
+                            value={formValues.phone}
+                            onBlur={() => markTouched("phone")}
+                            onChange={(event) => updateField("phone", event.target.value)}
+                            placeholder="+1 (250) 542-3673"
+                            className={inputClass}
+                          />
+                          {shouldShowError("phone") && errors.phone ? (
+                            <p className="mt-2 text-sm text-red-500">{errors.phone}</p>
+                          ) : null}
+                        </div>
+
+                        <div>
+                          <label htmlFor="checkout-email" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                            Email address <span className="text-[#E6242A]">*</span>
+                          </label>
+                          <input
+                            id="checkout-email"
+                            type="email"
+                            value={formValues.email}
+                            onBlur={() => markTouched("email")}
+                            onChange={(event) => updateField("email", event.target.value)}
+                            placeholder="you@example.com"
+                            className={inputClass}
+                          />
+                          {shouldShowError("email") && errors.email ? (
+                            <p className="mt-2 text-sm text-red-500">{errors.email}</p>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label htmlFor="checkout-address-line-1" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                          Address line 1 <span className="text-[#E6242A]">*</span>
+                        </label>
+                        <input
+                          id="checkout-address-line-1"
+                          type="text"
+                          value={formValues.addressLine1}
+                          onBlur={() => markTouched("addressLine1")}
+                          onChange={(event) => updateField("addressLine1", event.target.value)}
+                          placeholder="Street address"
+                          className={inputClass}
+                        />
+                        {shouldShowError("addressLine1") && errors.addressLine1 ? (
+                          <p className="mt-2 text-sm text-red-500">{errors.addressLine1}</p>
+                        ) : null}
+                      </div>
+
+                      <div className="grid gap-5 sm:grid-cols-2">
+                        <div>
+                          <label htmlFor="checkout-city" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                            City <span className="text-[#E6242A]">*</span>
+                          </label>
+                          <input
+                            id="checkout-city"
+                            type="text"
+                            value={formValues.city}
+                            onBlur={() => markTouched("city")}
+                            onChange={(event) => updateField("city", event.target.value)}
+                            placeholder="Victoria"
+                            className={inputClass}
+                          />
+                          {shouldShowError("city") && errors.city ? (
+                            <p className="mt-2 text-sm text-red-500">{errors.city}</p>
+                          ) : null}
+                        </div>
+
+                        <div>
+                          <label htmlFor="checkout-province" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                            Province / state <span className="text-[#E6242A]">*</span>
+                          </label>
+                          <input
+                            id="checkout-province"
+                            type="text"
+                            value={formValues.province}
+                            onBlur={() => markTouched("province")}
+                            onChange={(event) => updateField("province", event.target.value)}
+                            placeholder="BC"
+                            className={inputClass}
+                          />
+                          {shouldShowError("province") && errors.province ? (
+                            <p className="mt-2 text-sm text-red-500">{errors.province}</p>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div className="grid gap-5 sm:grid-cols-2">
+                        <div>
+                          <label htmlFor="checkout-postal-code" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                            Postal / ZIP code <span className="text-[#E6242A]">*</span>
+                          </label>
+                          <input
+                            id="checkout-postal-code"
+                            type="text"
+                            value={formValues.postalCode}
+                            onBlur={() => markTouched("postalCode")}
+                            onChange={(event) => updateField("postalCode", event.target.value)}
+                            placeholder="V8X 1A1"
+                            className={inputClass}
+                          />
+                          {shouldShowError("postalCode") && errors.postalCode ? (
+                            <p className="mt-2 text-sm text-red-500">{errors.postalCode}</p>
+                          ) : null}
+                        </div>
+
+                        <div>
+                          <label htmlFor="checkout-country" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                            Country <span className="text-[#E6242A]">*</span>
+                          </label>
+                          <select
+                            id="checkout-country"
+                            value={formValues.country}
+                            onBlur={() => markTouched("country")}
+                            onChange={(event) => updateField("country", event.target.value)}
+                            className={`${inputClass} appearance-none`}
+                          >
+                            <option value="">Select country</option>
+                            {countryOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          {shouldShowError("country") && errors.country ? (
+                            <p className="mt-2 text-sm text-red-500">{errors.country}</p>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div className="border-t border-slate-200 pt-5">
+                        <p className="text-sm font-black uppercase tracking-[0.16em] text-[#1d52a1]">Payment option</p>
+                        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                          <button
+                            type="button"
+                            onClick={() => updateField("paymentMode", "full")}
+                            className={`rounded-2xl border p-4 text-left transition-colors ${
+                              formValues.paymentMode === "full"
+                                ? "border-[#1d52a1] bg-[#1d52a1]/5"
+                                : "border-slate-200 bg-white hover:border-[#1d52a1]/40"
+                            }`}
+                          >
+                            <p className={`text-xs font-black uppercase tracking-[0.16em] ${
+                              formValues.paymentMode === "full" ? "text-[#1d52a1]" : "text-slate-500"
+                            }`}>
+                              Pay in full
+                            </p>
+                            <p className="mt-2 text-lg font-black text-slate-900">{formatCoursePrice(total)} today</p>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => updateField("paymentMode", "installment")}
+                            className={`rounded-2xl border p-4 text-left transition-colors ${
+                              formValues.paymentMode === "installment"
+                                ? "border-[#1d52a1] bg-[#1d52a1]/5"
+                                : "border-slate-200 bg-white hover:border-[#1d52a1]/40"
+                            }`}
+                          >
+                            <p className={`text-xs font-black uppercase tracking-[0.16em] ${
+                              formValues.paymentMode === "installment" ? "text-[#1d52a1]" : "text-slate-500"
+                            }`}>
+                              Pay in installments
+                            </p>
+                            <p className="mt-2 text-lg font-black text-slate-900">
+                              {formatCoursePrice(paymentPlanSummary.amountDueToday)} due today
+                            </p>
+                            <p className="mt-1 text-sm text-slate-500">
+                              Remaining balance {formatCoursePrice(paymentPlanSummary.remainingBalance)}
+                            </p>
+                          </button>
+                        </div>
+
+                        {formValues.paymentMode === "installment" ? (
+                          <div className="mt-5">
+                            <p className="text-sm font-semibold text-slate-700">Select installment plan</p>
+                            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                              {CHECKOUT_INSTALLMENT_OPTIONS.map((count) => (
+                                <button
+                                  key={count}
+                                  type="button"
+                                  onClick={() => updateField("installmentCount", count)}
+                                  className={`rounded-xl border px-4 py-3 text-left text-sm font-bold transition-colors ${
+                                    formValues.installmentCount === count
+                                      ? "border-[#1d52a1] bg-[#1d52a1] text-white"
+                                      : "border-slate-200 bg-white text-slate-700 hover:border-[#1d52a1]/40"
+                                  }`}
+                                >
+                                  {getCheckoutInstallmentLabel(count)}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="border-t border-slate-200 pt-5">
+                        <label htmlFor="checkout-consent" className="flex items-start gap-3">
+                          <input
+                            id="checkout-consent"
+                            type="checkbox"
+                            checked={formValues.consent}
+                            onBlur={() => markTouched("consent")}
+                            onChange={(event) => updateField("consent", event.target.checked)}
+                            className="mt-1 h-4 w-4 rounded border-slate-300 text-[#1d52a1] focus:ring-[#1d52a1]"
+                          />
+                          <span className="text-sm leading-relaxed text-slate-700 sm:text-base">
+                            I agree to the payment and booking terms.
+                          </span>
+                        </label>
+
+                        {shouldShowError("consent") && errors.consent ? (
+                          <p className="mt-3 text-sm text-red-500">{errors.consent}</p>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <p className="mt-6 text-sm leading-relaxed text-slate-600">
+                      The payment form is shown below now and activates with the live Stripe fields after the billing details are complete.
+                    </p>
+
+                    {!isStripeConfigured ? (
+                      <p className="mt-3 text-sm font-semibold text-[#E6242A]">
+                        Stripe publishable key is missing from the frontend environment.
+                      </p>
+                    ) : null}
+
+                    {prepareError ? (
+                      <p className="mt-3 text-sm font-semibold text-[#E6242A]">{prepareError}</p>
+                    ) : null}
+                  </section>
+                </div>
+
+                <section className={cardClassName}>
+                  <div className="flex items-start gap-3">
+                    <CreditCard className="mt-1 h-5 w-5 text-[#1d52a1]" />
+                    <div>
+                      <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Payment details</p>
+                      <h2 className={`mt-2 ${sectionHeadingClassName}`}>Secure payment</h2>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+                        Enter your card details below. Eligible methods like Klarna and Affirm will appear automatically when Stripe supports them for this order.
+                      </p>
+                    </div>
+                  </div>
+
+                  {activePaymentSession && stripeOptions ? (
+                    <div className="mt-6 space-y-4">
+                      <p className="text-sm leading-relaxed text-slate-600">
+                        {activePaymentSession.paymentMode === "installment"
+                          ? `Today you will pay ${formatCoursePrice(activePaymentSession.amountDueToday)} using the ${getCheckoutInstallmentLabel(activePaymentSession.installmentCount ?? 2).toLowerCase()} option.`
+                          : `Today you will pay the full amount of ${formatCoursePrice(activePaymentSession.amountDueToday)}.`}
+                      </p>
+                      <SupportedPaymentMethods
+                        selectedMethod={preferredPaymentMethod}
+                        onSelect={setPreferredPaymentMethod}
+                      />
+                      <p className="text-xs leading-relaxed text-slate-500">
+                        Your selected method is being prioritized below. Klarna and Affirm only appear when the customer, amount,
+                        and region are eligible.
+                      </p>
+                      <Elements
+                        key={`${activePaymentSession.clientSecret}:${preferredPaymentMethod}`}
+                        stripe={stripePromise}
+                        options={stripeOptions}
+                      >
+                        <PaymentSubmissionPanel
+                          amountDueToday={activePaymentSession.amountDueToday}
+                          billingDetails={{
+                            addressLine1: formValues.addressLine1,
+                            city: formValues.city,
+                            country: formValues.country,
+                            email: formValues.email,
+                            fullName: formValues.fullName,
+                            phone: formValues.phone,
+                            postalCode: formValues.postalCode,
+                            province: formValues.province,
+                          }}
+                          canSubmit={!hasValidationErrors}
+                          getBlockingMessage={getPaymentBlockingMessage}
+                          installmentCount={activePaymentSession.installmentCount}
+                          onInvalidSubmit={handleInvalidPaymentSubmit}
+                          orderId={activePaymentSession.orderId}
+                          paymentMode={activePaymentSession.paymentMode}
+                          querySuffix={querySuffix}
+                        />
+                      </Elements>
+                    </div>
+                  ) : (
+                    <PaymentFormPreview
+                      isBillingDetailsComplete={isBillingDetailsComplete}
+                      isPreparingPayment={isPreparingPayment}
+                      onSelectMethod={setPreferredPaymentMethod}
+                      selectedMethod={preferredPaymentMethod}
+                    />
+                  )}
+                </section>
+              </div>
+
+              <aside className="space-y-6 lg:sticky lg:top-10">
+                <section className={cardClassName}>
+                  <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Order summary</p>
+                  <h2 className={`mt-3 ${sectionHeadingClassName}`}>Your booking total</h2>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+                    Review the pricing breakdown before completing payment.
+                  </p>
+
+                  <div className="mt-6 space-y-4 rounded-2xl border border-slate-200 bg-[#F8FAFC] p-5">
+                    <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
+                      <span>Subtotal</span>
+                      <span className="font-bold text-slate-900">{formatCoursePrice(summaryValues.subtotal)}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
+                      <span>Estimated GST</span>
+                      <span className="font-bold text-slate-900">{formatCoursePrice(summaryValues.estimatedTaxes)}</span>
+                    </div>
+                    <div className="border-t border-slate-300 pt-4">
+                      <div className="flex items-center justify-between gap-4">
+                        <span className="text-base font-black uppercase tracking-[0.12em] text-slate-900">
+                          {paymentPlanSummary.paymentMode === "installment" ? "Due today" : "Total due"}
+                        </span>
+                        <span className="text-3xl font-black text-[#E6242A]">
+                          {formatCoursePrice(
+                            paymentPlanSummary.paymentMode === "installment"
+                              ? paymentPlanSummary.amountDueToday
+                              : summaryValues.total,
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                    {paymentPlanSummary.paymentMode === "installment" ? (
+                      <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
+                        <span>Remaining balance</span>
+                        <span className="font-bold text-slate-900">
+                          {formatCoursePrice(paymentPlanSummary.remainingBalance)}
+                        </span>
+                      </div>
+                    ) : null}
+                  </div>
+                </section>
+
+                <section className={cardClassName}>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Product details</p>
+                      <h2 className="mt-3 text-2xl font-black text-slate-900">Items in your order</h2>
+                    </div>
+
+                    {editSelectionHref ? (
+                      <Link
+                        to={editSelectionHref}
+                        className="text-sm font-bold text-[#1d52a1] transition-colors hover:text-[#17488d]"
+                      >
+                        Edit selection
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={goToCart}
+                        className="text-sm font-bold text-[#1d52a1] transition-colors hover:text-[#17488d]"
+                      >
+                        Edit cart
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="mt-6 divide-y divide-slate-200">
+                    {activeItems.map((item) => (
+                      <article key={item.key} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0">
+                        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="min-w-0">
+                              <h3 className="text-base font-black leading-tight text-slate-900">{item.title}</h3>
+                              <p className="mt-1 text-sm text-slate-500">{item.locationName}</p>
+                              <p className="mt-2 text-sm text-slate-600">
+                                Qty {item.quantity}
+                                {item.sessionDetail ? ` - ${item.sessionDetail}` : ""}
+                              </p>
+                            </div>
+
+                            <div className="shrink-0 text-right">
+                              <p className="text-lg font-black text-slate-900">
+                                {formatCoursePrice(item.price * item.quantity)}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              </aside>
+            </div>
+            </>
+          )}
+          </div>
+        </div>
+      </section>
+
+      <SiteFooter />
+    </main>
+  );
+};
+
+export default Checkout;

@@ -1,0 +1,148 @@
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { CreditCard, Sparkles, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+
+const hiddenPathPrefixes = ["/admin", "/affiliate", "/careers", "/cart", "/checkout"];
+
+const FloatingCouponOffer = () => {
+  const { pathname } = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const popupInitial = prefersReducedMotion
+    ? { opacity: 0, y: 10 }
+    : { opacity: 0, y: 18, scale: 0.92, filter: "blur(10px)" };
+
+  const popupAnimate = prefersReducedMotion
+    ? { opacity: 1, y: 0 }
+    : { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" };
+
+  const popupExit = prefersReducedMotion
+    ? { opacity: 0, y: 8 }
+    : { opacity: 0, y: 12, scale: 0.97, filter: "blur(6px)" };
+
+  if (hiddenPathPrefixes.some((prefix) => pathname.startsWith(prefix))) {
+    return null;
+  }
+
+  return (
+    <div
+      className="fixed z-[100]"
+      style={{
+        left: "max(0.75rem, env(safe-area-inset-left))",
+        bottom: "max(1rem, env(safe-area-inset-bottom))",
+      }}
+    >
+      <AnimatePresence mode="wait">
+        {isOpen ? (
+          <motion.div
+            key="installment-popup"
+            initial={popupInitial}
+            animate={popupAnimate}
+            exit={popupExit}
+            transition={{ duration: prefersReducedMotion ? 0.18 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+            className="origin-bottom-left max-w-sm rounded-[28px] border border-slate-200 bg-white/95 p-4 text-[#202121] shadow-[0_22px_55px_rgba(15,23,42,0.18)] backdrop-blur-md sm:p-5"
+            style={{
+              width: "min(24rem, calc(100vw - max(1.5rem, env(safe-area-inset-left)) - max(1.5rem, env(safe-area-inset-right))))",
+              willChange: "opacity, transform, filter",
+            }}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#1d52a1]">FLEXIBLE PAYMENTS</p>
+                <h2 className="mt-2 text-2xl font-black leading-tight text-slate-900">Learn now, pay over time.</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close installment promotion"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <p className="mt-4 text-sm leading-relaxed text-slate-600">
+              Split your course into monthly installments with Affirm - no hidden fees. Choose your plan right inside
+              the secure Stripe checkout.
+            </p>
+
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/contact"
+                className="inline-flex flex-1 items-center justify-center rounded-full bg-[#E6242A] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
+              >
+                Ask Our Team
+              </Link>
+              <a
+                href="tel:+12505423673"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-[#1d52a1] px-5 py-3 text-sm font-bold text-[#1d52a1] transition-colors hover:bg-[#1d52a1] hover:text-white"
+              >
+                Call now
+              </a>
+            </div>
+
+            <p className="mt-3 text-xs font-semibold text-slate-500">0% APR options available. Takes 60 seconds to apply.</p>
+          </motion.div>
+        ) : (
+          <motion.button
+            key="installment-trigger"
+            type="button"
+            onClick={() => setIsOpen(true)}
+            aria-label="Open installment promotion"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E6242A]/20 bg-white/95 px-3 py-3 text-xs font-black text-[#202121] shadow-[0_16px_40px_rgba(15,23,42,0.15)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(15,23,42,0.2)] sm:px-4 sm:text-sm"
+            whileHover={prefersReducedMotion ? undefined : { y: -2, scale: 1.01 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    rotate: [0, 0, -2.2, 2.2, -1.4, 1.4, 0],
+                    y: [0, 0, -1.5, 0, -1, 0, 0],
+                    scale: [1, 1, 1.015, 1, 1.01, 1, 1],
+                  }
+            }
+            transition={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    duration: 1.2,
+                    ease: "easeInOut",
+                    times: [0, 0.5, 0.62, 0.74, 0.84, 0.92, 1],
+                    repeat: Infinity,
+                    repeatDelay: 3.8,
+                  }
+            }
+            style={{ willChange: "transform" }}
+          >
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#E6242A] text-white sm:h-9 sm:w-9">
+              <CreditCard className="h-4 w-4" />
+            </span>
+            <span>Monthly payments</span>
+            <motion.span
+              aria-hidden="true"
+              animate={prefersReducedMotion ? undefined : { rotate: [0, -10, 8, -6, 0], scale: [1, 1.1, 1, 1.06, 1] }}
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : {
+                      duration: 1.2,
+                      ease: "easeInOut",
+                      times: [0, 0.58, 0.72, 0.86, 1],
+                      repeat: Infinity,
+                      repeatDelay: 3.8,
+                    }
+              }
+              className="inline-flex"
+            >
+              <Sparkles className="h-4 w-4 text-[#F5B13A]" />
+            </motion.span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default FloatingCouponOffer;

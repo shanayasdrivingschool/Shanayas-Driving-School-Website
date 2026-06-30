@@ -1,0 +1,65 @@
+export type CheckoutPaymentMode = "full" | "installment";
+export type CheckoutInstallmentCount = 2 | 3;
+
+export type CheckoutPaymentSelection = {
+  paymentMode: CheckoutPaymentMode;
+  installmentCount: CheckoutInstallmentCount;
+};
+
+export type CheckoutPaymentPlanSummary = {
+  amountDueToday: number;
+  installmentAmounts: number[];
+  installmentCount: CheckoutInstallmentCount | null;
+  orderTotal: number;
+  paymentMode: CheckoutPaymentMode;
+  remainingBalance: number;
+  remainingInstallments: number;
+};
+
+export const CHECKOUT_INSTALLMENT_OPTIONS = [2, 3] as const;
+
+export const DEFAULT_CHECKOUT_PAYMENT_SELECTION: CheckoutPaymentSelection = {
+  paymentMode: "full",
+  installmentCount: 2,
+};
+
+const roundMoney = (value: number) => Number(value.toFixed(2));
+
+export const isCheckoutInstallmentCount = (value: unknown): value is CheckoutInstallmentCount =>
+  value === 2 || value === 3;
+
+export const normalizeCheckoutPaymentSelection = (
+  value: Partial<CheckoutPaymentSelection> | null | undefined,
+): CheckoutPaymentSelection => {
+  const installmentCount = isCheckoutInstallmentCount(value?.installmentCount)
+    ? value.installmentCount
+    : DEFAULT_CHECKOUT_PAYMENT_SELECTION.installmentCount;
+
+  return {
+    // New checkouts always run as full payment and rely on Stripe for
+    // eligible financing methods such as Klarna or Affirm.
+    paymentMode: "full",
+    installmentCount,
+  };
+};
+
+export const getCheckoutInstallmentLabel = (count: CheckoutInstallmentCount) =>
+  count === 2 ? "2 installments" : "3 installments";
+
+export const calculateCheckoutPaymentPlan = (
+  orderTotal: number,
+  selection: Partial<CheckoutPaymentSelection> | null | undefined,
+): CheckoutPaymentPlanSummary => {
+  const normalizedSelection = normalizeCheckoutPaymentSelection(selection);
+  const normalizedTotal = roundMoney(orderTotal);
+
+  return {
+    paymentMode: normalizedSelection.paymentMode,
+    installmentCount: null,
+    installmentAmounts: [normalizedTotal],
+    amountDueToday: normalizedTotal,
+    remainingBalance: 0,
+    remainingInstallments: 0,
+    orderTotal: normalizedTotal,
+  };
+};

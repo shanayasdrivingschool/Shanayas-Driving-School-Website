@@ -1,0 +1,39 @@
+import { Link } from "react-router-dom";
+import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
+import { cn } from "@/lib/utils";
+
+type InstallmentCtaSectionProps = {
+  className?: string;
+  imageClassName?: string;
+};
+
+const InstallmentCtaSection = ({ className, imageClassName }: InstallmentCtaSectionProps) => (
+  <SiteCtaSection
+    eyebrow="Flexible payments"
+    title={
+      <>
+        Pay in <span className="text-[#F5B13A]">installments</span>
+      </>
+    }
+    description="Split your package cost into manageable payments. Ask our team for details."
+    sectionClassName={cn(
+      "rounded-[36px] border border-slate-200 bg-[#E7EBEF] py-8 shadow-[0_28px_70px_rgba(39,69,86,0.16)] sm:py-10",
+      className,
+    )}
+    imageSrc="/Misc/Installmenticon.png"
+    imageAlt="Installment payment icon"
+    imageClassName={cn("h-[200px] sm:h-[260px] lg:h-[300px]", imageClassName)}
+    actions={
+      <>
+        <Link to="/payment-plan-options" className={siteCtaPrimaryClassName}>
+          Ask About Installments
+        </Link>
+        <a href="tel:+12505423673" className={siteCtaSecondaryClassName}>
+          Call Now
+        </a>
+      </>
+    }
+  />
+);
+
+export default InstallmentCtaSection;
