@@ -1,6 +1,6 @@
 import { type FormEvent, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, Menu, Search, ShoppingCart, X } from "lucide-react";
+import { ChevronDown, Menu, Phone, Search, ShoppingCart, X } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useCart } from "@/components/cart/CartProvider";
 import { searchSite } from "@/data/siteSearch";
@@ -650,6 +650,17 @@ const SiteHeader = ({ tone = "light", className = "" }: SiteHeaderProps) => {
           >
             Book your driving lesson
           </Link>
+          <a
+            href="tel:+12505423673"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setMobileDropdownState({});
+            }}
+            className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10"
+          >
+            <Phone className="h-4 w-4" />
+            +1-250-542-3673
+          </a>
           <Link
             to="/cart"
             onClick={() => {
