@@ -189,7 +189,7 @@ const SiteFooter = () => (
 
       <div className="w-full text-left">
         <p className="mb-4 text-left text-lg font-bold uppercase text-black md:text-xl">Call us now!</p>
-        <p className="text-left text-xl font-black text-[#F5B13A] md:text-2xl">250-LICENSE</p>
+        <p className="text-left text-xl font-black text-[#F5B13A] md:text-2xl">250-542-3673</p>
       </div>
     </div>
     <p className="relative z-[2] mt-12 text-center text-xs font-semibold text-white/60">

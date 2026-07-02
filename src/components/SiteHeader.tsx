@@ -846,13 +846,13 @@ const SiteHeader = ({ tone = "light", className = "" }: SiteHeaderProps) => {
               <a
                 href="tel:+12505423673"
                 className="flex flex-col items-start px-4 pr-5"
-                aria-label="Call now at 250-LICENSE"
+                aria-label="Call now at 250-542-3673"
               >
                 <span className={`text-[10px] font-bold uppercase leading-none tracking-[0.18em] ${callNowLabelClass}`}>
                   Call now
                 </span>
                 <span className={`whitespace-nowrap text-lg font-black leading-tight ${callNowNumberClass}`}>
-                  250-LICENSE
+                  250-542-3673
                 </span>
               </a>
             </div>
@@ -900,7 +900,7 @@ const SiteHeader = ({ tone = "light", className = "" }: SiteHeaderProps) => {
                   Call now
                 </span>
                 <span className={`whitespace-nowrap text-lg font-black leading-tight ${callNowNumberClass}`}>
-                  250-LICENSE
+                  250-542-3673
                 </span>
               </span>
             </div>

@@ -694,7 +694,7 @@ const AffiliateSignup = () => {
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="tel:+12505423673" className={affiliatePrimaryButtonClassName}>
-                Call 250-LICENSE
+                Call 250-542-3673
               </a>
               <Link to="/contact" className={affiliateInverseButtonClassName}>
                 Contact Page
