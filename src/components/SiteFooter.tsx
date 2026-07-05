@@ -118,10 +118,16 @@ const SiteFooter = () => (
               <Link to="/driving-lessons">Driving Lessons</Link>
             </li>
             <li>
+              <Link to="/driving-lessons-langford">Driving Lessons Langford</Link>
+            </li>
+            <li>
               <Link to="/defensive-driving">Defensive Driving</Link>
             </li>
             <li>
               <Link to="/road-test-prep">Road Test Prep</Link>
+            </li>
+            <li>
+              <Link to="/road-test-prep-victoria">Road Test Prep Victoria</Link>
             </li>
             <li>
               <Link to="/road-test-vehicle">Road Test Vehicle</Link>

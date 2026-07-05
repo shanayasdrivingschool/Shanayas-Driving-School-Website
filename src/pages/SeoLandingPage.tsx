@@ -88,6 +88,27 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
         </div>
       </section>
 
+      {page.testimonial ? (
+        <section className="bg-white pb-16 sm:pb-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6">
+            <figure className="rounded-[28px] bg-[#F2F2F2] p-8 text-center shadow-sm sm:p-10">
+              <div className="text-lg tracking-[0.35em] text-[#F5B13A]" aria-hidden>
+                ★★★★★
+              </div>
+              <blockquote className="mt-4 text-xl font-semibold leading-relaxed text-slate-800 sm:text-2xl">
+                &ldquo;{page.testimonial.quote}&rdquo;
+              </blockquote>
+              <figcaption className="mt-5 text-sm font-black uppercase tracking-[0.14em] text-[#1d52a1]">
+                {page.testimonial.name}
+                <span className="ml-2 font-semibold normal-case tracking-normal text-slate-500">
+                  {page.testimonial.location}
+                </span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+      ) : null}
+
       <section className="bg-[#F2F2F2] py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <p className="responsive-section-label text-center font-black text-gray-300/80">Details</p>
@@ -138,6 +159,37 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
                 </AccordionItem>
               ))}
             </Accordion>
+          </div>
+        </section>
+      ) : null}
+
+      {page.relatedLinks?.length ? (
+        <section className="bg-[#F2F2F2] py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="responsive-section-label text-center font-black text-gray-300/80">Service areas</p>
+            <h2 className="responsive-section-title text-center font-black text-[#1d52a1]">
+              {page.relatedLinksTitle ?? "Explore by area"}
+            </h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {page.relatedLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="group rounded-[28px] bg-white p-6 shadow-sm transition-shadow hover:shadow-md sm:p-8"
+                >
+                  <h3 className="text-2xl font-black text-slate-900 transition-colors group-hover:text-[#1d52a1]">
+                    {link.label}
+                  </h3>
+                  {link.description ? (
+                    <p className="mt-3 text-base leading-relaxed text-slate-600">{link.description}</p>
+                  ) : null}
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#E6242A]">
+                    View details
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       ) : null}

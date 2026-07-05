@@ -84,8 +84,10 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/driving-lessons" element={<SeoLandingPage pageId="driving-lessons" />} />
+                <Route path="/driving-lessons-langford" element={<SeoLandingPage pageId="driving-lessons-langford" />} />
                 <Route path="/defensive-driving" element={<SeoLandingPage pageId="defensive-driving" />} />
                 <Route path="/road-test-prep" element={<SeoLandingPage pageId="road-test-prep" />} />
+                <Route path="/road-test-prep-victoria" element={<SeoLandingPage pageId="road-test-prep-victoria" />} />
                 <Route path="/road-test-vehicle" element={<SeoLandingPage pageId="road-test-vehicle" />} />
                 <Route path="/intensive-driving-course" element={<SeoLandingPage pageId="intensive-driving-course" />} />
                 <Route path="/pricing" element={<SeoLandingPage pageId="pricing" />} />
