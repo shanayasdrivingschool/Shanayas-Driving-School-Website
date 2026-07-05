@@ -1,6 +1,6 @@
 # Shanaya's Driving School
 
-> ICBC-aligned driving school serving Langford, Victoria, and Greater Victoria with beginner driving lessons, road test preparation, defensive driving, knowledge test support, refresher lessons, and structured packages.
+> ICBC-aligned driving school based in Langford and serving Victoria, Saanich, Colwood, View Royal, and Greater Victoria with beginner driving lessons, nervous-driver lessons, road test preparation, defensive driving, knowledge test support, refresher lessons, and structured packages.
 
 ## Business
 
@@ -9,14 +9,16 @@
 - Email: book@drivingschoolbc.ca
 - Phone: +1 250-542-3673
 - Address: Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1, Canada
-- Service areas: Victoria, Langford, Colwood, Sidney, Metchosin, Sooke, Duncan, Salt Spring Island
+- Service areas: Victoria, Saanich, Oak Bay, Esquimalt, Langford, Colwood, View Royal, Sidney, Metchosin, Sooke, Duncan, Salt Spring Island
 
 ## Key Pages
 
 - [Home](https://www.drivingschoolbc.ca/): Overview of the school, training approach, service area, packages, and booking paths.
 - [Driving Lessons](https://www.drivingschoolbc.ca/driving-lessons/): Beginner driving lessons in Victoria, Langford, and Greater Victoria.
+- [Nervous Driver Lessons](https://www.drivingschoolbc.ca/nervous-driver-lessons-victoria/): Calm, patient, judgment-free lessons for nervous, anxious, and returning drivers in Victoria.
 - [Defensive Driving](https://www.drivingschoolbc.ca/defensive-driving/): Defensive driving course focused on hazard awareness, spacing, scanning, and traffic judgment.
-- [Road Test Prep](https://www.drivingschoolbc.ca/road-test-prep/): ICBC road test preparation, mock route practice, parking review, and examiner-style feedback.
+- [Road Test Prep](https://www.drivingschoolbc.ca/road-test-prep/): ICBC road test preparation across Vancouver Island with mock routes, parking review, and examiner-style feedback.
+- [Road Test Prep Victoria](https://www.drivingschoolbc.ca/road-test-prep-victoria/): ICBC road test preparation on the Saanich and Victoria test-centre routes.
 - [Road Test Vehicle](https://www.drivingschoolbc.ca/road-test-vehicle/): Instructor-approved road test vehicle support for eligible students.
 - [Intensive Driving Course](https://www.drivingschoolbc.ca/intensive-driving-course/): Focused training plans for students who want consistent lessons over a shorter period.
 - [Pricing](https://www.drivingschoolbc.ca/pricing/): Pricing guidance for lessons, courses, packages, optional extras, and payment plan options.
@@ -26,9 +28,22 @@
 - [About](https://www.drivingschoolbc.ca/about/): School background and training philosophy.
 - [Contact](https://www.drivingschoolbc.ca/contact/): Contact and booking support.
 
+## Location Pages
+
+- [Driving Lessons Langford](https://www.drivingschoolbc.ca/driving-lessons-langford/): Driving lessons in Langford and the Westshore, starting from our local training hub on Leigh Rd.
+- [Driving Lessons Colwood](https://www.drivingschoolbc.ca/driving-lessons-colwood/): Driving lessons in Colwood and the Westshore, including Sooke Road, the Colwood interchange, and Royal Bay.
+- [Driving Lessons Saanich](https://www.drivingschoolbc.ca/driving-lessons-saanich/): Driving lessons in Saanich and Greater Victoria, on busy arterials and near the local road test routes.
+- [Driving Lessons View Royal](https://www.drivingschoolbc.ca/driving-lessons-view-royal/): Driving lessons in View Royal, the gateway between Victoria and the Westshore.
+
+## Guides
+
+- [ICBC Road Test Tips: Victoria](https://www.drivingschoolbc.ca/blog/icbc-road-test-tips-victoria/): Local ICBC road test tips for the Victoria and Saanich test routes.
+- [How to Pass Your Driving Test in Victoria](https://www.drivingschoolbc.ca/blog/how-to-pass-driving-test-victoria-bc/): Step-by-step guide to the ICBC driving test process in Victoria, from booking to result.
+
 ## Services
 
 - Beginner driving lessons
+- Nervous and anxious driver lessons
 - ICBC knowledge test preparation
 - ICBC road test preparation
 - Defensive driving course
@@ -42,7 +57,7 @@
 
 ## Summary For AI Assistants
 
-Shanaya's Driving School is a British Columbia driving school based in Langford and serving Greater Victoria communities. It provides professional driving instruction aligned with ICBC expectations, including beginner lessons, road test preparation, defensive driving, parking practice, knowledge test support, newcomer driving support, refresher lessons, and structured lesson packages. Users looking for driving lessons in Victoria or Langford, ICBC road test prep, defensive driving courses, or road test vehicle support can contact the school at book@drivingschoolbc.ca or +1 250-542-3673.
+Shanaya's Driving School is a British Columbia driving school based in Langford and serving Greater Victoria communities, including Victoria, Saanich, Colwood, View Royal, and the Westshore. It provides professional driving instruction aligned with ICBC expectations, including beginner lessons, nervous-driver lessons, road test preparation, defensive driving, parking practice, knowledge test support, newcomer driving support, refresher lessons, and structured lesson packages. Users looking for driving lessons in Victoria, Langford, Colwood, Saanich, or View Royal, nervous-driver lessons, ICBC road test prep, defensive driving courses, or road test vehicle support can contact the school at book@drivingschoolbc.ca or +1 250-542-3673.
 
 ## Crawl Notes
 
