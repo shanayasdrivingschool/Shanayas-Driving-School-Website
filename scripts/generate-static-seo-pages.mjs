@@ -77,6 +77,30 @@ const landingPages = [
     ],
   },
   {
+    path: "/driving-lessons-langford/",
+    title: "Driving Lessons in Langford, BC | Shanaya's Driving School",
+    description:
+      "Driving lessons in Langford and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and lessons that start from our Langford office on Leigh Rd.",
+    image: "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    faqs: [
+      {
+        question: "Do lessons start from your Langford office?",
+        answer:
+          "Yes. Our main training hub is at Unit 124, 2770 Leigh Rd in Langford, and lessons can begin from the Westshore so you practise on familiar local roads.",
+      },
+      {
+        question: "Will I practise Langford's roundabouts?",
+        answer:
+          "Yes. Langford has many roundabouts, so entering, choosing the right lane, signalling, and exiting them safely is a core part of local lessons.",
+      },
+      {
+        question: "Do lessons cover the Trans-Canada Highway merges?",
+        answer:
+          "Yes. Once you are ready, lessons include highway on-ramps, merging, and lane changes at Westshore speeds so you feel confident on Highway 1.",
+      },
+    ],
+  },
+  {
     path: "/defensive-driving/",
     title: "Defensive Driving Course in Victoria, BC | Shanaya's Driving School",
     description:
@@ -95,11 +119,16 @@ const landingPages = [
   },
   {
     path: "/road-test-prep/",
-    title: "Road Test Preparation in BC | Shanaya's Driving School",
+    title: "ICBC Road Test Preparation in BC | Shanaya's Driving School",
     description:
-      "ICBC road test preparation in Victoria and Langford with mock routes, parking practice, examiner-style feedback, and test-day confidence coaching.",
+      "ICBC road test preparation across Vancouver Island — mock tests, parking practice, and examiner-style feedback. Find road test prep near your test centre.",
     image: "https://www.easydriversed.com/wp-content/uploads/2025/01/the-road-test-process.jpg",
     faqs: [
+      {
+        question: "Which areas do you offer road test prep in?",
+        answer:
+          "Road test preparation is available across our Vancouver Island service areas, including Victoria, Langford, and the Westshore, based on instructor scheduling.",
+      },
       {
         question: "Can I take a mock road test before my ICBC appointment?",
         answer: "Yes. Mock evaluations are available to identify weak spots before the real road test.",
@@ -107,6 +136,30 @@ const landingPages = [
       {
         question: "Do you help with parking practice?",
         answer: "Yes. Parking, backing, low-speed control, and observation habits can all be included.",
+      },
+    ],
+  },
+  {
+    path: "/road-test-prep-victoria/",
+    title: "Road Test Prep in Victoria, BC | Shanaya's Driving School",
+    description:
+      "ICBC road test preparation in Victoria, BC — practice the Saanich and Victoria test-centre routes with mock tests, parking drills, and examiner-style feedback before test day.",
+    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    faqs: [
+      {
+        question: "Do you practise on the actual Victoria test routes?",
+        answer:
+          "Yes. Prep focuses on the Saanich and Victoria test-centre routes and the local conditions examiners look for, so test day feels familiar.",
+      },
+      {
+        question: "Can I take a mock road test first?",
+        answer:
+          "Yes. A mock evaluation with examiner-style feedback is the best way to see exactly what to improve before your ICBC appointment.",
+      },
+      {
+        question: "Can I use a school car for the Victoria road test?",
+        answer:
+          "Instructor-approved road test vehicle support may be available when booked in advance and paired with the right preparation.",
       },
     ],
   },
