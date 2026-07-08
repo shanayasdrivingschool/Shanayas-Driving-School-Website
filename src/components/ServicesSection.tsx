@@ -6,7 +6,7 @@ const services = [
   {
     icon: Palette,
     title: "Graphic Designing",
-    desc: "Eye-catching visuals that tell your brand story—logos, banners, social media creatives, and complete brand identity kits.",
+    desc: "Eye-catching visuals that tell your brand story: logos, banners, social media creatives, and complete brand identity kits.",
   },
   {
     icon: Globe,

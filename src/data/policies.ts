@@ -285,7 +285,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: 'Maintaining a Focused Learning Environment',
         paragraphs: [
-          'While we greatly value the support and encouragement of parents and guardians, the presence of additional passengers—even with the best intentions—can unintentionally affect a student\'s learning experience.',
+          'While we greatly value the support and encouragement of parents and guardians, the presence of additional passengers, even with the best intentions, can unintentionally affect a student\'s learning experience.',
           'Parents or visitors may naturally ask questions during the lesson, offer suggestions, provide praise or encouragement, or attempt to motivate the student while they are driving. Although these interactions come from a place of care and support, they can unintentionally divide the student\'s attention at moments when their full concentration should be on the road and the instructor\'s guidance.',
           'Driving is a complex skill that requires students to process traffic conditions, hazards, vehicle control, and instructor feedback simultaneously. Receiving instruction or commentary from multiple people at once can create confusion, increase pressure, and make it more difficult for the student to develop sound decision-making skills.',
           'Our instructors use a structured coaching method that includes carefully timed instruction, observation, and constructive feedback. Maintaining one clear source of instruction allows students to better absorb new skills, build confidence, and make independent driving decisions without unnecessary distractions.',

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 export type BlogPostData = {
   slug: string;
@@ -15,6 +16,180 @@ export type BlogPostData = {
 
 export const blogPosts: BlogPostData[] = [
   {
+    slug: "how-to-pass-driving-test-victoria-bc",
+    title: "How to Pass Your Driving Test in Victoria, BC",
+    description:
+      "A step-by-step guide to passing your ICBC driving test in Victoria, BC: what to bring, the vehicle check, how examiners score the drive, and what happens after.",
+    heroImage:
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    author: "Shanaya's Driving School",
+    date: "July 5, 2026",
+    readTime: "8 min read",
+    category: "Road Test Guide",
+    relatedSlugs: ["icbc-road-test-tips-victoria", "pass-road-test", "defensive-driving"],
+    content: (
+      <>
+        <p>
+          Passing your driving test in Victoria comes down to two things: being genuinely ready to
+          drive, and knowing exactly what to expect on the day. This step-by-step guide walks you
+          through the whole ICBC process, from booking to the moment the examiner hands you the
+          result.
+        </p>
+
+        <h2>Step 1: Book the right ICBC test</h2>
+        <p>
+          There are two road tests in BC. The Class 7 test moves you from your learner (L) licence to
+          novice (N), and the Class 5 test moves you from N to a full licence. Book the one that
+          matches your stage at the Victoria-area test centre, and book early, since appointments
+          fill up. Give yourself enough lead time to finish preparing.
+        </p>
+
+        <h2>Step 2: Bring the right documents and vehicle</h2>
+        <p>
+          On test day you will need your current licence, plus your glasses or contacts if you need
+          them to drive. Your vehicle must be safe and road-legal, with valid insurance and working
+          signals, brake lights, tires, seatbelts, and horn. Arrive a little early so you are not
+          rushed.
+        </p>
+
+        <h2>Step 3: Expect a quick vehicle check</h2>
+        <p>
+          Before you drive, the examiner usually does a short safety check and may ask you to show
+          your signals, brake lights, and horn, or point out controls like the defroster and hazard
+          lights. Knowing where everything is keeps this part stress-free.
+        </p>
+
+        <h2>Step 4: Know how the drive is scored</h2>
+        <p>
+          During the drive the examiner watches your observation and shoulder checks, speed control,
+          lane positioning, intersections, lane changes, and parking. Small errors add up, while a
+          single dangerous action, such as failing to yield or a near-miss, can end the test early.
+          Smooth, predictable, safe driving is what earns a pass.
+        </p>
+
+        <h2>Step 5: Practise real Victoria conditions</h2>
+        <p>
+          The best preparation is practice on the roads you will actually be tested on: the Saanich
+          and Victoria test routes, downtown one-ways, hills, roundabouts, and busy cyclist areas.
+          Our <Link to="/road-test-prep-victoria">road test prep in Victoria</Link> is built around
+          these exact routes, and our{" "}
+          <Link to="/blog/icbc-road-test-tips-victoria">ICBC road test tips for Victoria</Link> cover
+          the habits examiners reward.
+        </p>
+
+        <h2>Step 6: Stay calm on the day</h2>
+        <p>
+          Arrive early, set your mirrors and seat, and take a breath before each manoeuvre. Drive at
+          a controlled pace and treat it like a normal lesson. Calm, methodical driving is exactly
+          what the examiner wants to see.
+        </p>
+
+        <h2>What happens after the test</h2>
+        <p>
+          If you pass, the examiner reviews your result and you move to the next stage of the
+          graduated licensing program. If you do not pass this time, you will get feedback on what to
+          work on, and ICBC sets a minimum wait before you can rebook. Use that time for focused
+          practice on the areas that cost you marks.
+        </p>
+
+        <blockquote>
+          A pass is not luck. It is preparation plus knowing the process, so nothing on test day
+          catches you off guard.
+        </blockquote>
+
+        <p>
+          Ready to prepare the right way? Start with{" "}
+          <Link to="/road-test-prep-victoria">road test prep in Victoria</Link> or build your
+          foundation with <Link to="/driving-lessons">driving lessons in Victoria</Link>, and book a
+          mock test before your appointment.
+        </p>
+      </>
+    ),
+  },
+  {
+    slug: "icbc-road-test-tips-victoria",
+    title: "ICBC Road Test Tips: Victoria, BC",
+    description:
+      "Local ICBC road test tips for Victoria and Saanich: the test routes, the manoeuvres examiners score, common mistakes to avoid, and how to stay calm on test day.",
+    heroImage:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80",
+    author: "Shanaya's Driving School",
+    date: "July 5, 2026",
+    readTime: "7 min read",
+    category: "Road Test Tips",
+    relatedSlugs: ["how-to-pass-driving-test-victoria-bc", "pass-road-test", "defensive-driving"],
+    content: (
+      <>
+        <p>
+          A Victoria road test is very passable once you know the local routes and practise the exact
+          habits ICBC examiners look for. These are the tips our instructors share with students
+          before test day at the Saanich and Victoria test centres.
+        </p>
+
+        <h2>1. Practise the Victoria and Saanich test routes</h2>
+        <p>
+          Most Victoria-area road tests run through Saanich and the streets around the test centre.
+          Get comfortable on Douglas, Blanshard, Quadra, Shelbourne, and McKenzie, plus the nearby
+          residential streets, school zones, and advanced-green intersections. Familiar roads mean
+          fewer surprises on test day. Structured{" "}
+          <Link to="/road-test-prep-victoria">road test prep in Victoria</Link> is built around these
+          exact routes.
+        </p>
+
+        <h2>2. Nail the manoeuvres examiners score</h2>
+        <p>
+          Most marks come from a short list of skills: smooth observation and shoulder checks,
+          correct speed for each zone, safe lane changes, parallel and stall parking, and controlled
+          hill starts. Practise each one until it feels automatic.
+        </p>
+
+        <h2>3. Respect Victoria's local challenges</h2>
+        <ul>
+          <li>Downtown one-way streets and busy pedestrian crossings</li>
+          <li>Steep residential hills that call for confident hill starts and parking</li>
+          <li>Heavy cyclist traffic and marked bike lanes across the city</li>
+          <li>Roundabouts, where lane choice and signalling are watched closely</li>
+          <li>Highway merging on Highway 1 if your route includes it</li>
+        </ul>
+
+        <h2>4. Avoid the mistakes that fail most tests</h2>
+        <ul>
+          <li>Missing shoulder checks before lane changes and pull-outs</li>
+          <li>Rolling through stop signs instead of coming to a full stop</li>
+          <li>Speeding in school and playground zones</li>
+          <li>Not yielding to pedestrians and cyclists at crosswalks</li>
+          <li>Drifting speed or lane position in steady traffic</li>
+        </ul>
+
+        <h2>5. Book a mock test on local routes</h2>
+        <p>
+          A mock road test on the real Victoria routes shows exactly where you stand and settles
+          nerves before the appointment. It is the fastest way to turn practice into a confident
+          pass.
+        </p>
+
+        <h2>6. Stay calm on test day</h2>
+        <p>
+          Arrive early, adjust your mirrors and seat, and take a breath before each manoeuvre. Drive
+          at a pace that feels controlled, not rushed. Calm, methodical driving is exactly what
+          examiners want to see.
+        </p>
+
+        <blockquote>
+          Prepared drivers pass. The more your test day looks like your practice, the calmer you
+          will be.
+        </blockquote>
+
+        <p>
+          Ready to get test-ready? Explore{" "}
+          <Link to="/road-test-prep-victoria">road test prep in Victoria</Link> or start with{" "}
+          <Link to="/driving-lessons">driving lessons in Victoria</Link>, and book a mock test on the
+          routes you will actually drive.
+        </p>
+      </>
+    ),
+  },
+  {
     slug: "pass-road-test",
     title: "How to Pass Your Road Test on the First Try",
     description:
@@ -25,7 +200,7 @@ export const blogPosts: BlogPostData[] = [
     date: "March 1, 2026",
     readTime: "6 min read",
     category: "Road Test Tips",
-    relatedSlugs: ["defensive-driving", "newcomers-guide-bc"],
+    relatedSlugs: ["icbc-road-test-tips-victoria", "defensive-driving", "newcomers-guide-bc"],
     content: (
       <>
         <p>

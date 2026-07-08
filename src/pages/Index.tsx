@@ -131,17 +131,17 @@ const processSteps: ProcessStep[] = [
     "If you are new to driving, we guide you through the basics. If you already have experience, we begin with a short assessment drive to understand your strengths and areas for improvement. This helps us create a lesson plan that matches your comfort level and builds confidence from the start. Ruley believes every great driver begins with a strong foundation.",
   highlightText: "Ruley believes every great driver begins with a strong foundation.",
   highlightStartsNewLine: true,
-  image: "/process/our-process-1.svg.png",
+  image: "/process/our-process-1.svg.webp",
 },
 {
   step: "02",
   title: "Skill Building",
   lead: "This is where real progress begins. Tailored lessons designed to help you feel comfortable behind the wheel.",
   detail:
-    "You will learn essential driving skills, including vehicle control, effective observation habits, smooth braking, parking techniques, and lane changes. Each lesson builds progressively to help you develop safe driving habits, improve road awareness, and gain confidence through consistent practice. Ruley says: The best drivers build confidence the right way—one skill, one lesson, one step at a time.",
-  highlightText: "Ruley says: The best drivers build confidence the right way—one skill, one lesson, one step at a time.",
+    "You will learn essential driving skills, including vehicle control, effective observation habits, smooth braking, parking techniques, and lane changes. Each lesson builds progressively to help you develop safe driving habits, improve road awareness, and gain confidence through consistent practice. Ruley says: The best drivers build confidence the right way: one skill, one lesson, one step at a time.",
+  highlightText: "Ruley says: The best drivers build confidence the right way: one skill, one lesson, one step at a time.",
   highlightStartsNewLine: true,
-  image: "/process/our-process-2.png",
+  image: "/process/our-process-2.webp",
 },
 {
   step: "03",
@@ -151,7 +151,7 @@ const processSteps: ProcessStep[] = [
     "Students practice city driving, intersections, lane positioning, and defensive driving techniques in real road environments. Our dual control vehicles allow instructors to support you whenever needed, ensuring every lesson remains safe, calm, and encouraging. Ruley says: Real confidence grows when you practice in real traffic with the right support beside you.",
   highlightText: "Ruley says: Real confidence grows when you practice in real traffic with the right support beside you.",
   highlightStartsNewLine: true,
-  image: "/process/our-process-3.png",
+  image: "/process/our-process-3.webp",
 },
 {
   step: "04",
@@ -161,7 +161,7 @@ const processSteps: ProcessStep[] = [
     "You will complete mock test routes based on real examination standards while receiving clear, constructive feedback from your instructor. This step is designed to reduce uncertainty, refine key driving skills, and help you feel prepared and confident on test day. Ruley reminds students that practice builds confidence.",
   highlightText: "Ruley reminds students that practice builds confidence.",
   highlightStartsNewLine: true,
-  image: "/process/our-process-4.png",
+  image: "/process/our-process-4.webp",
 },
 {
   step: "05",
@@ -171,7 +171,7 @@ const processSteps: ProcessStep[] = [
     "We review key driving skills, common test mistakes, and helpful strategies to keep you calm and focused. By test day, you understand what examiners expect and feel fully prepared to succeed. Our goal is simple. Help you drive into your test with confidence and leave with your license. Ruley says: The best test-day confidence comes from expert guidance and knowing what examiners look for.",
   highlightText: "Ruley says: The best test-day confidence comes from expert guidance and knowing what examiners look for.",
   highlightStartsNewLine: true,
-  image: "/process/our-process-5.png",
+  image: "/process/our-process-5.webp",
 },
 ];
 
@@ -373,7 +373,7 @@ const Index = () => {
                 </Link>
               </div>
               <img
-                src="/logos/hero-main.png"
+                src="/logos/hero-main.webp"
                 alt="Driving school mascot"
                 decoding="async"
                 className="mx-auto mt-6 block h-[clamp(250px,62vw,360px)] w-full max-w-[min(100%,360px)] object-contain lg:hidden"
@@ -383,7 +383,7 @@ const Index = () => {
             <div className="relative hidden lg:flex lg:justify-start">
               <div className="w-full max-w-[620px] lg:-ml-8">
                 <img
-                  src="/logos/hero-main.png"
+                  src="/logos/hero-main.webp"
                   alt="Driving school mascot"
                   decoding="async"
                   className="h-[clamp(360px,36vw,460px)] w-full object-contain"

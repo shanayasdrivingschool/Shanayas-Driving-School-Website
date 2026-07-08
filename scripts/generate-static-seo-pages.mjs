@@ -101,6 +101,102 @@ const landingPages = [
     ],
   },
   {
+    path: "/driving-lessons-colwood/",
+    title: "Driving Lessons in Colwood, BC | Shanaya's Driving School",
+    description:
+      "Driving lessons in Colwood and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Sooke Road, the Colwood interchange, and Royal Bay.",
+    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    faqs: [
+      {
+        question: "Do lessons cover the Colwood interchange and highway merging?",
+        answer:
+          "Yes. Once you are ready, lessons include on-ramps, merging, and lane changes around the Colwood interchange so you feel confident in Westshore commuter traffic.",
+      },
+      {
+        question: "Will I practise Royal Bay's roundabouts?",
+        answer:
+          "Yes. Royal Bay and the wider Westshore have several roundabouts, so entering, choosing the right lane, signalling, and exiting them safely is part of local lessons.",
+      },
+      {
+        question: "Where do lessons start for Colwood learners?",
+        answer:
+          "Our training hub is in nearby Langford at Unit 124, 2770 Leigh Rd, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
+      },
+    ],
+  },
+  {
+    path: "/driving-lessons-saanich/",
+    title: "Driving Lessons in Saanich, BC | Shanaya's Driving School",
+    description:
+      "Driving lessons in Saanich, BC with ICBC-aligned coaching and dual-control cars. Practice Douglas, Blanshard, McKenzie, and the routes near the Saanich test centre.",
+    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    faqs: [
+      {
+        question: "Do lessons cover the McKenzie interchange and highway merging?",
+        answer:
+          "Yes. Once you are ready, lessons include on-ramps, merging, and lane changes at the McKenzie interchange on Highway 1 so you feel confident in Saanich traffic.",
+      },
+      {
+        question: "Are lessons useful for the Victoria-area road test?",
+        answer:
+          "Yes. Many local road test routes run through Saanich, so practising here builds confidence on the roads, intersections, and parking you are likely to see on test day.",
+      },
+      {
+        question: "Do you teach nervous or first-time drivers in Saanich?",
+        answer:
+          "Yes. Lessons are paced around each student, so nervous beginners can build control on quiet streets before moving into busier Saanich arterials.",
+      },
+    ],
+  },
+  {
+    path: "/driving-lessons-view-royal/",
+    title: "Driving Lessons in View Royal, BC | Shanaya's Driving School",
+    description:
+      "Driving lessons in View Royal and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Highway 1 and the Old Island Highway.",
+    image: "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    faqs: [
+      {
+        question: "Do lessons cover Highway 1 merging in View Royal?",
+        answer:
+          "Yes. Once you are ready, lessons include on-ramps, merging, and lane changes on Highway 1 and the Old Island Highway so you feel confident in View Royal's connector traffic.",
+      },
+      {
+        question: "Are lessons available near the Victoria General Hospital area?",
+        answer:
+          "Yes. Lessons cover the busier roads around the hospital and the Island Highway corridor, as well as quieter streets nearby for building early confidence.",
+      },
+      {
+        question: "Where do lessons start for View Royal learners?",
+        answer:
+          "Our training hub is in nearby Langford at Unit 124, 2770 Leigh Rd, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
+      },
+    ],
+  },
+  {
+    path: "/nervous-driver-lessons-victoria/",
+    title: "Nervous Driver Lessons in Victoria, BC | Shanaya's Driving School",
+    description:
+      "Calm, patient driving lessons for nervous drivers in Victoria, BC. Judgment-free coaching, dual-control cars, and lessons paced to build confidence at your speed.",
+    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    faqs: [
+      {
+        question: "I get really anxious driving. Can you still help?",
+        answer:
+          "Yes. Many of our students start out very nervous. Lessons are paced slowly, begin on quiet streets, and move forward only when you feel ready, so you build confidence without pressure.",
+      },
+      {
+        question: "Can you help me drive again after a long break or a collision?",
+        answer:
+          "Yes. We regularly work with returning drivers and those rebuilding confidence after a scare. Lessons rebuild core skills step by step in a calm, dual-control car.",
+      },
+      {
+        question: "Do I have to go on busy roads or highways right away?",
+        answer:
+          "No. You set the pace. We stay on comfortable streets until you are ready, then introduce busier Victoria roads, roundabouts, and highways gradually.",
+      },
+    ],
+  },
+  {
     path: "/defensive-driving/",
     title: "Defensive Driving Course in Victoria, BC | Shanaya's Driving School",
     description:
@@ -121,7 +217,7 @@ const landingPages = [
     path: "/road-test-prep/",
     title: "ICBC Road Test Preparation in BC | Shanaya's Driving School",
     description:
-      "ICBC road test preparation across Vancouver Island — mock tests, parking practice, and examiner-style feedback. Find road test prep near your test centre.",
+      "ICBC road test preparation across Vancouver Island, with mock tests, parking practice, and examiner-style feedback. Find road test prep near your test centre.",
     image: "https://www.easydriversed.com/wp-content/uploads/2025/01/the-road-test-process.jpg",
     faqs: [
       {
@@ -143,7 +239,7 @@ const landingPages = [
     path: "/road-test-prep-victoria/",
     title: "Road Test Prep in Victoria, BC | Shanaya's Driving School",
     description:
-      "ICBC road test preparation in Victoria, BC — practice the Saanich and Victoria test-centre routes with mock tests, parking drills, and examiner-style feedback before test day.",
+      "ICBC road test preparation in Victoria, BC. Practice the Saanich and Victoria test-centre routes with mock tests, parking drills, and examiner-style feedback before test day.",
     image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
     faqs: [
       {
@@ -160,6 +256,35 @@ const landingPages = [
         question: "Can I use a school car for the Victoria road test?",
         answer:
           "Instructor-approved road test vehicle support may be available when booked in advance and paired with the right preparation.",
+      },
+    ],
+  },
+  {
+    path: "/mock-road-test-victoria/",
+    title: "Mock Road Test in Victoria, BC | Shanaya's Driving School",
+    description:
+      "Book a mock ICBC road test in Victoria, BC. A full practice run on the real Saanich and Victoria routes with examiner-style scoring and feedback before your test.",
+    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    faqs: [
+      {
+        question: "What is a mock road test?",
+        answer:
+          "A mock road test is a full practice run of the ICBC road test on real Victoria and Saanich routes, scored the way an examiner would, followed by feedback on what to improve.",
+      },
+      {
+        question: "How is it different from a lesson?",
+        answer:
+          "A lesson teaches and practises skills. A mock test evaluates you under test-style conditions with examiner-style scoring, so you get an honest picture of your readiness.",
+      },
+      {
+        question: "When should I book my mock test?",
+        answer:
+          "Most students book one to two weeks before their ICBC appointment, so there is still time to fix anything the mock test reveals.",
+      },
+      {
+        question: "Can I use the car for the real road test?",
+        answer:
+          "Instructor-approved road test vehicle support may be available when booked in advance, so you can test in a familiar car.",
       },
     ],
   },
@@ -398,6 +523,20 @@ const publicPages = [
     path: "/extras/car-rental/",
     title: "Car Rental for Road Test Day | Shanaya's Driving School",
     description: "Book an instructor-approved training car for road test day when you want to test in a familiar vehicle.",
+  },
+  {
+    path: "/blog/how-to-pass-driving-test-victoria-bc/",
+    title: "How to Pass Your Driving Test in Victoria, BC | Shanaya's Driving School",
+    description:
+      "A step-by-step guide to passing your ICBC driving test in Victoria, BC: what to bring, the vehicle check, how examiners score the drive, and what happens after.",
+    type: "article",
+  },
+  {
+    path: "/blog/icbc-road-test-tips-victoria/",
+    title: "ICBC Road Test Tips: Victoria, BC | Shanaya's Driving School",
+    description:
+      "Local ICBC road test tips for Victoria and Saanich: the test routes, the manoeuvres examiners score, common mistakes to avoid, and how to stay calm on test day.",
+    type: "article",
   },
   {
     path: "/blog/pass-road-test/",

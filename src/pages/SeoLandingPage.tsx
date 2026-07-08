@@ -66,11 +66,11 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
               </span>
               <div>
                 <p className="text-sm font-black uppercase tracking-[0.14em] text-slate-500">Local service area</p>
-                <p className="mt-1 text-lg font-black text-slate-900">Greater Victoria and BC communities</p>
+                <p className="mt-1 text-lg font-black text-slate-900">{page.serviceAreaTitle ?? "Greater Victoria and BC communities"}</p>
               </div>
             </div>
             <ul className="mt-6 space-y-3 text-sm font-semibold text-slate-700 sm:text-base">
-              {["Victoria", "Langford", "Colwood", "Sidney", "Sooke", "Duncan", "Salt Spring Island"].map((area) => (
+              {(page.serviceAreas ?? ["Victoria", "Langford", "Colwood", "Sidney", "Sooke", "Duncan", "Salt Spring Island"]).map((area) => (
                 <li key={area} className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 shrink-0 text-[#1d52a1]" />
                   <span>{area}</span>

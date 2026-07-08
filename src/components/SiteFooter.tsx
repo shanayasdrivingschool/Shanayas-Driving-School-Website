@@ -41,7 +41,7 @@ const SiteFooter = () => (
       aria-hidden
       className="pointer-events-none absolute inset-0 z-[1] opacity-[0.18]"
       style={{
-        backgroundImage: "url('/Misc/Doodle-pattern-white.png')",
+        backgroundImage: "url('/Misc/Doodle-pattern-white.webp')",
         backgroundRepeat: "repeat",
         backgroundSize: "260px 260px",
         backgroundPosition: "center top",
@@ -121,6 +121,18 @@ const SiteFooter = () => (
               <Link to="/driving-lessons-langford">Driving Lessons Langford</Link>
             </li>
             <li>
+              <Link to="/driving-lessons-colwood">Driving Lessons Colwood</Link>
+            </li>
+            <li>
+              <Link to="/driving-lessons-saanich">Driving Lessons Saanich</Link>
+            </li>
+            <li>
+              <Link to="/driving-lessons-view-royal">Driving Lessons View Royal</Link>
+            </li>
+            <li>
+              <Link to="/nervous-driver-lessons-victoria">Nervous Driver Lessons</Link>
+            </li>
+            <li>
               <Link to="/defensive-driving">Defensive Driving</Link>
             </li>
             <li>
@@ -128,6 +140,9 @@ const SiteFooter = () => (
             </li>
             <li>
               <Link to="/road-test-prep-victoria">Road Test Prep Victoria</Link>
+            </li>
+            <li>
+              <Link to="/mock-road-test-victoria">Mock Road Test Victoria</Link>
             </li>
             <li>
               <Link to="/road-test-vehicle">Road Test Vehicle</Link>

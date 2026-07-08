@@ -1,0 +1,189 @@
+{
+  "summary": {
+    "health_score": 61,
+    "business_type": "Local Service — Driving School (Service Area Business / hybrid, Greater Victoria & Langford, BC)",
+    "url": "https://www.drivingschoolbc.ca/",
+    "pages_analyzed": 38,
+    "data_sources": "Deployed static build (public_html) + React source + live HTTP checks. No Google/PageSpeed/CrUX/GSC/GA4, Moz, Bing, or DataForSEO credentials available — performance is lab/asset-based and local/GBP conclusions are inferred, not API-verified.",
+    "top_findings": [
+      "Soft-404: any unknown URL returns HTTP 200 serving the homepage (verified) — index-bloat and duplicate-content risk.",
+      "Client-rendered SPA: non-JS crawlers (incl. all AI bots) see only ~17% of content (~205 words) and a ~90%-duplicate boilerplate fallback repeated across all 38 pages.",
+      "NAP conflict: the Google Maps embed on the homepage and Contact page shows 'Victoria, BC V9B 4G2' while schema/footer/llms.txt say 'Langford, BC V9B 4G1'.",
+      "Reputation gap: zero verifiable reviews, no aggregateRating, and 8 hardcoded/unattributable 5-star testimonials (one from 'Nanaimo', outside the service area).",
+      "Competitor image hotlinked: /road-test-prep/ uses easydriversed.com as its og:image, twitter:image, and course thumbnail."
+    ],
+    "quick_wins": [
+      "Add ErrorDocument 404 + a real 404 route so unknown URLs stop returning 200 homepage.",
+      "Correct the Google Maps embed to the canonical Langford V9B 4G1 address (or reconcile in GBP first).",
+      "Replace the competitor-hotlinked easydriversed.com image with an owned asset (courseCatalog.ts / seoLandingPages.ts).",
+      "Add a security-headers block (HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy) to .htaccess.",
+      "Add the 2 orphan course pages to sitemap.xml and regenerate lastmod from real build dates.",
+      "Add alt text to the 24 of 28 images that lack it; make the footer phone a real tel: link.",
+      "Emit BlogPosting, Course, and hasOfferCatalog JSON-LD (the underlying data already exists).",
+      "Delete the unused course-pictures/ folder (~10 MB) and the inert Netlify _redirects file."
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 58,
+      "weight": "22%",
+      "what_works": [
+        "robots.txt cleanly allows all major search + AI crawlers and declares the sitemap.",
+        "Canonical, unique titles/meta, and robots:index,follow are correct in raw HTML on every page.",
+        "HTTPS and non-www→www redirects resolve to the canonical host; clean lowercase/hyphenated URLs.",
+        "LocalBusiness/DrivingSchool JSON-LD is present in raw HTML (not JS-gated)."
+      ],
+      "findings": [
+        {"title": "Soft-404 serves homepage as HTTP 200 for any unknown URL", "severity": "Critical", "description": "curl to a made-up URL returns 200 with Content-Length 8550 identical to the homepage (same <title>/<h1>). Broken, removed, or mistyped URLs become indexable duplicate-homepage pages; also masks missing files (indexnow.txt, rsl.xml return fake 200s).", "recommendation": "Add ErrorDocument 404 in .htaccess and a real 404 template; have the SPA emit a true 404/noindex for unknown routes."},
+        {"title": "Near-duplicate boilerplate in raw HTML across all 38 pages", "severity": "Critical", "description": "The 6 <h2> sections of the #seo-fallback stub are word-for-word identical on home, course, service, and blog pages — only the H1 + one intro sentence differ. Non-JS crawlers get near-duplicate documents that lose page-specific facts.", "recommendation": "Prerender genuinely unique per-route content into the static HTML (real page copy, not shared homepage sections)."},
+        {"title": "Content is client-rendered — critical facts absent from raw HTML", "severity": "Critical", "description": "Rendered homepage ≈1,213 words vs ≈205 words in raw HTML (~17% reaches non-JS agents). Unique data (e.g. '10 x 90 min classes') exists only post-render; an 850–871 KB entry JS chunk (263 KB gzip) loads on all 38 pages before any content appears.", "recommendation": "Move to true SSR/SSG (or full-fidelity prerender) so the initial HTML contains the real per-page content."},
+        {"title": "Missing security/best-practice headers", "severity": "High", "description": "Only 'Content-Security-Policy: upgrade-insecure-requests' is sent. Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, and Permissions-Policy are absent (verified live).", "recommendation": "Add a mod_headers block in .htaccess with HSTS + the four missing headers."},
+        {"title": "Sitemap lastmod is stale/uniform; 2 orphan pages missing", "severity": "Medium", "description": "All 36 sitemap URLs share lastmod=2026-05-24 while the live Last-Modified is 2026-06-30. /courses/lesson-road-test-prep-course/ and /courses/make-your-own-class/ are live (200) but absent from the sitemap and from static internal links.", "recommendation": "Generate lastmod from real build/file timestamps; add the 2 orphan URLs to the sitemap and link them from the courses/packages index."},
+        {"title": "http+non-www takes 2 redirect hops; IndexNow faux-present; stray _redirects", "severity": "Low", "description": "http://drivingschoolbc.ca/ redirects http→https(non-www)→https(www). /indexnow.txt returns 200 only because of the soft-404. An inert Netlify-syntax _redirects file ships in public_html.", "recommendation": "Set Hostinger forwarding to go straight to https+www; implement a real IndexNow key; delete _redirects."}
+      ]
+    },
+    {
+      "name": "Content Quality & E-E-A-T",
+      "score": 52,
+      "weight": "23%",
+      "what_works": [
+        "Clear entity definition via LocalBusiness/DrivingSchool + FAQPage schema; plain-English, audience-appropriate prose.",
+        "Real contact infrastructure (phone, email, physical address, contact form, policy pages).",
+        "No factual inaccuracies in the ICBC/BC driving guidance itself; llms.txt reinforces the entity."
+      ],
+      "findings": [
+        {"title": "~90% duplicate crawl-time content across all URLs", "severity": "Critical", "description": "The static fallback body is ~220 words with the same 6 homepage sections on every page; only H1/intro are unique. To non-JS crawlers every page reads as near-duplicate.", "recommendation": "Prerender unique per-route content — the single highest-leverage content fix."},
+        {"title": "Thin blog posts, no depth", "severity": "High", "description": "Blog posts run ~230–330 words (src/data/blogPosts.tsx) vs a ~1,500-word competitive floor, with little BC-specific depth.", "recommendation": "Expand to genuinely useful, locally-specific guides with examples, routes, and sourced stats."},
+        {"title": "No named/credentialed instructors (weak Experience/Expertise)", "severity": "High", "description": "About page has no team roster or credentials; the only names live in dead code (TeamSection.tsx) that are leftover web-agency template roles ('CEO & Founder', 'Lead Developer').", "recommendation": "Add real instructor bios, ICBC-relevant credentials, photos, and blog author bylines. Delete the template TeamSection before it ships fake bios."},
+        {"title": "Unverifiable testimonials & safety claims", "severity": "Medium", "description": "8 hardcoded 5-star quotes with no source/date (one from 'Nanaimo', outside the service area). Trust chips ('Licensed Instructors', 'Insured & Licensed') are unsupported labels.", "recommendation": "Source real, attributable reviews; support trust claims with specifics (licence/insurance detail, ICBC alignment)."},
+        {"title": "Freshness signals not machine-readable", "severity": "Medium", "description": "Blog dates render as plain text ('March 1, 2026'); no BlogPosting schema, no ISO datePublished/author.", "recommendation": "Emit BlogPosting JSON-LD with ISO dates and author (data already exists)."}
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 88,
+      "weight": "20%",
+      "what_works": [
+        "Unique, intent- and location-matched title tags on all 38 pages.",
+        "Unique meta descriptions on all 38 pages (76–154 chars).",
+        "Exactly one H1 per page; self-referencing canonical on every page; index,follow everywhere.",
+        "Complete hreflang (en-ca + x-default) and full OpenGraph/Twitter tags."
+      ],
+      "findings": [
+        {"title": "Two pages orphaned from sitemap and internal links", "severity": "Medium", "description": "/courses/lesson-road-test-prep-course/ and /courses/make-your-own-class/ are live but not in the sitemap or static nav.", "recommendation": "Add to sitemap and link from the courses index (or noindex if intentional)."},
+        {"title": "Internal link graph depends on JS render", "severity": "Medium", "description": "The static fallback exposes ~7 nav links; the full header/footer/related mesh is client-rendered, so non-JS crawlers see a shallow graph.", "recommendation": "Include the primary nav + footer links in the prerendered HTML."},
+        {"title": "Title/keyword mismatch + a few short descriptions", "severity": "Low", "description": "/courses/seniors-driving-course/ title is 'Enhanced Road Assessment' (splits intent from the slug); 4 meta descriptions are <90 chars.", "recommendation": "Align the seniors title to the query and expand the short descriptions to ~120–155 chars."}
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 58,
+      "weight": "10%",
+      "what_works": [
+        "Valid LocalBusiness+DrivingSchool JSON-LD on all 38 pages with a consistent @id, delivered in raw HTML (build-time + runtime).",
+        "FAQPage correctly implemented on 7 relevant pages; no deprecated types.",
+        "No fabricated AggregateRating/Review (correctly withheld — no verifiable review data exists)."
+      ],
+      "findings": [
+        {"title": "No Course schema on 14 course pages", "severity": "High", "description": "Real pricing/duration data (courseCatalog.ts, coursePricing.ts) is unused; /courses/* carry only the LocalBusiness block.", "recommendation": "Loop courseCatalog in the postbuild generator to emit Course schema on all 14 pages (template provided in findings/schema.md §6.1)."},
+        {"title": "No Service schema on service pages", "severity": "High", "description": "/driving-lessons/, /defensive-driving/, /road-test-prep/, /road-test-vehicle/, /intensive-driving-course/, /knowledge-test-practice/ have zero Service markup.", "recommendation": "Add Service JSON-LD per service page (template §6.2)."},
+        {"title": "No BreadcrumbList; no Organization/WebSite+SearchAction", "severity": "Medium", "description": "Only a visual breadcrumb on blog posts; the working /search?q= route is never exposed to Google.", "recommendation": "Add BreadcrumbList sitewide and Organization+WebSite with SearchAction (templates §6.3–6.4)."},
+        {"title": "No BlogPosting on 3 blog posts", "severity": "Medium", "description": "Real author/date/heroImage in blogPosts.tsx unused; dates non-ISO.", "recommendation": "Emit BlogPosting with ISO dates (template §6.5)."},
+        {"title": "LocalBusiness missing geo, openingHoursSpecification, hasOfferCatalog", "severity": "Medium", "description": "Confirmed absent repo-wide; client vs build-time LocalBusiness objects have drifted (SeoManager has makesOffer the generator lacks).", "recommendation": "Add hasOfferCatalog now (real data); add geo/hours once real values exist; sync the two schema sources."}
+      ]
+    },
+    {
+      "name": "Performance (Core Web Vitals — lab/asset)",
+      "score": 58,
+      "weight": "10%",
+      "what_works": [
+        "HTTP/2 + HTTP/3 advertised; gzip enabled; long immutable cache on images and hashed assets.",
+        "Route-level code-splitting (104 chunks) keeps non-home routes lighter."
+      ],
+      "findings": [
+        {"title": "JS blocks first paint (client rendering)", "severity": "High", "description": "An 850 KB (263 KB gzip) entry chunk loads on all 38 pages and must parse/execute before content appears; initial HTML shows only a hidden ~220-word stub. LCP/TBT/INP risk on mobile.", "recommendation": "Ship real content in HTML via SSR/SSG; split/defer the entry bundle; add preload for entry JS + hero."},
+        {"title": "Very heavy, unoptimized images", "severity": "High", "description": "28.9 MB of raster images: 1.19 MB hero PNG, a 1.5 MB PNG icon, ~0.5–0.7 MB course JPGs; only 1 WebP, 0 AVIF.", "recommendation": "Convert to WebP/AVIF, compress, size to display, and serve srcset."},
+        {"title": "Render-blocking CSS, no image dimensions, ~10 MB dead images", "severity": "Medium", "description": "130 KB render-blocking CSS (no critical inlining); 0/28 images set width/height (CLS); the unused course-pictures/ folder (10.4 MB) ships without being referenced.", "recommendation": "Inline critical CSS + purge unused; add width/height/aspect-ratio; delete the unused folder."}
+      ]
+    },
+    {
+      "name": "AI Search Readiness (GEO)",
+      "score": 40,
+      "weight": "10%",
+      "what_works": [
+        "robots.txt explicitly allows every major AI crawler (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, CCBot, Google-Extended, Applebot, etc.).",
+        "llms.txt is live, correctly linked, and comprehensive (NAP, key pages, services, AI summary).",
+        "Per-page title/meta/canonical + LocalBusiness/FAQPage JSON-LD present in raw HTML."
+      ],
+      "findings": [
+        {"title": "Raw HTML ~80% thinner than the rendered page", "severity": "Critical", "description": "~205 words reach non-JS AI crawlers vs ~1,213 rendered; 5/6 stub sections are byte-identical across pages, so AI agents effectively see one duplicated document.", "recommendation": "Prerender/SSG all routes with real, unique content."},
+        {"title": "Competitor image hotlinked as og:image", "severity": "High", "description": "/road-test-prep/ uses https://www.easydriversed.com/...jpg as og:image, twitter:image, and course thumbnail (from courseCatalog.ts:90 & seoLandingPages.ts:156) — promotes a competitor and risks breakage.", "recommendation": "Replace with an owned, optimized image."},
+        {"title": "FAQ answers only in JSON-LD; prices not surfaced as crawlable text", "severity": "High", "description": "FAQ Q&As live in schema but not in visible <p> prose; pricing figures exist in the data model (e.g. fixedPrice 300) but are not reliably rendered as extractable text for citation.", "recommendation": "Render visible Q&A HTML blocks and publish concrete price ranges as plain text."},
+        {"title": "Thin brand/sameAs signals", "severity": "Medium", "description": "sameAs is only Facebook+Instagram (both branded 'Driving School BC', not the site name); no GBP, YouTube; Yelp listing exists but is unclaimed.", "recommendation": "Add GBP + Yelp to sameAs, align social names, publish at least one YouTube video."}
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 55,
+      "weight": "5%",
+      "what_works": [
+        "loading=lazy used on ~20 images; long immutable cache on all image types.",
+        "Branded OG social image with og:image:alt."
+      ],
+      "findings": [
+        {"title": "Most images missing alt text", "severity": "High", "description": "Only 4 of 28 <img> tags in src/ have alt (~86% missing).", "recommendation": "Add descriptive, keyword-aware alt to every content image; alt=\"\" for decorative."},
+        {"title": "Huge legacy-format images + 1.5 MB icon", "severity": "High", "description": "28.9 MB total; 34 JPG/14 PNG/1 WebP/0 AVIF; Misc/Installmenticon.png is 1.5 MB for an icon.", "recommendation": "Convert to WebP/AVIF, compress, export at display size; replace the icon with SVG."},
+        {"title": "No dimensions, poor filenames, dead-weight folder", "severity": "Medium", "description": "0/28 images set width/height (CLS); filenames have spaces/caps/a typo ('Beiginners'); unused course-pictures/ (10.4 MB) ships.", "recommendation": "Add dimensions; rename to lowercase-hyphenated slugs; remove the unused folder."}
+      ]
+    },
+    {
+      "name": "Local SEO (conditional — critical for this business type)",
+      "score": 38,
+      "weight": "not in core score",
+      "what_works": [
+        "LocalBusiness/DrivingSchool schema on every page with full NAP, areaServed (8 communities), sameAs, makesOffer.",
+        "Locally-flavored service pages; clickable tel:/mailto: on the Contact page; a live (unclaimed) Yelp listing exists.",
+        "llms.txt publishes a clean, internally-consistent NAP."
+      ],
+      "findings": [
+        {"title": "NAP conflict: Maps embed vs canonical address", "severity": "Critical", "description": "The Google Maps embed on the homepage (Index.tsx:725) and Contact page (Contact.tsx:328) encodes 'Victoria, BC V9B 4G2' (a fixed Google Place ID), while schema/footer/contact copy/llms.txt use 'Langford, BC V9B 4G1'. Yelp independently shows 'Victoria'. Corrupts proximity ranking and NAP trust.", "recommendation": "Confirm the correct address in the GBP dashboard, then make site, embed, Yelp, GBP, and socials match exactly."},
+        {"title": "Reputation gap: zero reviews, no aggregateRating", "severity": "High", "description": "Yelp shows 0 reviews ('New on Yelp'); no aggregateRating anywhere; testimonials are hardcoded/unverifiable.", "recommendation": "Claim GBP, launch a post-lesson review-request flow, and add aggregateRating only once real reviews exist."},
+        {"title": "No business hours or geo published anywhere", "severity": "High", "description": "No openingHoursSpecification/geo in schema and no hours in visible HTML (matches COMPANY_KNOWLEDGE.md gap).", "recommendation": "Publish real hours on Contact + add openingHoursSpecification and geo (lat/long)."},
+        {"title": "No dedicated location pages for 6 secondary communities", "severity": "Medium", "description": "Sidney, Sooke, Metchosin, Duncan, Colwood, Salt Spring Island get only a one-sentence card on Contact; pricing tiers already segment them.", "recommendation": "Build unique [service]+[community] landing pages (the top local organic / #2 AI-visibility factor)."},
+        {"title": "Footer phone is vanity text; social names mismatch; service-area copy inconsistent", "severity": "Medium", "description": "Footer shows '250-LICENSE' with no tel: href; FB/IG surface as 'Driving School BC'; the static fallback lists Saanich+Oak Bay which are not in areaServed.", "recommendation": "Add tel: href; align social names to the brand; reconcile the service-area list."}
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {"name": "Phase 1: Critical Fixes", "timeframe": "Week 1", "items": [
+        "Fix the soft-404: add ErrorDocument 404 + real 404 route so unknown URLs return 404/noindex, not 200 homepage.",
+        "Resolve the NAP conflict: correct the Google Maps embed (homepage + Contact) to the canonical Langford V9B 4G1 address after confirming it in GBP; align Yelp/socials.",
+        "Replace the competitor-hotlinked easydriversed.com image (og/twitter/course) with an owned asset.",
+        "Add the security-headers block (HSTS + 4 missing headers) to .htaccess."
+      ]},
+      {"name": "Phase 2: High-Impact Improvements", "timeframe": "Weeks 2-3", "items": [
+        "Prerender/SSG genuinely unique per-route content into the static HTML (fixes duplicate fallback + CSR content gap for search and AI crawlers) — highest-leverage structural fix.",
+        "Emit Course (14 pages), Service (service pages), BlogPosting (3 posts), BreadcrumbList, Organization+WebSite/SearchAction, and hasOfferCatalog JSON-LD (data already exists).",
+        "Optimize images: convert to WebP/AVIF, compress the hero + 1.5 MB icon, add width/height, delete the unused 10 MB folder, add alt text to 24 images.",
+        "Add the 2 orphan pages to the sitemap; regenerate lastmod from real build dates; make the footer phone a tel: link."
+      ]},
+      {"name": "Phase 3: Content & Authority", "timeframe": "Month 2", "items": [
+        "Add real, credentialed instructor bios/photos + blog author bylines; delete the template TeamSection.",
+        "Expand blog posts into in-depth, BC-specific guides; add visible FAQ Q&A prose and concrete published prices.",
+        "Claim GBP + Yelp, launch a review-acquisition flow, and add aggregateRating once real reviews exist.",
+        "Build dedicated [service]+[community] location pages for the 6 secondary service areas."
+      ]},
+      {"name": "Phase 4: Monitoring & Iteration", "timeframe": "Ongoing", "items": [
+        "Add a Google API key + verify Search Console to pull real CrUX/CWV, indexation, and query data for future audits.",
+        "Implement IndexNow properly; publish a YouTube video and align social profiles.",
+        "Re-audit after prerender to confirm raw-HTML content parity and re-score GEO (expected to jump into the 70s)."
+      ]}
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}
