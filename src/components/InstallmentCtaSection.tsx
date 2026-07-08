@@ -17,7 +17,7 @@ const InstallmentCtaSection = ({ className, imageClassName }: InstallmentCtaSect
       "rounded-[36px] border border-slate-200 bg-[#E7EBEF] py-8 shadow-[0_28px_70px_rgba(39,69,86,0.16)] sm:py-10",
       className,
     )}
-    imageSrc="/Misc/Installmenticon.png"
+    imageSrc="/Misc/Installmenticon.webp"
     imageAlt="Installment payment icon"
     imageClassName={cn("h-[200px] sm:h-[260px] lg:h-[300px]", imageClassName)}
     actions={

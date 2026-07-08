@@ -479,7 +479,7 @@ const PaymentPlanOptions = () => {
           </>
         }
         sectionClassName="bg-white"
-        imageSrc="/logos/cta-mascot.png"
+        imageSrc="/logos/cta-mascot.webp"
         imageAlt="Driving school mascot"
       />
 

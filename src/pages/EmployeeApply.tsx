@@ -99,7 +99,7 @@ const generateAppId = () => {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   STEP CONFIG (dynamic — license step injected when needed)
+   STEP CONFIG (dynamic, license step injected when needed)
    ═══════════════════════════════════════════════════════════ */
 const baseSteps = [
   { key: "personal", label: "Personal Info", icon: User },

@@ -66,7 +66,7 @@ const Contact = () => {
             {/* Left â€“ PNG Image (transparent bg) */}
             <div className="relative flex shrink-0 items-end justify-center self-end">
               <img
-                src="/logos/contact-hero.png"
+                src="/logos/contact-hero.webp"
                 alt="Ruley - Shanaya's Driving School mascot"
                 loading="eager"
                 decoding="async"

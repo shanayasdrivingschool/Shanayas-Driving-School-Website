@@ -31,7 +31,7 @@ const SiteCtaSection = ({
   sectionClassName,
   titleClassName,
   descriptionClassName,
-  imageSrc = "/logos/cta-mascot.png",
+  imageSrc = "/logos/cta-mascot.webp",
   imageAlt = "Shanaya driving school mascot",
   imageClassName,
   blobClassName,
