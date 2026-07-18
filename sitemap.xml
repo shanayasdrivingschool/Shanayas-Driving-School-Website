@@ -91,6 +91,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.drivingschoolbc.ca/icbc-approved-driving-school/</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.drivingschoolbc.ca/bc-graduated-licensing-program/</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.drivingschoolbc.ca/driving-instructor-victoria/</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.drivingschoolbc.ca/driver-education-training/</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.drivingschoolbc.ca/about/</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>yearly</changefreq>
