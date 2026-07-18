@@ -1,0 +1,1 @@
+import{r,aC as n,aX as s}from"./index-9zX2pbf6.js";var u=s[" useId ".trim().toString()]||(()=>{}),i=0;function x(t){const[e,a]=r.useState(u());return n(()=>{a(o=>o??String(i++))},[t]),t||(e?`radix-${e}`:"")}var c=r.createContext(void 0);function f(t){const e=r.useContext(c);return t||e||"ltr"}export{x as a,f as u};
