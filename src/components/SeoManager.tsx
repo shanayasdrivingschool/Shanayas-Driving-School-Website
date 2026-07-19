@@ -82,7 +82,13 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
   "/knowledge-test-practice": {
     title: "ICBC Knowledge Test Practice | Shanaya's Driving School",
     description:
-      "Practice ICBC-style learner licence questions and build confidence before your British Columbia knowledge test.",
+      "Practice ICBC-style learner licence questions and use proven preparation strategies to pass your British Columbia knowledge test with confidence.",
+  },
+  "/knowledge-test-guide": {
+    title: "ICBC Knowledge Test Guide | Shanaya's Driving School",
+    description:
+      "A step-by-step guide to booking, studying for, and passing your BC knowledge test — eligibility, the official handbook, practice, and test day.",
+    robots: "noindex, follow",
   },
   "/blog": {
     title: "Driving Tips & Road Test Resources | Shanaya's Driving School",
@@ -153,8 +159,8 @@ const localBusinessJsonLd: JsonLdObject = {
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Unit 124, 2770 Leigh Rd",
-    addressLocality: "Langford",
+    streetAddress: "2770 Leigh Rd",
+    addressLocality: "Victoria",
     addressRegion: "BC",
     postalCode: "V9B 4G1",
     addressCountry: "CA",

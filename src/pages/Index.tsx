@@ -78,47 +78,47 @@ const advantages: Advantage[] = [
   {
     title: "ICBC Aligned Training Standards",
     text: "Structured lessons based on ICBC road safety guidelines, focusing on defensive driving, hazard awareness, and real-world decision making for confident test readiness.",
-    image: "https://tse4.mm.bing.net/th/id/OIP.EZblztLjvb5JzQh5c-K5uwHaD4?rs=1&pid=ImgDetMain&o=7&rm=3",
+    image: "/why-choose/icbc-aligned-standards.webp",
   },
   {
     title: "Licensed & Patient Instructors",
     text: "Certified instructors provide calm, supportive coaching tailored to each learner's pace, helping students build confidence while developing safe lifelong driving habits.",
-    image: "https://smallbusiness-production.s3.amazonaws.com/uploads/2021/09/Driving-instructor-pic.jpg",
+    image: "/why-choose/licensed-instructors.webp",
   },
   {
     title: "Dual Control Vehicles",
     text: "Training vehicles are equipped with instructor dual-control systems, allowing immediate intervention when needed to ensure maximum safety during every lesson.",
-    image: "https://th.bing.com/th/id/R.938bd1619651dfafcc414b34125030cc?rik=YGc%2fiHscOQkg8A&riu=http%3a%2f%2fdualcontrolvehiclehire.co.uk%2fassets%2fimages%2fdual-internal-1266x949.jpeg&ehk=sBzyh82TS%2fru%2fNH3cCjSrvjtlhpolkb8a0RbECqzZ6o%3d&risl=&pid=ImgRaw&r=0",
+    image: "/why-choose/dual-control-vehicles.webp",
   },
   {
     title: "Flexible Scheduling",
     text: "Convenient weekday and selected weekend lesson availability designed to fit student, school, and work schedules without added stress.",
-    image: "https://tse1.mm.bing.net/th/id/OIP.BZCVmXSxkQk8fTX_WqcOuQHaDt?w=2000&h=1000&rs=1&pid=ImgDetMain&o=7&rm=3",
+    image: "/why-choose/flexible-scheduling.webp",
   },
   {
     title: "Knowledge Test Preparation",
     text: "Comprehensive preparation covering road signs, traffic rules, and ICBC knowledge test strategies to help students succeed on their first attempt.",
-    image: "https://images.blackcircles.com/news/article-images/2024/header-images/110-theory-test-guide-header-sm.jpg",
+    image: "/why-choose/knowledge-test-prep.webp",
   },
   {
     title: "Regular Progress Tracking Updates",
     text: "Ongoing performance assessments and feedback ensure students clearly understand their strengths, improvement areas, and road test readiness.",
-    image: "https://blog.everydayspeech.com/hubfs/tracking-progress-blog.png#keepProtocol",
+    image: "/why-choose/progress-tracking.webp",
   },
   {
     title: "Pick Up & Drop Off Available",
     text: "Door-to-door lesson options provide added convenience, allowing students to begin and finish training safely from home, school, or work locations.",
-    image: "https://tse4.mm.bing.net/th/id/OIP.zBC-II5MNsIT1v7mX-LMqAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+    image: "/why-choose/pickup-dropoff.webp",
   },
   {
     title: "Modern Training Facility",
     text: "A clean, professional learning environment designed to support both in-car instruction and theory preparation in a comfortable setting.",
-    image: "https://assets-global.website-files.com/5e40b0bbf77105c463d7932a/652debd65ce15f6aac49e0cb_proj-rototuna-library-5.jpg",
+    image: "/why-choose/modern-facility.webp",
   },
   {
     title: "Multi-Language Support",
     text: "Instruction available in multiple languages to ensure clear communication and a comfortable learning experience for students from diverse backgrounds.",
-    image: "https://as1.ftcdn.net/jpg/05/12/61/30/1000_F_512613046_OSy9pEiXLAfBjebvpnty3XXfO5yeyFBu.jpg",
+    image: "/why-choose/multi-language.webp",
   }
 ];
 
@@ -259,6 +259,7 @@ const HeroBackgroundMedia = () => {
         src={heroVideoPosterUrl}
         alt="Driving lesson road scene for Shanaya's Driving School"
         loading="eager"
+        fetchPriority="high"
         decoding="async"
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -337,7 +338,7 @@ const Index = () => {
           <div className="grid min-h-[540px] items-end gap-8 pb-28 pt-6 sm:min-h-[620px] sm:pb-36 sm:pt-10 lg:min-h-[700px] lg:grid-cols-[1.18fr_0.82fr] lg:items-center lg:pb-44">
             <div className="w-full max-w-[820px] text-left">
               <p className="text-[11px] font-semibold uppercase tracking-wider md:text-[13px]">
-                Proudly serving communities across Vancouver & Surrounding Gulf Islands.
+                Victoria & Langford's driving school, serving Greater Victoria & the Gulf Islands.
               </p>
               <h1
                 className="mt-3 text-[clamp(1.7rem,5.4vw,3.12rem)] font-extrabold leading-[1.08] tracking-tight"
@@ -356,7 +357,7 @@ const Index = () => {
                 <span className="mt-1 block">that last beyond the test.</span>
               </h1>
               <p className="mt-4 max-w-[560px] text-[clamp(0.95rem,1.45vw,1.25rem)] leading-[1.4]">
-                Professional driving lessons designed to build confidence, hazard awareness, and real-world driving skills.
+                ICBC-aligned driving lessons in Victoria, Langford, and across Greater Victoria, built to grow confidence, hazard awareness, and real-world driving skills.
               </p>
               <div className="mt-6 responsive-cta-row justify-start md:gap-4">
                 <Link

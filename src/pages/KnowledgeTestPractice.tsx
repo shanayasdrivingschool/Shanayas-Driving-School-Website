@@ -45,6 +45,39 @@ const infoCards = [
   },
 ];
 
+const knowledgeTestStrategies = [
+  {
+    title: "Start with the official source",
+    description:
+      "Study ICBC's Learn to Drive Smart guide first. Every knowledge test question is based on it, so it is the fastest path to the right answers.",
+  },
+  {
+    title: "Master road signs by shape and colour",
+    description:
+      "Many questions test sign recognition. Learn what each shape and colour means so you can answer even unfamiliar signs correctly.",
+  },
+  {
+    title: "Practise under a timer",
+    description:
+      "Use timed practice sessions so the real test's pace feels familiar and you do not rush the questions that trip most people up.",
+  },
+  {
+    title: "Review every wrong answer",
+    description:
+      "After each session, read the explanation for anything you missed. Understanding why an answer is correct sticks better than memorising it.",
+  },
+  {
+    title: "Focus on right-of-way and speed zones",
+    description:
+      "School and playground zones, right turns on red, and right-of-way at intersections are common BC test topics worth extra review.",
+  },
+  {
+    title: "Prepare in your best language",
+    description:
+      "ICBC offers the knowledge test in many languages. Study in the one you read most comfortably so wording never costs you a question.",
+  },
+];
+
 const resultToneClassName = (isCorrect: boolean, wasAnswered: boolean) => {
   if (isCorrect) return "border-emerald-200 bg-emerald-50";
   if (!wasAnswered) return "border-amber-200 bg-amber-50";
@@ -431,6 +464,28 @@ const KnowledgeTestPractice = () => {
                   </div>
                 </>
               ) : null}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="rounded-[36px] border border-slate-200 bg-[#F8FAFC] p-8 shadow-sm sm:p-10">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">Study smarter</p>
+            <h2 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl">
+              ICBC knowledge test preparation strategies
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+              The ICBC knowledge test covers road signs, rules of the road, and safe-driving decisions. These preparation strategies help BC learners study efficiently and pass on the first attempt.
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {knowledgeTestStrategies.map((strategy) => (
+                <div key={strategy.title} className="rounded-3xl border border-slate-200 bg-white p-5">
+                  <h3 className="text-lg font-black text-slate-900">{strategy.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{strategy.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

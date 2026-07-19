@@ -1,8 +1,10 @@
 import type {
   AffiliateStatus,
+  HiringLeadStatus,
   LeadStatus,
   LeadType,
   PaymentStatus,
+  StudentLeadStatus,
 } from "@/lib/affiliateTypes";
 
 export const ADMIN_ROWS_PER_PAGE = 50;
@@ -31,11 +33,36 @@ export const leadTypeLabels: Record<LeadType, string> = {
 
 export const leadStatusLabels: Record<LeadStatus, string> = {
   new: "New",
+  contacted: "Contacted",
+  qualified: "Qualified",
+  booked: "Booked",
+  unqualified: "Unqualified",
+  lost: "Lost",
   pending_review: "Pending review",
   reviewed: "Reviewed",
   shortlisted: "Shortlisted",
   rejected: "Rejected",
 };
+
+export const STUDENT_LEAD_STATUSES: StudentLeadStatus[] = [
+  "new",
+  "contacted",
+  "qualified",
+  "booked",
+  "unqualified",
+  "lost",
+];
+
+export const HIRING_LEAD_STATUSES: HiringLeadStatus[] = [
+  "new",
+  "pending_review",
+  "reviewed",
+  "shortlisted",
+  "rejected",
+];
+
+export const leadStatusesForType = (leadType: LeadType): LeadStatus[] =>
+  leadType === "employee_application" ? HIRING_LEAD_STATUSES : STUDENT_LEAD_STATUSES;
 
 export const paymentStatusLabels: Record<PaymentStatus, string> = {
   pending: "Pending",
@@ -55,6 +82,11 @@ export const affiliateStatusTone: Record<AffiliateStatus, string> = {
 
 export const leadStatusTone: Record<LeadStatus, string> = {
   new: "bg-[#1d52a1]/10 text-[#1d52a1]",
+  contacted: "bg-sky-100 text-sky-700",
+  qualified: "bg-[#1d52a1]/10 text-[#1d52a1]",
+  booked: "bg-emerald-100 text-emerald-700",
+  unqualified: "bg-[#E6242A]/10 text-[#B91C1C]",
+  lost: "bg-slate-200 text-slate-700",
   pending_review: "bg-[#F5B13A]/15 text-[#9A6400]",
   reviewed: "bg-[#1d52a1]/10 text-[#1d52a1]",
   shortlisted: "bg-emerald-100 text-emerald-700",

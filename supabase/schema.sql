@@ -7,7 +7,13 @@ create table if not exists public.leads (
   email text,
   phone text,
   source_page text not null,
-  status text not null default 'new',
+  -- Student pipeline: new -> contacted -> qualified -> booked, with unqualified / lost as exits.
+  -- Hiring pipeline (employee_application): new -> pending_review -> reviewed -> shortlisted / rejected.
+  -- See docs/lead-status-split.md.
+  status text not null default 'new' check (status in (
+    'new', 'contacted', 'qualified', 'booked', 'unqualified', 'lost',
+    'pending_review', 'reviewed', 'shortlisted', 'rejected'
+  )),
   payload jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now()
 );

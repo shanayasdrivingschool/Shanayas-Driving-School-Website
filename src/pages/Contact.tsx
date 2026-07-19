@@ -147,7 +147,7 @@ const Contact = () => {
                 <span>
                   <span className="block text-xl font-black text-slate-900">Our Office</span>
                   <span className="mt-1 block text-sm font-semibold text-slate-700">
-                    Unit 124, 2770 Leigh Rd, Langford, British Columbia V9B 4G1
+                    2770 Leigh Rd, Victoria, British Columbia V9B 4G1
                   </span>
                   <span className="mt-2 block text-sm text-slate-500">By appointment - Free parking available</span>
                 </span>

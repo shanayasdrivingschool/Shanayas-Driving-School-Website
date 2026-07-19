@@ -195,7 +195,7 @@ const allSitePolicies: SitePolicy[] = [
           'Questions or requests regarding this Privacy Policy may be directed to Shanaya\'s Driving School using the contact details below.',
         ],
         bullets: [
-          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
+          '2770 Leigh Rd, Victoria, BC V9B 4G1',
           'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],

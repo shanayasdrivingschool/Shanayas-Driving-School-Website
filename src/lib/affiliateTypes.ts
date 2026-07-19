@@ -11,7 +11,9 @@ export type PaymentStatus =
   | "failed";
 export type PreferredPayoutMethod = "bank_transfer" | "paypal" | "interac";
 export type LeadType = "contact" | "student_assessment" | "employee_application" | "custom_package_request";
-export type LeadStatus = "new" | "pending_review" | "reviewed" | "shortlisted" | "rejected";
+export type StudentLeadStatus = "new" | "contacted" | "qualified" | "booked" | "unqualified" | "lost";
+export type HiringLeadStatus = "new" | "pending_review" | "reviewed" | "shortlisted" | "rejected";
+export type LeadStatus = StudentLeadStatus | HiringLeadStatus;
 export type CouponType = "one_time" | "periodic";
 export type CheckoutInvoiceStatus = "draft" | "open" | "paid" | "cancelled";
 export type KnowledgeTestQuestionCategory =
