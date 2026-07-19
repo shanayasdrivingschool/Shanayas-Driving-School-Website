@@ -21,25 +21,32 @@ const toOptionalNumber = (value: unknown) => {
 
 export const getFallbackPublicCourses = () => courseCatalog;
 
-export const mapCourseRowToCourseCatalogItem = (row: Record<string, unknown>): CourseCatalogItem => ({
-  id: String(row.slug),
-  title: String(row.title),
-  level: String(row.level) as CourseCatalogItem["level"],
-  deliveryFormat: String(row.delivery_format) as CourseCatalogItem["deliveryFormat"],
-  duration: String(row.duration),
-  detail: String(row.detail),
-  description: String(row.description),
-  highlights: toStringArray(row.highlights),
-  tone: String(row.tone),
-  image: getCourseImage(String(row.slug), String(row.image)),
-  quizTags: toStringArray(row.quiz_tags),
-  pricing: {
-    fixedPrice: toOptionalNumber(row.fixed_price),
-    sixtyMinuteClasses: Number(row.sixty_minute_classes ?? 0),
-    ninetyMinuteClasses: Number(row.ninety_minute_classes ?? 0),
-    discountPercent: Number(row.discount_percent ?? 0),
-  },
-});
+export const mapCourseRowToCourseCatalogItem = (row: Record<string, unknown>): CourseCatalogItem => {
+  const slug = String(row.slug);
+  const catalogPricing = courseCatalog.find((course) => course.id === slug)?.pricing;
+
+  return {
+    id: slug,
+    title: String(row.title),
+    level: String(row.level) as CourseCatalogItem["level"],
+    deliveryFormat: String(row.delivery_format) as CourseCatalogItem["deliveryFormat"],
+    duration: String(row.duration),
+    detail: String(row.detail),
+    description: String(row.description),
+    highlights: toStringArray(row.highlights),
+    tone: String(row.tone),
+    image: getCourseImage(String(row.slug), String(row.image)),
+    quizTags: toStringArray(row.quiz_tags),
+    pricing: {
+      fixedPrice: toOptionalNumber(row.fixed_price),
+      sixtyMinuteClasses: Number(row.sixty_minute_classes ?? 0),
+      ninetyMinuteClasses: Number(row.ninety_minute_classes ?? 0),
+      sixtyMinutePrice: catalogPricing?.sixtyMinutePrice,
+      ninetyMinutePrice: catalogPricing?.ninetyMinutePrice,
+      discountPercent: Number(row.discount_percent ?? 0),
+    },
+  };
+};
 
 export const mapCourseRowToAdminCourse = (row: Record<string, unknown>): AdminCourseRecord => {
   const course = mapCourseRowToCourseCatalogItem(row);

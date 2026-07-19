@@ -1,11 +1,14 @@
 ﻿import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, SlidersHorizontal } from "lucide-react";
-import PageNameSection from "@/components/PageNameSection";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
 import { blogPosts } from "@/data/blogPosts";
+import { seoLandingPages } from "@/data/seoLandingPages";
+
+const cleanTitle = (title: string) => title.split(" | ")[0];
 
 type SortOption = "newest" | "oldest" | "a-z" | "z-a";
 
@@ -68,13 +71,25 @@ const Blog = () => {
 
   return (
     <main className="min-h-screen bg-white">
-      <PageNameSection
-        eyebrow="Resources"
-        title="Blog"
-        description="Tips, guides, and resources to help you become a confident driver"
-        backgroundImage="https://images.unsplash.com/photo-1449965408869-ebd13bc9e8b6?auto=format&fit=crop&w=1400&q=80"
-        titleClassName="text-[#F5C518]"
-      />
+      {/* Masthead: solid brand-blue band */}
+      <section className="relative bg-[#1d52a1] text-white">
+        <SiteHeader tone="brand" />
+        <div className="mx-auto w-full max-w-[1200px] px-4 pb-14 pt-28 sm:px-6 sm:pb-16 sm:pt-32">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm font-semibold">
+            <Link to="/" className="text-white/80 transition-colors hover:text-white">
+              Home
+            </Link>
+            <span className="text-white/40">/</span>
+            <span className="text-white/55">Blog</span>
+          </nav>
+
+          <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-white/70">Resources</p>
+          <h1 className="mt-2 text-[clamp(2.25rem,5vw,3.5rem)] font-black leading-[1.05] text-white">Blog</h1>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80">
+            Tips, guides, and resources to help you become a confident driver.
+          </p>
+        </div>
+      </section>
 
       {/* Search, Sort & Filter bar */}
       <AnimatedSection>
@@ -187,6 +202,53 @@ const Blog = () => {
                 </div>
               </>
             )}
+          </div>
+        </section>
+      </AnimatedSection>
+
+      {/* Driving guides & service-area pages */}
+      <AnimatedSection>
+        <section className="border-t border-slate-200 bg-gray-50 py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <h2 className="text-center text-3xl font-black text-[#1d52a1] sm:text-4xl">
+              Explore driving guides &amp; service areas
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-center text-base text-slate-600 sm:text-lg">
+              Lessons, road-test prep, and local driving resources across Greater Victoria.
+            </p>
+
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {seoLandingPages.map((page) => (
+                <Link
+                  key={page.path}
+                  to={page.path}
+                  className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition-shadow hover:shadow-lg"
+                >
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <img
+                      src={page.heroImage}
+                      alt={cleanTitle(page.title)}
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <span className="absolute left-3 top-3 rounded-full bg-[#1d52a1] px-3 py-1 text-xs font-bold text-white shadow">
+                      {page.eyebrow}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="text-lg font-bold text-gray-900 transition-colors group-hover:text-[#1d52a1]">
+                      {cleanTitle(page.title)}
+                    </h3>
+                    <p className="mt-2 flex-1 text-sm text-slate-600">{page.metaDescription}</p>
+                    <span className="mt-4 self-start rounded-full bg-[#1d52a1] px-6 py-2.5 text-sm font-bold text-white transition-colors group-hover:bg-[#174291]">
+                      Learn more
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       </AnimatedSection>

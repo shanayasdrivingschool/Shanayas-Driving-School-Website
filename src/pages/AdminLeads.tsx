@@ -11,7 +11,7 @@ import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/adm
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   formatJsonInput,
@@ -23,10 +23,20 @@ import {
 } from "@/lib/adminCrud";
 import { deleteAdminLead, saveAdminLead } from "@/lib/adminCrudApi";
 import { getAdminLeads, updateLeadStatus } from "@/lib/affiliateApi";
-import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, leadStatusLabels, leadStatusTone, leadTypeLabels, matchesSearch, paginateItems } from "@/lib/adminPanel";
+import {
+  ADMIN_ROWS_PER_PAGE,
+  HIRING_LEAD_STATUSES,
+  isWithinDateRange,
+  leadStatusLabels,
+  leadStatusTone,
+  leadStatusesForType,
+  leadTypeLabels,
+  matchesSearch,
+  paginateItems,
+  STUDENT_LEAD_STATUSES,
+} from "@/lib/adminPanel";
 import type { LeadStatus, LeadType } from "@/lib/affiliateTypes";
 
-const leadStatusOptions: LeadStatus[] = ["new", "pending_review", "reviewed", "shortlisted", "rejected"];
 const leadTypeOptions: LeadType[] = ["contact", "student_assessment", "employee_application", "custom_package_request"];
 
 type LeadTypeFilter = "all" | LeadType;
@@ -37,7 +47,7 @@ type LeadEditorState = {
   values: AdminFormValues;
 };
 
-const buildLeadFields = (): AdminRecordDialogField[] => [
+const buildLeadFields = (leadType: LeadType): AdminRecordDialogField[] => [
   {
     key: "leadType",
     label: "Lead type",
@@ -52,7 +62,7 @@ const buildLeadFields = (): AdminRecordDialogField[] => [
     key: "status",
     label: "Status",
     type: "select",
-    options: leadStatusOptions.map((entry) => ({ label: leadStatusLabels[entry], value: entry })),
+    options: leadStatusesForType(leadType).map((entry) => ({ label: leadStatusLabels[entry], value: entry })),
   },
   {
     key: "createdAt",
@@ -117,7 +127,21 @@ const AdminLeads = () => {
   );
 
   const setFormValue = (key: string, value: string | boolean) => {
-    setEditorState((current) => (current ? { ...current, values: { ...current.values, [key]: value } } : current));
+    setEditorState((current) => {
+      if (!current) return current;
+      const values = { ...current.values, [key]: value };
+
+      // Student and hiring leads use separate status vocabularies. Switching the lead type can
+      // strand the status on a value the new pipeline does not offer, so fall back to "new".
+      if (key === "leadType") {
+        const allowed = leadStatusesForType(value as LeadType);
+        if (!allowed.includes(values.status as LeadStatus)) {
+          values.status = "new";
+        }
+      }
+
+      return { ...current, values };
+    });
   };
 
   const openCreate = () => {
@@ -268,9 +292,19 @@ const AdminLeads = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All statuses</SelectItem>
-                    {leadStatusOptions.map((entry) => (
-                      <SelectItem key={entry} value={entry}>{leadStatusLabels[entry]}</SelectItem>
-                    ))}
+                    <SelectItem value="new">{leadStatusLabels.new}</SelectItem>
+                    <SelectGroup>
+                      <SelectLabel>Student</SelectLabel>
+                      {STUDENT_LEAD_STATUSES.filter((entry) => entry !== "new").map((entry) => (
+                        <SelectItem key={entry} value={entry}>{leadStatusLabels[entry]}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Hiring</SelectLabel>
+                      {HIRING_LEAD_STATUSES.filter((entry) => entry !== "new").map((entry) => (
+                        <SelectItem key={entry} value={entry}>{leadStatusLabels[entry]}</SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
 
@@ -339,7 +373,7 @@ const AdminLeads = () => {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                {leadStatusOptions.map((entry) => (
+                                {leadStatusesForType(effectiveLeadType).map((entry) => (
                                   <SelectItem key={entry} value={entry}>{leadStatusLabels[entry]}</SelectItem>
                                 ))}
                               </SelectContent>
@@ -391,7 +425,7 @@ const AdminLeads = () => {
             onOpenChange={(open) => !open && setEditorState(null)}
             title={editorState?.id ? "Edit lead" : "Add lead"}
             description="Create a manual lead record or update an existing submission directly from the admin panel."
-            fields={buildLeadFields()}
+            fields={buildLeadFields((editorState?.values.leadType as LeadType) ?? "contact")}
             values={editorState?.values ?? createEmptyLeadValues()}
             onValueChange={setFormValue}
             onSave={() => void handleSave()}

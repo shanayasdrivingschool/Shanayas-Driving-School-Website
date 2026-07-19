@@ -1,0 +1,149 @@
+keyword,category,search_intent,funnel_stage,priority,suggested_target_page
+driving school victoria bc,Core / Head Terms,transactional,BOFU,High,Home / GBP
+driving school near me,Core / Head Terms,transactional,BOFU,High,Home / GBP
+driving schools in victoria bc,Core / Head Terms,commercial,MOFU,High,Home
+best driving school victoria bc,Core / Head Terms,commercial,MOFU,High,Home
+driving lessons victoria bc,Core / Head Terms,transactional,BOFU,High,/driving-lessons
+driving lessons near me,Core / Head Terms,transactional,BOFU,High,/driving-lessons
+driving instructor victoria bc,Core / Head Terms,commercial,MOFU,High,/driving-instructor-victoria
+driving instructor near me,Core / Head Terms,transactional,BOFU,High,/driving-instructor-victoria
+learn to drive victoria bc,Core / Head Terms,commercial,MOFU,High,/driving-lessons
+driving classes victoria bc,Core / Head Terms,commercial,MOFU,Medium,/driving-lessons
+icbc driving school victoria,ICBC / Accreditation,commercial,MOFU,High,/icbc-approved-driving-school
+icbc approved driving school victoria,ICBC / Accreditation,commercial,MOFU,High,/icbc-approved-driving-school
+icbc certified driving instructor victoria,ICBC / Accreditation,commercial,MOFU,Medium,/icbc-approved-driving-school
+licensed driving instructor victoria bc,ICBC / Accreditation,commercial,MOFU,Medium,/driving-instructor-victoria
+driving lessons langford,Service + City,transactional,BOFU,High,/driving-lessons-langford
+driving school langford,Service + City,transactional,BOFU,High,/driving-lessons-langford
+driving instructor langford,Service + City,commercial,MOFU,Medium,/driving-lessons-langford
+driving lessons colwood,Service + City,transactional,BOFU,High,/driving-lessons-colwood
+driving school colwood,Service + City,transactional,BOFU,High,/driving-lessons-colwood
+driving instructor colwood,Service + City,commercial,MOFU,Medium,/driving-lessons-colwood
+driving lessons saanich,Service + City,transactional,BOFU,High,/driving-lessons-saanich
+driving school saanich,Service + City,transactional,BOFU,High,/driving-lessons-saanich
+driving instructor saanich,Service + City,commercial,MOFU,Medium,/driving-lessons-saanich
+driving lessons view royal,Service + City,transactional,BOFU,Medium,/driving-lessons-view-royal
+driving school view royal,Service + City,transactional,BOFU,Medium,/driving-lessons-view-royal
+driving lessons sidney bc,Service + City,transactional,BOFU,High,New page: /driving-lessons-sidney
+driving school sidney bc,Service + City,transactional,BOFU,High,New page: /driving-lessons-sidney
+driving lessons sooke,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-sooke
+driving school sooke,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-sooke
+driving lessons esquimalt,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-esquimalt
+driving school esquimalt,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-esquimalt
+driving lessons oak bay,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-oak-bay
+driving school oak bay,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-oak-bay
+driving lessons westshore,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-westshore
+driving school westshore bc,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-westshore
+driving lessons metchosin,Service + City,transactional,BOFU,Low,New page: /driving-lessons-metchosin
+driving lessons central saanich,Service + City,transactional,BOFU,Low,New page: /driving-lessons-central-saanich
+driving lessons duncan bc,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-duncan
+driving school duncan bc,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-duncan
+driving lessons salt spring island,Service + City,transactional,BOFU,Low,New page: /driving-lessons-salt-spring
+driving lessons nanaimo,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-nanaimo
+driving school nanaimo,Service + City,transactional,BOFU,Medium,New page: /driving-lessons-nanaimo
+road test prep victoria,Road Test Prep,transactional,BOFU,High,/road-test-prep-victoria
+icbc road test preparation,Road Test Prep,transactional,BOFU,High,/road-test-prep
+driving test preparation victoria,Road Test Prep,transactional,BOFU,High,/road-test-prep-victoria
+mock road test victoria,Road Test Prep,transactional,BOFU,High,/mock-road-test-victoria
+mock driving test victoria bc,Road Test Prep,commercial,MOFU,Medium,/mock-road-test-victoria
+n road test preparation victoria,Road Test Prep,transactional,BOFU,High,/road-test-prep
+class 5 road test prep victoria,Road Test Prep,transactional,BOFU,Medium,/road-test-prep
+class 7 road test prep victoria,Road Test Prep,transactional,BOFU,Medium,/road-test-prep
+road test prep langford,Road Test Prep,transactional,BOFU,Medium,New page: /road-test-prep-langford
+road test prep colwood,Road Test Prep,transactional,BOFU,Low,New page: /road-test-prep-colwood
+how to pass icbc road test,Road Test Prep,informational,TOFU,Medium,Blog
+icbc road test tips,Road Test Prep,informational,TOFU,Medium,Blog
+icbc road test checklist,Road Test Prep,informational,TOFU,Medium,Blog
+what to bring to icbc road test,Road Test Prep,informational,TOFU,Low,Blog
+icbc road test routes victoria,Road Test Prep,informational,TOFU,Medium,Blog
+reasons you fail icbc road test,Road Test Prep,informational,TOFU,Low,Blog
+car rental for road test victoria,Road Test Vehicle,transactional,BOFU,High,/road-test-vehicle
+use instructor car for road test victoria,Road Test Vehicle,transactional,BOFU,Medium,/road-test-vehicle
+rent a car for icbc road test,Road Test Vehicle,transactional,BOFU,Medium,/road-test-vehicle
+road test vehicle rental victoria,Road Test Vehicle,transactional,BOFU,Medium,/road-test-vehicle
+icbc knowledge test practice,Knowledge / Theory Test,informational,TOFU,High,/courses (Knowledge Test Prep)
+icbc learners test practice,Knowledge / Theory Test,informational,TOFU,High,/courses (Knowledge Test Prep)
+bc learners test practice questions,Knowledge / Theory Test,informational,TOFU,High,Knowledge Test Practice page
+icbc knowledge test practice free,Knowledge / Theory Test,informational,TOFU,Medium,Knowledge Test Practice page
+how to pass icbc knowledge test,Knowledge / Theory Test,informational,TOFU,Medium,Blog
+bc driving knowledge test questions,Knowledge / Theory Test,informational,TOFU,Medium,Knowledge Test Practice page
+icbc learners license practice test,Knowledge / Theory Test,informational,TOFU,High,Knowledge Test Practice page
+knowledge test prep course victoria,Knowledge / Theory Test,commercial,MOFU,Medium,/courses (Knowledge Test Prep)
+beginner driving lessons victoria,Beginner / New Driver,transactional,BOFU,High,/driving-lessons
+new driver lessons victoria bc,Beginner / New Driver,transactional,BOFU,High,/driving-lessons
+first time driver lessons victoria,Beginner / New Driver,commercial,MOFU,Medium,/driving-lessons
+teen driving lessons victoria,Beginner / New Driver,transactional,BOFU,High,/driving-lessons
+driving lessons for teenagers victoria,Beginner / New Driver,commercial,MOFU,Medium,/driving-lessons
+driving lessons for beginners near me,Beginner / New Driver,transactional,BOFU,Medium,/driving-lessons
+how to get your drivers license in bc,Beginner / New Driver,informational,TOFU,Medium,/bc-graduated-licensing-program
+beginners driving course victoria,Beginner / New Driver,commercial,MOFU,Medium,/courses (Beginner's Course)
+nervous driver lessons victoria,Nervous / Anxious Drivers,transactional,BOFU,High,/nervous-driver-lessons-victoria
+driving lessons for anxious drivers victoria,Nervous / Anxious Drivers,commercial,MOFU,Medium,/nervous-driver-lessons-victoria
+overcome driving anxiety victoria,Nervous / Anxious Drivers,informational,TOFU,Medium,/nervous-driver-lessons-victoria
+confidence building driving lessons victoria,Nervous / Anxious Drivers,commercial,MOFU,Medium,/courses (Confidence Booster)
+driving lessons for nervous beginners,Nervous / Anxious Drivers,commercial,MOFU,Medium,/nervous-driver-lessons-victoria
+fear of driving help victoria,Nervous / Anxious Drivers,informational,TOFU,Low,Blog
+refresher driving lessons victoria,Refresher,transactional,BOFU,High,/courses (Refresher Course)
+refresher driving course victoria bc,Refresher,commercial,MOFU,Medium,/courses (Refresher Course)
+driving lessons for licensed drivers victoria,Refresher,commercial,MOFU,Low,/courses (Refresher Course)
+getting back to driving after years,Refresher,informational,TOFU,Low,Blog
+driving lessons after long break victoria,Refresher,commercial,MOFU,Low,/courses (Refresher Course)
+new to canada driving lessons victoria,New to Canada / Newcomers,transactional,BOFU,High,/courses (New to Canada)
+driving lessons for newcomers victoria,New to Canada / Newcomers,commercial,MOFU,Medium,/courses (New to Canada)
+driving lessons for immigrants victoria bc,New to Canada / Newcomers,commercial,MOFU,Medium,/courses (New to Canada)
+exchange foreign license for bc license,New to Canada / Newcomers,informational,TOFU,Medium,Blog
+international drivers license to bc license,New to Canada / Newcomers,informational,TOFU,Medium,Blog
+new resident bc drivers license,New to Canada / Newcomers,informational,TOFU,Low,Blog
+defensive driving course victoria,Defensive / Advanced / Winter,commercial,MOFU,Medium,/defensive-driving
+defensive driving lessons bc,Defensive / Advanced / Winter,commercial,MOFU,Low,/defensive-driving
+advanced driving lessons victoria,Defensive / Advanced / Winter,commercial,MOFU,Low,/courses (Advanced Course)
+winter driving lessons victoria,Defensive / Advanced / Winter,commercial,MOFU,Medium,/courses (Winter Driving)
+winter driving course bc,Defensive / Advanced / Winter,commercial,MOFU,Low,/courses (Winter Driving)
+snow driving lessons vancouver island,Defensive / Advanced / Winter,informational,TOFU,Low,Blog
+parallel parking lessons victoria,Skills / Maneuvers,commercial,MOFU,Medium,/courses (Parking Course)
+parking lessons victoria bc,Skills / Maneuvers,commercial,MOFU,Medium,/courses (Parking Course)
+how to parallel park step by step,Skills / Maneuvers,informational,TOFU,Medium,Blog
+hill parking icbc road test,Skills / Maneuvers,informational,TOFU,Low,Blog
+reverse stall parking tips,Skills / Maneuvers,informational,TOFU,Low,Blog
+automatic driving lessons victoria,Transmission Type,commercial,MOFU,Medium,/driving-lessons
+manual driving lessons victoria,Transmission Type,commercial,MOFU,Low,/driving-lessons
+stick shift lessons victoria bc,Transmission Type,commercial,MOFU,Low,/driving-lessons
+intensive driving course victoria,Intensive / Crash Course,commercial,MOFU,Medium,/intensive-driving-course
+crash course driving lessons victoria,Intensive / Crash Course,commercial,MOFU,Low,/intensive-driving-course
+fast track driving lessons bc,Intensive / Crash Course,commercial,MOFU,Low,/intensive-driving-course
+driving lessons cost victoria,Pricing / Cost,commercial,MOFU,High,/pricing
+how much are driving lessons in victoria,Pricing / Cost,commercial,MOFU,High,/pricing
+driving lessons price bc,Pricing / Cost,commercial,MOFU,Medium,/pricing
+driving lesson packages victoria,Pricing / Cost,commercial,MOFU,High,/pricing
+affordable driving school victoria,Pricing / Cost,commercial,MOFU,Medium,/pricing
+cheap driving lessons victoria bc,Pricing / Cost,commercial,MOFU,Medium,/pricing
+how many driving lessons do i need,Pricing / Cost,informational,TOFU,Medium,Blog
+free trial driving lesson victoria,Pricing / Cost,transactional,BOFU,High,Free trial landing page
+enhanced road assessment victoria,Enhanced Road Assessment,commercial,MOFU,Medium,/courses (Enhanced Road Assessment)
+era driving test bc,Enhanced Road Assessment,informational,TOFU,Low,/courses (Enhanced Road Assessment)
+senior driver assessment victoria bc,Enhanced Road Assessment,commercial,MOFU,Medium,/courses (Enhanced Road Assessment)
+mature driver refresher victoria,Enhanced Road Assessment,commercial,MOFU,Low,/courses (Refresher Course)
+bc graduated licensing program explained,GLP / Licensing Info,informational,TOFU,Medium,/bc-graduated-licensing-program
+how to get n license bc,GLP / Licensing Info,informational,TOFU,Medium,/bc-graduated-licensing-program
+l to n license bc requirements,GLP / Licensing Info,informational,TOFU,Medium,/bc-graduated-licensing-program
+class 7 license bc,GLP / Licensing Info,informational,TOFU,Medium,/bc-graduated-licensing-program
+class 5 license bc requirements,GLP / Licensing Info,informational,TOFU,Medium,/bc-graduated-licensing-program
+how long between l and n test bc,GLP / Licensing Info,informational,TOFU,Low,Blog
+gli restrictions bc n driver,GLP / Licensing Info,informational,TOFU,Low,Blog
+how old to get learners license bc,GLP / Licensing Info,informational,TOFU,Low,Blog
+driver education course victoria,Driver Education,commercial,MOFU,Medium,/driver-education-training
+driver training victoria bc,Driver Education,commercial,MOFU,Medium,/driver-education-training
+gdl driver education bc,Driver Education,informational,TOFU,Low,/driver-education-training
+road test prep near me,Near Me,transactional,BOFU,High,/road-test-prep-victoria
+driving lessons near me victoria,Near Me,transactional,BOFU,High,/driving-lessons
+best driving instructor near me,Near Me,commercial,MOFU,Medium,/driving-instructor-victoria
+driving school bc,Brand,navigational,BOFU,High,Home
+drivingschoolbc.ca,Brand,navigational,BOFU,High,Home
+shanaya's driving school,Brand,navigational,BOFU,High,Home
+shanayas driving school victoria,Brand,navigational,BOFU,High,Home
+driving school bc reviews,Brand,navigational,MOFU,Medium,Home / Reviews
+best time to book icbc road test victoria,Local Info / GEO,informational,TOFU,Low,Blog
+icbc road test wait times victoria,Local Info / GEO,informational,TOFU,Low,Blog
+icbc driver licensing office victoria,Local Info / GEO,informational,TOFU,Low,Blog
+how much does it cost to get license in bc,Local Info / GEO,informational,TOFU,Low,Blog
+is it hard to pass driving test in victoria,Local Info / GEO,informational,TOFU,Low,Blog

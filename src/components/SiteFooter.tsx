@@ -118,6 +118,18 @@ const SiteFooter = () => (
               <Link to="/driving-lessons">Driving Lessons</Link>
             </li>
             <li>
+              <Link to="/icbc-approved-driving-school">ICBC-Approved Driving School</Link>
+            </li>
+            <li>
+              <Link to="/bc-graduated-licensing-program">BC Graduated Licensing (GLP)</Link>
+            </li>
+            <li>
+              <Link to="/driving-instructor-victoria">Driving Instructor Victoria</Link>
+            </li>
+            <li>
+              <Link to="/driver-education-training">Driver Education &amp; Training</Link>
+            </li>
+            <li>
               <Link to="/driving-lessons-langford">Driving Lessons Langford</Link>
             </li>
             <li>
@@ -204,7 +216,7 @@ const SiteFooter = () => (
       <div className="w-full max-w-[320px] text-left">
         <p className="mb-4 text-left text-lg font-bold uppercase text-black md:text-xl">Our Address</p>
         <p className="flex items-start gap-2 font-semibold text-white">
-          <MapPin size={16} className="mt-1" /> Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1
+          <MapPin size={16} className="mt-1" /> 2770 Leigh Rd, Victoria, BC V9B 4G1
         </p>
       </div>
 

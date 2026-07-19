@@ -195,7 +195,7 @@ export const blogPosts: BlogPostData[] = [
     description:
       "Practical tips and common mistakes to avoid so you can walk out of ICBC with your licence in hand.",
     heroImage:
-      "https://drivinginstructorblog.com/wp-content/uploads/2021/11/ROAD-TEST-TIPS-FROM-A-STUDENT-DRIVER.png",
+      "/blog/road-test-tips.webp",
     author: "Shanaya's Driving School",
     date: "March 1, 2026",
     readTime: "6 min read",
@@ -260,7 +260,7 @@ export const blogPosts: BlogPostData[] = [
     description:
       "Learn the core defensive driving habits our instructors teach every student - from hazard scanning to safe following distances.",
     heroImage:
-      "https://media-blog.zutobi.com/wp-content/uploads/sites/2/2021/06/14165940/WHAT-IS-DEFENSIVE-DRIVING-scaled.jpg",
+      "/blog/what-is-defensive-driving.webp",
     author: "Shanaya's Driving School",
     date: "February 20, 2026",
     readTime: "5 min read",
@@ -310,9 +310,9 @@ export const blogPosts: BlogPostData[] = [
   },
   {
     slug: "newcomers-guide-bc",
-    title: "A Newcomer's Guide to Driving in BC",
+    title: "New to BC? Driving Rules Newcomers Should Know",
     description:
-      "Moving to British Columbia? Here's everything you need to know about getting your BC driver's licence and staying road-legal.",
+      "New to British Columbia? Learn the road rules and habits that catch newcomers off guard, from right turns on red and 30 km/h school zones to winter tires and strict distracted-driving laws, plus how to get licensed.",
     heroImage:
       "https://imgv2-2-f.scribdassets.com/img/document/590636925/original/b9ac4ae164/1?v=1",
     author: "Shanaya's Driving School",
@@ -325,7 +325,8 @@ export const blogPosts: BlogPostData[] = [
         <p>
           If you've recently moved to British Columbia, understanding the local driving rules and
           licensing process is one of the first things to take care of. Here's a clear guide to help
-          you get started.
+          you get started. For the full step-by-step licensing walkthrough, see our{" "}
+          <a href="/newcomers-guide">BC driver's licence guide for newcomers</a>.
         </p>
 
         <h2>Step 1: Visit an ICBC Driver Licensing Office</h2>
@@ -337,7 +338,10 @@ export const blogPosts: BlogPostData[] = [
         <h2>Step 2: Understand the Graduated Licensing Program</h2>
         <p>
           BC uses a graduated licensing system (GLP). Depending on your existing experience, you may
-          need to complete the Learner (L) and Novice (N) stages before receiving a full licence.
+          need to complete the Learner (L) and Novice (N) stages before receiving a full licence. See
+          our{" "}
+          <a href="/bc-graduated-licensing-program">BC Graduated Licensing Program guide</a> for the
+          full stage-by-stage breakdown.
         </p>
 
         <h2>Step 3: Learn BC-Specific Rules</h2>

@@ -31,6 +31,7 @@ const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NewcomersGuide = lazy(() => import("./pages/NewcomersGuide"));
 const KnowledgeTestPractice = lazy(() => import("./pages/KnowledgeTestPractice"));
+const KnowledgeTestGuide = lazy(() => import("./pages/KnowledgeTestGuide"));
 const Policies = lazy(() => import("./pages/Policies"));
 const PolicyDetail = lazy(() => import("./pages/PolicyDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
@@ -97,6 +98,10 @@ const App = () => (
                 <Route path="/intensive-driving-course" element={<SeoLandingPage pageId="intensive-driving-course" />} />
                 <Route path="/pricing" element={<SeoLandingPage pageId="pricing" />} />
                 <Route path="/faq" element={<SeoLandingPage pageId="faq" />} />
+                <Route path="/icbc-approved-driving-school" element={<SeoLandingPage pageId="icbc-approved-driving-school" />} />
+                <Route path="/bc-graduated-licensing-program" element={<SeoLandingPage pageId="bc-graduated-licensing-program" />} />
+                <Route path="/driving-instructor-victoria" element={<SeoLandingPage pageId="driving-instructor-victoria" />} />
+                <Route path="/driver-education-training" element={<SeoLandingPage pageId="driver-education-training" />} />
                 <Route path="/courses/:slug" element={<CourseProductPage />} />
                 <Route path="/extras/:slug" element={<ExtraProductPage />} />
                 <Route path="/course-quiz" element={<CourseQuiz />} />
@@ -112,6 +117,7 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/newcomers-guide" element={<NewcomersGuide />} />
                 <Route path="/knowledge-test-practice" element={<KnowledgeTestPractice />} />
+                <Route path="/knowledge-test-guide" element={<KnowledgeTestGuide />} />
                 <Route path="/policies" element={<Policies />} />
                 <Route path="/policies/:policyId" element={<PolicyDetail />} />
                 <Route path="/careers" element={<Careers />} />

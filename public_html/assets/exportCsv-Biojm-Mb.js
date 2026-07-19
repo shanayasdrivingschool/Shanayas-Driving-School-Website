@@ -1,0 +1,2 @@
+const l=(a,o)=>{if(typeof window>"u"||o.length===0)return;const c=Array.from(o.reduce((t,r)=>(Object.keys(r).forEach(e=>t.add(e)),t),new Set)),d=[c.join(","),...o.map(t=>c.map(r=>{const e=t[r];return`"${(e==null?"":Array.isArray(e)?e.join(" | "):typeof e=="object"?JSON.stringify(e):String(e)).replace(/"/g,'""')}"`}).join(","))],i=new Blob([d.join(`
+`)],{type:"text/csv;charset=utf-8;"}),n=document.createElement("a");n.href=URL.createObjectURL(i),n.download=a,n.click(),URL.revokeObjectURL(n.href)};export{l as d};

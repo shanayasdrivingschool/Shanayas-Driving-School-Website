@@ -42,12 +42,12 @@ const coursePricingById = {
   "knowledge-test-prep-course": { fixedPrice: 300 },
   "parking-course": { ninetyMinuteClasses: 3 },
   "make-your-own-class": { ninetyMinuteClasses: 1 },
-  "lesson-road-test-prep-course": { ninetyMinuteClasses: 1 },
+  "lesson-road-test-prep-course": { sixtyMinuteClasses: 2, sixtyMinutePrice: 350, ninetyMinutePrice: 450 },
   "road-test-prep-course": { ninetyMinuteClasses: 1 },
   "new-to-canada": { ninetyMinuteClasses: 3 },
   "defensive-driving-course": { ninetyMinuteClasses: 5 },
   "refresher-driving-course": { ninetyMinuteClasses: 2 },
-  "mock-test-evaluation": { sixtyMinuteClasses: 1 },
+  "mock-test-evaluation": { sixtyMinuteClasses: 1, sixtyMinutePrice: 120, ninetyMinutePrice: 150 },
   "confidence-booster-course": { ninetyMinuteClasses: 8 },
   "advanced-driving-course": { ninetyMinuteClasses: 5 },
   "winter-driving-course": { ninetyMinuteClasses: 1 },
@@ -76,7 +76,7 @@ const courseTitleById: Record<keyof typeof coursePricingById, string> = {
   "knowledge-test-prep-course": "Knowledge Test Prep Course",
   "parking-course": "Parking Course",
   "make-your-own-class": "Make Your Own Class",
-  "lesson-road-test-prep-course": "Lesson + Road Test Prep Course",
+  "lesson-road-test-prep-course": "Lesson + Road Test Prep + Rental",
   "road-test-prep-course": "Road Test Prep Course",
   "new-to-canada": "New to Canada",
   "defensive-driving-course": "Defensive Driving Course",
@@ -148,6 +148,8 @@ const getCourseBasePrice = (
     fixedPrice?: number;
     sixtyMinuteClasses?: number;
     ninetyMinuteClasses?: number;
+    sixtyMinutePrice?: number;
+    ninetyMinutePrice?: number;
   },
   tier: PricingTier,
   lessonDurationMinutes?: 60 | 90,
@@ -160,8 +162,17 @@ const getCourseBasePrice = (
   const ninetyMinuteRate = tier === "island" ? ISLAND_NINETY_MINUTE_RATE : STANDARD_NINETY_MINUTE_RATE;
 
   if (lessonDurationMinutes) {
+    const durationPrice = lessonDurationMinutes === 60 ? pricing.sixtyMinutePrice : pricing.ninetyMinutePrice;
+    if (typeof durationPrice === "number") {
+      return roundMoney(durationPrice);
+    }
+
     const lessonCount = (pricing.sixtyMinuteClasses ?? 0) + (pricing.ninetyMinuteClasses ?? 0);
     return roundMoney(lessonCount * (lessonDurationMinutes === 60 ? sixtyMinuteRate : ninetyMinuteRate));
+  }
+
+  if (typeof pricing.sixtyMinutePrice === "number" && (pricing.ninetyMinuteClasses ?? 0) === 0) {
+    return roundMoney(pricing.sixtyMinutePrice);
   }
 
   return roundMoney(

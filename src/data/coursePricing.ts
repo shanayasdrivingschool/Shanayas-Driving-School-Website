@@ -90,7 +90,21 @@ export const getCourseBasePriceForTier = (
   }
 
   if (lessonDurationMinutes) {
+    const durationPrice =
+      lessonDurationMinutes === 60 ? course.pricing.sixtyMinutePrice : course.pricing.ninetyMinutePrice;
+    if (durationPrice !== undefined) {
+      return Number(durationPrice.toFixed(2));
+    }
+
     return Number((getCourseLessonCount(course) * getLessonRateForTier(tier, lessonDurationMinutes)).toFixed(2));
+  }
+
+  if (course.pricing.sixtyMinutePrice !== undefined && (course.pricing.ninetyMinuteClasses ?? 0) === 0) {
+    return Number(course.pricing.sixtyMinutePrice.toFixed(2));
+  }
+
+  if (course.pricing.ninetyMinutePrice !== undefined && (course.pricing.sixtyMinuteClasses ?? 0) === 0) {
+    return Number(course.pricing.ninetyMinutePrice.toFixed(2));
   }
 
   const rates = rateByTier[tier];

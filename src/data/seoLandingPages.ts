@@ -12,7 +12,11 @@ export type SeoLandingPageId =
   | "road-test-vehicle"
   | "intensive-driving-course"
   | "pricing"
-  | "faq";
+  | "faq"
+  | "icbc-approved-driving-school"
+  | "bc-graduated-licensing-program"
+  | "driving-instructor-victoria"
+  | "driver-education-training";
 
 export type SeoLandingPageSection = {
   title: string;
@@ -63,13 +67,13 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driving-lessons",
     path: "/driving-lessons",
-    title: "Beginner Driving Lessons in Victoria, BC | Shanaya's Driving School",
+    title: "ICBC Driving Lessons Victoria BC | Shanaya's Driving School",
     metaDescription:
       "Beginner driving lessons in Victoria, Langford, and Greater Victoria with ICBC-aligned coaching, dual-control vehicles, and calm instructor support.",
     eyebrow: "Beginner driving lessons",
-    h1: "Driving lessons in Victoria, BC",
+    h1: "ICBC driving lessons in Victoria, BC",
     heroDescription:
-      "Learn safe vehicle control, road awareness, and everyday driving habits with structured beginner lessons across Victoria and Langford.",
+      "Learn safe vehicle control, road awareness, and everyday driving habits with structured, ICBC-aligned beginner lessons across Victoria and Langford.",
     heroImage:
       "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
     targetKeyword: "driving lessons Victoria BC",
@@ -118,7 +122,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     path: "/driving-lessons-langford",
     title: "Driving Lessons in Langford, BC | Shanaya's Driving School",
     metaDescription:
-      "Driving lessons in Langford and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and lessons that start from our Langford office on Leigh Rd.",
+      "Langford driving school offering lessons across the Westshore, BC with ICBC-aligned coaching, dual-control cars, and lessons that start from our Leigh Rd office.",
     eyebrow: "Langford driving lessons",
     h1: "Driving lessons in Langford, BC",
     heroDescription:
@@ -135,7 +139,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     serviceAreaTitle: "Langford and the Westshore",
     serviceAreas: ["Langford", "Colwood", "View Royal", "Metchosin", "Sooke", "Victoria", "Sidney"],
     intro: [
-      "Shanaya's Driving School is based right in Langford. Our main office and primary training hub sits at Unit 124, 2770 Leigh Rd in the heart of the Westshore, so lessons for Langford learners can start close to home on the roads you already drive every day.",
+      "Shanaya's Driving School serves Langford and the Westshore. Our main office and training hub at 2770 Leigh Rd sits in the heart of Greater Victoria, so lessons for Langford learners can start close to home on the roads you already drive every day.",
       "Langford driving has its own character: a growing number of roundabouts, busy stretches of Goldstream Avenue and Veterans Memorial Parkway, Trans-Canada Highway merges, and hilly routes around Bear Mountain. Our lessons build the skills these roads demand: smooth roundabout entries and exits, confident highway merging, hill starts, lane discipline, and calm decisions in Westshore traffic.",
       "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a newer driver who wants to feel in control around the Westshore, we pace the training around you in a patient, dual-control car.",
     ],
@@ -163,9 +167,9 @@ export const seoLandingPages: SeoLandingPage[] = [
     ],
     faqs: [
       {
-        question: "Do lessons start from your Langford office?",
+        question: "Do lessons start close to Langford?",
         answer:
-          "Yes. Our main training hub is at Unit 124, 2770 Leigh Rd in Langford, and lessons can begin from the Westshore so you practise on familiar local roads.",
+          "Yes. Our main training hub is at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar local roads.",
       },
       {
         question: "Will I practise Langford's roundabouts?",
@@ -201,7 +205,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     serviceAreaTitle: "Colwood and the Westshore",
     serviceAreas: ["Colwood", "Langford", "View Royal", "Royal Bay", "Metchosin", "Esquimalt", "Victoria"],
     intro: [
-      "Shanaya's Driving School teaches new and returning drivers across Colwood and the Westshore. Our main training hub is just up the road in Langford at Unit 124, 2770 Leigh Rd, so Colwood learners can start close to home on the roads they drive every day.",
+      "Shanaya's Driving School teaches new and returning drivers across Colwood and the Westshore. Our main training hub is just up the road at 2770 Leigh Rd in Greater Victoria, so Colwood learners can start close to home on the roads they drive every day.",
       "Colwood driving has its own challenges: the busy Colwood interchange and the daily Colwood Crawl where the highways meet, Sooke Road and the Old Island Highway, Ocean Boulevard along Esquimalt Lagoon, the newer roundabouts and residential streets in Royal Bay, and the hills around Triangle Mountain. Our lessons build the skills these roads demand, from confident highway merging to smooth roundabout entries, hill starts, and calm decisions in commuter traffic.",
       "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a driver who wants to feel more in control around the Westshore, we pace the training around you in a patient, dual-control car.",
     ],
@@ -259,7 +263,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Where do lessons start for Colwood learners?",
         answer:
-          "Our training hub is in nearby Langford at Unit 124, 2770 Leigh Rd, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
+          "Our training hub is nearby at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
       },
     ],
   },
@@ -369,7 +373,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     serviceAreaTitle: "View Royal and the Westshore",
     serviceAreas: ["View Royal", "Langford", "Colwood", "Esquimalt", "Victoria", "Saanich", "Metchosin"],
     intro: [
-      "Shanaya's Driving School teaches new and returning drivers across View Royal, the gateway between Victoria and the Westshore. Our main training hub is minutes away in Langford at Unit 124, 2770 Leigh Rd, so View Royal learners can start close to home on the roads they drive every day.",
+      "Shanaya's Driving School teaches new and returning drivers across View Royal, the gateway between Victoria and the Westshore. Our main training hub is minutes away at 2770 Leigh Rd in Greater Victoria, so View Royal learners can start close to home on the roads they drive every day.",
       "View Royal driving means confident work on the Trans-Canada Highway and the Old Island Highway, smooth merging at the Helmcken Road interchange, and steady awareness around the Victoria General Hospital area and the Galloping Goose Trail crossings. Our lessons build these exact skills, along with lane changes, roundabouts, hill starts, and calm decisions in connector traffic.",
       "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a driver who wants to feel more in control on View Royal's busier roads, we pace the training around you in a patient, dual-control car.",
     ],
@@ -427,7 +431,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Where do lessons start for View Royal learners?",
         answer:
-          "Our training hub is in nearby Langford at Unit 124, 2770 Leigh Rd, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
+          "Our training hub is nearby at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
       },
     ],
   },
@@ -914,11 +918,21 @@ export const seoLandingPages: SeoLandingPage[] = [
       "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
     targetKeyword: "driving lesson prices Victoria BC",
     intro: [
-      "Driving lesson pricing depends on the student's goals, service area, course type, and whether the student chooses individual lessons or a structured package. Shanaya's Driving School keeps pricing options clear so families can compare beginner lessons, road test preparation, parking practice, and bundled training plans.",
+      "Individual driving lessons in Victoria and Langford start at $89 for 60 minutes and $133.50 for 90 minutes, with packages bundling several courses at a combined rate. Driving lesson pricing depends on your goals, service area, course type, and whether you choose single lessons or a structured package, and Shanaya's Driving School keeps every option clear so you can compare lessons, road test prep, parking practice, and bundled plans.",
       "Many students start with a package because it creates a complete training path. Others book a specific course when they only need a focused skill, such as road test prep, defensive driving, parking, or a refresher session. Payment plan options may also be available for eligible students and approved programs.",
       "The best value is usually the plan that matches the student's actual stage. A beginner needs enough repetition to build safe habits, while a near-ready student may only need targeted feedback before an ICBC appointment.",
     ],
     sections: [
+      {
+        title: "What driving lessons cost",
+        body:
+          "Individual lessons in our standard service areas start at $89 for 60 minutes and $133.50 for 90 minutes. Island bookings on Salt Spring are $109 and $163.50. Packages combine several courses at one rate, so the per-lesson cost works out lower than booking sessions individually.",
+        bullets: [
+          "60-minute lesson: $89 in Victoria, Langford, Colwood, and Sidney",
+          "90-minute lesson: $133.50 in Victoria, Langford, Colwood, and Sidney",
+          "Salt Spring Island: $109 for 60 minutes and $163.50 for 90 minutes",
+        ],
+      },
       {
         title: "Pricing factors",
         body:
@@ -1012,6 +1026,404 @@ export const seoLandingPages: SeoLandingPage[] = [
           "Payment plan options may be available for eligible students and approved programs.",
       },
     ],
+  },
+  {
+    id: "icbc-approved-driving-school",
+    path: "/icbc-approved-driving-school",
+    title: "ICBC-Approved Driving School in Victoria, BC | Shanaya's",
+    metaDescription:
+      "Looking for an ICBC-approved driving school in Victoria or Langford? Shanaya's is a licensed BC driving school with ICBC-licensed instructors teaching the ICBC curriculum in dual-control cars.",
+    eyebrow: "ICBC-approved driving school",
+    h1: "An ICBC-licensed driving school in Victoria & Langford",
+    heroDescription:
+      "Shanaya's Driving School is a licensed BC driving school with ICBC-licensed instructors, teaching to ICBC road-safety standards across Victoria, Langford, and Greater Victoria.",
+    heroImage:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
+    targetKeyword: "ICBC approved driving schools",
+    serviceAreaTitle: "Victoria and Greater Victoria",
+    serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Sidney", "Sooke"],
+    intro: [
+      "When people search for an \"ICBC-approved driving school,\" what they usually want is straightforward: a legitimate school ICBC recognises, with properly licensed instructors and lessons that match the standards examiners actually test. Shanaya's Driving School fits that description across Victoria, Langford, and Greater Victoria.",
+      "In British Columbia, driving schools and instructors are regulated by ICBC. We operate as a licensed BC driving school, our instructors hold ICBC driving-instructor licences, and every lesson is taught in an insured, dual-control vehicle built for safe, structured learning. That is the real difference between learning with a professional school and practising with a friend or family member.",
+      "Our lessons follow the ICBC curriculum and road-test standards, so the observation habits, positioning, and decision-making you build in lessons are the same ones an examiner looks for on test day.",
+    ],
+    sections: [
+      {
+        title: "What \"ICBC-approved\" actually means",
+        body:
+          "ICBC's official term is \"licensed.\" ICBC licenses both driving schools and individual instructors in BC, and only licensed schools can legally charge for in-car instruction. When a school describes itself as \"ICBC-approved,\" that licensing is what it points to.",
+        bullets: [
+          "Licensed BC driving school, operating legally for paid instruction",
+          "Instructors hold ICBC driving-instructor licences",
+          "Lessons taught in insured, dual-control training vehicles",
+        ],
+      },
+      {
+        title: "Why it matters who you learn with",
+        body:
+          "A licensed school gives you more than a car. You get a structured curriculum, an instructor trained to teach, dual controls for safety, and lessons designed around the exact standards ICBC examiners score. That combination builds safer habits faster and reduces test-day surprises.",
+      },
+      {
+        title: "Trained to ICBC road-test standards",
+        body:
+          "Every lesson maps to what ICBC assesses: observation and shoulder checks, speed control for each zone, lane positioning, intersections, parking, and calm decisions in traffic. We coach these deliberately, with direct feedback, so your everyday driving and your road-test performance improve together.",
+        bullets: [
+          "ICBC-aligned lesson structure from beginner to road-test ready",
+          "Mock road tests scored the way an examiner would",
+          "Knowledge-test support and Class 5 / Class 7 preparation",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Is Shanaya's Driving School ICBC-approved?",
+        answer:
+          "Yes. We are a licensed BC driving school and our instructors hold ICBC driving-instructor licences. In BC, that licensing is what \"ICBC-approved\" refers to.",
+      },
+      {
+        question: "How is a licensed school different from practising with family?",
+        answer:
+          "A licensed school gives you a trained instructor, a structured ICBC-aligned curriculum, and a dual-control car for safety. Lessons target the exact habits examiners score, which builds readiness faster than informal practice.",
+      },
+      {
+        question: "Does learning with a licensed school guarantee I will pass?",
+        answer:
+          "No school can guarantee a pass, but learning with ICBC-licensed instructors means your lessons match the standards examiners actually assess, which improves your consistency and readiness on test day.",
+      },
+      {
+        question: "Which areas do you serve?",
+        answer:
+          "We teach across Victoria, Langford, Colwood, Saanich, View Royal, Sidney, and nearby communities, with pick-up and drop-off available depending on scheduling.",
+      },
+    ],
+    relatedLinksTitle: "Start with the right lessons",
+    relatedLinks: [
+      {
+        label: "ICBC driving lessons in Victoria",
+        href: "/driving-lessons",
+        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+      },
+      {
+        label: "Driving lessons in Langford",
+        href: "/driving-lessons-langford",
+        description: "Lessons from our Westshore training area.",
+      },
+      {
+        label: "ICBC road test preparation",
+        href: "/road-test-prep",
+        description: "Mock tests and examiner-style feedback before your ICBC appointment.",
+      },
+    ],
+    primaryCtaLabel: "Book a lesson",
+  },
+  {
+    id: "bc-graduated-licensing-program",
+    path: "/bc-graduated-licensing-program",
+    title: "BC Graduated Licensing Program (GLP) Explained | Shanaya's",
+    metaDescription:
+      "How BC's Graduated Licensing Program works, from the Learner (L) and Novice (N) stages to your full Class 5 licence: the wait times, road tests, and restrictions at each step.",
+    eyebrow: "Graduated licensing",
+    h1: "The BC Graduated Licensing Program (GLP), explained",
+    heroDescription:
+      "New drivers in British Columbia earn a full licence in stages. Here is a clear walkthrough of the Learner (L) and Novice (N) stages, the wait times, the road tests, and the rules at each step.",
+    heroImage:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80",
+    targetKeyword: "BC graduated licensing program explained",
+    intro: [
+      "British Columbia uses a Graduated Licensing Program (GLP) for new drivers. Instead of one test for a full licence, you move through two supervised stages, Learner and Novice, that gradually give you more freedom as you gain experience. For most new Class 5 drivers, the full path takes a minimum of about three years.",
+      "The GLP applies to passenger-vehicle drivers working toward a Class 5 licence, and it starts with the Class 7 learner stage. Understanding each stage, and the wait time attached to it, helps you plan your road tests and avoid delays.",
+      "Below is a plain-language breakdown of every stage, what you need to move up, and the restrictions you follow along the way.",
+    ],
+    sections: [
+      {
+        title: "The stages at a glance",
+        body:
+          "The GLP has two learning stages before a full licence. You must spend a minimum amount of time in each stage and pass a road test to move to the next one.",
+        bullets: [
+          "Stage 1: Learner (Class 7L), minimum 12 months",
+          "Stage 2: Novice (Class 7N), minimum 24 months",
+          "Full licence (Class 5) after completing the Novice stage",
+        ],
+      },
+      {
+        title: "Stage 1: Learner's licence (Class 7L)",
+        body:
+          "You start by passing the ICBC knowledge test and a vision screening. Once you have your L, you can practise driving while supervised, and you must hold it for at least 12 months before your first road test.",
+        bullets: [
+          "Pass the ICBC knowledge test and a vision screening to qualify",
+          "A supervisor 25 or older with a valid Class 5 licence must sit in the front seat at all times",
+          "Zero blood alcohol, and no electronic devices, even hands-free",
+          "Display an \"L\" sign on the back of the vehicle",
+          "Hold the L for a minimum of 12 months before the Class 7 road test",
+        ],
+      },
+      {
+        title: "Stage 2: Novice licence (Class 7N)",
+        body:
+          "After 12 months as a Learner, you take the Class 7 road test. Pass it and you move to the Novice stage, where you can drive on your own with a few restrictions. You must hold the N for at least 24 months.",
+        bullets: [
+          "Drive unsupervised, but carry only one passenger unless a supervisor 25 or older is present or the passengers are immediate family",
+          "Zero blood alcohol, and no electronic devices",
+          "Display an \"N\" sign on the back of the vehicle",
+          "Hold the N for a minimum of 24 months as a safe driver before moving to a full Class 5 licence",
+        ],
+      },
+      {
+        title: "Full licence (Class 5)",
+        body:
+          "Once you have held your N for 24 months as a safe driver, you move toward your full Class 5 licence. Traditionally this meant passing a second road test, the Class 5 test. As of summer 2026, ICBC is removing that second road test for Novice drivers with a clean driving record and replacing it with a 12-month restriction period in which you keep demonstrating safe driving. ICBC is rolling this out and finalising the details, so check icbc.com for exactly how it applies to you.",
+      },
+      {
+        title: "Can you finish the GLP faster?",
+        body:
+          "The 12-month Learner stage is fixed, but the 24-month Novice stage can be reduced by six months if you complete an ICBC-approved GLP driver-training course. Strong preparation for your road test also helps you pass on the first attempt, so you are not waiting weeks to rebook after a fail.",
+      },
+      {
+        title: "How lessons help you move through the GLP",
+        body:
+          "Structured lessons build the exact habits ICBC examiners score at each road test, so you pass on schedule instead of losing months to a retest. Shanaya's Driving School coaches learners at every GLP stage across Victoria, Langford, and Greater Victoria, from your first supervised drive to full Class 5 readiness.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How long does the BC Graduated Licensing Program take?",
+        answer:
+          "At minimum about three years: 12 months in the Learner (L) stage and 24 months in the Novice (N) stage, plus the time to pass each road test. The Novice stage can be shortened by six months with an ICBC-approved GLP course.",
+      },
+      {
+        question: "What is the difference between an L and an N in BC?",
+        answer:
+          "The Learner (L) stage requires a qualified supervisor in the front seat at all times. The Novice (N) stage lets you drive alone, but with a one-passenger limit unless a supervisor or immediate family is present. Both require zero alcohol and no electronic devices.",
+      },
+      {
+        question: "How old do you have to be to start the GLP?",
+        answer:
+          "You can apply for your Learner's licence at 16. If you are under 19, you need consent from a parent or legal guardian.",
+      },
+      {
+        question: "How many road tests are in the GLP?",
+        answer:
+          "Traditionally two: the Class 7 road test to reach Novice, and the Class 5 road test to reach a full licence. As of summer 2026, ICBC is removing the second (Class 5) road test for Novice drivers with a clean record, replacing it with a 12-month restriction period. The knowledge test and the Class 7 road test still apply. Check icbc.com for the current requirement.",
+      },
+    ],
+    relatedLinksTitle: "Get ready for each stage",
+    relatedLinks: [
+      {
+        label: "ICBC knowledge test practice",
+        href: "/knowledge-test-practice",
+        description: "Practice questions to pass the test for your L.",
+      },
+      {
+        label: "ICBC driving lessons in Victoria",
+        href: "/driving-lessons",
+        description: "Build the skills for your Class 7 road test.",
+      },
+      {
+        label: "ICBC road test preparation",
+        href: "/road-test-prep",
+        description: "Mock tests and prep before your Class 7 or Class 5 test.",
+      },
+    ],
+    primaryCtaLabel: "Book a lesson",
+  },
+  {
+    id: "driving-instructor-victoria",
+    path: "/driving-instructor-victoria",
+    title: "Driving Instructor in Victoria BC | Shanaya's Driving School",
+    metaDescription:
+      "Looking for a driving instructor in Victoria or Langford? Shanaya's ICBC-licensed instructors give patient, one-on-one lessons in dual-control cars, with pick-up and drop-off across Greater Victoria.",
+    eyebrow: "Driving instructors",
+    h1: "Find a driving instructor in Victoria, BC",
+    heroDescription:
+      "Learn with a patient, ICBC-licensed driving instructor across Victoria, Langford, and Greater Victoria, in a dual-control car, at a pace that fits how you learn.",
+    heroImage:
+      "https://smallbusiness-production.s3.amazonaws.com/uploads/2021/09/Driving-instructor-pic.jpg",
+    targetKeyword: "driving instructor Victoria",
+    serviceAreaTitle: "Victoria and Greater Victoria",
+    serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Oak Bay", "Sidney"],
+    intro: [
+      "The right driving instructor is the difference between dreading lessons and actually looking forward to them. Shanaya's Driving School pairs learners across Victoria, Langford, and Greater Victoria with patient, ICBC-licensed instructors who teach at a pace that suits you, whether you have never driven before or you are polishing up for a road test.",
+      "Every one of our instructors holds an ICBC driving-instructor licence, teaches in an insured dual-control car, and coaches to the standards ICBC examiners actually score. Lessons are one-on-one, so your instructor's full attention is on your driving, your questions, and the specific habits you want to improve.",
+      "Because we are a local school, your instructor knows the Victoria and Westshore roads you will actually drive, from downtown one-ways to Langford's roundabouts and the routes near your test centre.",
+    ],
+    sections: [
+      {
+        title: "What to look for in a driving instructor",
+        body:
+          "Not all instruction is equal. Before you book with anyone, it is worth checking a few things that separate a professional instructor from a casual one.",
+        bullets: [
+          "A valid ICBC driving-instructor licence, not just a driver's licence",
+          "A dual-control vehicle for safety during lessons",
+          "Patience and clear feedback, backed by real student reviews",
+          "Lessons structured around ICBC road-test standards",
+        ],
+      },
+      {
+        title: "Our instructors",
+        body:
+          "Shanaya's instructors are licensed, experienced, and genuinely patient, the quality our students mention most. They explain each skill clearly, demonstrate what to look for, and give direct, encouraging feedback after every practice segment, so you always know what to work on next.",
+        bullets: [
+          "ICBC-licensed and experienced with learners at every level",
+          "Calm, judgment-free coaching, including for nervous drivers",
+          "Multi-language instruction available for a comfortable learning experience",
+        ],
+      },
+      {
+        title: "Lessons matched to how you learn",
+        body:
+          "Whether you are a first-time teen driver, an adult starting from scratch, a newcomer adjusting to BC roads, or a licensed driver preparing to re-test, your instructor tailors each lesson to your stage and the situations that challenge you most.",
+      },
+      {
+        title: "Where your instructor meets you",
+        body:
+          "Lessons run across Victoria, Langford, Colwood, Saanich, View Royal, and nearby communities, with pick-up and drop-off available from home, work, or school depending on scheduling, so you practise on the roads you already drive.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Are your driving instructors licensed?",
+        answer:
+          "Yes. Every instructor holds a valid ICBC driving-instructor licence and teaches in an insured, dual-control vehicle.",
+      },
+      {
+        question: "Can I request a patient instructor for nervous driving?",
+        answer:
+          "Yes. Many of our students start out anxious. Our instructors keep lessons calm and judgment-free, starting on quiet streets and building up only when you feel ready.",
+      },
+      {
+        question: "Do you offer lessons in languages other than English?",
+        answer:
+          "Multi-language instruction is available so you can learn in the language you are most comfortable with. Contact us to confirm availability for your preferred language.",
+      },
+      {
+        question: "Will the same instructor teach all my lessons?",
+        answer:
+          "We aim to keep you with a consistent instructor throughout your training so each lesson builds on the last, subject to scheduling.",
+      },
+      {
+        question: "Which areas do your instructors cover?",
+        answer:
+          "Victoria, Langford, Colwood, Saanich, View Royal, Sidney, and nearby communities, with pick-up and drop-off available depending on scheduling.",
+      },
+    ],
+    relatedLinksTitle: "Book your first lesson",
+    relatedLinks: [
+      {
+        label: "ICBC driving lessons in Victoria",
+        href: "/driving-lessons",
+        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+      },
+      {
+        label: "Nervous driver lessons",
+        href: "/nervous-driver-lessons-victoria",
+        description: "Calm, patient coaching to rebuild confidence.",
+      },
+      {
+        label: "Driving lesson prices",
+        href: "/pricing",
+        description: "See lesson and package pricing before you book.",
+      },
+    ],
+    primaryCtaLabel: "Book a lesson",
+  },
+  {
+    id: "driver-education-training",
+    path: "/driver-education-training",
+    title: "Driver Education & Training in Victoria, BC | Shanaya's",
+    metaDescription:
+      "Driver education and training in Victoria, Langford, and Greater Victoria. In BC that means ICBC-aligned knowledge test prep and in-car driving lessons through a licensed driving school.",
+    eyebrow: "Driver education & training",
+    h1: "Driver education and training in Victoria, BC",
+    heroDescription:
+      "In BC, driver education and training means ICBC knowledge-test prep plus in-car lessons with a licensed driving school. Shanaya's covers both across Victoria, Langford, and Greater Victoria.",
+    heroImage:
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    targetKeyword: "driver education and training",
+    serviceAreaTitle: "Victoria and Greater Victoria",
+    serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Sidney", "Sooke"],
+    intro: [
+      "\"Driver education\" and \"driver training\" are the North American terms for everything involved in learning to drive: the road-rules knowledge and the hands-on, in-car skills. In British Columbia, that is delivered through the Graduated Licensing Program, an ICBC knowledge test, and professional driving lessons, rather than a single mandatory classroom course.",
+      "Shanaya's Driving School provides both halves across Victoria, Langford, and Greater Victoria. Our ICBC-licensed instructors cover the rules and signs you need for the knowledge test, then build the practical driving skills examiners score, all in insured, dual-control cars.",
+      "So whether you searched for driver education, driver training, or drivers ed, this is the same thing: a structured path from your first lesson to a full BC licence, taught by a licensed local school.",
+    ],
+    sections: [
+      {
+        title: "Driver education: the knowledge side",
+        body:
+          "The education half is the road-rules knowledge every BC driver needs, the material tested on the ICBC knowledge test. We help you learn the signs, right-of-way rules, and safe-driving decisions, and you can practise with real ICBC-style questions before you write the test.",
+        bullets: [
+          "Road signs, traffic rules, and right-of-way explained clearly",
+          "ICBC-style practice questions to prepare for the knowledge test",
+          "The material tied to real road situations, not just memorising",
+        ],
+      },
+      {
+        title: "Driver training: the in-car side",
+        body:
+          "The training half is hands-on driving with a licensed instructor. Lessons progress from basic vehicle control to real Victoria and Westshore traffic, building the exact habits ICBC examiners look for on the road test.",
+        bullets: [
+          "One-on-one, in-car lessons in a dual-control vehicle",
+          "Beginner fundamentals through road-test-ready skills",
+          "Mock road tests and examiner-style feedback",
+        ],
+      },
+      {
+        title: "Is there a classroom driver's ed course in BC?",
+        body:
+          "Unlike some places, BC does not require a classroom driver's education course to get licensed. Instead, new drivers move through the Graduated Licensing Program: pass the knowledge test for a Learner (L) licence, build supervised experience, then pass the road test. Professional lessons are the fastest, safest way to gain that experience, and completing an ICBC-approved driver-training course can also shorten the Novice stage by six months.",
+      },
+      {
+        title: "Who driver education and training is for",
+        body:
+          "New teen drivers starting the GLP, adults learning from scratch, newcomers adjusting to BC roads, and licensed drivers refreshing their skills or preparing to re-test all benefit from structured education and training tailored to their stage.",
+      },
+      {
+        title: "Driver education and training near you",
+        body:
+          "Lessons run across Victoria, Langford, Colwood, Saanich, View Royal, and nearby communities, with pick-up and drop-off available from home, work, or school, so your training happens on the roads you actually drive.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is driver education the same as driving lessons in BC?",
+        answer:
+          "Effectively, yes. In BC the practical driver training is delivered as professional driving lessons, and the driver education knowledge is the material on the ICBC knowledge test. We cover both.",
+      },
+      {
+        question: "Do you offer drivers ed or driver training?",
+        answer:
+          "Yes. We provide the full path: knowledge-test preparation for the education side and in-car lessons for the training side, all with ICBC-licensed instructors in dual-control cars.",
+      },
+      {
+        question: "Is there a mandatory classroom driver's ed course in BC?",
+        answer:
+          "No. BC uses the Graduated Licensing Program instead of a required classroom course. You pass the knowledge test, build supervised driving experience, and pass the road test. An ICBC-approved driver-training course is optional and can shorten the Novice stage by six months.",
+      },
+      {
+        question: "Where do you offer driver education and training?",
+        answer:
+          "Across Victoria, Langford, Colwood, Saanich, View Royal, Sidney, and nearby communities, with pick-up and drop-off available depending on scheduling.",
+      },
+    ],
+    relatedLinksTitle: "Start your driver education and training",
+    relatedLinks: [
+      {
+        label: "ICBC knowledge test practice",
+        href: "/knowledge-test-practice",
+        description: "Prepare for the education side, the ICBC knowledge test.",
+      },
+      {
+        label: "ICBC driving lessons in Victoria",
+        href: "/driving-lessons",
+        description: "The in-car training side, from beginner to road-test ready.",
+      },
+      {
+        label: "BC Graduated Licensing Program",
+        href: "/bc-graduated-licensing-program",
+        description: "How the BC licensing stages work.",
+      },
+    ],
+    primaryCtaLabel: "Book a lesson",
   },
 ];
 

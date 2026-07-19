@@ -16,6 +16,8 @@ export type CourseCatalogItem = {
     fixedPrice?: number;
     sixtyMinuteClasses?: number;
     ninetyMinuteClasses?: number;
+    sixtyMinutePrice?: number;
+    ninetyMinutePrice?: number;
     discountPercent?: number;
   };
 };
@@ -79,17 +81,17 @@ const courseCatalogSeed: CourseCatalogItem[] = [
   },
   {
     id: "lesson-road-test-prep-course",
-    title: "Lesson + Road Test Prep Course",
+    title: "Lesson + Road Test Prep + Rental",
     level: "Test Prep",
     deliveryFormat: "In-car",
-    duration: "1 x 90 min + road test prep support",
-    detail: "1 x 90 min + road test prep support",
-    description: "A combined lesson built to sharpen driving and prepare you for road test expectations.",
-    highlights: ["Warm-Up Lesson", "Road Test Focus", "Route Preparation", "Last-Minute Support"],
+    duration: "2 x 60 min + road test prep and rental",
+    detail: "2 x 60 min + road test prep and rental",
+    description: "Two focused lessons, road test preparation, and a rental car for your road test.",
+    highlights: ["Warm-Up Lessons", "Road Test Focus", "Car Included", "Route Preparation"],
     tone: "bg-white text-black border border-gray-200",
     image: "https://www.easydriversed.com/wp-content/uploads/2025/01/the-road-test-process.jpg",
     quizTags: ["road-test", "combined", "test-prep", "maneuvers"],
-    pricing: { ninetyMinuteClasses: 1 },
+    pricing: { sixtyMinuteClasses: 2, sixtyMinutePrice: 350, ninetyMinutePrice: 450 },
   },
   {
     id: "road-test-prep-course",
@@ -159,7 +161,7 @@ const courseCatalogSeed: CourseCatalogItem[] = [
     tone: "bg-white text-black border border-gray-200",
     image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&q=80",
     quizTags: ["mock-test", "road-test", "feedback", "test-prep"],
-    pricing: { sixtyMinuteClasses: 1 },
+    pricing: { sixtyMinuteClasses: 1, sixtyMinutePrice: 120, ninetyMinutePrice: 150 },
   },
   {
     id: "confidence-booster-course",
