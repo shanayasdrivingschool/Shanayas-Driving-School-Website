@@ -88,12 +88,12 @@ const advantages: Advantage[] = [
   {
     title: "Dual Control Vehicles",
     text: "Training vehicles are equipped with instructor dual-control systems, allowing immediate intervention when needed to ensure maximum safety during every lesson.",
-    image: "/why-choose/dual-control-vehicles.webp",
+    image: "/why-choose/dual-control-vehicles-v2.webp",
   },
   {
     title: "Flexible Scheduling",
     text: "Convenient weekday and selected weekend lesson availability designed to fit student, school, and work schedules without added stress.",
-    image: "/why-choose/flexible-scheduling.webp",
+    image: "/why-choose/flexible-scheduling-v2.webp",
   },
   {
     title: "Knowledge Test Preparation",
@@ -103,22 +103,22 @@ const advantages: Advantage[] = [
   {
     title: "Regular Progress Tracking Updates",
     text: "Ongoing performance assessments and feedback ensure students clearly understand their strengths, improvement areas, and road test readiness.",
-    image: "/why-choose/progress-tracking.webp",
+    image: "/why-choose/progress-tracking-v2.webp",
   },
   {
     title: "Pick Up & Drop Off Available",
     text: "Door-to-door lesson options provide added convenience, allowing students to begin and finish training safely from home, school, or work locations.",
-    image: "/why-choose/pickup-dropoff.webp",
+    image: "/why-choose/pickup-dropoff-v2.webp",
   },
   {
     title: "Modern Training Facility",
     text: "A clean, professional learning environment designed to support both in-car instruction and theory preparation in a comfortable setting.",
-    image: "/why-choose/modern-facility.webp",
+    image: "/why-choose/modern-facility-v2.webp",
   },
   {
     title: "Multi-Language Support",
     text: "Instruction available in multiple languages to ensure clear communication and a comfortable learning experience for students from diverse backgrounds.",
-    image: "/why-choose/multi-language.webp",
+    image: "/why-choose/multi-language-v2.webp",
   }
 ];
 

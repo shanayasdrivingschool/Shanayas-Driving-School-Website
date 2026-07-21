@@ -8,11 +8,11 @@ const values = [
     text: "We create a calm and supportive learning environment where students can build confidence at their own pace without pressure.",
   },
   {
-    title: "Skills that last lifetime",
+    title: "Skills that last a lifetime",
     text: "Every lesson focuses on practical skills, safe habits, and real-world driving situations students will face every day.",
   },
   {
-    title: "Confidence first matters",
+    title: "Confidence matters",
     text: "We prioritize awareness, responsibility, and confident decision-making so students feel prepared beyond the road test.",
   },
 ];
@@ -20,10 +20,10 @@ const values = [
 const About = () => (
   <main className="bg-white text-[#202121]">
     <PageNameSection
-      eyebrow="Meet the team"
+      eyebrow="About the school"
       title={<span className="text-white">About us</span>}
-      description="We provide patient instruction, structured lesson plans, and practical road training for learners across Vancouver & Surrounding Gulf Islands."
-      backgroundImage="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=2200&q=80"
+      description="We provide structured driving lessons for learners in Langford, Victoria, and surrounding Greater Victoria communities."
+      backgroundImage="/landing/driving-instructor-victoria.webp"
     />
 
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
@@ -37,11 +37,27 @@ const About = () => (
           <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
             Our training combines clear instruction, practical learning, and real-world driving so students feel prepared in any situation.
           </p>
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-relaxed text-slate-600">
+            <p>
+              ICBC&apos;s public directory lists Shanaya&apos;s Driving School at Unit 124, 2770 Leigh Rd, Langford for
+              Class 5 and Class 7 driver training. A directory listing confirms licensing; it is not an ICBC
+              recommendation or endorsement.
+            </p>
+            <a
+              href="https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex font-bold text-[#1d52a1] underline underline-offset-2"
+            >
+              Check ICBC&apos;s current driving-school directory
+            </a>
+            <p className="mt-3 text-xs text-slate-500">Directory checked July 21, 2026.</p>
+          </div>
         </div>
         <div className="overflow-hidden rounded-[32px]">
           <img
-            src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80"
-            alt="Team workshop"
+            src="/why-choose/licensed-instructors.webp"
+            alt="An instructor guiding a learner driver"
             loading="lazy"
             decoding="async"
             className="h-[320px] w-full object-cover sm:h-[380px]"
@@ -80,8 +96,8 @@ const About = () => (
         </div>
         <div className="overflow-hidden rounded-[28px]">
           <img
-            src="https://www.alpha-drivingschool.com/webfiles/DES/albums/layout_images/or/home.jpg"
-            alt="Team collaboration"
+            src="/landing/driving-instructor-victoria.webp"
+            alt="An instructor assisting a learner in a vehicle"
             loading="lazy"
             decoding="async"
             className="h-[260px] w-full object-cover sm:h-[320px]"

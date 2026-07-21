@@ -29,14 +29,14 @@ const programStages = [
   },
   {
     title: "Full Class 5 Licence",
-    text: "The final stage of the Graduated Licensing Program, with full driving privileges in British Columbia.",
+    text: "Full driving privileges in British Columbia. From October 19, 2026 this is preceded by a 12-month restricted Class 5 stage.",
     icon: ShieldCheck,
   },
 ];
 
 const eligibilityRequirements = [
   "Accepted identification",
-  "Parent or legal guardian consent if you are under 19",
+  "Parent or legal guardian consent if you are under 19, dropping to under 18 on October 19, 2026",
   "The ability to pass a vision screening",
   "The ability to pass the knowledge test",
 ];
@@ -50,7 +50,7 @@ const studyTopics = [
 ];
 
 const learnerRestrictions = [
-  "You must have a qualified supervisor who is 25 or older and holds a valid driver's licence",
+  "You must have a qualified supervisor who is 25 or older and holds a valid driver's licence, dropping to 22 or older on October 19, 2026",
   "You must display an L sign on the rear of the vehicle",
   "You must have zero alcohol and zero drugs in your system",
   "You may not use electronic devices, including hands-free devices",
@@ -83,17 +83,17 @@ const timelineSteps = [
   {
     title: "Learner (L)",
     duration: "Minimum 12 months",
-    text: "Build road knowledge, Practice  with supervision, and prepare for the Class 7 road test.",
+    text: "Build road knowledge, Practice  with supervision, and prepare for the Class 7 road test. From October 19, 2026, 9 months if you are 25 or older.",
   },
   {
     title: "Novice (N)",
     duration: "Minimum 24 months",
-    text: "Gain independent experience while following GLP restrictions and safe-driving requirements.",
+    text: "Gain independent experience while following GLP restrictions and safe-driving requirements. From October 19, 2026, 12 months if you are 25 or older.",
   },
   {
     title: "Full Licence",
     duration: "After successful completion of requirements",
-    text: "Progress to full Class 5 once the Novice stage and final licensing step are completed.",
+    text: "Progress to Class 5 once the Novice stage and final licensing step are completed. From October 19, 2026 a 12-month restricted period applies first.",
   },
 ];
 
@@ -151,7 +151,19 @@ const NewcomersGuide = () => (
           </div>
           <p className="mt-5 text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">Important</p>
           <p className="mt-3 text-base leading-relaxed text-slate-700 sm:text-lg">
-            As of <span className="font-black">March 14, 2026</span>, ICBC still describes the final GLP step as progressing from a Novice licence to a full Class 5 licence after the required Novice period and, under the current process, completing the Class 5 road test. ICBC has also announced GLP changes planned for <span className="font-black">summer 2026</span>, so applicants should confirm the latest Class 5 requirements with ICBC before booking.
+            The Graduated Licensing Program is changing on{" "}
+            <span className="font-black">October 19, 2026</span>. ICBC is removing the second road
+            test and replacing it with a Driving Record Assessment, adding a 12-month restricted
+            Class 5 stage, and shortening the path for drivers aged 25 and older. Second road tests
+            booked on or after that date will be cancelled. This guide describes the program as it
+            works today, with each upcoming change flagged where it applies. See{" "}
+            <Link
+              to="/blog/bc-glp-changes-2026"
+              className="font-bold text-[#1d52a1] underline underline-offset-2"
+            >
+              what changes on October 19, 2026
+            </Link>{" "}
+            for the full breakdown.
           </p>
         </div>
 
@@ -418,7 +430,7 @@ const NewcomersGuide = () => (
               The N stage is designed to help drivers build independent driving experience while still operating under important safety restrictions.
             </p>
             <p className="mt-4 text-base leading-relaxed text-white/80">
-              For most drivers, the Novice stage lasts <span className="font-black text-white">24 months</span> before they can progress to a full licence. In some cases, drivers who complete an ICBC-approved driver training course during the Learner stage may qualify for a shorter Novice period, provided they meet ICBC's conditions.
+              For most drivers, the Novice stage lasts <span className="font-black text-white">24 months</span> before they can progress to a full licence. Drivers who complete an ICBC-approved driver training course during the Learner stage may qualify for a shorter Novice period of 18 months, provided they meet ICBC's conditions. From October 19, 2026, drivers aged 25 and older need only <span className="font-black text-white">12 months</span> as a Novice.
             </p>
           </div>
         </div>
@@ -430,14 +442,14 @@ const NewcomersGuide = () => (
         <p className="text-center text-6xl font-black text-gray-300/80 sm:text-7xl lg:text-8xl">Step 5</p>
         <h2 className="text-center text-3xl font-black text-[#1d52a1] sm:text-4xl md:text-5xl">Full Class 5 License</h2>
         <p className="mx-auto mt-4 max-w-4xl text-center text-base text-slate-600 sm:text-lg">
-          The final step is obtaining your <span className="font-bold">full Class 5 licence</span>. Under the current GLP process described by ICBC, drivers progress to this stage after completing the required Novice period and meeting the safe driving requirements.
+          The final step is obtaining your <span className="font-bold">full Class 5 licence</span>. Drivers progress to this stage after completing the required Novice period and meeting the safe driving requirements. How you get there depends on whether you finish before or after October 19, 2026.
         </p>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[32px] bg-[#0f172a] p-6 text-white shadow-sm sm:p-8">
-            <h3 className="text-2xl font-black sm:text-3xl">Current process</h3>
+            <h3 className="text-2xl font-black sm:text-3xl">Until October 19, 2026</h3>
             <p className="mt-4 text-base leading-relaxed text-white/80">
-              Under the current system, drivers generally book and complete a final <span className="font-bold">Class 5 road test</span>.
+              Drivers book and complete a final <span className="font-bold">Class 5 road test</span>. From October 19, 2026 that test is replaced by a <span className="font-bold">Driving Record Assessment</span>, an in-office check of your driving record, and passing it gives you a Class 5 carrying a 12-month zero alcohol and drug restriction before the licence becomes fully unrestricted.
             </p>
             <div className="mt-6 grid gap-4">
               {class5Skills.map((item) => (

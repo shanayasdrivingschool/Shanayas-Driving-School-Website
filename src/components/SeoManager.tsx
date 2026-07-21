@@ -27,6 +27,13 @@ const socialProfileUrls = [
   optionalEnvUrl(import.meta.env.VITE_YOUTUBE_CHANNEL_URL),
 ].filter((url): url is string => Boolean(url));
 
+type SeoArticleDetails = {
+  headline: string;
+  datePublished: string;
+  dateModified: string;
+  section: string;
+};
+
 type SeoDetails = {
   title: string;
   description: string;
@@ -35,6 +42,7 @@ type SeoDetails = {
   type?: "website" | "article";
   robots?: "index, follow" | "noindex, follow" | "noindex, nofollow";
   faqs?: SeoLandingPageFaq[];
+  article?: SeoArticleDetails;
 };
 
 type JsonLdObject = Record<string, unknown>;
@@ -159,8 +167,8 @@ const localBusinessJsonLd: JsonLdObject = {
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "2770 Leigh Rd",
-    addressLocality: "Victoria",
+    streetAddress: "Unit 124, 2770 Leigh Rd",
+    addressLocality: "Langford",
     addressRegion: "BC",
     postalCode: "V9B 4G1",
     addressCountry: "CA",
@@ -297,6 +305,38 @@ const buildFaqJsonLd = (faqs?: SeoLandingPageFaq[]): JsonLdObject | null => {
   };
 };
 
+/* BlogPosting schema for article routes. `publisher` points at the LocalBusiness
+   node by @id, which is emitted on every page, so the two graphs stay linked. */
+const buildArticleJsonLd = (
+  seo: SeoDetails,
+  canonicalUrl: string,
+  imageUrl: string,
+): JsonLdObject | null => {
+  if (!seo.article) {
+    return null;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${canonicalUrl}#article`,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+    headline: seo.article.headline,
+    description: seo.description,
+    image: imageUrl,
+    datePublished: seo.article.datePublished,
+    dateModified: seo.article.dateModified,
+    articleSection: seo.article.section,
+    inLanguage: "en-CA",
+    author: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: `${SITE_ORIGIN}/about/`,
+    },
+    publisher: { "@id": `${SITE_ORIGIN}/#localbusiness` },
+  };
+};
+
 const getSeoForPath = (rawPathname: string): SeoDetails => {
   const path = normalizePath(rawPathname);
 
@@ -350,11 +390,17 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     const post = blogPosts.find((item) => item.slug === decodePathSegment(blogSlug));
     if (post) {
       return {
-        title: `${post.title} | ${SITE_NAME}`,
+        title: post.seoTitle ?? `${post.title} | ${SITE_NAME}`,
         description: post.description,
         image: post.heroImage,
         path,
         type: "article",
+        article: {
+          headline: post.title,
+          datePublished: post.datePublished,
+          dateModified: post.dateModified,
+          section: post.category,
+        },
       };
     }
   }
@@ -430,6 +476,7 @@ const SeoManager = () => {
 
     setJsonLd("local-business-schema", localBusinessJsonLd);
     setJsonLd("faq-schema", buildFaqJsonLd(seo.faqs));
+    setJsonLd("article-schema", buildArticleJsonLd(seo, canonicalUrl, imageUrl));
   }, [seo]);
 
   return null;

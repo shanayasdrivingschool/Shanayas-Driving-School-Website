@@ -59,7 +59,7 @@ const SiteFooter = () => (
           />
         </Link>
         <p className="mt-6 text-sm font-semibold text-white/90">
-          Professional driving education across Vancouver & Gulf Islands.
+          Driving lessons in Langford, Victoria, and surrounding Greater Victoria communities.
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3 md:justify-start">
           <a
@@ -216,7 +216,7 @@ const SiteFooter = () => (
       <div className="w-full max-w-[320px] text-left">
         <p className="mb-4 text-left text-lg font-bold uppercase text-black md:text-xl">Our Address</p>
         <p className="flex items-start gap-2 font-semibold text-white">
-          <MapPin size={16} className="mt-1" /> 2770 Leigh Rd, Victoria, BC V9B 4G1
+          <MapPin size={16} className="mt-1" /> Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1
         </p>
       </div>
 
