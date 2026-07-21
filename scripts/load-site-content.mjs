@@ -40,6 +40,7 @@ export const loadSiteContent = async () => {
       { packageCatalog },
       { optionalExtras },
       { courseModulesById },
+      knowledgeTestGuide,
     ] = await Promise.all([
       server.ssrLoadModule("/src/data/blogPosts.tsx"),
       server.ssrLoadModule("/src/data/seoLandingPages.ts"),
@@ -47,9 +48,15 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/data/packageCatalog.ts"),
       server.ssrLoadModule("/src/data/optionalExtras.ts"),
       server.ssrLoadModule("/src/data/courseModules.ts"),
+      server.ssrLoadModule("/src/data/knowledgeTestGuide.ts"),
     ]);
 
     return {
+      knowledgeTestGuide: {
+        faqs: knowledgeTestGuide.knowledgeTestGuideFaqs,
+        publishedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
+        reviewedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
+      },
       blogPosts: new Map(
         blogPosts.map((post) => [
           post.slug,
