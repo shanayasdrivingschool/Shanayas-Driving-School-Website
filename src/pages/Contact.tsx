@@ -25,7 +25,7 @@ const reachCards = [
   {
     icon: Briefcase,
     title: "Sales & Enquiries",
-    text: "Ready to start driving? Contact our sales team today to book your lessons, explore flexible packages, and secure your spot with our ICBC licensed instructors.",
+    text: "Ready to start driving? Contact our sales team to ask about lesson options, current instructor availability, and scheduling.",
     link: "mailto:book@drivingschoolbc.ca",
     linkLabel: "Talk to sales",
   },
@@ -102,7 +102,7 @@ const Contact = () => {
           <p className="text-center text-6xl font-black text-gray-300/80 sm:text-7xl lg:text-8xl">Connect</p>
           <h2 className="text-center text-3xl font-black text-[#1d52a1] sm:text-4xl md:text-5xl">Get In Touch</h2>
           <p className="mx-auto mt-4 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
-            Our ICBC licensed instructors are happy to guide you, assess your learning needs, and help you choose the right program to get you road-ready with confidence.
+            Our team can discuss your learning needs, current lesson availability, and the training options shown in our catalogue.
           </p>
 
           <div className="mt-10 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
@@ -252,7 +252,7 @@ const Contact = () => {
           <h2 className="text-center text-3xl font-black text-[#1d52a1] sm:text-4xl md:text-5xl">Reach Us Out Directly</h2>
           <p className="mx-auto mt-4 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
             Whether you're a new driver or a parent of a first-time learner, contact us to learn more about our
-            ICBC-aligned training programs, flexible schedules options, and convenient
+            current training options, scheduling availability, and convenient
             <br />
             pickup & drop-off services.
           </p>

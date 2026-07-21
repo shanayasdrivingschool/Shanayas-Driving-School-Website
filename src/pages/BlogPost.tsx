@@ -57,6 +57,21 @@ const articleProseClasses = [
   "[&_a]:font-semibold [&_a]:text-[#1d52a1] [&_a]:underline [&_a:hover]:text-[#17488d]",
   "[&_strong]:font-bold [&_strong]:text-slate-800",
   "[&_blockquote]:my-6 [&_blockquote]:rounded-r-xl [&_blockquote]:border-l-4 [&_blockquote]:border-[#1d52a1] [&_blockquote]:bg-[#1d52a1]/5 [&_blockquote]:px-6 [&_blockquote]:py-4 [&_blockquote]:font-semibold [&_blockquote]:text-slate-700",
+  // Tables: wrap each one in
+  // <div class="overflow-x-auto rounded-xl border border-slate-200"> so wide
+  // tables scroll inside their own box instead of forcing the page sideways.
+  // The wrapper owns the outer border and the rounded corners; cells only draw
+  // the dividers between them, otherwise the corners can't clip cleanly.
+  "[&_table]:w-full [&_table]:min-w-[40rem] [&_table]:border-collapse [&_table]:text-[15px]",
+  "[&_caption]:border-b [&_caption]:border-slate-200 [&_caption]:bg-white [&_caption]:px-4 [&_caption]:py-3 [&_caption]:text-left [&_caption]:text-sm [&_caption]:text-slate-500",
+  "[&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:align-top [&_th]:font-bold",
+  "[&_thead_th]:bg-[#1d52a1] [&_thead_th]:text-white",
+  "[&_thead_tr>*+*]:border-l [&_thead_tr>*+*]:border-white/25",
+  "[&_tbody_th]:text-slate-900",
+  "[&_td]:px-4 [&_td]:py-3 [&_td]:align-top [&_td]:text-slate-600",
+  "[&_tbody_tr]:border-t [&_tbody_tr]:border-slate-200",
+  "[&_tbody_tr>*+*]:border-l [&_tbody_tr>*+*]:border-slate-200",
+  "[&_tbody_tr:last-child]:bg-slate-50 [&_tbody_tr:last-child_td]:font-semibold [&_tbody_tr:last-child_td]:text-slate-900",
 ].join(" ");
 
 const BlogPost = () => {
@@ -147,15 +162,14 @@ const BlogPost = () => {
           </h1>
 
           <p className="mt-5 text-sm text-white/80">
-            by{" "}
+            Prepared by{" "}
             <Link to="/about" className="font-semibold text-white underline underline-offset-2">
               {post.author}
             </Link>
           </p>
           <p className="mt-2 max-w-3xl text-xs leading-relaxed text-white/65">
-            Shanaya&apos;s is an independent driving school, not ICBC. Licensing facts are reviewed against the
-            official sources linked in each article. Confirm current requirements with ICBC; report a factual error
-            to{" "}
+            Shanaya&apos;s is an independent driving school, not ICBC. Licensing and road-safety claims link to the
+            official sources used for the article. Confirm current requirements with ICBC; report a factual error to{" "}
             <a href="mailto:book@drivingschoolbc.ca" className="underline underline-offset-2">
               book@drivingschoolbc.ca
             </a>

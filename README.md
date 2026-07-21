@@ -1,7 +1,8 @@
 # Shanaya's Driving School — Website
 
-Marketing website for Shanaya's Driving School (Greater Victoria, BC): ICBC-aligned
-driving lessons, road test prep, knowledge test support, and confidence-building training.
+Marketing website for Shanaya's Driving School, an independent B.C. school listed in
+ICBC's general directory for Class 5 and 7 driver training in Langford. The directory
+listing is not ICBC approval, recommendation, or endorsement.
 
 Production site: https://www.drivingschoolbc.ca/
 

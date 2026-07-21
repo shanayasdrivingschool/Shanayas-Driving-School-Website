@@ -30,7 +30,7 @@ const formatTimer = (seconds: number) => {
 const infoCards = [
   {
     title: "Multiple-choice questions",
-    description: "Practice with ICBC-style multiple-choice questions.",
+    description: "Practice with multiple-choice questions from this site's independent study bank.",
     icon: <ListChecks className="h-5 w-5" />,
   },
   {
@@ -40,7 +40,7 @@ const infoCards = [
   },
   {
     title: "Practice timer included",
-    description: "Practice with a timer to get used to real test conditions.",
+    description: "Use an optional timer for study structure; this session does not reproduce the official test format.",
     icon: <Clock3 className="h-5 w-5" />,
   },
 ];
@@ -49,7 +49,7 @@ const knowledgeTestStrategies = [
   {
     title: "Start with the official source",
     description:
-      "Study ICBC's Learn to Drive Smart guide first. Every knowledge test question is based on it, so it is the fastest path to the right answers.",
+      "Study ICBC's Learn to Drive Smart guide first. ICBC says it contains the information needed for the Class 7 knowledge test.",
   },
   {
     title: "Master road signs by shape and colour",
@@ -59,7 +59,7 @@ const knowledgeTestStrategies = [
   {
     title: "Practise under a timer",
     description:
-      "Use timed practice sessions so the real test's pace feels familiar and you do not rush the questions that trip most people up.",
+      "A timer can help you practise reading carefully. The official Class 7 test has 50 questions and a 45-minute limit; this tool uses a different format.",
   },
   {
     title: "Review every wrong answer",
@@ -67,14 +67,14 @@ const knowledgeTestStrategies = [
       "After each session, read the explanation for anything you missed. Understanding why an answer is correct sticks better than memorising it.",
   },
   {
-    title: "Focus on right-of-way and speed zones",
+    title: "Revisit rules you miss",
     description:
-      "School and playground zones, right turns on red, and right-of-way at intersections are common BC test topics worth extra review.",
+      "When you miss a question, return to the matching section of the official guide and verify the rule before trying again.",
   },
   {
-    title: "Prepare in your best language",
+    title: "Check the available languages",
     description:
-      "ICBC offers the knowledge test in many languages. Study in the one you read most comfortably so wording never costs you a question.",
+      "ICBC offers the Class 7 knowledge test in 12 languages. Check the current list and choose an available language you understand well.",
   },
 ];
 
@@ -162,20 +162,46 @@ const KnowledgeTestPractice = () => {
     <main className="bg-white text-[#202121]">
       <PageNameSection
         eyebrow="Learner Practice"
-        title={<span className="text-white">ICBC Knowledge Test Practice</span>}
-        description="Practice realistic learner licence multiple-choice questions, review explanations, and build confidence before your ICBC knowledge test."
-        backgroundImage="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2200&q=80"
+        title={<span className="text-white">B.C. Class 7 Knowledge Test Practice</span>}
+        description="Use independent learner-licence practice questions, then verify the rules with ICBC's official handbook and practice test."
+        backgroundImage="/why-choose/knowledge-test-prep.webp"
       />
 
       <section className="bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mb-8 rounded-[28px] border border-amber-300 bg-amber-50 p-6 text-sm leading-relaxed text-amber-950 sm:text-base">
+            <p className="font-black">Independent practice tool — not ICBC&apos;s official test</p>
+            <p className="mt-2">
+              The question bank is not supplied, reviewed, approved or endorsed by ICBC. Do not treat any question
+              as an official live-test item. A practice score does not predict an official result. Study the{" "}
+              <a
+                href="https://www.icbc.com/driver-licensing/driving-guides/Learn-to-Drive-Smart"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold underline underline-offset-2"
+              >
+                current Learn to Drive Smart guide
+              </a>{" "}
+              and use{" "}
+              <a
+                href="https://www.icbc.com/driver-licensing/new-drivers/practice-knowledge-test"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold underline underline-offset-2"
+              >
+                ICBC&apos;s official practice test
+              </a>
+              .
+            </p>
+          </div>
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.25fr]">
             <div className="space-y-5">
               <div className="rounded-[30px] border border-slate-200 bg-[#F8FAFC] p-6 shadow-sm sm:p-8">
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">How this works</p>
                 <h2 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl">Learn Through Practice</h2>
                 <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-                  Train using ICBC-style questions in a structured system built for knowledge test preparation, helping you apply what you've learned, identify key gaps with precision, and strengthen your understanding through instant, guided feedback.
+                  Use this independent question bank to review what you have studied, identify topics to revisit, and
+                  read the available answer explanations. Check every uncertain rule against ICBC&apos;s current material.
                 </p>
 
                 <div className="mt-6 space-y-4">
@@ -206,7 +232,8 @@ const KnowledgeTestPractice = () => {
                   </div>
                 </div>
                 <p className="mt-5 text-sm leading-relaxed text-white/80">
-                  This is a study tool for practice and review. Students should continue to study the official ICBC learner materials before taking the real test.
+                  This 20-question, 30-minute study session differs from ICBC&apos;s 50-question, 45-minute Class 7 test.
+                  Continue with ICBC&apos;s official learner materials and practice test.
                 </p>
               </div>
             </div>
@@ -477,7 +504,8 @@ const KnowledgeTestPractice = () => {
               ICBC knowledge test preparation strategies
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-              The ICBC knowledge test covers road signs, rules of the road, and safe-driving decisions. These preparation strategies help BC learners study efficiently and pass on the first attempt.
+              The Class 7 knowledge test covers road signs, rules of the road, and safe-driving decisions. These
+              suggestions organize study; they cannot guarantee a passing result or a particular number of attempts.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {knowledgeTestStrategies.map((strategy) => (

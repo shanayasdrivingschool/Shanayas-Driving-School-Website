@@ -178,6 +178,9 @@ const SiteFooter = () => (
               <Link to="/newcomers-guide">Driver's Licence Guide</Link>
             </li>
             <li>
+              <Link to="/knowledge-test-guide">Knowledge Test Guide</Link>
+            </li>
+            <li>
               <Link to="/knowledge-test-practice">Knowledge Test Practice</Link>
             </li>
             <li>

@@ -11,7 +11,7 @@ const SITE_ORIGIN = "https://www.drivingschoolbc.ca";
 const SITE_NAME = "Shanaya's Driving School";
 const DEFAULT_TITLE = "Driving Lessons Victoria BC | Shanaya's Driving School";
 const DEFAULT_DESCRIPTION =
-  "ICBC-aligned driving lessons, road test prep, knowledge test support, and confidence-building training in Langford, Victoria, and across Greater Victoria.";
+  "Class 5 and 7 driving lessons, road-test preparation, knowledge-test support, and confidence-building training in Langford, Victoria, and listed B.C. service areas.";
 const DEFAULT_IMAGE_PATH = "/logos/For Social Media.jpg";
 
 const optionalEnvUrl = (value: string | undefined) => {
@@ -65,7 +65,7 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
   "/about": {
     title: "About Shanaya's Driving School | Victoria & Langford Driving Lessons",
     description:
-      "Learn about Shanaya's Driving School, our supportive training approach, ICBC-aligned lessons, and student-first driving instruction.",
+      "Learn about Shanaya's Driving School, its Langford Class 5 and 7 directory listing, supportive training approach, and student-first instruction.",
   },
   "/contact": {
     title: "Contact Shanaya's Driving School | Book Driving Lessons in BC",
@@ -83,20 +83,20 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
       "Explore installment options for eligible driving lesson packages with clear monthly payment choices and predictable scheduling.",
   },
   "/newcomers-guide": {
-    title: "BC Driver's Licence Guide for Newcomers | Shanaya's Driving School",
+    title: "Moving to B.C.: Exchange or Get a B.C. Driver's Licence | Shanaya's",
     description:
-      "A practical guide for newcomers learning BC licensing rules, ICBC requirements, road tests, and local driving expectations.",
+      "Choose the correct ICBC path to exchange a valid licence or start B.C.'s Class 7 process, with document, experience, deadline, fee and source details.",
   },
   "/knowledge-test-practice": {
-    title: "ICBC Knowledge Test Practice | Shanaya's Driving School",
+    title: "Independent B.C. Class 7 Knowledge Test Practice | Shanaya's",
     description:
-      "Practice ICBC-style learner licence questions and use proven preparation strategies to pass your British Columbia knowledge test with confidence.",
+      "Use an independent 20-question Class 7 study bank, then verify every rule with ICBC's official guide and practice test.",
   },
   "/knowledge-test-guide": {
-    title: "ICBC Knowledge Test Guide | Shanaya's Driving School",
+    title: "B.C. Class 7 Knowledge Test: Online & In-Person Guide | Shanaya's",
     description:
-      "A step-by-step guide to booking, studying for, and passing your BC knowledge test — eligibility, the official handbook, practice, and test day.",
-    robots: "noindex, follow",
+      "Current Class 7 guide to ICBC's online and in-person B.C. knowledge test: eligibility, 50 questions, fees, study sources, ID and licence steps.",
+    robots: "index, follow",
   },
   "/blog": {
     title: "Driving Tips & Road Test Resources | Shanaya's Driving School",
@@ -197,8 +197,8 @@ const localBusinessJsonLd: JsonLdObject = {
       "@type": "Offer",
       itemOffered: {
         "@type": "Service",
-        name: "ICBC road test preparation",
-        areaServed: "British Columbia",
+        name: "Class 5 and 7 road-test preparation",
+        areaServed: "Greater Victoria, BC",
       },
     },
     {

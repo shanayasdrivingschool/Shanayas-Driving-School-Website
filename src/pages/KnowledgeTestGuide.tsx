@@ -1,505 +1,482 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
   CheckCircle2,
+  Clock3,
   CreditCard,
-  Download,
+  ExternalLink,
   Eye,
-  Facebook,
   IdCard,
-  Lightbulb,
-  Linkedin,
-  Lock,
-  Mail,
+  Languages,
+  Laptop,
   MapPin,
-  Monitor,
+  MonitorCheck,
   ShieldCheck,
   Target,
-  Twitter,
+  UserCheck,
   Wifi,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
-import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
 
-const UNLOCK_STORAGE_KEY = "ktg:unlocked";
-const EMAIL_STORAGE_KEY = "ktg:email";
-const ICBC_HANDBOOK_URL = "https://www.icbc.com/assets/en/63cHBOAVpOAQGOOMBFhFbL/driver-full.pdf";
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const OFFICIAL_URLS = {
+  onlineTest: "https://www.icbc.com/driver-licensing/new-drivers/online-knowledge-test",
+  getYourL: "https://www.icbc.com/driver-licensing/new-drivers/Get-your-L",
+  handbook: "https://www.icbc.com/driver-licensing/driving-guides/Learn-to-Drive-Smart",
+  practiceTest: "https://www.icbc.com/driver-licensing/new-drivers/practice-knowledge-test",
+  acceptedId: "https://www.icbc.com/driver-licensing/visit-dl-office/Accepted-ID",
+  bookAppointment:
+    "https://www.icbc.com/driver-licensing/visit-dl-office/Book-a-knowledge-test-and-other-services",
+  fees: "https://www.icbc.com/driver-licensing/visit-dl-office/Fees",
+  glpAnnouncement: "https://news.gov.bc.ca/releases/2026PSSG0061-000847",
+} as const;
 
-const SITE_ORIGIN = "https://www.drivingschoolbc.ca";
-const GUIDE_URL = `${SITE_ORIGIN}/knowledge-test-guide`;
-const GUIDE_TITLE = "Free step by step ICBC knowledge test guide";
-const shareLinks = [
-  {
-    label: "Share the guide on LinkedIn",
-    icon: Linkedin,
-    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(GUIDE_URL)}`,
-  },
-  {
-    label: "Share the guide on X",
-    icon: Twitter,
-    href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(GUIDE_URL)}&text=${encodeURIComponent(GUIDE_TITLE)}`,
-  },
-  {
-    label: "Share the guide on Facebook",
-    icon: Facebook,
-    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(GUIDE_URL)}`,
-  },
+const atAGlanceFacts = [
+  { value: "16+", label: "Minimum age", icon: UserCheck },
+  { value: "50", label: "Multiple-choice questions", icon: Target },
+  { value: "40/50", label: "Correct answers to pass", icon: CheckCircle2 },
+  { value: "45 min", label: "Maximum test time", icon: Clock3 },
+  { value: "$15", label: "Fee for each attempt", icon: CreditCard },
+  { value: "12", label: "Available test languages", icon: Languages },
 ];
 
-type BulletGroup = {
-  label: string;
-  icon: typeof Monitor;
-  items: string[];
-};
-
-const onlineRequirementGroups: BulletGroup[] = [
-  {
-    label: "To register you'll need",
-    icon: IdCard,
-    items: [
-      "An email address.",
-      "A piece of accepted primary ID to confirm your identity. Bring the same ID to your driver licensing appointment.",
-      "A valid Visa, MasterCard, or American Express credit card. It does not need to be in your name.",
-    ],
-  },
-  {
-    label: "Your device setup",
-    icon: Monitor,
-    items: [
-      "A desktop or laptop with a mouse or trackpad and a keyboard. The test cannot be taken on a smartphone or tablet.",
-      "A working webcam that stays on for the entire test. This keeps the test fair and helps prevent cheating.",
-      "A stable internet connection.",
-      "Turn off notifications on your devices before you start.",
-    ],
-  },
-  {
-    label: "Your environment",
-    icon: Lightbulb,
-    items: [
-      "A quiet space with no interruptions from other people or pets.",
-      "Well lit, with no shadows or glare.",
-      "You must be physically in Canada or the United States.",
-    ],
-  },
-];
-
-const testDayItems = [
-  "Be at least 16 years old.",
-  "Be ready to pass a vision test.",
-  "Bring two pieces of accepted identification.",
-];
-
-const guidePreviewItems = [
-  "Online vs in-person eligibility, side by side",
-  "The official ICBC study handbook to download",
-  "A free practice test and the 80% pass mark",
-  "Exactly what to bring on test day",
+const sourceLinks = [
+  { label: "ICBC — take the online knowledge test", href: OFFICIAL_URLS.onlineTest },
+  { label: "ICBC — get your learner's (L) licence", href: OFFICIAL_URLS.getYourL },
+  { label: "ICBC — Learn to Drive Smart", href: OFFICIAL_URLS.handbook },
+  { label: "ICBC — official practice knowledge test", href: OFFICIAL_URLS.practiceTest },
+  { label: "ICBC — accepted identification", href: OFFICIAL_URLS.acceptedId },
+  { label: "ICBC — book a knowledge-test appointment", href: OFFICIAL_URLS.bookAppointment },
+  { label: "ICBC — driver licensing fees", href: OFFICIAL_URLS.fees },
+  { label: "B.C. government — October 2026 GLP changes", href: OFFICIAL_URLS.glpAnnouncement },
 ];
 
 const CheckList = ({ items }: { items: string[] }) => (
-  <ul className="mt-3 space-y-2.5">
+  <ul className="mt-4 space-y-3">
     {items.map((item) => (
-      <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-slate-600">
-        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#1d52a1]" />
+      <li key={item} className="flex gap-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+        <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-[#1d52a1]" aria-hidden="true" />
         <span>{item}</span>
       </li>
     ))}
   </ul>
 );
 
-const StepBadge = ({ n }: { n: number }) => (
-  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#1d52a1] text-lg font-black text-white">
-    {n}
-  </span>
+const OfficialLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="font-bold text-[#1d52a1] underline decoration-[#1d52a1]/35 underline-offset-4 hover:text-[#173f7b]"
+  >
+    {children}
+  </a>
 );
 
-const KnowledgeTestGuide = () => {
-  const [unlocked, setUnlocked] = useState(false);
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+const KnowledgeTestGuide = () => (
+  <main className="min-h-screen bg-white text-slate-900">
+    <section className="relative bg-[#1d52a1] text-white">
+      <SiteHeader tone="brand" />
+      <div className="mx-auto w-full max-w-[1200px] px-4 pb-14 pt-28 sm:px-6 sm:pb-16 sm:pt-32">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm font-semibold">
+          <Link to="/" className="text-white/80 transition-colors hover:text-white">
+            Home
+          </Link>
+          <span className="text-white/40">/</span>
+          <span className="truncate text-white/65">Class 7 Knowledge Test Guide</span>
+        </nav>
 
-  useEffect(() => {
-    try {
-      if (localStorage.getItem(UNLOCK_STORAGE_KEY) === "true") {
-        setUnlocked(true);
-      }
-    } catch {
-      /* localStorage unavailable, so the gate stays closed, which is fine */
-    }
-  }, []);
+        <p className="mt-7 text-xs font-black uppercase tracking-[0.18em] text-[#F5B13A]">
+          B.C. learner licensing resource
+        </p>
+        <h1
+          className="mt-3 max-w-4xl text-[clamp(2rem,4.8vw,3.5rem)] font-black leading-[1.07]"
+          style={{ textWrap: "balance" }}
+        >
+          B.C. Class 7 Knowledge Test: Online and In-Person Guide
+        </h1>
+        <p className="mt-5 max-w-3xl text-base leading-relaxed text-white/85 sm:text-lg">
+          A source-backed guide to eligibility, study materials, test formats, fees, identification and the steps
+          required before ICBC issues your learner&apos;s licence.
+        </p>
+        <p className="mt-5 text-sm font-semibold text-white/75">
+          Information checked against the linked official sources on <time dateTime="2026-07-21">July 21, 2026</time>.
+        </p>
+      </div>
+    </section>
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const value = email.trim();
+    <AnimatedSection>
+      <section className="py-12 sm:py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="rounded-[28px] border border-amber-300 bg-amber-50 p-6 text-amber-950 sm:p-8">
+            <div className="flex gap-4">
+              <ShieldCheck className="mt-1 h-6 w-6 shrink-0" aria-hidden="true" />
+              <div>
+                <h2 className="text-xl font-black">Independent guidance, with official sources linked</h2>
+                <p className="mt-3 text-sm leading-relaxed sm:text-base">
+                  Shanaya&apos;s Driving School prepared and maintains this guide. We are independent from ICBC and this
+                  page is not an ICBC publication. ICBC decides eligibility, test results and licence issuance, so use
+                  the linked ICBC pages as the source of truth and recheck them before you apply.
+                </p>
+                <p className="mt-3 text-sm leading-relaxed sm:text-base">
+                  To report a factual error, email{" "}
+                  <a
+                    href="mailto:book@drivingschoolbc.ca?subject=Correction%20to%20knowledge%20test%20guide"
+                    className="font-bold underline underline-offset-4"
+                  >
+                    book@drivingschoolbc.ca
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
 
-    if (!EMAIL_PATTERN.test(value)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
+          <div className="mt-10">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">At a glance</p>
+            <h2 className="mt-3 text-3xl font-black sm:text-4xl">Current Class 7 test facts</h2>
+            <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">
+              You must be at least 16 and a B.C. resident to apply for a B.C. driver&apos;s licence. These figures apply
+              to the passenger-vehicle knowledge test whether you take it online or in person.
+            </p>
+          </div>
 
-    setError("");
-    try {
-      localStorage.setItem(UNLOCK_STORAGE_KEY, "true");
-      localStorage.setItem(EMAIL_STORAGE_KEY, value);
-    } catch {
-      /* ignore persistence failure; still unlock for this session */
-    }
-    setUnlocked(true);
-  };
-
-  return (
-    <main className="min-h-screen bg-white">
-      {/* Masthead: solid brand-blue band */}
-      <section className="relative bg-[#1d52a1] text-white">
-        <SiteHeader tone="brand" />
-        <div className="mx-auto w-full max-w-[1200px] px-4 pb-14 pt-28 sm:px-6 sm:pb-16 sm:pt-32">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm font-semibold">
-            <Link to="/" className="text-white/80 transition-colors hover:text-white">
-              Home
-            </Link>
-            <span className="text-white/40">/</span>
-            <span className="truncate text-white/55">Knowledge Test Guide</span>
-          </nav>
-
-          <h1
-            className="mt-6 max-w-3xl text-[clamp(1.9rem,4.6vw,3rem)] font-black leading-[1.08]"
-            style={{ textWrap: "balance" }}
-          >
-            Free step by step ICBC knowledge test guide
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80">
-            Everything you need to book, study for, and pass your BC knowledge test, from eligibility to test day.
-          </p>
-
-          <div className="mt-6 flex items-center gap-2">
-            {shareLinks.map((link) => {
-              const Icon = link.icon;
+          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {atAGlanceFacts.map((fact) => {
+              const Icon = fact.icon;
               return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white transition-colors hover:bg-white/20"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
+                <article key={fact.label} className="rounded-3xl border border-slate-200 bg-[#F8FAFC] p-6">
+                  <Icon className="h-5 w-5 text-[#1d52a1]" aria-hidden="true" />
+                  <p className="mt-4 text-3xl font-black text-[#1d52a1]">{fact.value}</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-600">{fact.label}</p>
+                </article>
               );
             })}
           </div>
+
+          <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+            <p className="font-black text-slate-900">Available languages</p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+              English, Arabic, Croatian, French, Farsi, Traditional Chinese, Simplified Chinese, Punjabi, Russian,
+              Spanish, Ukrainian and Vietnamese.
+            </p>
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-[#1d52a1]/25 bg-[#1d52a1]/5 p-6 sm:p-7">
+            <h2 className="text-xl font-black text-[#173f7b]">Parent or guardian consent: note the 2026 change</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-700 sm:text-base">
+              As of this page&apos;s July 21 review date, applicants <strong>under 19</strong> need parent or legal guardian
+              consent. The B.C. government says that, effective <strong>October 19, 2026</strong>, the consent threshold
+              will be lowered from 19 to 18, so consent will apply to applicants under 18. Check ICBC&apos;s current
+              instructions if you apply near or after that date. Read the{" "}
+              <OfficialLink href={OFFICIAL_URLS.glpAnnouncement}>official B.C. announcement</OfficialLink>.
+            </p>
+          </div>
         </div>
       </section>
+    </AnimatedSection>
 
-      {!unlocked ? (
-        /* Email gate */
-        <AnimatedSection>
-          <section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-4xl px-4 sm:px-6">
-              <div className="overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-                <div className="grid md:grid-cols-2">
-                  {/* Value: what's inside */}
-                  <div className="border-b border-slate-200 bg-[#F8FAFC] p-8 sm:p-10 md:border-b-0 md:border-r">
-                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
-                      <Lock className="h-5 w-5" />
-                    </span>
-                    <h2 className="mt-5 text-2xl font-black text-slate-900">What's inside the guide</h2>
-                    <ul className="mt-6 space-y-4">
-                      {guidePreviewItems.map((item) => (
-                        <li key={item} className="flex gap-3 text-sm leading-relaxed text-slate-600">
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#1d52a1]" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+    <AnimatedSection>
+      <section className="bg-[#F2F2F2] py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">Study first</p>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl">Start with ICBC&apos;s own materials</h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">
+            A private quiz is a supplement, not a substitute for the current driving guide and ICBC&apos;s practice test.
+          </p>
 
-                  {/* Form */}
-                  <div className="flex flex-col justify-center p-8 sm:p-10">
-                    <h3 className="text-xl font-black text-slate-900">Unlock it free</h3>
-                    <p className="mt-2 text-sm text-slate-600">Enter your email for instant access.</p>
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
+                <BookOpen className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 text-2xl font-black">1. Learn to Drive Smart</h3>
+              <p className="mt-3 leading-relaxed text-slate-600">
+                Study ICBC&apos;s official passenger-vehicle guide, including signs, rules, observation, sharing the road
+                and risk-management concepts. Return to the relevant chapter whenever a practice answer is unclear.
+              </p>
+              <a
+                href={OFFICIAL_URLS.handbook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-6 py-3 text-sm font-bold text-white hover:bg-[#173f7b]"
+              >
+                Open the official guide
+                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </article>
 
-                    <form onSubmit={handleSubmit} className="mt-6" noValidate>
-                      <label htmlFor="ktg-email" className="text-sm font-bold text-slate-700">
-                        Email address
-                      </label>
-                      <div className="relative mt-2">
-                        <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                        <input
-                          id="ktg-email"
-                          type="email"
-                          inputMode="email"
-                          autoComplete="email"
-                          placeholder="you@example.com"
-                          value={email}
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                            if (error) setError("");
-                          }}
-                          aria-invalid={Boolean(error)}
-                          aria-describedby={error ? "ktg-email-error" : undefined}
-                          className="w-full rounded-full border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-[#1d52a1] focus:outline-none focus:ring-2 focus:ring-[#1d52a1]/20"
-                        />
-                      </div>
-                      {error ? (
-                        <p id="ktg-email-error" role="alert" className="mt-2 text-sm font-semibold text-[#E6242A]">
-                          {error}
-                        </p>
-                      ) : null}
+            <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
+                <MonitorCheck className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 text-2xl font-black">2. ICBC&apos;s official practice test</h3>
+              <p className="mt-3 leading-relaxed text-slate-600">
+                Use ICBC&apos;s practice knowledge test after studying. It is based on the real test and can be repeated;
+                ICBC also provides a separate road-signs practice test.
+              </p>
+              <a
+                href={OFFICIAL_URLS.practiceTest}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#E6242A] px-6 py-3 text-sm font-bold text-white hover:bg-[#C41E23]"
+              >
+                Use ICBC&apos;s practice test
+                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </article>
+          </div>
 
-                      <button
-                        type="submit"
-                        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#E6242A] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
-                      >
-                        Unlock the guide
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-                      <p className="mt-4 text-xs text-slate-400">
-                        We'll only use your email to help you on your driving journey. No spam.
-                      </p>
-                    </form>
-                  </div>
+          <article className="mt-6 rounded-[30px] border border-amber-300 bg-amber-50 p-7 sm:p-8">
+            <h3 className="text-xl font-black text-amber-950">Optional: this site&apos;s independent practice bank</h3>
+            <p className="mt-3 text-sm leading-relaxed text-amber-950 sm:text-base">
+              Our question bank is not supplied, reviewed, approved or endorsed by ICBC. It uses a 20-question,
+              30-minute study session, which differs from ICBC&apos;s 50-question, 45-minute Class 7 test. A score here
+              does not predict an official result. Verify every uncertain rule in the current official guide.
+            </p>
+            <Link
+              to="/knowledge-test-practice"
+              className="mt-5 inline-flex items-center gap-2 font-bold text-amber-950 underline underline-offset-4"
+            >
+              Open the independent practice tool
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </article>
+        </div>
+      </section>
+    </AnimatedSection>
+
+    <AnimatedSection>
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">Choose a format</p>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl">Online knowledge test workflow</h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">
+            ICBC launched online passenger-vehicle knowledge tests on June 9, 2026. The online result is only the test
+            result; ICBC must still issue your learner&apos;s licence before you can drive.
+          </p>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+            <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-sm">
+              <Laptop className="h-6 w-6 text-[#1d52a1]" aria-hidden="true" />
+              <h3 className="mt-4 text-xl font-black">1. Register</h3>
+              <CheckList
+                items={[
+                  "Provide an email address.",
+                  "Use one accepted primary ID and keep it for your licensing-office visit.",
+                  "Pay the $15 test fee with Visa, Mastercard or American Express; the card need not be in your name.",
+                ]}
+              />
+            </article>
+
+            <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-sm">
+              <Wifi className="h-6 w-6 text-[#1d52a1]" aria-hidden="true" />
+              <h3 className="mt-4 text-xl font-black">2. Check your setup</h3>
+              <CheckList
+                items={[
+                  "Use a desktop or laptop with a mouse or trackpad, keyboard and working webcam; phones and tablets are not supported.",
+                  "Use a stable internet connection in a quiet, well-lit space without interruptions.",
+                  "Be physically located in Canada or the United States.",
+                ]}
+              />
+            </article>
+
+            <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-sm">
+              <Clock3 className="h-6 w-6 text-[#1d52a1]" aria-hidden="true" />
+              <h3 className="mt-4 text-xl font-black">3. Complete one session</h3>
+              <CheckList
+                items={[
+                  "Start immediately after registering or use the emailed link within 72 hours.",
+                  "Finish within 45 minutes in one session; the test cannot be paused.",
+                  "Do not talk, consult study material or use another electronic device during the test.",
+                ]}
+              />
+            </article>
+          </div>
+
+          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+            <article className="rounded-[30px] border border-slate-200 bg-[#F8FAFC] p-7 sm:p-8">
+              <h3 className="text-xl font-black">If you do not pass</h3>
+              <p className="mt-3 leading-relaxed text-slate-600">
+                ICBC says you may retake the online test after 24 hours. You must register again and pay another $15
+                attempt fee. You may instead take the knowledge test at a driver licensing office.
+              </p>
+            </article>
+            <article className="rounded-[30px] border border-slate-200 bg-[#F8FAFC] p-7 sm:p-8">
+              <h3 className="text-xl font-black">Online monitoring and disqualification</h3>
+              <p className="mt-3 leading-relaxed text-slate-600">
+                ICBC may disqualify a session after repeated monitoring issues, such as leaving the test screen,
+                moving the cursor outside the test border, an obscured or mismatched face, or webcam failure. You may
+                try online again after 24 hours and pay again. After three online disqualifications, online testing is
+                unavailable for six months, but in-person testing remains available.
+              </p>
+            </article>
+          </div>
+
+          <a
+            href={OFFICIAL_URLS.onlineTest}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-7 py-3 text-sm font-bold text-white hover:bg-[#173f7b]"
+          >
+            Read ICBC&apos;s rules and start online
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          </a>
+        </div>
+      </section>
+    </AnimatedSection>
+
+    <AnimatedSection>
+      <section className="bg-[#F2F2F2] py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">Office option</p>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl">In-person knowledge test workflow</h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">
+            The in-person Class 7 test has the same 50 questions, 40-correct pass requirement, 45-minute limit, $15
+            attempt fee and 12 language choices. ICBC says in-person tests use a touchscreen kiosk and offer audio.
+          </p>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
+              <MapPin className="h-6 w-6 text-[#1d52a1]" aria-hidden="true" />
+              <h3 className="mt-4 text-2xl font-black">Book the correct location</h3>
+              <p className="mt-3 leading-relaxed text-slate-600">
+                Use ICBC&apos;s office finder and appointment page. Your nearest service may be an ICBC driver licensing
+                office, a Service BC centre or a driver licensing agent, and booking instructions differ by location.
+                Follow the confirmation email and contact the location if you need an accommodation.
+              </p>
+              <OfficialLink href={OFFICIAL_URLS.bookAppointment}>Find an office and book with ICBC</OfficialLink>
+            </article>
+
+            <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
+              <IdCard className="h-6 w-6 text-[#1d52a1]" aria-hidden="true" />
+              <h3 className="mt-4 text-2xl font-black">Bring the required items</h3>
+              <CheckList
+                items={[
+                  "Two accepted pieces of ID: one primary and one secondary.",
+                  "Parent or legal guardian consent if the age rule applies to you.",
+                  "Payment for the $15 test and $10 Class 7 photo learner-licence fees.",
+                  "Glasses or contact lenses if you use them for the required vision screening.",
+                ]}
+              />
+              <p className="mt-4 text-sm leading-relaxed text-slate-500">
+                Check the accepted-ID and fee pages immediately before your visit; document and payment requirements
+                can depend on your circumstances and location.
+              </p>
+            </article>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href={OFFICIAL_URLS.acceptedId}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1d52a1] shadow-sm"
+            >
+              Check accepted ID
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <a
+              href={OFFICIAL_URLS.fees}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1d52a1] shadow-sm"
+            >
+              Check current fees
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+      </section>
+    </AnimatedSection>
+
+    <AnimatedSection>
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">After an online pass</p>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl">A passing result is not a licence</h2>
+          <div className="mt-7 rounded-[30px] bg-[#1d52a1] p-7 text-white sm:p-9">
+            <p className="text-xl font-black sm:text-2xl">
+              You are not licensed or legally allowed to drive until ICBC issues your learner&apos;s licence.
+            </p>
+            <p className="mt-4 max-w-4xl leading-relaxed text-white/85">
+              After passing online, visit a driver licensing office. Depending on the office, ICBC says you may need
+              to book a short appointment. Your online result is valid for one year.
+            </p>
+
+            <div className="mt-7 grid gap-4 sm:grid-cols-2">
+              {[
+                "Bring one primary and one secondary ID, including the same primary ID used for online registration.",
+                "Bring the printed or digital email confirming your online pass.",
+                "Bring an original consent form or your parent/guardian if the consent rule applies.",
+                "Bring corrective lenses, if applicable, and complete ICBC's vision screening.",
+                "Pay the separate $10 Class 7 photo learner-licence fee and any applicable outstanding debt.",
+                "Complete ICBC's identity, photo and licence-issuance steps before driving.",
+              ].map((item) => (
+                <div key={item} className="flex gap-3 rounded-2xl bg-white/10 p-4 text-sm leading-relaxed text-white/90">
+                  <Eye className="mt-0.5 h-4 w-4 shrink-0 text-[#F5B13A]" aria-hidden="true" />
+                  <span>{item}</span>
                 </div>
-              </div>
+              ))}
             </div>
-          </section>
-        </AnimatedSection>
-      ) : (
-        /* Unlocked guide */
-        <>
-          {/* Step 1: Eligibility */}
-          <AnimatedSection>
-            <section className="py-16 sm:py-20">
-              <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                <div className="flex items-center gap-4">
-                  <StepBadge n={1} />
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1d52a1]">Step 1</p>
-                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Confirm you're eligible</h2>
-                  </div>
-                </div>
-                <p className="mt-4 max-w-3xl text-base text-slate-600 sm:text-lg">
-                  You can take the knowledge test online or in person. Check the requirements for the option you prefer.
-                </p>
+          </div>
+        </div>
+      </section>
+    </AnimatedSection>
 
-                <div className="mt-8 grid gap-6 lg:grid-cols-2">
-                  {/* Online */}
-                  <article className="flex h-full flex-col rounded-[30px] border border-slate-200 bg-white p-7 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
-                        <Wifi className="h-5 w-5" />
-                      </span>
-                      <h3 className="text-xl font-black text-slate-900">Online knowledge test</h3>
-                    </div>
-                    <div className="mt-5 rounded-2xl bg-[#F2F2F2] px-4 py-3 text-sm font-semibold text-slate-700">
-                      You can take the online test if you are at least 16 years old.
-                    </div>
+    <AnimatedSection>
+      <section className="border-y border-slate-200 bg-[#F8FAFC] py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">Verification</p>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl">Official sources used</h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">
+            These links support the test facts, application steps, identification requirements, fees and announced
+            consent change described above. They were checked on July 21, 2026.
+          </p>
+          <ul className="mt-7 grid gap-3 lg:grid-cols-2">
+            {sourceLinks.map((source) => (
+              <li key={source.href}>
+                <a
+                  href={source.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-full items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-[#1d52a1] transition-colors hover:border-[#1d52a1]/40"
+                >
+                  <span>{source.label}</span>
+                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </AnimatedSection>
 
-                    {onlineRequirementGroups.map((group) => {
-                      const Icon = group.icon;
-                      return (
-                        <div key={group.label} className="mt-5">
-                          <p className="flex items-center gap-2 text-sm font-black text-[#274556]">
-                            <Icon className="h-4 w-4 text-[#1d52a1]" />
-                            {group.label}
-                          </p>
-                          <CheckList items={group.items} />
-                        </div>
-                      );
-                    })}
-                  </article>
+    <section className="bg-[#274556] py-14 text-white">
+      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 sm:px-6 lg:flex-row lg:items-center">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#F5B13A]">Your next official step</p>
+          <h2 className="mt-3 max-w-2xl text-2xl font-black sm:text-3xl">Study, practise, then choose online or in person</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">
+            Recheck ICBC&apos;s current requirements before paying or attending an office.
+          </p>
+        </div>
+        <a
+          href={OFFICIAL_URLS.getYourL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#F5B13A] px-7 py-3 text-sm font-bold text-[#274556] hover:bg-[#f7bf5c]"
+        >
+          Read ICBC&apos;s Get your L page
+          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+        </a>
+      </div>
+    </section>
 
-                  {/* In person */}
-                  <article className="flex h-full flex-col rounded-[30px] border border-slate-200 bg-white p-7 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
-                        <MapPin className="h-5 w-5" />
-                      </span>
-                      <h3 className="text-xl font-black text-slate-900">In-person knowledge test</h3>
-                    </div>
-                    <div className="mt-5 rounded-2xl bg-[#F2F2F2] px-4 py-3 text-sm font-semibold text-slate-700">
-                      Prefer to test at a driver licensing office? Here's what you need.
-                    </div>
-
-                    <div className="mt-5">
-                      <p className="flex items-center gap-2 text-sm font-black text-[#274556]">
-                        <ShieldCheck className="h-4 w-4 text-[#1d52a1]" />
-                        Requirements
-                      </p>
-                      <CheckList
-                        items={[
-                          "Be at least 16 years old.",
-                          "Pass a vision test.",
-                          "Bring two pieces of identification.",
-                        ]}
-                      />
-                    </div>
-
-                    <div className="mt-6 flex items-start gap-2.5 rounded-2xl bg-[#F5B13A]/10 px-4 py-3">
-                      <Eye className="mt-0.5 h-4 w-4 shrink-0 text-[#9a6400]" />
-                      <p className="text-sm font-semibold text-[#9a6400]">
-                        Tip: bring your glasses or contacts if you use them. You'll need to pass the vision test.
-                      </p>
-                    </div>
-                  </article>
-                </div>
-              </div>
-            </section>
-          </AnimatedSection>
-
-          {/* Step 2: Study */}
-          <AnimatedSection>
-            <section className="bg-[#F2F2F2] py-16 sm:py-20">
-              <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                <div className="flex items-center gap-4">
-                  <StepBadge n={2} />
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1d52a1]">Step 2</p>
-                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Study the official handbook</h2>
-                  </div>
-                </div>
-
-                <div className="mt-8 grid items-center gap-8 rounded-[30px] border border-slate-200 bg-white p-7 shadow-[0_16px_36px_rgba(15,23,42,0.06)] sm:p-9 lg:grid-cols-[1fr_auto]">
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
-                        <BookOpen className="h-5 w-5" />
-                      </span>
-                      <h3 className="text-xl font-black text-slate-900">ICBC "Learn to Drive Smart"</h3>
-                    </div>
-                    <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-                      Every knowledge test question comes from this official ICBC handbook. Read it cover to cover. It
-                      covers road signs, right-of-way rules, speed limits, and safe driving practices you'll be tested on.
-                    </p>
-                  </div>
-                  <a
-                    href={ICBC_HANDBOOK_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#1d52a1] px-7 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download the handbook (PDF)
-                  </a>
-                </div>
-              </div>
-            </section>
-          </AnimatedSection>
-
-          {/* Step 3: Practice */}
-          <AnimatedSection>
-            <section className="py-16 sm:py-20">
-              <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                <div className="flex items-center gap-4">
-                  <StepBadge n={3} />
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1d52a1]">Step 3</p>
-                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Practice until you're ready</h2>
-                  </div>
-                </div>
-
-                <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-                  <article className="rounded-[30px] border border-slate-200 bg-white p-7 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
-                        <Target className="h-5 w-5" />
-                      </span>
-                      <h3 className="text-xl font-black text-slate-900">Take our free practice test</h3>
-                    </div>
-                    <p className="mt-4 text-base leading-relaxed text-slate-600">
-                      Run through ICBC-style questions as many times as you like. Practising under real conditions is the
-                      fastest way to spot the topics you still need to review.
-                    </p>
-                    <Link
-                      to="/knowledge-test-practice"
-                      className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#E6242A] px-7 py-3 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
-                    >
-                      Start practising
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </article>
-
-                  <article className="flex flex-col justify-center rounded-[30px] bg-[#1d52a1] p-7 text-center text-white shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-                    <p className="text-sm font-black uppercase tracking-[0.16em] text-slate-200">Passing score</p>
-                    <p className="mt-2 text-6xl font-black leading-none text-[#F5B13A]">80%</p>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-100">
-                      You need at least 80% to pass. Keep practising until you clear 80% comfortably and consistently
-                      before you book the real test.
-                    </p>
-                  </article>
-                </div>
-              </div>
-            </section>
-          </AnimatedSection>
-
-          {/* Step 4: Test day */}
-          <AnimatedSection>
-            <section className="bg-[#F2F2F2] py-16 sm:py-20">
-              <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                <div className="flex items-center gap-4">
-                  <StepBadge n={4} />
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1d52a1]">Step 4</p>
-                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">On the day of your test</h2>
-                  </div>
-                </div>
-                <p className="mt-4 max-w-3xl text-base text-slate-600 sm:text-lg">
-                  Whether you test online or in person, make sure you've got these covered before you begin.
-                </p>
-
-                <div className="mt-8 grid gap-5 sm:grid-cols-3">
-                  {testDayItems.map((item, index) => {
-                    const icons = [IdCard, Eye, CreditCard];
-                    const Icon = icons[index] ?? CheckCircle2;
-                    return (
-                      <article
-                        key={item}
-                        className="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_16px_36px_rgba(15,23,42,0.06)]"
-                      >
-                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1]">
-                          <Icon className="h-5 w-5" />
-                        </span>
-                        <p className="mt-4 text-base font-semibold text-slate-700">{item}</p>
-                      </article>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          </AnimatedSection>
-
-          <AnimatedSection>
-            <SiteCtaSection
-              eyebrow="Ready to pass?"
-              title={
-                <>
-                  Practise now, then <span className="text-[#F5B13A]">book your lessons</span>
-                </>
-              }
-              description="Sharpen up with our free practice test, then let our instructors get you road-ready with calm, structured lessons."
-              actions={
-                <>
-                  <Link to="/knowledge-test-practice" className={siteCtaPrimaryClassName}>
-                    Take the practice test
-                  </Link>
-                  <Link to="/packages" className={siteCtaSecondaryClassName}>
-                    View lesson packages
-                  </Link>
-                </>
-              }
-            />
-          </AnimatedSection>
-        </>
-      )}
-
-      <SiteFooter />
-    </main>
-  );
-};
+    <SiteFooter />
+  </main>
+);
 
 export default KnowledgeTestGuide;

@@ -22,6 +22,13 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
   const secondaryHref = page.id === "pricing" ? "/contact" : "/courses";
   const primaryLabel = page.primaryCtaLabel ?? "Book a lesson";
   const secondaryLabel = page.secondaryCtaLabel ?? "View courses";
+  const isInformationGuide = [
+    "faq",
+    "icbc-approved-driving-school",
+    "bc-graduated-licensing-program",
+    "driver-education-training",
+  ].includes(page.id);
+  const hasDocumentedReviewBasis = Boolean(page.lastReviewed || page.officialSources?.length);
 
   return (
     <main className="bg-white text-[#202121]">
@@ -49,41 +56,79 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link to={primaryHref} className={siteCtaPrimaryClassName}>
-                {primaryLabel}
-              </Link>
-              <Link to={secondaryHref} className={siteCtaSecondaryClassName}>
-                {secondaryLabel}
-              </Link>
-            </div>
+            {!isInformationGuide ? (
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link to={primaryHref} className={siteCtaPrimaryClassName}>
+                  {primaryLabel}
+                </Link>
+                <Link to={secondaryHref} className={siteCtaSecondaryClassName}>
+                  {secondaryLabel}
+                </Link>
+              </div>
+            ) : null}
           </div>
 
           <aside className="rounded-[32px] bg-[#F2F2F2] p-6 shadow-sm sm:p-8">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F5B13A] text-[#202121]">
-                <MapPin className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-sm font-black uppercase tracking-[0.14em] text-slate-500">Local service area</p>
-                <p className="mt-1 text-lg font-black text-slate-900">{page.serviceAreaTitle ?? "Greater Victoria and BC communities"}</p>
-              </div>
-            </div>
-            <ul className="mt-6 space-y-3 text-sm font-semibold text-slate-700 sm:text-base">
-              {(page.serviceAreas ?? ["Victoria", "Langford", "Colwood", "Sidney", "Sooke", "Duncan", "Salt Spring Island"]).map((area) => (
-                <li key={area} className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 shrink-0 text-[#1d52a1]" />
-                  <span>{area}</span>
-                </li>
-              ))}
-            </ul>
-            <Link
-              to="/contact"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
-            >
-              Ask about availability
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {isInformationGuide ? (
+              <>
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F5B13A] text-[#202121]">
+                    <CheckCircle2 className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-[0.14em] text-slate-500">Information status</p>
+                    <p className="mt-1 text-lg font-black text-slate-900">
+                      {hasDocumentedReviewBasis ? "Checked against official sources" : "Official verification recommended"}
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-6 text-sm leading-relaxed text-slate-600 sm:text-base">
+                  Shanaya&apos;s is an independent driving school. ICBC remains the final authority for licence
+                  eligibility, testing, restrictions and fees.
+                </p>
+                {page.lastReviewed ? (
+                  <p className="mt-4 text-sm font-semibold text-slate-700">Information checked: {page.lastReviewed}</p>
+                ) : null}
+                {page.officialSources?.[0] ? (
+                  <a
+                    href={page.officialSources[0].href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                  >
+                    Open the primary source
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F5B13A] text-[#202121]">
+                    <MapPin className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-[0.14em] text-slate-500">Local service area</p>
+                    <p className="mt-1 text-lg font-black text-slate-900">{page.serviceAreaTitle ?? "Greater Victoria and BC communities"}</p>
+                  </div>
+                </div>
+                <ul className="mt-6 space-y-3 text-sm font-semibold text-slate-700 sm:text-base">
+                  {(page.serviceAreas ?? ["Victoria", "Langford", "Colwood", "Sidney", "Sooke", "Duncan", "Salt Spring Island"]).map((area) => (
+                    <li key={area} className="flex items-center gap-3">
+                      <CheckCircle2 className="h-5 w-5 shrink-0 text-[#1d52a1]" />
+                      <span>{area}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/contact"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                >
+                  Ask about availability
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </>
+            )}
           </aside>
         </div>
       </section>
@@ -111,9 +156,11 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
 
       <section className="bg-[#F2F2F2] py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <p className="responsive-section-label text-center font-black text-gray-300/80">Details</p>
+          <p className="responsive-section-label text-center font-black text-gray-300/80">
+            {isInformationGuide ? "Information guide" : "Details"}
+          </p>
           <h2 className="responsive-section-title text-center font-black text-[#1d52a1]">
-            What to know before booking
+            {isInformationGuide ? "Key facts and decisions" : "What to know before booking"}
           </h2>
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {page.sections.map((section) => (
@@ -163,10 +210,55 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
         </section>
       ) : null}
 
+      {page.lastReviewed || page.officialSources?.length ? (
+        <section className="border-y border-slate-200 bg-white py-12 sm:py-16">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-[#E6242A]">Editorial basis</p>
+            <h2 className="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">Official sources and review note</h2>
+            <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
+              Prepared by Shanaya&apos;s Driving School, an independent driving school. We are not ICBC and cannot
+              issue licences or decide an applicant&apos;s eligibility. Confirm current requirements with the agency
+              responsible for your licence.
+            </p>
+            {page.editorialNote ? (
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">{page.editorialNote}</p>
+            ) : null}
+            {page.lastReviewed ? (
+              <p className="mt-3 text-sm font-semibold text-slate-700">Information checked: {page.lastReviewed}</p>
+            ) : null}
+            {page.officialSources?.length ? (
+              <ul className="mt-5 list-disc space-y-2 pl-5 text-sm text-slate-600 sm:text-base">
+                {page.officialSources.map((source) => (
+                  <li key={source.href}>
+                    <a
+                      href={source.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-[#1d52a1] underline underline-offset-2 hover:text-[#17488d]"
+                    >
+                      {source.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <p className="mt-5 text-xs leading-relaxed text-slate-500">
+              To report a factual error, email{" "}
+              <a href="mailto:book@drivingschoolbc.ca" className="underline underline-offset-2">
+                book@drivingschoolbc.ca
+              </a>
+              .
+            </p>
+          </div>
+        </section>
+      ) : null}
+
       {page.relatedLinks?.length ? (
         <section className="bg-[#F2F2F2] py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <p className="responsive-section-label text-center font-black text-gray-300/80">Service areas</p>
+            <p className="responsive-section-label text-center font-black text-gray-300/80">
+              {isInformationGuide ? "Related reading" : "Service areas"}
+            </p>
             <h2 className="responsive-section-title text-center font-black text-[#1d52a1]">
               {page.relatedLinksTitle ?? "Explore by area"}
             </h2>

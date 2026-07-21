@@ -1,5 +1,5 @@
 import { useEffect, type ComponentType, type SVGProps } from "react";
-import { ArrowRight, CalendarClock, CheckCircle2, CreditCard, ShieldCheck, Star } from "lucide-react";
+import { ArrowRight, CalendarClock, CheckCircle2, CreditCard, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageNameSection from "@/components/PageNameSection";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
@@ -37,12 +37,6 @@ type PackagePlan = {
   summary: string;
   popular?: boolean;
   options: PaymentOption[];
-};
-
-type Testimonial = {
-  name: string;
-  platform: string;
-  quote: string;
 };
 
 const studentFormHref = "/apply";
@@ -181,27 +175,6 @@ const packagePlans: PackagePlan[] = [
         ],
       },
     ],
-  },
-];
-
-const testimonials: Testimonial[] = [
-  {
-    name: "Olivia R.",
-    platform: "Google",
-    quote:
-      "The payment plan made it much easier to start lessons right away. Everything was clear, automatic, and easy to manage.",
-  },
-  {
-    name: "Daniel M.",
-    platform: "Facebook",
-    quote:
-      "I appreciated how straightforward the instalments were. No hidden surprises, and the team explained the timeline clearly.",
-  },
-  {
-    name: "Sarah K.",
-    platform: "Google",
-    quote:
-      "As a parent booking lessons for my teen, the flexible plan helped us budget properly while keeping the process stress-free.",
   },
 ];
 
@@ -419,43 +392,9 @@ const PaymentPlanOptions = () => {
                 "Our key focus is to create a welcoming and safe environment for every student."
               </p>
               <p className="mt-6 text-sm font-bold uppercase tracking-[0.14em] text-[#F5C518]">
-                Shandra MacMaster, Founder
+                Shanaya&apos;s service principle
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[#F2F2F2] py-16 sm:py-20">
-        <div className={sectionContainerClassName}>
-          <p className="text-center text-6xl font-black text-gray-300/80 sm:text-7xl lg:text-8xl">Reviews</p>
-          <h2 className="text-center text-3xl font-black text-[#1d52a1] sm:text-4xl md:text-5xl">
-            Here&apos;s What People Say About Us
-          </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
-            Families and learners choose payment plans because they are easy to understand, easy to follow, and easy
-            to manage.
-          </p>
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {testimonials.map((review) => (
-              <article
-                key={review.name}
-                data-global-reveal="true"
-                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
-              >
-                <div className="flex gap-1 text-[#F5C518]">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <Star key={`${review.name}-star-${index}`} className="h-4 w-4 fill-current" />
-                  ))}
-                </div>
-                <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">{review.quote}</p>
-                <div className="mt-6 border-t border-slate-200 pt-4">
-                  <p className="text-lg font-black text-slate-900">{review.name}</p>
-                  <p className="mt-1 text-sm font-semibold text-[#1d52a1]">{review.platform}</p>
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>

@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, type PointerEvent as ReactPointerEvent 
 import { CheckCircle2 } from "lucide-react";
 
 const safetyPoints = [
-  "Licensed Instructors",
-  "ICBC-Aligned Training Standards",
-  "Dual Control Vehicles",
-  "Insured and Licensed",
-  "Skill Assessment",
+  "Verify Instructor Credentials",
+  "Published B.C. Skills References",
+  "Training Vehicle Requirements",
+  "Written Service Terms",
+  "Private Skill Feedback",
   "Structured Lesson Plans",
   "Safety-First Approach",
   "Regular Progress Tracking",
@@ -189,11 +189,11 @@ const SafetyStandardsSection = ({
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
       <p className="text-center text-6xl font-black text-gray-300/80 sm:text-7xl lg:text-8xl">Safety</p>
       <h2 className="text-center text-3xl font-black text-[#1d52a1] sm:text-4xl md:text-5xl">
-        Standards & Certification
+        Standards & Verification
       </h2>
       <p className="mx-auto mt-4 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
-        Every lesson follows recognized standards, ensuring consistent, professional instruction and a supportive
-        learning environment.
+        The school&apos;s Class 5 and 7 directory record is publicly verifiable. Ask to see the current instructor
+        credential and confirm the vehicle and written service terms that apply to your booking.
       </p>
       <SafetyCarousel items={safetyPoints} />
     </div>

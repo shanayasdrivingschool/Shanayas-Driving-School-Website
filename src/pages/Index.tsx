@@ -65,7 +65,7 @@ const programs: Program[] = [
     title: "Final Lap",
     description: "Designed for experienced drivers ready to complete their licensing journey",
     highlights: [
-      "Mock test route sessions",
+      "Private practice-drive sessions",
       "Road test evaluation checklist",
       "Last-minute confidence drills",
       "Test-day readiness strategy",
@@ -76,48 +76,48 @@ const programs: Program[] = [
 
 const advantages: Advantage[] = [
   {
-    title: "ICBC Aligned Training Standards",
-    text: "Structured lessons based on ICBC road safety guidelines, focusing on defensive driving, hazard awareness, and real-world decision making for confident test readiness.",
+    title: "Published Road-Test Skills",
+    text: "Private lessons can use ICBC's public driving guides and Skills Explainer as references. Instruction is not an official ICBC test, route, score, approval, or endorsement.",
     image: "/why-choose/icbc-aligned-standards.webp",
   },
   {
-    title: "Licensed & Patient Instructors",
-    text: "Certified instructors provide calm, supportive coaching tailored to each learner's pace, helping students build confidence while developing safe lifelong driving habits.",
+    title: "Credential Verification",
+    text: "B.C. requires paid driver training instructors to hold a current licence. Ask to see the credential for the instructor assigned to your booking.",
     image: "/why-choose/licensed-instructors.webp",
   },
   {
-    title: "Dual Control Vehicles",
-    text: "Training vehicles are equipped with instructor dual-control systems, allowing immediate intervention when needed to ensure maximum safety during every lesson.",
+    title: "Training Vehicle Requirements",
+    text: "B.C. regulations specify equipment and inspection requirements for Class 5 and 7 school vehicles. Confirm the vehicle arrangements for your lesson in writing.",
     image: "/why-choose/dual-control-vehicles-v2.webp",
   },
   {
     title: "Flexible Scheduling",
-    text: "Convenient weekday and selected weekend lesson availability designed to fit student, school, and work schedules without added stress.",
+    text: "Ask about current weekday, weekend, instructor, and location availability before selecting a lesson or package.",
     image: "/why-choose/flexible-scheduling-v2.webp",
   },
   {
     title: "Knowledge Test Preparation",
-    text: "Comprehensive preparation covering road signs, traffic rules, and ICBC knowledge test strategies to help students succeed on their first attempt.",
+    text: "Independent study support can supplement ICBC's official guide and practice test. A private score does not predict the official result.",
     image: "/why-choose/knowledge-test-prep.webp",
   },
   {
-    title: "Regular Progress Tracking Updates",
-    text: "Ongoing performance assessments and feedback ensure students clearly understand their strengths, improvement areas, and road test readiness.",
+    title: "Instructor Feedback",
+    text: "Private feedback can identify skills to practise next, but it is not an official ICBC assessment and cannot guarantee a test result.",
     image: "/why-choose/progress-tracking-v2.webp",
   },
   {
     title: "Pick Up & Drop Off Available",
-    text: "Door-to-door lesson options provide added convenience, allowing students to begin and finish training safely from home, school, or work locations.",
+    text: "Pickup and drop-off may be available depending on the location, instructor, lesson, and schedule. Confirm the arrangement before paying.",
     image: "/why-choose/pickup-dropoff-v2.webp",
   },
   {
-    title: "Modern Training Facility",
-    text: "A clean, professional learning environment designed to support both in-car instruction and theory preparation in a comfortable setting.",
+    title: "Verified Langford Listing",
+    text: "ICBC's general directory lists the school at 124-2770 Leigh Rd in Langford for Class 5 and 7 driver training. A listing is not an endorsement.",
     image: "/why-choose/modern-facility-v2.webp",
   },
   {
     title: "Multi-Language Support",
-    text: "Instruction available in multiple languages to ensure clear communication and a comfortable learning experience for students from diverse backgrounds.",
+    text: "Language support may be available. Contact the school to confirm the language and instructor availability needed for your booking.",
     image: "/why-choose/multi-language-v2.webp",
   }
 ];
@@ -148,7 +148,7 @@ const processSteps: ProcessStep[] = [
   title: "Real Road Experience",
   lead: "Once the fundamentals are strong, we guide you into real traffic situations to develop practical driving confidence.",
   detail:
-    "Students practice city driving, intersections, lane positioning, and defensive driving techniques in real road environments. Our dual control vehicles allow instructors to support you whenever needed, ensuring every lesson remains safe, calm, and encouraging. Ruley says: Real confidence grows when you practice in real traffic with the right support beside you.",
+    "Students may practise city driving, intersections, lane positioning, and defensive driving techniques in real road environments. Confirm the assigned instructor, training vehicle, location, and lesson plan before booking. Ruley says: Real confidence grows when you practise in real traffic with the right support beside you.",
   highlightText: "Ruley says: Real confidence grows when you practice in real traffic with the right support beside you.",
   highlightStartsNewLine: true,
   image: "/process/our-process-3.webp",
@@ -156,9 +156,9 @@ const processSteps: ProcessStep[] = [
 {
   step: "04",
   title: "Mock Road Test Preparation",
-  lead: "Before your actual test, we simulate the road test experience so you know exactly what to expect.",
+  lead: "Before an official test, a private practice drive can identify skills that need more work.",
   detail:
-    "You will complete mock test routes based on real examination standards while receiving clear, constructive feedback from your instructor. This step is designed to reduce uncertainty, refine key driving skills, and help you feel prepared and confident on test day. Ruley reminds students that practice builds confidence.",
+    "A practice drive may use the skill groups in ICBC's public Skills Explainer, but it is not an official route, test, score, or prediction of the result. The instructor provides private feedback on what to practise next. Ruley reminds students that practice builds confidence.",
   highlightText: "Ruley reminds students that practice builds confidence.",
   highlightStartsNewLine: true,
   image: "/process/our-process-4.webp",
@@ -166,10 +166,10 @@ const processSteps: ProcessStep[] = [
 {
   step: "05",
   title: "Test Day Confidence",
-  lead: "The final step prepares you mentally and practically so you arrive ready and confident for your driving test.",
+  lead: "The final step reviews practical skills and the official appointment requirements.",
   detail:
-    "We review key driving skills, common test mistakes, and helpful strategies to keep you calm and focused. By test day, you understand what examiners expect and feel fully prepared to succeed. Our goal is simple. Help you drive into your test with confidence and leave with your license. Ruley says: The best test-day confidence comes from expert guidance and knowing what examiners look for.",
-  highlightText: "Ruley says: The best test-day confidence comes from expert guidance and knowing what examiners look for.",
+    "We can review skills described in ICBC's public materials and direct you to ICBC's current test-day checklist. Only ICBC administers and scores the road test, and no lesson can guarantee a licence. Ruley says: Preparation means knowing what to bring and what to keep practising.",
+  highlightText: "Ruley says: Preparation means knowing what to bring and what to keep practising.",
   highlightStartsNewLine: true,
   image: "/process/our-process-5.webp",
 },
@@ -357,7 +357,7 @@ const Index = () => {
                 <span className="mt-1 block">that last beyond the test.</span>
               </h1>
               <p className="mt-4 max-w-[560px] text-[clamp(0.95rem,1.45vw,1.25rem)] leading-[1.4]">
-                ICBC-aligned driving lessons in Victoria, Langford, and across Greater Victoria, built to grow confidence, hazard awareness, and real-world driving skills.
+                Class 5 and 7 driving lessons in Langford, Victoria, and listed B.C. service areas, with private feedback on practical driving skills.
               </p>
               <div className="mt-6 responsive-cta-row justify-start md:gap-4">
                 <Link
@@ -423,7 +423,7 @@ const Index = () => {
       </svg>
     ),
     title: "Step 1 - Assess",
-    text: "We evaluate your driving experience to create a structured training plan aligned with ICBC road test standards and BC's Graduated Licensing Program.",
+    text: "We discuss your driving experience and goals to outline a private training plan. ICBC remains responsible for licence eligibility and testing.",
   },
   {
     icon: (
@@ -435,7 +435,7 @@ const Index = () => {
       </svg>
     ),
     title: "Step 2 - Build",
-    text: "We develop core vehicle control, hazard perception, defensive driving techniques, and safe decision-making skills required for BC road safety compliance.",
+    text: "Lessons can work on vehicle control, observation, hazard awareness, defensive driving techniques, and decision-making at the learner's current level.",
   },
   {
     icon: (
@@ -447,7 +447,7 @@ const Index = () => {
       </svg>
     ),
     title: "Step 3 - Practice",
-    text: "We provide guided training in real Victoria road conditions, including intersections, lane changes, parking, merging, and mock road tests based on ICBC evaluation criteria.",
+    text: "Private practice may cover intersections, lane changes, parking, merging, and the skill groups described in ICBC's public guides; it does not reproduce an official route or score.",
   },
   {
     icon: (
@@ -458,7 +458,7 @@ const Index = () => {
       </svg>
     ),
     title: "Step 4 - Succeed",
-    text: "We conduct final readiness assessments and targeted refinement sessions to ensure you meet ICBC performance standards with confidence and consistency.",
+    text: "A final private review can identify areas for further practice. It cannot determine readiness for ICBC or guarantee an official result.",
   },
 ].map((item) => (
               <div key={item.title} className="flex items-start gap-5 p-4">
@@ -482,7 +482,7 @@ const Index = () => {
             <p className="responsive-section-label text-center font-black text-gray-300/80">Why Us</p>
             <h2 className="responsive-section-title text-center font-black text-[#1d52a1]">Why Choose Us</h2>
             <p className="mx-auto mt-3 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
-              Trusted by families across Vancouver & Surrounding Gulf Islands
+              Verify the school record, instructor credential, service terms, and availability before booking
             </p>
             <div className="mt-10">
               <WhyChooseCarousel items={advantages} />
@@ -499,7 +499,7 @@ const Index = () => {
               Driving Courses Designed for all levels
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
-              Our programs follow ICBC standards to help new drivers learn safe decision-making, hazard perception, real-world driving skills, and, above all, road test confidence.
+              Training options cover practical driving skills and private feedback. ICBC's free materials remain the official source for licensing and test requirements.
             </p>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -716,14 +716,14 @@ const Index = () => {
           <p className="responsive-section-label text-center font-black text-gray-300/80">Local</p>
           <h2 className="responsive-section-title text-center font-black text-[#1d52a1]">Service Area</h2>
           <p className="mx-auto mt-4 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
-            Trusted by families across Vancouver & Surrounding Gulf Islands
+            Current catalogue locations are shown below; confirm availability for your date and address
           </p>
         </div>
 
           <div className="mt-10 w-full">
               <iframe
                 title="Driving school service area map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2646.263636375451!2d-123.52076622307371!3d48.451470971279875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548f0d12a28feb31%3A0x7844eb9adc8db1de!2s2770%20Leigh%20Rd%20%23124%2C%20Victoria%2C%20BC%20V9B%204G2%2C%20Canada!5e0!3m2!1sen!2s!4v1772209932126!5m2!1sen!2s"
+                src="https://www.google.com/maps?q=124%202770%20Leigh%20Rd%20Langford%20BC%20V9B%204G1&output=embed"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen
@@ -756,8 +756,6 @@ const Index = () => {
 };
 
 export default Index;
-
-
 
 
 

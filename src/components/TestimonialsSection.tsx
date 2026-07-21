@@ -7,57 +7,6 @@ type Review = {
   business: string;
 };
 
-const defaultReviews: Review[] = [
-  {
-    quote:
-      "I started as a nervous beginner, and my instructor made every lesson calm, clear, and easy to follow.",
-    name: "Alyssa P.",
-    business: "Student - Langford",
-  },
-  {
-    quote:
-      "Road test preparation was structured and practical. The mock routes helped me pass with confidence.",
-    name: "Rahim K.",
-    business: "Student - Victoria",
-  },
-  {
-    quote:
-      "Scheduling was flexible and the coaching style was patient. I improved every week and felt fully prepared.",
-    name: "Daniel M.",
-    business: "Student - Colwood",
-  },
-  {
-    quote:
-      "From booking to test day, communication was excellent. I always knew what to practice next.",
-    name: "Jaspreet S.",
-    business: "Student - Sooke",
-  },
-  {
-    quote:
-      "Parallel parking felt impossible at first, but the coaching broke it down into simple steps that finally clicked.",
-    name: "Maria L.",
-    business: "Student - Nanaimo",
-  },
-  {
-    quote:
-      "Every lesson had a clear goal. I never felt rushed, and my confidence improved faster than I expected.",
-    name: "Ethan R.",
-    business: "Student - Sidney",
-  },
-  {
-    quote:
-      "The refresher sessions helped me get comfortable driving again after years away from the road.",
-    name: "Priya T.",
-    business: "Student - Duncan",
-  },
-  {
-    quote:
-      "My instructor was patient in busy traffic and helped me stay calm when lane changes felt stressful.",
-    name: "Noah C.",
-    business: "Student - Westshore",
-  },
-];
-
 type TestimonialsSectionProps = {
   eyebrow?: string;
   title?: string;
@@ -247,7 +196,7 @@ const TestimonialsMarqueeRow = ({
 const TestimonialsSection = ({
   eyebrow = "Testimonials",
   title = "What our students are saying",
-  reviews = defaultReviews,
+  reviews = [],
 }: TestimonialsSectionProps) => {
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -265,6 +214,10 @@ const TestimonialsSection = ({
       mediaQuery.removeEventListener("change", updateMotionPreference);
     };
   }, []);
+
+  if (reviews.length === 0) {
+    return null;
+  }
 
   const midpoint = Math.ceil(reviews.length / 2);
   const topRowReviews = reviews.slice(0, midpoint);
