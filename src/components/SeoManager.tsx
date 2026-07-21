@@ -1,6 +1,11 @@
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { blogPosts } from "@/data/blogPosts";
+import {
+  KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
+  KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
+  knowledgeTestGuideFaqs,
+} from "@/data/knowledgeTestGuide";
 import { courseCatalog } from "@/data/courseCatalog";
 import { optionalExtras } from "@/data/optionalExtras";
 import { packageCatalog } from "@/data/packageCatalog";
@@ -32,6 +37,13 @@ type SeoArticleDetails = {
   datePublished: string;
   dateModified: string;
   section: string;
+  /* Reference guides are Articles; blog posts are BlogPostings. */
+  articleType?: "Article" | "BlogPosting";
+};
+
+type SeoBreadcrumb = {
+  name: string;
+  path: string;
 };
 
 type SeoDetails = {
@@ -43,6 +55,7 @@ type SeoDetails = {
   robots?: "index, follow" | "noindex, follow" | "noindex, nofollow";
   faqs?: SeoLandingPageFaq[];
   article?: SeoArticleDetails;
+  breadcrumbs?: SeoBreadcrumb[];
 };
 
 type JsonLdObject = Record<string, unknown>;
@@ -97,6 +110,19 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
     description:
       "Current Class 7 guide to ICBC's online and in-person B.C. knowledge test: eligibility, 50 questions, fees, study sources, ID and licence steps.",
     robots: "index, follow",
+    type: "article",
+    article: {
+      articleType: "Article",
+      headline: "B.C. Class 7 Knowledge Test: Online and In-Person Guide",
+      datePublished: KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
+      dateModified: KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
+      section: "Learner Licensing",
+    },
+    faqs: knowledgeTestGuideFaqs,
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide" },
+    ],
   },
   "/blog": {
     title: "Driving Tips & Road Test Resources | Shanaya's Driving School",
@@ -318,7 +344,7 @@ const buildArticleJsonLd = (
 
   return {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": seo.article.articleType ?? "BlogPosting",
     "@id": `${canonicalUrl}#article`,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     headline: seo.article.headline,
@@ -334,6 +360,25 @@ const buildArticleJsonLd = (
       url: `${SITE_ORIGIN}/about/`,
     },
     publisher: { "@id": `${SITE_ORIGIN}/#localbusiness` },
+  };
+};
+
+/* BreadcrumbList mirrors the visible breadcrumb trail on the page. Google only
+   renders breadcrumb rich results when the markup matches what the user sees. */
+const buildBreadcrumbJsonLd = (breadcrumbs?: SeoBreadcrumb[]): JsonLdObject | null => {
+  if (!breadcrumbs?.length) {
+    return null;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: toAbsoluteUrl(toCanonicalPath(crumb.path)),
+    })),
   };
 };
 
@@ -477,6 +522,7 @@ const SeoManager = () => {
     setJsonLd("local-business-schema", localBusinessJsonLd);
     setJsonLd("faq-schema", buildFaqJsonLd(seo.faqs));
     setJsonLd("article-schema", buildArticleJsonLd(seo, canonicalUrl, imageUrl));
+    setJsonLd("breadcrumb-schema", buildBreadcrumbJsonLd(seo.breadcrumbs));
   }, [seo]);
 
   return null;

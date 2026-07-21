@@ -946,7 +946,7 @@ const buildArticleSchema = (page, canonical, image) => {
 
   return {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": page.article.articleType ?? "BlogPosting",
     "@id": `${canonical}#article`,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     headline: page.article.headline,
@@ -962,6 +962,24 @@ const buildArticleSchema = (page, canonical, image) => {
       url: `${siteOrigin}/about/`,
     },
     publisher: { "@id": `${siteOrigin}/#localbusiness` },
+  };
+};
+
+/* Mirrors buildBreadcrumbJsonLd in src/components/SeoManager.tsx. */
+const buildBreadcrumbSchema = (breadcrumbs) => {
+  if (!breadcrumbs?.length) {
+    return null;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: `${siteOrigin}${crumb.path}`,
+    })),
   };
 };
 
@@ -1335,6 +1353,7 @@ const renderPageHtml = (template, page, content) => {
   html = insertJsonLd(html, "local-business-schema", localBusinessSchema);
   html = insertJsonLd(html, "faq-schema", buildFaqSchema(page.faqs));
   html = insertJsonLd(html, "article-schema", buildArticleSchema(page, canonical, image));
+  html = insertJsonLd(html, "breadcrumb-schema", buildBreadcrumbSchema(page.breadcrumbs));
 
   const blogSlug = page.path.match(/^\/blog\/([^/]+)\/$/)?.[1];
   const post = blogSlug ? content.blogPosts.get(blogSlug) : undefined;
@@ -1386,6 +1405,29 @@ const writeRouteHtml = async (page, html) => {
 const template = await readFile(sourceIndexPath, "utf8");
 const content = await loadSiteContent();
 const { blogPosts: blogContent, landingPages: landingContent } = content;
+
+/* The guide's FAQs and review date are read straight out of src/data rather than
+   copied here, so the crawler HTML physically cannot drift from what React
+   renders for the same URL. */
+const guidePage = pages.find((page) => page.path === "/knowledge-test-guide/");
+
+if (!guidePage) {
+  throw new Error('Missing the "/knowledge-test-guide/" page entry.');
+}
+
+guidePage.type = "article";
+guidePage.faqs = content.knowledgeTestGuide.faqs;
+guidePage.article = {
+  articleType: "Article",
+  headline: "B.C. Class 7 Knowledge Test: Online and In-Person Guide",
+  datePublished: content.knowledgeTestGuide.publishedIso,
+  dateModified: content.knowledgeTestGuide.reviewedIso,
+  section: "Learner Licensing",
+};
+guidePage.breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide/" },
+];
 
 /* The page entries above duplicate metadata that already lives in src/, and the
    two have silently drifted before. Fail the build rather than ship a page whose
