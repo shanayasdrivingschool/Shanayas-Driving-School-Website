@@ -74,8 +74,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "ICBC driving lessons in Victoria, BC",
     heroDescription:
       "Learn safe vehicle control, road awareness, and everyday driving habits with structured, ICBC-aligned beginner lessons across Victoria and Langford.",
-    heroImage:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/driving-lessons.webp",
     targetKeyword: "driving lessons Victoria BC",
     intro: [
       "Shanaya's Driving School helps new drivers build confidence from the first lesson. Our beginner driving lessons are designed for students who want a clear plan, patient coaching, and practical experience on real roads in Victoria, Langford, and nearby communities.",
@@ -127,8 +126,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Driving lessons in Langford, BC",
     heroDescription:
       "Learn to drive with confidence across Langford and the Westshore, with calm, ICBC-aligned instruction on roundabouts, Goldstream Avenue traffic, highway merges, and parking from our local Langford hub.",
-    heroImage:
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/driving-lessons-langford.webp",
     targetKeyword: "driving lessons Langford BC",
     testimonial: {
       quote:
@@ -193,8 +191,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Driving lessons in Colwood, BC",
     heroDescription:
       "Learn to drive with confidence across Colwood and the Westshore, with calm, ICBC-aligned instruction on Sooke Road, the Colwood interchange, Ocean Boulevard, and Royal Bay's newer streets.",
-    heroImage:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/driving-lessons-colwood.webp",
     targetKeyword: "driving lessons Colwood BC",
     testimonial: {
       quote:
@@ -277,8 +274,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Driving lessons in Saanich, BC",
     heroDescription:
       "Learn to drive with confidence across Saanich and Greater Victoria, with calm, ICBC-aligned instruction on busy arterials like Douglas, Blanshard, and McKenzie, plus the local routes near the Saanich road test centre.",
-    heroImage:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/driving-lessons-saanich.webp",
     targetKeyword: "driving lessons Saanich BC",
     testimonial: {
       quote:
@@ -361,8 +357,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Driving lessons in View Royal, BC",
     heroDescription:
       "Learn to drive with confidence across View Royal and the Westshore, with calm, ICBC-aligned instruction on Highway 1, the Old Island Highway, the Helmcken interchange, and quieter streets near Thetis Lake.",
-    heroImage:
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/driving-lessons-view-royal.webp",
     targetKeyword: "driving lessons View Royal BC",
     testimonial: {
       quote:
@@ -445,8 +440,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Nervous driver lessons in Victoria, BC",
     heroDescription:
       "Anxious about driving? Learn at your own pace across Victoria with calm, patient, judgment-free instruction in a dual-control car, building real confidence one lesson at a time.",
-    heroImage:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/nervous-driver-lessons-victoria.webp",
     targetKeyword: "nervous driver lessons Victoria BC",
     testimonial: {
       quote:
@@ -530,8 +524,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Defensive driving course in Victoria",
     heroDescription:
       "Strengthen hazard awareness, following distance, scanning, and decision-making for safer everyday driving in BC traffic.",
-    heroImage:
-      "https://media-blog.zutobi.com/wp-content/uploads/sites/2/2021/06/14165940/WHAT-IS-DEFENSIVE-DRIVING-scaled.jpg",
+    heroImage: "/landing/defensive-driving.webp",
     targetKeyword: "defensive driving course Victoria",
     intro: [
       "Defensive driving is the skill of seeing risk early and creating enough time to respond safely. Shanaya's Driving School teaches defensive driving to learners, returning drivers, and licensed drivers who want to feel more in control in busy Victoria and Langford traffic.",
@@ -583,8 +576,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "ICBC road test preparation in BC",
     heroDescription:
       "Get road-test ready across our Vancouver Island service areas, with mock tests, examiner-style feedback, and a clear readiness plan before your ICBC appointment.",
-    heroImage:
-      "https://www.easydriversed.com/wp-content/uploads/2025/01/the-road-test-process.jpg",
+    heroImage: "/landing/road-test-prep.webp",
     targetKeyword: "road test preparation BC",
     serviceAreaTitle: "Vancouver Island communities",
     serviceAreas: ["Victoria", "Langford", "Saanich", "Colwood", "Sidney", "Sooke", "Duncan"],
@@ -652,8 +644,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Road test prep in Victoria, BC",
     heroDescription:
       "Get ready for your ICBC road test on the Victoria and Saanich routes examiners actually use, with mock tests, parking practice, and calm, examiner-style feedback tuned to local roads.",
-    heroImage:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/road-test-prep-victoria.webp",
     targetKeyword: "road test prep Victoria BC",
     testimonial: {
       quote:
@@ -718,8 +709,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Mock road test in Victoria, BC",
     heroDescription:
       "See exactly where you stand before test day. Our mock ICBC road test runs the real Saanich and Victoria routes, scored the way an examiner would, with clear feedback on what to fix.",
-    heroImage:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/mock-road-test-victoria.webp",
     targetKeyword: "mock road test Victoria BC",
     testimonial: {
       quote:
@@ -808,8 +798,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "ICBC road test car rental in Victoria",
     heroDescription:
       "Use a familiar instructor-approved vehicle for road test day and keep your final preparation simple.",
-    heroImage:
-      "https://th.bing.com/th/id/R.938bd1619651dfafcc414b34125030cc?rik=YGc%2fiHscOQkg8A&riu=http%3a%2f%2fdualcontrolvehiclehire.co.uk%2fassets%2fimages%2fdual-internal-1266x949.jpeg&ehk=sBzyh82TS%2fru%2fNH3cCjSrvjtlhpolkb8a0RbECqzZ6o%3d&risl=&pid=ImgRaw&r=0",
+    heroImage: "/landing/road-test-vehicle.webp",
     targetKeyword: "ICBC road test car rental Victoria",
     intro: [
       "A road test vehicle rental helps students avoid last-minute stress around car availability, insurance, mechanical readiness, or unfamiliar controls. Shanaya's Driving School offers an instructor-approved vehicle option for eligible road test bookings in Victoria, Langford, and nearby service areas.",
@@ -861,8 +850,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Intensive driving course in Victoria",
     heroDescription:
       "Build momentum with a focused lesson plan for learners who want consistent practice over a shorter training window.",
-    heroImage:
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/intensive-driving-course.webp",
     targetKeyword: "intensive driving course Victoria",
     intro: [
       "An intensive driving course is for students who want steady progress through a concentrated lesson plan. Instead of spreading practice over a long period, students work through core skills, weak areas, and road test preparation with more consistent scheduling.",
@@ -909,13 +897,12 @@ export const seoLandingPages: SeoLandingPage[] = [
     path: "/pricing",
     title: "Driving Lesson Prices in Victoria, BC | Shanaya's Driving School",
     metaDescription:
-      "View driving lesson pricing options for Victoria, Langford, and Greater Victoria, including courses, packages, road test prep, and payment plan support.",
+      "Driving lesson pricing for Victoria and Langford: $89 for 60 minutes, $133.50 for 90. Compare courses, packages, road test prep, and payment plans.",
     eyebrow: "Pricing",
     h1: "Driving lesson prices in Victoria, BC",
     heroDescription:
       "Compare lesson, package, road test prep, and payment plan options before choosing your training path.",
-    heroImage:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/pricing.webp",
     targetKeyword: "driving lesson prices Victoria BC",
     intro: [
       "Individual driving lessons in Victoria and Langford start at $89 for 60 minutes and $133.50 for 90 minutes, with packages bundling several courses at a combined rate. Driving lesson pricing depends on your goals, service area, course type, and whether you choose single lessons or a structured package, and Shanaya's Driving School keeps every option clear so you can compare lessons, road test prep, parking practice, and bundled plans.",
@@ -979,8 +966,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Driving test and lesson questions in BC",
     heroDescription:
       "Get clear answers before booking lessons, preparing for a road test, or choosing a training package.",
-    heroImage:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/faq.webp",
     targetKeyword: "driving test BC questions",
     intro: [
       "Learning to drive comes with practical questions about lessons, ICBC road tests, vehicle use, pricing, scheduling, and readiness. This FAQ gives students and families a single place to review the basics before contacting Shanaya's Driving School.",
@@ -1037,8 +1023,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "An ICBC-licensed driving school in Victoria & Langford",
     heroDescription:
       "Shanaya's Driving School is a licensed BC driving school with ICBC-licensed instructors, teaching to ICBC road-safety standards across Victoria, Langford, and Greater Victoria.",
-    heroImage:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/icbc-approved-driving-school.webp",
     targetKeyword: "ICBC approved driving schools",
     serviceAreaTitle: "Victoria and Greater Victoria",
     serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Sidney", "Sooke"],
@@ -1121,62 +1106,75 @@ export const seoLandingPages: SeoLandingPage[] = [
     path: "/bc-graduated-licensing-program",
     title: "BC Graduated Licensing Program (GLP) Explained | Shanaya's",
     metaDescription:
-      "How BC's Graduated Licensing Program works, from the Learner (L) and Novice (N) stages to your full Class 5 licence: the wait times, road tests, and restrictions at each step.",
+      "How BC's Graduated Licensing Program works, and what changes on October 19, 2026 when ICBC replaces the second road test with a Driving Record Assessment.",
     eyebrow: "Graduated licensing",
     h1: "The BC Graduated Licensing Program (GLP), explained",
     heroDescription:
-      "New drivers in British Columbia earn a full licence in stages. Here is a clear walkthrough of the Learner (L) and Novice (N) stages, the wait times, the road tests, and the rules at each step.",
-    heroImage:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80",
+      "New drivers in British Columbia earn a full licence in stages. Here is a clear walkthrough of the Learner (L) and Novice (N) stages, the wait times, and what changes on October 19, 2026.",
+    heroImage: "/landing/bc-graduated-licensing-program.webp",
     targetKeyword: "BC graduated licensing program explained",
     intro: [
-      "British Columbia uses a Graduated Licensing Program (GLP) for new drivers. Instead of one test for a full licence, you move through two supervised stages, Learner and Novice, that gradually give you more freedom as you gain experience. For most new Class 5 drivers, the full path takes a minimum of about three years.",
-      "The GLP applies to passenger-vehicle drivers working toward a Class 5 licence, and it starts with the Class 7 learner stage. Understanding each stage, and the wait time attached to it, helps you plan your road tests and avoid delays.",
+      "British Columbia uses a Graduated Licensing Program (GLP) for new drivers. Instead of one test for a full licence, you move through two supervised stages, Learner and Novice, that gradually give you more freedom as you gain experience.",
+      "The GLP is changing on October 19, 2026. ICBC is removing the second road test and replacing it with a Driving Record Assessment, adding a 12-month restricted Class 5 stage, and creating a shorter path for drivers aged 25 and older. The rules below describe the program as it works today, with each upcoming change flagged where it applies.",
       "Below is a plain-language breakdown of every stage, what you need to move up, and the restrictions you follow along the way.",
     ],
     sections: [
       {
         title: "The stages at a glance",
         body:
-          "The GLP has two learning stages before a full licence. You must spend a minimum amount of time in each stage and pass a road test to move to the next one.",
+          "The GLP has two learning stages before a full licence. You must spend a minimum amount of time in each stage and pass a road test to move to the next one. From October 19, 2026 there is also a fourth step: a restricted Class 5 that lasts 12 months before your licence becomes fully unrestricted.",
         bullets: [
-          "Stage 1: Learner (Class 7L), minimum 12 months",
-          "Stage 2: Novice (Class 7N), minimum 24 months",
-          "Full licence (Class 5) after completing the Novice stage",
+          "Stage 1: Learner (Class 7L), minimum 12 months, dropping to 9 months for drivers 25 and older on October 19, 2026",
+          "Stage 2: Novice (Class 7N), minimum 24 months, dropping to 12 months for drivers 25 and older on October 19, 2026",
+          "Class 5 licence after completing the Novice stage",
+          "From October 19, 2026: a 12-month restricted Class 5 stage before your full, unrestricted licence",
         ],
       },
       {
         title: "Stage 1: Learner's licence (Class 7L)",
         body:
-          "You start by passing the ICBC knowledge test and a vision screening. Once you have your L, you can practise driving while supervised, and you must hold it for at least 12 months before your first road test.",
+          "You start by passing the ICBC knowledge test and a vision screening. Once you have your L, you can practise driving while supervised, and you must hold it for at least 12 months before your first road test. From October 19, 2026, drivers aged 25 and older only need to hold the L for 9 months.",
         bullets: [
           "Pass the ICBC knowledge test and a vision screening to qualify",
-          "A supervisor 25 or older with a valid Class 5 licence must sit in the front seat at all times",
+          "A supervisor 25 or older with a valid Class 5 licence must sit in the front seat at all times, dropping to 22 or older on October 19, 2026",
           "Zero blood alcohol, and no electronic devices, even hands-free",
           "Display an \"L\" sign on the back of the vehicle",
-          "Hold the L for a minimum of 12 months before the Class 7 road test",
+          "Hold the L for a minimum of 12 months before the Class 7 road test, or 9 months if you are 25 or older from October 19, 2026",
         ],
       },
       {
         title: "Stage 2: Novice licence (Class 7N)",
         body:
-          "After 12 months as a Learner, you take the Class 7 road test. Pass it and you move to the Novice stage, where you can drive on your own with a few restrictions. You must hold the N for at least 24 months.",
+          "After 12 months as a Learner, you take the Class 7 road test. Pass it and you move to the Novice stage, where you can drive on your own with a few restrictions. You must hold the N for at least 24 months. From October 19, 2026, drivers aged 25 and older only need 12 months, and this remains the only road test in the program.",
         bullets: [
           "Drive unsupervised, but carry only one passenger unless a supervisor 25 or older is present or the passengers are immediate family",
           "Zero blood alcohol, and no electronic devices",
           "Display an \"N\" sign on the back of the vehicle",
-          "Hold the N for a minimum of 24 months as a safe driver before moving to a full Class 5 licence",
+          "Hold the N for a minimum of 24 months as a safe driver, or 12 months if you are 25 or older from October 19, 2026",
+        ],
+      },
+      {
+        title: "What changes on October 19, 2026",
+        body:
+          "The Province and ICBC announced the biggest update to the GLP in 25 years. The headline change is that the second road test disappears and is replaced by a Driving Record Assessment: an in-office check of your record rather than a drive with an examiner. Second road tests booked on or after October 19, 2026 will be cancelled, and ICBC will email affected drivers.",
+        bullets: [
+          "The second road test is replaced by a Driving Record Assessment",
+          "Passing it gives you a Class 5 with a 12-month zero alcohol and drug restriction, not an unrestricted licence",
+          "Drivers 25 and older move to a 9-month Learner stage and a 12-month Novice stage",
+          "For drivers under 25 the 12-month Learner and 24-month Novice timelines do not change",
+          "The minimum supervisor age drops from 25 to 22, and the age of consent to apply drops from 19 to 18",
+          "Convictions for excessive speed or electronic device use can restart your Novice period",
         ],
       },
       {
         title: "Full licence (Class 5)",
         body:
-          "Once you have held your N for 24 months as a safe driver, you move toward your full Class 5 licence. Traditionally this meant passing a second road test, the Class 5 test. As of summer 2026, ICBC is removing that second road test for Novice drivers with a clean driving record and replacing it with a 12-month restriction period in which you keep demonstrating safe driving. ICBC is rolling this out and finalising the details, so check icbc.com for exactly how it applies to you.",
+          "Until October 19, 2026, you reach a full Class 5 licence by holding your N for the required time as a safe driver and passing the Class 5 road test. After that date the road test is replaced by the Driving Record Assessment, and you first receive a Class 5 carrying a 12-month zero alcohol and drug restriction. Once those 12 months pass without incident, the restriction lifts and your licence is fully unrestricted.",
       },
       {
         title: "Can you finish the GLP faster?",
         body:
-          "The 12-month Learner stage is fixed, but the 24-month Novice stage can be reduced by six months if you complete an ICBC-approved GLP driver-training course. Strong preparation for your road test also helps you pass on the first attempt, so you are not waiting weeks to rebook after a fail.",
+          "Completing an ICBC-approved GLP driver-training course cuts the Novice stage from 24 months to 18. From October 19, 2026 this becomes the only remaining shortcut in the program, and ICBC requires the course to be completed during the Learner stage, so starting it early matters. Drivers 25 and older get a shorter path automatically from that date. Strong road test preparation also helps you pass on the first attempt, so you are not waiting weeks to rebook after a fail.",
       },
       {
         title: "How lessons help you move through the GLP",
@@ -1188,7 +1186,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "How long does the BC Graduated Licensing Program take?",
         answer:
-          "At minimum about three years: 12 months in the Learner (L) stage and 24 months in the Novice (N) stage, plus the time to pass each road test. The Novice stage can be shortened by six months with an ICBC-approved GLP course.",
+          "For drivers under 25, at minimum about three years: 12 months in the Learner (L) stage and 24 months in the Novice (N) stage, plus the time to pass the road test. The Novice stage can be shortened by six months with an ICBC-approved GLP course. From October 19, 2026, drivers 25 and older need only 9 months as a Learner and 12 months as a Novice.",
       },
       {
         question: "What is the difference between an L and an N in BC?",
@@ -1198,16 +1196,26 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "How old do you have to be to start the GLP?",
         answer:
-          "You can apply for your Learner's licence at 16. If you are under 19, you need consent from a parent or legal guardian.",
+          "You can apply for your Learner's licence at 16. If you are under 19, you need consent from a parent or legal guardian. From October 19, 2026 the age of consent drops to 18, so 18-year-olds can apply independently.",
       },
       {
         question: "How many road tests are in the GLP?",
         answer:
-          "Traditionally two: the Class 7 road test to reach Novice, and the Class 5 road test to reach a full licence. As of summer 2026, ICBC is removing the second (Class 5) road test for Novice drivers with a clean record, replacing it with a 12-month restriction period. The knowledge test and the Class 7 road test still apply. Check icbc.com for the current requirement.",
+          "Until October 19, 2026 there are two: the Class 7 road test to reach Novice, and the Class 5 road test to reach a full licence. From that date the second road test is removed and replaced by a Driving Record Assessment, an in-office check of your driving record, leaving the Class 7 road test as the only road test in the program.",
+      },
+      {
+        question: "What is the Driving Record Assessment?",
+        answer:
+          "From October 19, 2026 it replaces the second road test. Instead of driving with an examiner, ICBC checks that you have completed the required safe driving period with no prohibitions or suspensions and no convictions for excessive speed or electronic device use. Passing it gives you a Class 5 with a 12-month zero alcohol and drug restriction.",
       },
     ],
     relatedLinksTitle: "Get ready for each stage",
     relatedLinks: [
+      {
+        label: "What changes on October 19, 2026",
+        href: "/blog/bc-glp-changes-2026",
+        description: "The second road test is being removed. Here is what it means for you.",
+      },
       {
         label: "ICBC knowledge test practice",
         href: "/knowledge-test-practice",
@@ -1221,7 +1229,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "ICBC road test preparation",
         href: "/road-test-prep",
-        description: "Mock tests and prep before your Class 7 or Class 5 test.",
+        description: "Mock tests and prep before your Class 7 road test.",
       },
     ],
     primaryCtaLabel: "Book a lesson",
@@ -1236,8 +1244,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Find a driving instructor in Victoria, BC",
     heroDescription:
       "Learn with a patient, ICBC-licensed driving instructor across Victoria, Langford, and Greater Victoria, in a dual-control car, at a pace that fits how you learn.",
-    heroImage:
-      "https://smallbusiness-production.s3.amazonaws.com/uploads/2021/09/Driving-instructor-pic.jpg",
+    heroImage: "/landing/driving-instructor-victoria.webp",
     targetKeyword: "driving instructor Victoria",
     serviceAreaTitle: "Victoria and Greater Victoria",
     serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Oak Bay", "Sidney"],
@@ -1336,8 +1343,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     h1: "Driver education and training in Victoria, BC",
     heroDescription:
       "In BC, driver education and training means ICBC knowledge-test prep plus in-car lessons with a licensed driving school. Shanaya's covers both across Victoria, Langford, and Greater Victoria.",
-    heroImage:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    heroImage: "/landing/driver-education-training.webp",
     targetKeyword: "driver education and training",
     serviceAreaTitle: "Victoria and Greater Victoria",
     serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Sidney", "Sooke"],

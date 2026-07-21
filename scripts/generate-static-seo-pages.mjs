@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { loadSiteContent } from "./load-site-content.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, "../public_html");
@@ -39,8 +40,9 @@ const localBusinessSchema = {
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "2770 Leigh Rd",
-    addressLocality: "Victoria",
+    // Keep in sync with localBusinessJsonLd in src/components/SeoManager.tsx.
+    streetAddress: "Unit 124, 2770 Leigh Rd",
+    addressLocality: "Langford",
     addressRegion: "BC",
     postalCode: "V9B 4G1",
     addressCountry: "CA",
@@ -64,7 +66,7 @@ const landingPages = [
     title: "ICBC Driving Lessons Victoria BC | Shanaya's Driving School",
     description:
       "Beginner driving lessons in Victoria, Langford, and Greater Victoria with ICBC-aligned coaching, dual-control vehicles, and calm instructor support.",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/driving-lessons.webp",
     faqs: [
       {
         question: "Do beginners need any experience before booking?",
@@ -81,7 +83,7 @@ const landingPages = [
     title: "Driving Lessons in Langford, BC | Shanaya's Driving School",
     description:
       "Langford driving school offering lessons across the Westshore, BC with ICBC-aligned coaching, dual-control cars, and lessons that start from our Leigh Rd office.",
-    image: "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/driving-lessons-langford.webp",
     faqs: [
       {
         question: "Do lessons start close to Langford?",
@@ -105,7 +107,7 @@ const landingPages = [
     title: "Driving Lessons in Colwood, BC | Shanaya's Driving School",
     description:
       "Driving lessons in Colwood and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Sooke Road, the Colwood interchange, and Royal Bay.",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/driving-lessons-colwood.webp",
     faqs: [
       {
         question: "Do lessons cover the Colwood interchange and highway merging?",
@@ -129,7 +131,7 @@ const landingPages = [
     title: "Driving Lessons in Saanich, BC | Shanaya's Driving School",
     description:
       "Driving lessons in Saanich, BC with ICBC-aligned coaching and dual-control cars. Practice Douglas, Blanshard, McKenzie, and the routes near the Saanich test centre.",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/driving-lessons-saanich.webp",
     faqs: [
       {
         question: "Do lessons cover the McKenzie interchange and highway merging?",
@@ -153,7 +155,7 @@ const landingPages = [
     title: "Driving Lessons in View Royal, BC | Shanaya's Driving School",
     description:
       "Driving lessons in View Royal and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Highway 1 and the Old Island Highway.",
-    image: "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/driving-lessons-view-royal.webp",
     faqs: [
       {
         question: "Do lessons cover Highway 1 merging in View Royal?",
@@ -177,7 +179,7 @@ const landingPages = [
     title: "Nervous Driver Lessons in Victoria, BC | Shanaya's Driving School",
     description:
       "Calm, patient driving lessons for nervous drivers in Victoria, BC. Judgment-free coaching, dual-control cars, and lessons paced to build confidence at your speed.",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/nervous-driver-lessons-victoria.webp",
     faqs: [
       {
         question: "I get really anxious driving. Can you still help?",
@@ -201,7 +203,7 @@ const landingPages = [
     title: "Defensive Driving Course in Victoria, BC | Shanaya's Driving School",
     description:
       "Defensive driving course in Victoria and Langford focused on hazard perception, safe spacing, traffic awareness, and confident decision-making.",
-    image: "https://media-blog.zutobi.com/wp-content/uploads/sites/2/2021/06/14165940/WHAT-IS-DEFENSIVE-DRIVING-scaled.jpg",
+    image: "https://www.drivingschoolbc.ca/landing/defensive-driving.webp",
     faqs: [
       {
         question: "Is defensive driving only for experienced drivers?",
@@ -218,7 +220,7 @@ const landingPages = [
     title: "ICBC Road Test Preparation in BC | Shanaya's Driving School",
     description:
       "ICBC road test preparation across Vancouver Island, with mock tests, parking practice, and examiner-style feedback. Find road test prep near your test centre.",
-    image: "https://www.easydriversed.com/wp-content/uploads/2025/01/the-road-test-process.jpg",
+    image: "https://www.drivingschoolbc.ca/landing/road-test-prep.webp",
     faqs: [
       {
         question: "Which areas do you offer road test prep in?",
@@ -240,7 +242,7 @@ const landingPages = [
     title: "Road Test Prep in Victoria, BC | Shanaya's Driving School",
     description:
       "ICBC road test preparation in Victoria, BC. Practice the Saanich and Victoria test-centre routes with mock tests, parking drills, and examiner-style feedback before test day.",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/road-test-prep-victoria.webp",
     faqs: [
       {
         question: "Do you practise on the actual Victoria test routes?",
@@ -264,7 +266,7 @@ const landingPages = [
     title: "Mock Road Test in Victoria, BC | Shanaya's Driving School",
     description:
       "Book a mock ICBC road test in Victoria, BC. A full practice run on the real Saanich and Victoria routes with examiner-style scoring and feedback before your test.",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/mock-road-test-victoria.webp",
     faqs: [
       {
         question: "What is a mock road test?",
@@ -293,7 +295,7 @@ const landingPages = [
     title: "ICBC Road Test Car Rental in Victoria | Shanaya's Driving School",
     description:
       "Book an instructor-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
-    image: "https://th.bing.com/th/id/R.938bd1619651dfafcc414b34125030cc?rik=YGc%2fiHscOQkg8A&riu=http%3a%2f%2fdualcontrolvehiclehire.co.uk%2fassets%2fimages%2fdual-internal-1266x949.jpeg&ehk=sBzyh82TS%2fru%2fNH3cCjSrvjtlhpolkb8a0RbECqzZ6o%3d&risl=&pid=ImgRaw&r=0",
+    image: "https://www.drivingschoolbc.ca/landing/road-test-vehicle.webp",
     faqs: [
       {
         question: "Can I rent the vehicle without a lesson?",
@@ -310,7 +312,7 @@ const landingPages = [
     title: "Intensive Driving Course in Victoria, BC | Shanaya's Driving School",
     description:
       "Intensive driving course support in Victoria and Langford for learners who want focused lessons, faster progress, and structured road test preparation.",
-    image: "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/intensive-driving-course.webp",
     faqs: [
       {
         question: "Can an intensive course guarantee a road test pass?",
@@ -326,8 +328,8 @@ const landingPages = [
     path: "/pricing/",
     title: "Driving Lesson Prices in Victoria, BC | Shanaya's Driving School",
     description:
-      "Driving lessons in Victoria and Langford start at $89 for 60 minutes and $133.50 for 90 minutes. Compare course, package, road test prep, and payment plan pricing across Greater Victoria.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
+      "Driving lesson pricing for Victoria and Langford: $89 for 60 minutes, $133.50 for 90. Compare courses, packages, road test prep, and payment plans.",
+    image: "https://www.drivingschoolbc.ca/landing/pricing.webp",
     faqs: [
       {
         question: "Where can I see current package options?",
@@ -344,7 +346,7 @@ const landingPages = [
     title: "Driving Test & Lesson FAQ for BC | Shanaya's Driving School",
     description:
       "Answers to common BC driving lesson, ICBC road test, learner licence, vehicle rental, booking, pricing, and preparation questions.",
-    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/faq.webp",
     faqs: [
       {
         question: "How many driving lessons do I need?",
@@ -370,7 +372,7 @@ const landingPages = [
     title: "ICBC-Approved Driving School in Victoria, BC | Shanaya's",
     description:
       "Looking for an ICBC-approved driving school in Victoria or Langford? Shanaya's is a licensed BC driving school with ICBC-licensed instructors teaching the ICBC curriculum in dual-control cars.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/icbc-approved-driving-school.webp",
     faqs: [
       {
         question: "Is Shanaya's Driving School ICBC-approved?",
@@ -398,13 +400,13 @@ const landingPages = [
     path: "/bc-graduated-licensing-program/",
     title: "BC Graduated Licensing Program (GLP) Explained | Shanaya's",
     description:
-      "How BC's Graduated Licensing Program works, from the Learner (L) and Novice (N) stages to your full Class 5 licence: the wait times, road tests, and restrictions at each step.",
-    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80",
+      "How BC's Graduated Licensing Program works, and what changes on October 19, 2026 when ICBC replaces the second road test with a Driving Record Assessment.",
+    image: "https://www.drivingschoolbc.ca/landing/bc-graduated-licensing-program.webp",
     faqs: [
       {
         question: "How long does the BC Graduated Licensing Program take?",
         answer:
-          "At minimum about three years: 12 months in the Learner (L) stage and 24 months in the Novice (N) stage, plus the time to pass each road test. The Novice stage can be shortened by six months with an ICBC-approved GLP course.",
+          "For drivers under 25, at minimum about three years: 12 months in the Learner (L) stage and 24 months in the Novice (N) stage, plus the time to pass the road test. The Novice stage can be shortened by six months with an ICBC-approved GLP course. From October 19, 2026, drivers 25 and older need only 9 months as a Learner and 12 months as a Novice.",
       },
       {
         question: "What is the difference between an L and an N in BC?",
@@ -414,12 +416,17 @@ const landingPages = [
       {
         question: "How old do you have to be to start the GLP?",
         answer:
-          "You can apply for your Learner's licence at 16. If you are under 19, you need consent from a parent or legal guardian.",
+          "You can apply for your Learner's licence at 16. If you are under 19, you need consent from a parent or legal guardian. From October 19, 2026 the age of consent drops to 18, so 18-year-olds can apply independently.",
       },
       {
         question: "How many road tests are in the GLP?",
         answer:
-          "Traditionally two: the Class 7 road test to reach Novice, and the Class 5 road test to reach a full licence. As of summer 2026, ICBC is removing the second (Class 5) road test for Novice drivers with a clean record, replacing it with a 12-month restriction period. The knowledge test and the Class 7 road test still apply. Check icbc.com for the current requirement.",
+          "Until October 19, 2026 there are two: the Class 7 road test to reach Novice, and the Class 5 road test to reach a full licence. From that date the second road test is removed and replaced by a Driving Record Assessment, an in-office check of your driving record, leaving the Class 7 road test as the only road test in the program.",
+      },
+      {
+        question: "What is the Driving Record Assessment?",
+        answer:
+          "From October 19, 2026 it replaces the second road test. Instead of driving with an examiner, ICBC checks that you have completed the required safe driving period with no prohibitions or suspensions and no convictions for excessive speed or electronic device use. Passing it gives you a Class 5 with a 12-month zero alcohol and drug restriction.",
       },
     ],
   },
@@ -428,7 +435,7 @@ const landingPages = [
     title: "Driving Instructor in Victoria BC | Shanaya's Driving School",
     description:
       "Looking for a driving instructor in Victoria or Langford? Shanaya's ICBC-licensed instructors give patient, one-on-one lessons in dual-control cars, with pick-up and drop-off across Greater Victoria.",
-    image: "https://smallbusiness-production.s3.amazonaws.com/uploads/2021/09/Driving-instructor-pic.jpg",
+    image: "https://www.drivingschoolbc.ca/landing/driving-instructor-victoria.webp",
     faqs: [
       {
         question: "Are your driving instructors licensed?",
@@ -462,7 +469,7 @@ const landingPages = [
     title: "Driver Education & Training in Victoria, BC | Shanaya's",
     description:
       "Driver education and training in Victoria, Langford, and Greater Victoria. In BC that means ICBC-aligned knowledge test prep and in-car driving lessons through a licensed driving school.",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1800&q=80",
+    image: "https://www.drivingschoolbc.ca/landing/driver-education-training.webp",
     faqs: [
       {
         question: "Is driver education the same as driving lessons in BC?",
@@ -646,18 +653,46 @@ const publicPages = [
     description: "Book an instructor-approved training car for road test day when you want to test in a familiar vehicle.",
   },
   {
+    path: "/blog/bc-glp-changes-2026/",
+    title: "BC Second Road Test Removed: GLP Changes Oct 19, 2026",
+    description:
+      "ICBC is replacing BC's second road test with a Driving Record Assessment on October 19, 2026. What changes, who it affects, and what to do now.",
+    type: "article",
+    image: `${siteOrigin}/landing/bc-graduated-licensing-program.webp`,
+    article: {
+      headline: "BC Is Removing the Second Road Test: What Changes on October 19, 2026",
+      section: "ICBC Updates",
+      datePublished: "2026-07-21",
+      dateModified: "2026-07-21",
+    },
+  },
+  {
     path: "/blog/how-to-pass-driving-test-victoria-bc/",
     title: "How to Pass Your Driving Test in Victoria, BC | Shanaya's Driving School",
     description:
-      "A step-by-step guide to passing your ICBC driving test in Victoria, BC: what to bring, the vehicle check, how examiners score the drive, and what happens after.",
+      "A step-by-step guide to passing your ICBC driving test in Victoria, BC: what to bring, the vehicle check, and how examiners score the drive.",
     type: "article",
+    image: `${siteOrigin}/blog/how-to-pass-driving-test-victoria-bc.webp`,
+    article: {
+      headline: "How to Pass Your Driving Test in Victoria, BC",
+      section: "Road Test Guide",
+      datePublished: "2026-07-05",
+      dateModified: "2026-07-05",
+    },
   },
   {
     path: "/blog/icbc-road-test-tips-victoria/",
     title: "ICBC Road Test Tips: Victoria, BC | Shanaya's Driving School",
     description:
-      "Local ICBC road test tips for Victoria and Saanich: the test routes, the manoeuvres examiners score, common mistakes to avoid, and how to stay calm on test day.",
+      "Local ICBC road test tips for Victoria and Saanich: the test routes, the manoeuvres examiners score, and the common mistakes to avoid.",
     type: "article",
+    image: `${siteOrigin}/blog/icbc-road-test-tips-victoria.webp`,
+    article: {
+      headline: "ICBC Road Test Tips: Victoria, BC",
+      section: "Road Test Tips",
+      datePublished: "2026-07-05",
+      dateModified: "2026-07-05",
+    },
   },
   {
     path: "/blog/pass-road-test/",
@@ -665,20 +700,41 @@ const publicPages = [
     description:
       "Practical tips and common mistakes to avoid so you can walk out of ICBC with your licence in hand.",
     type: "article",
+    image: `${siteOrigin}/blog/road-test-tips.webp`,
+    article: {
+      headline: "How to Pass Your Road Test on the First Try",
+      section: "Road Test Tips",
+      datePublished: "2026-03-01",
+      dateModified: "2026-03-01",
+    },
   },
   {
     path: "/blog/defensive-driving/",
     title: "Defensive Driving: Skills That Keep You Safe | Shanaya's Driving School",
     description:
-      "Learn the core defensive driving habits our instructors teach every student, from hazard scanning to safe following distances.",
+      "Learn the core defensive driving habits our instructors teach every student - from hazard scanning to safe following distances.",
     type: "article",
+    image: `${siteOrigin}/blog/what-is-defensive-driving.webp`,
+    article: {
+      headline: "Defensive Driving: Skills That Keep You Safe",
+      section: "Driving Skills",
+      datePublished: "2026-02-20",
+      dateModified: "2026-02-20",
+    },
   },
   {
     path: "/blog/newcomers-guide-bc/",
     title: "New to BC? Driving Rules Newcomers Should Know | Shanaya's Driving School",
     description:
-      "New to British Columbia? Learn the road rules and habits that catch newcomers off guard, from right turns on red and 30 km/h school zones to winter tires and strict distracted-driving laws.",
+      "New to BC? The road rules that catch newcomers off guard: right turns on red, 30 km/h school zones, winter tires, distracted driving, and licensing.",
     type: "article",
+    image: `${siteOrigin}/blog/newcomers-guide-bc.webp`,
+    article: {
+      headline: "New to BC? Driving Rules Newcomers Should Know",
+      section: "Newcomer Resources",
+      datePublished: "2026-02-10",
+      dateModified: "2026-02-10",
+    },
   },
 ];
 
@@ -767,6 +823,34 @@ const buildFaqSchema = (faqs) => {
   };
 };
 
+/* Mirrors buildArticleJsonLd in src/components/SeoManager.tsx. Keep the two in
+   sync: this one serves crawlers that never execute the React bundle. */
+const buildArticleSchema = (page, canonical, image) => {
+  if (!page.article) {
+    return null;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${canonical}#article`,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+    headline: page.article.headline,
+    description: page.description,
+    image,
+    datePublished: page.article.datePublished,
+    dateModified: page.article.dateModified,
+    articleSection: page.article.section,
+    inLanguage: "en-CA",
+    author: {
+      "@type": "Organization",
+      name: siteName,
+      url: `${siteOrigin}/about/`,
+    },
+    publisher: { "@id": `${siteOrigin}/#localbusiness` },
+  };
+};
+
 const insertJsonLd = (html, id, data) => {
   if (!data) {
     return removeJsonLd(html, id);
@@ -787,7 +871,179 @@ const setFallbackContent = (html, page) => {
     );
 };
 
-const renderPageHtml = (template, page) => {
+const fallbackPattern = /(<main id="seo-fallback">)([\s\S]*?)(<\/main>)/i;
+
+const blogNavPattern = /<nav aria-label="Driving tips and guides">[\s\S]*?<\/nav>/i;
+
+/* index.html hardcodes the blog links in the #seo-fallback nav, so a new post
+   silently never appears there. Rebuild that nav from blogPosts instead: this
+   nav ships on every page and is the main internal link source for crawlers
+   that don't run JS. */
+const setBlogNav = (html, blogContent) => {
+  if (!blogNavPattern.test(html)) {
+    throw new Error('Could not find the "Driving tips and guides" nav in index.html');
+  }
+
+  const links = [
+    `<a href="${siteOrigin}/blog/">Driving tips and road test resources</a>`,
+    ...[...blogContent.entries()]
+      .sort((a, b) => (a[1].datePublished < b[1].datePublished ? 1 : -1))
+      .map(
+        ([slug, post]) =>
+          `<a href="${siteOrigin}/blog/${slug}/">${escapeHtml(post.title)}</a>`,
+      ),
+  ];
+
+  return html.replace(
+    blogNavPattern,
+    () =>
+      `<nav aria-label="Driving tips and guides">\n          ${links.join("\n          ")}\n        </nav>`,
+  );
+};
+
+const para = (text) => `<p>${escapeHtml(text)}</p>`;
+const list = (items) =>
+  items.length ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "";
+
+/* Replaces the generic #seo-fallback boilerplate with real page content built
+   from the same data src/ renders. Keeps the site-wide <nav> blocks, which are
+   the only internal links a non-JS crawler ever sees. This changes nothing a
+   visitor sees: the fallback is display:none and React replaces #root on mount. */
+const replaceFallback = (html, page, buildBody) => {
+  const match = html.match(fallbackPattern);
+
+  if (!match) {
+    throw new Error(`Could not find #seo-fallback block while rendering ${page.path}`);
+  }
+
+  const navs = match[2].match(/<nav[\s\S]*<\/nav>/i)?.[0] ?? "";
+
+  return html.replace(
+    fallbackPattern,
+    () => `${match[1]}\n        ${buildBody()}\n        ${navs}\n      ${match[3]}`,
+  );
+};
+
+const buildLandingBody = (landing) => {
+  const parts = [`<h1>${escapeHtml(landing.h1)}</h1>`, para(landing.heroDescription)];
+
+  landing.intro.forEach((text) => parts.push(para(text)));
+
+  landing.sections.forEach((section) => {
+    parts.push(`<section><h2>${escapeHtml(section.title)}</h2>`);
+    parts.push(para(section.body));
+    parts.push(list(section.bullets ?? []));
+    parts.push(`</section>`);
+  });
+
+  if (landing.serviceAreas.length) {
+    parts.push(`<section><h2>${escapeHtml(landing.serviceAreaTitle ?? "Service areas")}</h2>`);
+    parts.push(list(landing.serviceAreas));
+    parts.push(`</section>`);
+  }
+
+  if (landing.testimonial) {
+    const { quote, name, location } = landing.testimonial;
+    parts.push(
+      `<blockquote><p>${escapeHtml(quote)}</p><cite>${escapeHtml(`${name}, ${location}`)}</cite></blockquote>`,
+    );
+  }
+
+  if (landing.faqs.length) {
+    parts.push(`<section><h2>Frequently asked questions</h2>`);
+    landing.faqs.forEach((faq) => {
+      parts.push(`<h3>${escapeHtml(faq.question)}</h3>`);
+      parts.push(para(faq.answer));
+    });
+    parts.push(`</section>`);
+  }
+
+  if (landing.relatedLinks.length) {
+    parts.push(`<section><h2>${escapeHtml(landing.relatedLinksTitle ?? "Related pages")}</h2><ul>`);
+    landing.relatedLinks.forEach((link) => {
+      const href = `${siteOrigin}${link.href.replace(/\/?$/, "/")}`;
+      const description = link.description ? ` — ${link.description}` : "";
+      parts.push(
+        `<li><a href="${escapeHtml(href)}">${escapeHtml(link.label)}</a>${escapeHtml(description)}</li>`,
+      );
+    });
+    parts.push(`</ul></section>`);
+  }
+
+  return parts.filter(Boolean).join("\n        ");
+};
+
+/* The /blog/ index is a bespoke React page with no backing data object, so its
+   fallback would otherwise carry no links to any article at all. */
+const buildBlogIndexBody = (page, blogContent) => {
+  const posts = [...blogContent.entries()].sort((a, b) =>
+    a[1].datePublished < b[1].datePublished ? 1 : -1,
+  );
+
+  const parts = [
+    `<h1>${escapeHtml(page.title.split(" | ")[0])}</h1>`,
+    para(page.description),
+    `<ul>`,
+  ];
+
+  posts.forEach(([slug, post]) => {
+    parts.push(
+      `<li><article><h2><a href="${siteOrigin}/blog/${slug}/">${escapeHtml(post.title)}</a></h2>` +
+        `${para(post.description)}` +
+        `${para(`${post.category} · Updated ${post.date} · ${post.readTime}`)}</article></li>`,
+    );
+  });
+
+  parts.push(`</ul>`);
+
+  return parts.join("\n        ");
+};
+
+const buildProductBody = (product) => {
+  const parts = [`<h1>${escapeHtml(product.h1)}</h1>`, para(product.description)];
+
+  if (product.meta?.length) {
+    parts.push(list(product.meta));
+  }
+  if (product.detail) {
+    parts.push(para(product.detail));
+  }
+  (product.paragraphs ?? []).forEach((text) => parts.push(para(text)));
+
+  if (product.bullets?.length) {
+    parts.push(`<section><h2>${escapeHtml(product.bulletsTitle)}</h2>`);
+    parts.push(list(product.bullets));
+    parts.push(`</section>`);
+  }
+
+  (product.outlineSections ?? []).forEach((section) => {
+    parts.push(`<section><h2>${escapeHtml(section.title)}</h2>`);
+    parts.push(list(section.objectives ?? []));
+    parts.push(`</section>`);
+  });
+
+  return parts.filter(Boolean).join("\n        ");
+};
+
+const buildBlogBody = (post) => {
+  const byline = [
+    `By ${post.author}`,
+    `Updated ${post.date}`,
+    post.readTime,
+    post.category,
+  ].join(" · ");
+
+  return [
+    `<article>`,
+    `<h1>${escapeHtml(post.title)}</h1>`,
+    para(post.description),
+    para(byline),
+    post.html,
+    `</article>`,
+  ].join("\n        ");
+};
+
+const renderPageHtml = (template, page, content) => {
   const canonical = `${siteOrigin}${page.path}`;
   const image = page.image ?? defaultImage;
   const type = page.type ?? "website";
@@ -814,7 +1070,31 @@ const renderPageHtml = (template, page) => {
   html = setMetaProperty(html, "og:image:alt", `${siteName} branded social preview`);
   html = insertJsonLd(html, "local-business-schema", localBusinessSchema);
   html = insertJsonLd(html, "faq-schema", buildFaqSchema(page.faqs));
-  html = setFallbackContent(html, page);
+  html = insertJsonLd(html, "article-schema", buildArticleSchema(page, canonical, image));
+
+  const blogSlug = page.path.match(/^\/blog\/([^/]+)\/$/)?.[1];
+  const post = blogSlug ? content.blogPosts.get(blogSlug) : undefined;
+
+  if (blogSlug && !post) {
+    throw new Error(`No rendered content for blog post "${blogSlug}" — is it in src/data/blogPosts.tsx?`);
+  }
+
+  const landing = content.landingPages.get(page.path);
+  const product = content.products.get(page.path);
+
+  html = setBlogNav(html, content.blogPosts);
+
+  if (page.path === "/blog/") {
+    html = replaceFallback(html, page, () => buildBlogIndexBody(page, content.blogPosts));
+  } else if (post) {
+    html = replaceFallback(html, page, () => buildBlogBody(post));
+  } else if (landing) {
+    html = replaceFallback(html, page, () => buildLandingBody(landing));
+  } else if (product) {
+    html = replaceFallback(html, page, () => buildProductBody(product));
+  } else {
+    html = setFallbackContent(html, page);
+  }
 
   // The hero poster is the LCP element on the homepage only. Strip its preload
   // from every other route so those pages don't fetch an image they never use.
@@ -836,9 +1116,74 @@ const writeRouteHtml = async (page, html) => {
 };
 
 const template = await readFile(sourceIndexPath, "utf8");
+const content = await loadSiteContent();
+const { blogPosts: blogContent, landingPages: landingContent } = content;
+
+/* The page entries above duplicate metadata that already lives in src/, and the
+   two have silently drifted before. Fail the build rather than ship a page whose
+   crawler HTML disagrees with what React renders for the same URL. */
+const assertMetadataInSync = () => {
+  const problems = [];
+  const compare = (label, source, expected, actual) => {
+    for (const [field, want] of Object.entries(expected)) {
+      if (JSON.stringify(actual[field]) !== JSON.stringify(want)) {
+        problems.push(
+          `  ${label} → ${field}\n    generator: ${JSON.stringify(actual[field])}\n    ${source}: ${JSON.stringify(want)}`,
+        );
+      }
+    }
+  };
+
+  for (const page of pages) {
+    const slug = page.path.match(/^\/blog\/([^/]+)\/$/)?.[1];
+    const post = slug && blogContent.get(slug);
+
+    if (post) {
+      compare(
+        slug,
+        "blogPosts",
+        {
+          title: post.seoTitle ?? `${post.title} | ${siteName}`,
+          description: post.description,
+          "article.headline": post.title,
+          "article.datePublished": post.datePublished,
+          "article.dateModified": post.dateModified,
+          "article.section": post.category,
+        },
+        {
+          title: page.title,
+          description: page.description,
+          "article.headline": page.article?.headline,
+          "article.datePublished": page.article?.datePublished,
+          "article.dateModified": page.article?.dateModified,
+          "article.section": page.article?.section,
+        },
+      );
+      continue;
+    }
+
+    const landing = landingContent.get(page.path);
+    if (landing) {
+      compare(
+        page.path,
+        "seoLandingPages",
+        { title: landing.title, description: landing.description, faqs: landing.faqs },
+        { title: page.title, description: page.description, faqs: page.faqs ?? [] },
+      );
+    }
+  }
+
+  if (problems.length) {
+    throw new Error(`Page metadata is out of sync with src/data/:\n${problems.join("\n")}`);
+  }
+};
+
+assertMetadataInSync();
 
 for (const page of pages) {
-  await writeRouteHtml(page, renderPageHtml(template, page));
+  await writeRouteHtml(page, renderPageHtml(template, page, content));
 }
 
-console.log(`Generated static SEO HTML for ${pages.length} routes.`);
+console.log(
+  `Generated static SEO HTML for ${pages.length} routes (${blogContent.size} blog posts pre-rendered).`,
+);

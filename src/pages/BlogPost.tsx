@@ -9,8 +9,6 @@ import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } fr
 import { blogPosts } from "@/data/blogPosts";
 
 const SITE_ORIGIN = "https://www.drivingschoolbc.ca";
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 type TocItem = { id: string; text: string };
 
 const slugify = (value: string) =>
@@ -66,9 +64,6 @@ const BlogPost = () => {
   const post = blogPosts.find((p) => p.slug === slug);
 
   const [activeId, setActiveId] = useState("");
-  const [subEmail, setSubEmail] = useState("");
-  const [subError, setSubError] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
 
   const { toc, rendered } = useMemo(() => buildToc(post?.content), [post]);
 
@@ -129,16 +124,6 @@ const BlogPost = () => {
     },
   ];
 
-  const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!EMAIL_PATTERN.test(subEmail.trim())) {
-      setSubError("Please enter a valid email address.");
-      return;
-    }
-    setSubError("");
-    setSubscribed(true);
-  };
-
   return (
     <main className="min-h-screen bg-white">
       {/* Masthead: solid brand-blue band with the article header */}
@@ -167,10 +152,20 @@ const BlogPost = () => {
               {post.author}
             </Link>
           </p>
+          <p className="mt-2 max-w-3xl text-xs leading-relaxed text-white/65">
+            Shanaya&apos;s is an independent driving school, not ICBC. Licensing facts are reviewed against the
+            official sources linked in each article. Confirm current requirements with ICBC; report a factual error
+            to{" "}
+            <a href="mailto:book@drivingschoolbc.ca" className="underline underline-offset-2">
+              book@drivingschoolbc.ca
+            </a>
+            .
+          </p>
 
           <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
             <p className="text-sm text-white/70">
-              Updated: {post.date} <span className="px-1">·</span> {post.readTime}
+              {post.datePublished === post.dateModified ? "Published" : "Updated"}: {post.date}{" "}
+              <span className="px-1">·</span> {post.readTime}
             </p>
             <div className="flex items-center gap-2">
               {shareLinks.map((link) => {
@@ -228,64 +223,28 @@ const BlogPost = () => {
           {/* Sidebar */}
           <aside className="space-y-8 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-              <h2 className="text-lg font-black leading-snug text-slate-900">Get driving tips in your inbox</h2>
-              {subscribed ? (
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Thanks! We'll send along helpful driving and road-test tips.
-                </p>
-              ) : (
-                <form onSubmit={handleSubscribe} className="mt-4" noValidate>
-                  <label htmlFor="blog-subscribe-email" className="sr-only">
-                    Your email address
-                  </label>
-                  <input
-                    id="blog-subscribe-email"
-                    type="email"
-                    inputMode="email"
-                    autoComplete="email"
-                    placeholder="Your email address"
-                    value={subEmail}
-                    onChange={(e) => {
-                      setSubEmail(e.target.value);
-                      if (subError) setSubError("");
-                    }}
-                    aria-invalid={Boolean(subError)}
-                    aria-describedby={subError ? "blog-subscribe-error" : undefined}
-                    className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-[#1d52a1] focus:outline-none focus:ring-2 focus:ring-[#1d52a1]/20"
-                  />
-                  {subError ? (
-                    <p id="blog-subscribe-error" role="alert" className="mt-2 text-sm font-semibold text-[#E6242A]">
-                      {subError}
-                    </p>
-                  ) : null}
-                  <button
-                    type="submit"
-                    className="mt-3 w-full rounded-lg bg-[#E6242A] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
-                  >
-                    Subscribe
-                  </button>
-                  <p className="mt-3 text-xs leading-relaxed text-slate-400">
-                    By submitting this form, you agree to our{" "}
-                    <Link to="/policies/privacy-policy" className="underline">
-                      privacy policy
-                    </Link>
-                    .
-                  </p>
-                </form>
-              )}
+              <h2 className="text-lg font-black leading-snug text-slate-900">Check official requirements</h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                Licensing rules can change. Confirm requirements directly with ICBC before booking a test or making a
+                decision about your licence.
+              </p>
+              <a
+                href="https://www.icbc.com/driver-licensing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex rounded-lg bg-[#1d52a1] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+              >
+                Visit ICBC driver licensing
+              </a>
             </div>
 
             <div>
               <h2 className="text-lg font-black leading-snug text-slate-900">Discover more of what matters to you</h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {tags.map((tag) => (
-                  <Link
-                    key={tag}
-                    to="/blog"
-                    className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-[#1d52a1]/10 hover:text-[#1d52a1]"
-                  >
+                  <span key={tag} className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-600">
                     {tag}
-                  </Link>
+                  </span>
                 ))}
               </div>
             </div>
