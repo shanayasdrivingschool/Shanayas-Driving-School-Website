@@ -15,8 +15,9 @@ look and feel* — colours, type, shape, motion, tone. It is not a code spec.
 
 Shanaya's is a local BC driving school. The design should feel:
 
-- **Trustworthy & official** — this is a licensed, ICBC-aligned, government-approved school.
-  Blue carries the authority. Nothing looks cheap, gimmicky, or scammy.
+- **Trustworthy & verifiable** — ICBC's general directory lists the school for Class 5 and 7
+  training, but the business is independent and must not imply ICBC or government approval,
+  recommendation, or endorsement. Blue supports clarity without suggesting official status.
 - **Warm & encouraging** — students are often nervous new drivers. Calm, supportive, human.
   Rounded shapes, a friendly mascot ("Ruley"), soft blobs, generous spacing.
 - **Confident & action-ready** — bold black headlines, one loud red button that always means
@@ -263,8 +264,8 @@ Motion is **gentle, purposeful, and quick** — it guides, it doesn't perform.
 - **Reassuring and plain-spoken.** Speak to a nervous learner, not a marketer. Short sentences.
 - **Local & specific:** name the BC service areas (Langford, Victoria, Colwood, Sidney, Sooke,
   Duncan, Salt Spring…), reference ICBC, road tests, knowledge tests.
-- **Confident, not boastful:** "ICBC-aligned," "licensed instructors," "dual-control vehicles,"
-  "build confidence."
+- **Confident, not boastful:** use exact directory wording, identify private instruction clearly,
+  link official sources for licensing facts, and qualify availability and outcomes.
 - CTAs are **direct and action-led:** "Book your driving lesson," "Call now," "View cart."
 - Prices always in **CAD**.
 

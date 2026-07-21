@@ -41,6 +41,11 @@ export type SeoLandingPageRelatedLink = {
   description?: string;
 };
 
+export type SeoLandingPageSource = {
+  label: string;
+  href: string;
+};
+
 export type SeoLandingPage = {
   id: SeoLandingPageId;
   path: string;
@@ -61,6 +66,9 @@ export type SeoLandingPage = {
   relatedLinksTitle?: string;
   primaryCtaLabel?: string;
   secondaryCtaLabel?: string;
+  lastReviewed?: string;
+  editorialNote?: string;
+  officialSources?: SeoLandingPageSource[];
 };
 
 export const seoLandingPages: SeoLandingPage[] = [
@@ -959,103 +967,274 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "faq",
     path: "/faq",
-    title: "Driving Test & Lesson FAQ for BC | Shanaya's Driving School",
+    title: "BC Knowledge Test, Road Test & Lesson FAQ | Shanaya's",
     metaDescription:
-      "Answers to common BC driving lesson, ICBC road test, learner licence, vehicle rental, booking, pricing, and preparation questions.",
-    eyebrow: "FAQ",
-    h1: "Driving test and lesson questions in BC",
+      "Verified answers about B.C. Class 7 knowledge and road tests, L and N restrictions, fees, lessons, school licensing, rentals and booking.",
+    eyebrow: "B.C. driving FAQ",
+    h1: "B.C. knowledge test, road test and lesson FAQ",
     heroDescription:
-      "Get clear answers before booking lessons, preparing for a road test, or choosing a training package.",
+      "Compare current ICBC licensing facts with clearly labelled Shanaya's lesson, pricing, vehicle and service information.",
     heroImage: "/landing/faq.webp",
-    targetKeyword: "driving test BC questions",
+    targetKeyword: "BC driving test FAQ",
+    serviceAreaTitle: "Service areas shown in the current catalogue",
+    serviceAreas: [
+      "Victoria",
+      "Langford",
+      "Colwood",
+      "Sidney",
+      "Metchosin",
+      "Sooke",
+      "Duncan",
+      "Salt Spring Island",
+    ],
     intro: [
-      "Learning to drive comes with practical questions about lessons, ICBC road tests, vehicle use, pricing, scheduling, and readiness. This FAQ gives students and families a single place to review the basics before contacting Shanaya's Driving School.",
-      "The answers below are general guidance for learners in British Columbia. Individual needs can vary based on licence stage, prior driving experience, comfort level, service location, and test timeline.",
-      "For the best recommendation, contact the school with your current licence stage, preferred training area, and whether you are preparing for a knowledge test, first lesson, road test, or refresher session.",
+      "This FAQ separates facts published by ICBC from information in Shanaya's Driving School's own catalogue. ICBC administers knowledge tests, road tests and driver licensing; a driving school cannot issue a licence, choose a test route or guarantee a result.",
+      "The ICBC figures and rules below were checked on July 21, 2026. Requirements and fees can change, so each regulatory answer points back to the official sources listed on this page.",
+      "School prices are catalogue amounts before GST. Course, instructor, vehicle and service-area availability must be confirmed for the requested date, and students should obtain the applicable booking, cancellation and refund terms in writing before paying.",
     ],
     sections: [
       {
-        title: "Before booking",
+        title: "Official licensing facts",
         body:
-          "Students should know their licence stage, general availability, and training goal. If you are unsure, the school can help choose between beginner lessons, road test prep, defensive driving, or a package.",
+          "Use ICBC for eligibility, restrictions, fees, identification, appointments and test-day requirements. The answers below summarize the linked official material as of the review date.",
+        bullets: [
+          "ICBC books and administers the official knowledge and road tests",
+          "ICBC does not publish its road-test routes outside ICBC",
+          "Professional lessons are optional for the standard Class 7 road-test path",
+        ],
       },
       {
-        title: "Road test preparation",
+        title: "Licensed school is not an approved course",
         body:
-          "Road test prep is best for students who can already drive but want targeted feedback on observations, parking, lane changes, intersections, and examiner-style expectations.",
+          "ICBC's general directory lists SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, for Class 5 and Class 7 driver training. The school was not found in ICBC's separate approved GLP course directory on the review date.",
+        bullets: [
+          "The general directory supports the school's licensed status",
+          "A directory listing is not an ICBC recommendation or endorsement",
+          "This page does not represent Shanaya's lessons as an ICBC-approved GLP course",
+        ],
       },
       {
-        title: "Service areas",
+        title: "Catalogue prices and written terms",
         body:
-          "Service availability can include Victoria, Langford, Colwood, Sidney, Metchosin, Sooke, Duncan, and Salt Spring Island depending on instructor scheduling.",
+          "The current catalogue shows base lesson and road-test vehicle options, while checkout calculates the final total. Confirm GST, inclusions, pickup area, instructor and vehicle availability, and the terms that apply if either party changes the booking.",
+        bullets: [
+          "$89 for 60 minutes and $133.50 for 90 minutes before GST at standard and regional rates",
+          "$109 for 60 minutes and $163.50 for 90 minutes before GST for Salt Spring Island",
+          "Checkout currently requests full payment; eligible third-party financing may appear",
+        ],
       },
     ],
+    primaryCtaLabel: "Check lesson availability",
+    secondaryCtaLabel: "Review current courses",
     faqs: [
       {
-        question: "How many driving lessons do I need?",
+        question: "What is on the B.C. Class 7 knowledge test, and what does it cost?",
         answer:
-          "It depends on experience, confidence, outside practice, and road test timeline. Beginners usually need a structured sequence, while experienced drivers may need targeted prep.",
+          "ICBC's passenger-vehicle knowledge test has 50 multiple-choice questions. You need 40 correct answers to pass, have up to 45 minutes and pay $15 for each attempt. Those figures apply to the online and in-person test options described by ICBC.",
       },
       {
-        question: "Can I prepare for the ICBC knowledge test?",
+        question: "Does passing the online knowledge test let me start driving?",
         answer:
-          "Yes. Knowledge test preparation is available for students who want help with road signs, rules, and practice questions.",
+          "No. An online pass is a test result, not a learner's licence. ICBC says the result is valid for one year. You must still visit a driver licensing office with the required primary and secondary identification, pass the vision screening, complete the photo and consent steps that apply to you, and pay the separate $10 Class 7 learner-licence fee before driving.",
       },
       {
-        question: "Can I use a school vehicle for the road test?",
+        question: "When can I take the Class 7 road test, how long is it and what are the fees?",
         answer:
-          "Road test vehicle support may be available when scheduled in advance and paired with the right preparation.",
+          "Under the rules in effect on July 21, 2026, a Class 7 learner may take the road test after holding the L for at least 12 months and staying driving-prohibition-free. ICBC says the test and feedback take about 35 minutes. The current fee is $35 for each attempt, plus $75 for the five-year novice licence if you pass.",
       },
       {
-        question: "Do you offer payment plans?",
+        question: "What should I bring to a Class 7 road-test appointment?",
         answer:
-          "Payment plan options may be available for eligible students and approved programs.",
+          "Bring your current learner's licence, one accepted primary ID and one accepted secondary ID, payment, required corrective lenses, and a qualified supervisor. Bring a safe, reliable, properly insured vehicle with a Canadian plate, its registration and insurance papers, and the plate number. Bring an approved-course Declaration of Completion if it applies. A car-share vehicle may require a new original authorization letter for each attempt when you are not the named member.",
+      },
+      {
+        question: "Why might ICBC refuse the vehicle before a road test?",
+        answer:
+          "ICBC may cancel the test if the vehicle is unsafe or does not meet legal requirements. Its published common reasons include cracked or illegally tinted glass, safety-related warning lights, damaged seatbelts, lights or horn that do not work, unsafe tires, doors or windows that do not operate, unsafe or illegal modifications, a hazardous interior, too little fuel or battery charge, or an outstanding serious safety recall. Check ICBC's current vehicle list before the appointment.",
+      },
+      {
+        question: "What skills does ICBC assess, and can a school provide the test route?",
+        answer:
+          "ICBC's Road Test Skills Explainer groups the criteria under observation, space margin, speed, steering and communication. ICBC states that it does not make road-test routes available outside ICBC, so Shanaya's does not claim to provide an official or exact route. Practise transferable skills across varied legal road conditions instead of memorizing streets.",
+      },
+      {
+        question: "What are ICBC's cancellation notice and road-test retest waits?",
+        answer:
+          "Give ICBC at least 48 hours' notice when cancelling or rescheduling a road test to avoid the current $25 cancellation fee. After an unsuccessful Class 7 attempt, ICBC's minimum waits are 14 days after the first attempt, 30 days after the second and 60 days after a third or later attempt. A new test fee applies each time.",
+      },
+      {
+        question: "What are the current Class 7 learner (L) restrictions?",
+        answer:
+          "Display the official L sign. Drive only from 5 a.m. to midnight with a supervisor who is at least 25, holds a valid Class 1, 2, 3, 4 or 5 licence and sits beside you. You may carry that supervisor plus one other passenger. You must have zero alcohol and zero drugs in your blood while driving and may not use hand-held or hands-free electronic devices. Follow any additional restriction printed on your licence.",
+      },
+      {
+        question: "What are the current novice (N) restrictions?",
+        answer:
+          "Display the official N sign, have zero alcohol and zero drugs in your blood while driving, and do not use hand-held or hands-free electronic devices. The usual limit is one passenger; the passenger limit does not apply when a qualified supervisor age 25 or older is seated beside you or when the additional passengers are immediate family. Follow every restriction printed on your licence.",
+      },
+      {
+        question: "What changes to B.C.'s GLP on October 19, 2026?",
+        answer:
+          "The first Class 7 learner-to-novice road test remains. From October 19, 2026, the minimum learner period is nine months for drivers age 25 or older and remains 12 months for drivers under 25. Eligible novice drivers move toward Class 5 through a Driving Record Assessment instead of the second road test, followed by 12 months with specified Class 5 or Class 5/6 restrictions. Age, start date and driving record affect the transition, so check ICBC's change page for your case.",
+      },
+      {
+        question: "Are professional lessons required, and who conducts the official tests?",
+        answer:
+          "Professional lessons are optional for the standard Class 7 path. A learner may prepare through legal supervised practice and ICBC's free materials. ICBC—not Shanaya's—administers the official knowledge and road tests, decides eligibility and issues licences. A lesson or practice assessment cannot guarantee a pass.",
+      },
+      {
+        question: "Is Shanaya's an ICBC-approved school or an approved GLP course provider?",
+        answer:
+          "Use the terms carefully. ICBC's general driving-school directory lists SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, for Class 5 and Class 7 driver training. That supports the school's licensed status but is not an endorsement. As checked July 21, 2026, Shanaya's did not appear in ICBC's separate directory of schools offering an approved GLP course, so this page does not describe its lessons as an ICBC-approved course.",
+      },
+      {
+        question: "How many professional lessons do I need?",
+        answer:
+          "There is no fixed professional-lesson count for the standard Class 7 road-test path. ICBC recommends at least 60 hours of total practice before the Class 7 road test, but supervised practice can make up those hours. Choose any paid instruction based on observed skill gaps, legal practice available outside lessons and readiness—not a promised number of sessions or a guaranteed result.",
+      },
+      {
+        question: "What lesson prices are shown in Shanaya's current catalogue?",
+        answer:
+          "The catalogue's base rates before GST are $89 for 60 minutes and $133.50 for 90 minutes in the standard and regional service tiers. Salt Spring Island rates are $109 for 60 minutes and $163.50 for 90 minutes. Packages, fixed-price courses, discounts and add-ons can differ, so review the itemized checkout total before paying.",
+      },
+      {
+        question: "What road-test vehicle options and prices are listed?",
+        answer:
+          "The current catalogue shows a stand-alone road-test-day vehicle option at $250 and a combined lesson, road-test preparation and rental course at $350 for its 60-minute format or $450 for its 90-minute format. Prices are before GST. Booking is subject to service-area, instructor and vehicle availability and written terms, and it does not guarantee that ICBC will accept the vehicle; the examiner applies ICBC's test-day vehicle rules.",
+      },
+      {
+        question: "Where are lessons offered, and what payment or cancellation terms apply?",
+        answer:
+          "The catalogue lists Victoria, Langford, Colwood, Sidney, Metchosin, Sooke, Duncan and Salt Spring Island, all subject to instructor scheduling and routing. Checkout currently requests the full displayed total; Affirm or Afterpay/Clearpay may appear only for eligible transactions. No general school cancellation, refund or no-show rule is stated here as verified fact. Before paying, obtain written terms for your lesson or vehicle booking and written confirmation of any alternative payment arrangement.",
+      },
+    ],
+    relatedLinksTitle: "Official-process guides and school information",
+    relatedLinks: [
+      {
+        label: "Class 7 knowledge-test guide",
+        href: "/knowledge-test-guide",
+        description: "Compare the official online and in-person workflows and what happens after a pass.",
+      },
+      {
+        label: "Class 7 road-test checklist",
+        href: "/blog/pass-road-test",
+        description: "Review eligibility, practice, documents, vehicle checks, fees and test-day steps.",
+      },
+      {
+        label: "B.C. GLP explainer",
+        href: "/bc-graduated-licensing-program",
+        description: "Check the current stages and the transition beginning October 19, 2026.",
+      },
+      {
+        label: "Current catalogue pricing",
+        href: "/pricing",
+        description: "Review catalogue rates, packages and location-dependent totals before booking.",
+      },
+      {
+        label: "How to verify a licensed driving school",
+        href: "/icbc-approved-driving-school",
+        description: "Understand the difference between a licensed school and an approved GLP course.",
+      },
+    ],
+    lastReviewed: "July 21, 2026",
+    editorialNote:
+      "ICBC rules and fees were checked against the linked official pages. Shanaya's prices, service areas, checkout wording and vehicle options were checked against this site's current catalogue. The school-directory statement was checked by exact business name, address and telephone against ICBC's general directory and its separate approved GLP course list. This page makes no pass-rate, confidential-route or individual-credential claim.",
+    officialSources: [
+      {
+        label: "ICBC — take the online knowledge test",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/online-knowledge-test",
+      },
+      {
+        label: "ICBC — get your learner's (L) licence",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/Get-your-L",
+      },
+      {
+        label: "ICBC — accepted identification",
+        href: "https://www.icbc.com/driver-licensing/visit-dl-office/Accepted-ID",
+      },
+      {
+        label: "ICBC — get your novice (N) licence",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/Get-your-N",
+      },
+      {
+        label: "ICBC — book, cancel or reschedule a road test",
+        href: "https://www.icbc.com/driver-licensing/visit-dl-office/Book-a-road-test",
+      },
+      {
+        label: "ICBC — prepare for your road-test appointment",
+        href: "https://www.icbc.com/driver-licensing/visit-dl-office/Prepare-road-test-appointment",
+      },
+      {
+        label: "ICBC — driver licensing fees",
+        href: "https://www.icbc.com/driver-licensing/visit-dl-office/Fees",
+      },
+      {
+        label: "ICBC — Road Test Skills Explainer",
+        href: "https://icbc.com/assets/en/49OS8RJMWgWKgOx4U0EGOa/skills-explainer.pdf",
+      },
+      {
+        label: "ICBC — Graduated Licensing Program changes",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/graduated-licensing-program-changes",
+      },
+      {
+        label: "ICBC — choosing and finding a licensed driving school",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school",
+      },
+      {
+        label: "ICBC — schools offering an approved GLP course",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school/glp-schools",
       },
     ],
   },
   {
     id: "icbc-approved-driving-school",
     path: "/icbc-approved-driving-school",
-    title: "ICBC-Approved Driving School in Victoria, BC | Shanaya's",
+    title: "Licensed Driving School in Langford, BC | Shanaya's",
     metaDescription:
-      "Looking for an ICBC-approved driving school in Victoria or Langford? Shanaya's is a licensed BC driving school with ICBC-licensed instructors teaching the ICBC curriculum in dual-control cars.",
-    eyebrow: "ICBC-approved driving school",
-    h1: "An ICBC-licensed driving school in Victoria & Langford",
+      "Verify Shanaya's Driving School's Langford listing for Class 5 and 7 driver training, and learn why a licensed school is not the same as an ICBC-approved GLP course.",
+    eyebrow: "B.C.-licensed driving school",
+    h1: "Licensed driving school in Langford, BC",
     heroDescription:
-      "Shanaya's Driving School is a licensed BC driving school with ICBC-licensed instructors, teaching to ICBC road-safety standards across Victoria, Langford, and Greater Victoria.",
-    heroImage: "/landing/icbc-approved-driving-school.webp",
-    targetKeyword: "ICBC approved driving schools",
-    serviceAreaTitle: "Victoria and Greater Victoria",
-    serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Sidney", "Sooke"],
+      "ICBC's public directory lists SHANAYA'S DRIVING SCHOOL in Langford for Class 5 and 7 driver training. This page explains exactly what that record does, and does not, verify.",
+    heroImage: "/landing/driving-lessons-langford.webp",
+    targetKeyword: "licensed driving school Langford BC",
+    serviceAreaTitle: "Verified directory location",
+    serviceAreas: ["Langford, BC"],
     intro: [
-      "When people search for an \"ICBC-approved driving school,\" what they usually want is straightforward: a legitimate school ICBC recognises, with properly licensed instructors and lessons that match the standards examiners actually test. Shanaya's Driving School fits that description across Victoria, Langford, and Greater Victoria.",
-      "In British Columbia, driving schools and instructors are regulated by ICBC. We operate as a licensed BC driving school, our instructors hold ICBC driving-instructor licences, and every lesson is taught in an insured, dual-control vehicle built for safe, structured learning. That is the real difference between learning with a professional school and practising with a friend or family member.",
-      "Our lessons follow the ICBC curriculum and road-test standards, so the observation habits, positioning, and decision-making you build in lessons are the same ones an examiner looks for on test day.",
+      "This page keeps its legacy web address because some people search for an \"ICBC-approved driving school.\" That phrase is not an accurate description of an ordinary licensed driving school. The wording permitted for the verified status here is \"licensed as a driver training school under the Motor Vehicle Act.\"",
+      "When checked on July 21, 2026, ICBC's general driving-school directory showed this exact record: SHANAYA'S DRIVING SCHOOL, 124-2770 LEIGH RD, LANGFORD BC V9B 4G1, telephone (250) 542-3673, with driver training classes 5 and 7. ICBC states that its school list is not intended as a recommendation or endorsement.",
+      "The general directory and ICBC's separate list of schools offering an approved Graduated Licensing Program (GLP) course serve different purposes. An exact-name, address and telephone check did not find Shanaya's in the approved-GLP directory on July 21, 2026, so this page does not represent the school or its ordinary lessons as ICBC-approved.",
     ],
     sections: [
       {
-        title: "What \"ICBC-approved\" actually means",
+        title: "What the directory record verifies",
         body:
-          "ICBC's official term is \"licensed.\" ICBC licenses both driving schools and individual instructors in BC, and only licensed schools can legally charge for in-car instruction. When a school describes itself as \"ICBC-approved,\" that licensing is what it points to.",
+          "The ICBC directory record identifies the school, its listed Langford address and telephone number, and Class 5 and 7 under the driver-training field. It supports the statement that Shanaya's is licensed as a driver training school under the Motor Vehicle Act; it does not establish ICBC endorsement or approval of every lesson, claim, instructor or vehicle.",
         bullets: [
-          "Licensed BC driving school, operating legally for paid instruction",
-          "Instructors hold ICBC driving-instructor licences",
-          "Lessons taught in insured, dual-control training vehicles",
+          "Business name: SHANAYA'S DRIVING SCHOOL",
+          "Directory address: 124-2770 LEIGH RD, LANGFORD BC V9B 4G1",
+          "Telephone: (250) 542-3673; driver training: Classes 5 and 7",
         ],
       },
       {
-        title: "Why it matters who you learn with",
+        title: "Licensed school versus approved course",
         body:
-          "A licensed school gives you more than a car. You get a structured curriculum, an instructor trained to teach, dual controls for safety, and lessons designed around the exact standards ICBC examiners score. That combination builds safer habits faster and reduces test-day surprises.",
+          "A school licence and an approved GLP course are not interchangeable. ICBC maintains a separate approved-GLP directory. Only a qualifying course with specific ICBC approval may be described as a \"driver education course approved by ICBC.\" Shanaya's did not appear in that separate directory under the exact identifiers checked on July 21, 2026.",
+        bullets: [
+          "A general directory listing is evidence of the school's listed licensing status",
+          "An approved GLP course has a separate approval and directory listing",
+          "Recheck both official directories because listings and approvals can change",
+        ],
       },
       {
-        title: "Trained to ICBC road-test standards",
+        title: "Advertising rule and verification checklist",
         body:
-          "Every lesson maps to what ICBC assesses: observation and shoulder checks, speed control for each zone, lane positioning, intersections, parking, and calm decisions in traffic. We coach these deliberately, with direct feedback, so your everyday driving and your road-test performance improve together.",
+          "Section 27.10(2)(e) of the B.C. Motor Vehicle Act Regulations prohibits a school or instructor from stating or implying that the school or its employees are approved, supervised, recommended or endorsed by ICBC or government, subject to the exact permitted licensing and approved-course wording in that section. Before paying, verify the current records and ask for any credential or course designation relevant to the service you want.",
         bullets: [
-          "ICBC-aligned lesson structure from beginner to road-test ready",
-          "Mock road tests scored the way an examiner would",
-          "Knowledge-test support and Class 5 / Class 7 preparation",
+          "Search the general ICBC directory and match the exact business name, address, telephone and training classes",
+          "If you want GLP course benefits, confirm the school and the specific course in ICBC's separate approved-GLP directory before enrolling",
+          "Ask to see current school and individual-instructor credentials instead of assuming them from advertising",
+          "Treat any lesson, mock test or practice assessment as private instruction, not an official ICBC test or official score",
         ],
       },
     ],
@@ -1063,150 +1242,272 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Is Shanaya's Driving School ICBC-approved?",
         answer:
-          "Yes. We are a licensed BC driving school and our instructors hold ICBC driving-instructor licences. In BC, that licensing is what \"ICBC-approved\" refers to.",
+          "That is not the claim made here. ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd in Langford for Class 5 and 7 driver training when checked July 21, 2026. The permitted description used here is \"licensed as a driver training school under the Motor Vehicle Act.\" ICBC says its list is not a recommendation or endorsement.",
       },
       {
-        question: "How is a licensed school different from practising with family?",
+        question: "Does Shanaya's offer an ICBC-approved GLP course?",
         answer:
-          "A licensed school gives you a trained instructor, a structured ICBC-aligned curriculum, and a dual-control car for safety. Lessons target the exact habits examiners score, which builds readiness faster than informal practice.",
+          "Shanaya's did not appear under the exact business name, address or telephone in ICBC's separate approved-GLP school directory when checked July 21, 2026. Do not assume an ordinary lesson has GLP-course approval or qualifies for a GLP benefit; verify the current ICBC directory and the specific course before enrolling.",
       },
       {
-        question: "Does learning with a licensed school guarantee I will pass?",
+        question: "What do Classes 5 and 7 in the directory mean for this page?",
         answer:
-          "No school can guarantee a pass, but learning with ICBC-licensed instructors means your lessons match the standards examiners actually assess, which improves your consistency and readiness on test day.",
+          "They are the two entries shown in the record's driver-training field. That field supports the scope recorded for the school, but it does not by itself verify a particular instructor's current licence, a vehicle, a curriculum or an approved GLP course.",
       },
       {
-        question: "Which areas do you serve?",
+        question: "Is a school mock test an official ICBC road test?",
         answer:
-          "We teach across Victoria, Langford, Colwood, Saanich, View Royal, Sidney, and nearby communities, with pick-up and drop-off available depending on scheduling.",
+          "No. A lesson, mock test or practice assessment provided by a private school is coaching only. It is not administered by ICBC, does not produce an official ICBC score and cannot determine whether ICBC will issue a licence.",
+      },
+      {
+        question: "How can I verify a school or course before paying?",
+        answer:
+          "Use ICBC's general school directory, match the exact business identifiers, and ask to see the current school and instructor credentials relevant to your booking. If a GLP-approved course is advertised, also find the school in ICBC's separate approved-GLP directory and confirm that the specific course is the approved offering.",
       },
     ],
-    relatedLinksTitle: "Start with the right lessons",
+    relatedLinksTitle: "Related information",
     relatedLinks: [
       {
-        label: "ICBC driving lessons in Victoria",
+        label: "Review driving lesson options",
         href: "/driving-lessons",
-        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+        description: "Read the current lesson information and confirm availability and terms before booking.",
       },
       {
-        label: "Driving lessons in Langford",
+        label: "Langford lesson information",
         href: "/driving-lessons-langford",
-        description: "Lessons from our Westshore training area.",
+        description: "See the separate Langford service page; the verified directory address is 124-2770 Leigh Rd.",
       },
       {
-        label: "ICBC road test preparation",
-        href: "/road-test-prep",
-        description: "Mock tests and examiner-style feedback before your ICBC appointment.",
+        label: "B.C. graduated licensing guide",
+        href: "/bc-graduated-licensing-program",
+        description: "Review the licence stages and follow the linked official sources for current requirements.",
       },
     ],
-    primaryCtaLabel: "Book a lesson",
+    primaryCtaLabel: "Request lesson information",
+    lastReviewed: "July 21, 2026",
+    editorialNote:
+      "The school record was checked by exact name, address and telephone against ICBC's general directory, and the same identifiers were checked against ICBC's separate approved-GLP directory. The advertising language was checked against section 27.10 of the B.C. Motor Vehicle Act Regulations. No current individual-instructor credential, training vehicle, GLP approval, pass rate, road-test route or scoring claim is made here. Recheck the official directories because records can change.",
+    officialSources: [
+      {
+        label: "ICBC - choosing your driving school and school directory",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school",
+      },
+      {
+        label: "ICBC - schools offering an approved GLP course",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school/glp-schools",
+      },
+      {
+        label: "B.C. Motor Vehicle Act Regulations - Division 27, Driver Training",
+        href: "https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/26_58_08",
+      },
+      {
+        label: "ICBC - training options for new drivers",
+        href: "https://www.icbc.com/driver-licensing/driver-training/New-drivers-or-riders",
+      },
+    ],
   },
   {
     id: "bc-graduated-licensing-program",
     path: "/bc-graduated-licensing-program",
-    title: "BC Graduated Licensing Program (GLP) Explained | Shanaya's",
+    title: "B.C. GLP Rules Before and After October 19, 2026 | Shanaya's",
     metaDescription:
-      "How BC's Graduated Licensing Program works, and what changes on October 19, 2026 when ICBC replaces the second road test with a Driving Record Assessment.",
-    eyebrow: "Graduated licensing",
-    h1: "The BC Graduated Licensing Program (GLP), explained",
+      "Compare B.C. GLP stages, restrictions and minimum timelines before and from October 19, 2026, including the DRA and restricted Class 5 year.",
+    eyebrow: "Independent B.C. licensing guide",
+    h1: "Which B.C. GLP rules apply before and after October 19, 2026?",
     heroDescription:
-      "New drivers in British Columbia earn a full licence in stages. Here is a clear walkthrough of the Learner (L) and Novice (N) stages, the wait times, and what changes on October 19, 2026.",
+      "Use this decision guide to separate the rules in force through October 18, 2026 from the new Learner, Novice, Driving Record Assessment and restricted Class 5 sequence that starts October 19.",
     heroImage: "/landing/bc-graduated-licensing-program.webp",
-    targetKeyword: "BC graduated licensing program explained",
+    targetKeyword: "B.C. graduated licensing program rules 2026",
     intro: [
-      "British Columbia uses a Graduated Licensing Program (GLP) for new drivers. Instead of one test for a full licence, you move through two supervised stages, Learner and Novice, that gradually give you more freedom as you gain experience.",
-      "The GLP is changing on October 19, 2026. ICBC is removing the second road test and replacing it with a Driving Record Assessment, adding a 12-month restricted Class 5 stage, and creating a shorter path for drivers aged 25 and older. The rules below describe the program as it works today, with each upcoming change flagged where it applies.",
-      "Below is a plain-language breakdown of every stage, what you need to move up, and the restrictions you follow along the way.",
+      "British Columbia's Graduated Licensing Program starts with a supervised Class 7L Learner stage. Passing the Class 7 road test leads to a Class 7 Novice licence, which may be driven without a supervisor but carries novice restrictions.",
+      "The date matters. Through October 18, 2026, an eligible Novice driver takes a second road test to obtain an unrestricted Class 5 licence. From October 19, that second road test is replaced by a Driving Record Assessment, and an eligible driver first receives a Class 5 licence with restriction 55 for 12 compliant months.",
+      "The time figures below are statutory minimums, not promised completion dates. Prohibitions, suspensions or specified convictions can restart a qualifying period, while appointment and licence-processing time can make the real path longer.",
     ],
     sections: [
       {
-        title: "The stages at a glance",
+        title: "Decision 1: Will you leave the N stage before October 19?",
         body:
-          "The GLP has two learning stages before a full licence. You must spend a minimum amount of time in each stage and pass a road test to move to the next one. From October 19, 2026 there is also a fourth step: a restricted Class 5 that lasts 12 months before your licence becomes fully unrestricted.",
+          "If you are eligible and take the Class 5 road test before October 19, the current model applies: passing produces an unrestricted Class 5 licence. If your second road-test appointment is scheduled to occur on or after October 19, ICBC says it will cancel the appointment, email you and provide next steps. From that date, use the DRA path instead.",
         bullets: [
-          "Stage 1: Learner (Class 7L), minimum 12 months, dropping to 9 months for drivers 25 and older on October 19, 2026",
-          "Stage 2: Novice (Class 7N), minimum 24 months, dropping to 12 months for drivers 25 and older on October 19, 2026",
-          "Class 5 licence after completing the Novice stage",
-          "From October 19, 2026: a 12-month restricted Class 5 stage before your full, unrestricted licence",
+          "Through October 18: Class 7L -> Class 7 road test -> Class 7N -> Class 5 road test -> unrestricted Class 5",
+          "From October 19: Class 7L -> Class 7 road test -> Class 7N -> DRA criteria check -> Class 5 with restriction 55 -> Class 5 without restriction 55",
+          "A one-time automatic upgrade on October 19 applies only to Class 7 drivers ICBC confirms are eligible; follow the ICBC letter rather than assuming an automatic upgrade",
         ],
       },
       {
-        title: "Stage 1: Learner's licence (Class 7L)",
+        title: "Rules through October 18: the complete Class 7L stage",
         body:
-          "You start by passing the ICBC knowledge test and a vision screening. Once you have your L, you can practise driving while supervised, and you must hold it for at least 12 months before your first road test. From October 19, 2026, drivers aged 25 and older only need to hold the L for 9 months.",
+          "A person may apply for an L at age 16. Under the current model, an applicant under 19 needs parent or legal-guardian consent. After passing the knowledge and vision tests, the Learner must wait at least 12 months before taking the Class 7 road test.",
         bullets: [
-          "Pass the ICBC knowledge test and a vision screening to qualify",
-          "A supervisor 25 or older with a valid Class 5 licence must sit in the front seat at all times, dropping to 22 or older on October 19, 2026",
-          "Zero blood alcohol, and no electronic devices, even hands-free",
-          "Display an \"L\" sign on the back of the vehicle",
-          "Hold the L for a minimum of 12 months before the Class 7 road test, or 9 months if you are 25 or older from October 19, 2026",
+          "Drive only with a qualified supervisor age 25 or older who holds a valid Class 1, 2, 3, 4 or 5 licence and sits beside you in the front passenger seat",
+          "Carry no more than one passenger in addition to the supervisor",
+          "Display the red L sign on the rear of the vehicle",
+          "Have zero alcohol and zero drugs in your blood while driving",
+          "Do not use a cellphone or other electronic device, including hands-free devices, except to call 911 in an emergency",
+          "Do not drive between midnight and 5 a.m.",
         ],
       },
       {
-        title: "Stage 2: Novice licence (Class 7N)",
+        title: "Rules through October 18: the Class 7N stage and exit test",
         body:
-          "After 12 months as a Learner, you take the Class 7 road test. Pass it and you move to the Novice stage, where you can drive on your own with a few restrictions. You must hold the N for at least 24 months. From October 19, 2026, drivers aged 25 and older only need 12 months, and this remains the only road test in the program.",
+          "Passing the Class 7 road test moves a Learner into the Novice stage. The current minimum is 24 months without a driving prohibition, or 18 months for someone who qualifies for the approved-GLP-course reduction. An eligible Novice driver can then take the Class 5 road test; ICBC currently lists a $35 Class 7 road-test fee and a $50 Class 5 road-test fee, separate from licence fees.",
         bullets: [
-          "Drive unsupervised, but carry only one passenger unless a supervisor 25 or older is present or the passengers are immediate family",
-          "Zero blood alcohol, and no electronic devices",
-          "Display an \"N\" sign on the back of the vehicle",
-          "Hold the N for a minimum of 24 months as a safe driver, or 12 months if you are 25 or older from October 19, 2026",
+          "Display the green N sign on the rear of the vehicle",
+          "Have zero alcohol and zero drugs in your blood while driving",
+          "Do not use a cellphone or other electronic device, including hands-free devices, except to call 911 in an emergency",
+          "Carry only one passenger unless all additional passengers are immediate family or a qualified supervisor age 25 or older with a valid Class 1-5 licence is seated beside you",
+          "The Novice may drive alone; the supervisor exception changes the passenger limit rather than making supervision mandatory",
         ],
       },
       {
-        title: "What changes on October 19, 2026",
+        title: "Decision 2: minimum path from October 19, 2026",
         body:
-          "The Province and ICBC announced the biggest update to the GLP in 25 years. The headline change is that the second road test disappears and is replaced by a Driving Record Assessment: an in-office check of your record rather than a drive with an examiner. Second road tests booked on or after October 19, 2026 will be cancelled, and ICBC will email affected drivers.",
+          "The new model retains the Class 7 road test but replaces the second road test with a DRA and adds a 12-month restricted Class 5 period. These totals assume each transition happens as soon as eligible, no qualifying period restarts and the driver meets every condition; they exclude time before the L is issued and administrative or appointment delays.",
         bullets: [
-          "The second road test is replaced by a Driving Record Assessment",
-          "Passing it gives you a Class 5 with a 12-month zero alcohol and drug restriction, not an unrestricted licence",
-          "Drivers 25 and older move to a 9-month Learner stage and a 12-month Novice stage",
-          "For drivers under 25 the 12-month Learner and 24-month Novice timelines do not change",
-          "The minimum supervisor age drops from 25 to 22, and the age of consent to apply drops from 19 to 18",
-          "Convictions for excessive speed or electronic device use can restart your Novice period",
+          "Under 25 without the course reduction: 12 months L + 24 months N + 12 months restricted Class 5 = 48 months minimum",
+          "Under 25 with a qualifying approved-course reduction: 12 months L + 18 months N + 12 months restricted Class 5 = 42 months minimum",
+          "Age 25 or older under the new age-based rules: 9 months L + 12 months N + 12 months restricted Class 5 = 33 months minimum",
         ],
       },
       {
-        title: "Full licence (Class 5)",
+        title: "What changes for L and N drivers on October 19",
         body:
-          "Until October 19, 2026, you reach a full Class 5 licence by holding your N for the required time as a safe driver and passing the Class 5 road test. After that date the road test is replaced by the Driving Record Assessment, and you first receive a Class 5 carrying a 12-month zero alcohol and drug restriction. Once those 12 months pass without incident, the restriction lifts and your licence is fully unrestricted.",
+          "The core zero-alcohol-and-drug and electronic-device prohibitions remain for Class 7 drivers. Other conditions change by age and stage, so do not apply the age-25 rule to every GLP restriction.",
+        bullets: [
+          "An L driver age 25 or older has a 9-month minimum; the under-25 L minimum remains 12 months",
+          "The minimum qualified-supervisor age becomes 22, but the supervisor must hold a Class 5 without restriction 55 and be legally able to drive",
+          "An L driver may carry more than one passenger when every passenger other than the supervisor is immediate family",
+          "The N-sign and one-passenger restrictions apply only to Class 7 drivers under 25; a Class 7 driver age 25 or older remains subject to zero alcohol and drugs and the new-driver electronic-device prohibition",
+          "Parent or legal-guardian consent is required only for applicants under 18, rather than under 19",
+        ],
       },
       {
-        title: "Can you finish the GLP faster?",
+        title: "How the Driving Record Assessment works",
         body:
-          "Completing an ICBC-approved GLP driver-training course cuts the Novice stage from 24 months to 18. From October 19, 2026 this becomes the only remaining shortcut in the program, and ICBC requires the course to be completed during the Learner stage, so starting it early matters. Drivers 25 and older get a shorter path automatically from that date. Strong road test preparation also helps you pass on the first attempt, so you are not waiting weeks to rebook after a fail.",
+          "The DRA is an ICBC review of whether a Class 7 driver meets published record and experience criteria; it is not an in-car test and should not be described as something a driver passes. From October 19, an eligible driver visits a driver licensing office to request the upgrade.",
+        bullets: [
+          "Required non-Learner driving: 24 months if under 25, 18 months if under 25 and eligible for the approved-course reduction, or 12 months if age 25 or older",
+          "That period must not be interrupted by specified driving prohibitions or suspensions",
+          "The period must not include a conviction for excessive speeding under Motor Vehicle Act section 148 or prohibited electronic-device use under section 214.2",
+          "Relevant Criminal Code driving sanctions also disqualify the period under the regulation",
+          "If a disqualifying event occurs, the required clean period starts again under the applicable rule; confirm the date shown by ICBC",
+        ],
       },
       {
-        title: "How lessons help you move through the GLP",
+        title: "Restriction 55 after meeting the DRA criteria",
         body:
-          "Structured lessons build the exact habits ICBC examiners score at each road test, so you pass on schedule instead of losing months to a retest. Shanaya's Driving School coaches learners at every GLP stage across Victoria, Langford, and Greater Victoria, from your first supervised drive to full Class 5 readiness.",
+          "The first Class 5 licence issued through the new DRA path carries restriction 55: zero blood alcohol and zero blood drug content while driving. The expiry date appears on the back of the licence and the restriction expires automatically after 12 compliant months. A specified prohibition or suspension during that year restarts the 12-month period from the date the person may lawfully drive again.",
+      },
+      {
+        title: "Approved GLP course versus ordinary driving lessons",
+        body:
+          "A licensed driving school and an ICBC-approved GLP course are different designations. For a Class 7 passenger-vehicle course, ICBC requires 16 hours of theory, 12 hours of individual on-road instruction and 4 discretionary hours: 32 hours total. To qualify for the possible six-month N-stage reduction, ICBC says the student must complete the approved course from start to finish within 365 days while holding a Class 7L and have no at-fault crashes, driving violations or prohibitions during the first 18 months of the N stage.",
+        bullets: [
+          "Ordinary lessons may help a learner practise but do not themselves qualify for the six-month reduction",
+          "ICBC's general directory lists Shanaya's Driving School for Class 5 and 7 driver training",
+          "Shanaya's name, phone number and Leigh Road address were not found in ICBC's separate approved-GLP-course list when checked July 21, 2026",
+          "Do not enrol on the assumption that Shanaya's lessons earn the GLP reduction; verify the specific school and course in ICBC's approved list before paying",
+        ],
       },
     ],
     faqs: [
       {
-        question: "How long does the BC Graduated Licensing Program take?",
+        question: "What is the minimum GLP time from October 19, 2026?",
         answer:
-          "For drivers under 25, at minimum about three years: 12 months in the Learner (L) stage and 24 months in the Novice (N) stage, plus the time to pass the road test. The Novice stage can be shortened by six months with an ICBC-approved GLP course. From October 19, 2026, drivers 25 and older need only 9 months as a Learner and 12 months as a Novice.",
+          "Assuming immediate transitions, no reset and every condition is met: 48 months for a driver under 25, 42 months for an under-25 driver who qualifies for the approved-course reduction, or 33 months under the new age-25-or-older path. Each total includes the final 12 months with Class 5 restriction 55 and excludes appointment, processing and pre-L time.",
       },
       {
-        question: "What is the difference between an L and an N in BC?",
+        question: "What is the difference between an L and an N in B.C.?",
         answer:
-          "The Learner (L) stage requires a qualified supervisor in the front seat at all times. The Novice (N) stage lets you drive alone, but with a one-passenger limit unless a supervisor or immediate family is present. Both require zero alcohol and no electronic devices.",
+          "A Class 7L driver must drive with a qualified supervisor seated beside them and follow the L passenger, sign, midnight-to-5 a.m., zero-alcohol-and-drug and electronic-device rules. A Class 7N driver may drive alone but follows the applicable N sign, passenger, zero-alcohol-and-drug and electronic-device rules.",
       },
       {
-        question: "How old do you have to be to start the GLP?",
+        question: "How many road tests are in the B.C. GLP?",
         answer:
-          "You can apply for your Learner's licence at 16. If you are under 19, you need consent from a parent or legal guardian. From October 19, 2026 the age of consent drops to 18, so 18-year-olds can apply independently.",
+          "Through October 18, 2026, there are two: a Class 7 road test for the N and a Class 5 road test to exit GLP. From October 19, the Class 7 road test remains, but the second road test is replaced by a DRA criteria check followed by 12 months with Class 5 restriction 55.",
       },
       {
-        question: "How many road tests are in the GLP?",
+        question: "Is the Driving Record Assessment another test?",
         answer:
-          "Until October 19, 2026 there are two: the Class 7 road test to reach Novice, and the Class 5 road test to reach a full licence. From that date the second road test is removed and replaced by a Driving Record Assessment, an in-office check of your driving record, leaving the Class 7 road test as the only road test in the program.",
+          "No. It is ICBC's review of whether the driver has the required uninterrupted non-Learner experience and no specified prohibitions, suspensions, excessive-speed conviction, electronic-device conviction or relevant Criminal Code driving sanction during that period.",
       },
       {
-        question: "What is the Driving Record Assessment?",
+        question: "Do N drivers age 25 or older need an N sign after October 19?",
         answer:
-          "From October 19, 2026 it replaces the second road test. Instead of driving with an examiner, ICBC checks that you have completed the required safe driving period with no prohibitions or suspensions and no convictions for excessive speed or electronic device use. Passing it gives you a Class 5 with a 12-month zero alcohol and drug restriction.",
+          "Under the rules effective October 19, the N-sign and one-passenger restrictions apply only to Class 7 drivers under 25. A Class 7 driver age 25 or older still follows the zero-alcohol-and-drug and new-driver electronic-device prohibitions.",
+      },
+      {
+        question: "What is restriction 55 on the new Class 5 licence?",
+        answer:
+          "It requires zero blood alcohol and zero blood drug content while driving for 12 compliant months. It expires automatically, but a specified prohibition or suspension restarts the 12-month period from the date the driver may lawfully drive again.",
+      },
+      {
+        question: "Do regular lessons qualify for the six-month GLP reduction?",
+        answer:
+          "No. The reduction requires a specific ICBC-approved 32-hour Class 7 GLP course and the other eligibility conditions. Shanaya's was listed in ICBC's general driver-training directory, but its name, phone and Leigh Road address were not found in ICBC's separate approved-GLP-course list when checked July 21, 2026.",
+      },
+      {
+        question: "What happens to a Class 5 road test scheduled for October 19 or later?",
+        answer:
+          "ICBC says second-road-test appointments scheduled to occur on or after October 19, 2026 will be cancelled and affected drivers will receive an email with next steps. A one-time automatic upgrade is only for drivers ICBC confirms are eligible; follow your ICBC notice.",
+      },
+      {
+        question: "What are the current Class 7 and Class 5 road-test fees?",
+        answer:
+          "ICBC's fee page listed $35 for a Class 7 road test and $50 for a Class 5 road test when checked July 21, 2026, with licence fees separate. This guide does not state a future DRA fee; check ICBC before your appointment.",
+      },
+    ],
+    lastReviewed: "July 21, 2026",
+    editorialNote:
+      "This independent educational summary was checked against ICBC, B.C. government and Order in Council 350/2026 sources. It is not ICBC advice or legal advice; transitional eligibility depends on the individual record, age and ICBC notice, so confirm your own status directly with ICBC.",
+    officialSources: [
+      {
+        label: "B.C. Order in Council 350/2026",
+        href: "https://www.bclaws.gov.bc.ca/civix/document/id/oic/oic_cur/0350_2026",
+      },
+      {
+        label: "ICBC: changes to the Graduated Licensing Program",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/graduated-licensing-program-changes",
+      },
+      {
+        label: "B.C. government: GLP changes and model timelines",
+        href: "https://news.gov.bc.ca/releases/2026PSSG0061-000847",
+      },
+      {
+        label: "ICBC: current Class 7L requirements",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/Get-your-L",
+      },
+      {
+        label: "ICBC: current Class 7N requirements",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/Get-your-N",
+      },
+      {
+        label: "ICBC: future guidance for Class 7L drivers",
+        href: "https://icbc.com/driver-licensing/new-drivers/you-have-a-class-7l-licence",
+      },
+      {
+        label: "ICBC: future guidance for Class 7 drivers under 25",
+        href: "https://icbc.com/driver-licensing/new-drivers/you-have-a-class-7-licence-and-youre-under-25",
+      },
+      {
+        label: "ICBC: conditional one-time automatic upgrade",
+        href: "https://icbc.com/driver-licensing/new-drivers/you-may-be-eligible-for-an-automatic-upgrade",
+      },
+      {
+        label: "ICBC: driver licensing fees",
+        href: "https://www.icbc.com/driver-licensing/visit-dl-office/Fees",
+      },
+      {
+        label: "ICBC: approved GLP course requirements",
+        href: "https://partners.icbc.com/driver-training/driving-schools/teach-approved-course",
+      },
+      {
+        label: "ICBC: approved GLP schools",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school/glp-schools",
+      },
+      {
+        label: "ICBC: choose and verify a driving school",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school",
       },
     ],
     relatedLinksTitle: "Get ready for each stage",
@@ -1214,25 +1515,25 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "What changes on October 19, 2026",
         href: "/blog/bc-glp-changes-2026",
-        description: "The second road test is being removed. Here is what it means for you.",
+        description: "Read the dated update and transition examples behind the new model.",
       },
       {
-        label: "ICBC knowledge test practice",
+        label: "Independent knowledge test practice",
         href: "/knowledge-test-practice",
-        description: "Practice questions to pass the test for your L.",
+        description: "Use unofficial practice to supplement ICBC's official guide and practice test.",
       },
       {
-        label: "ICBC driving lessons in Victoria",
+        label: "Driving lessons in Victoria",
         href: "/driving-lessons",
-        description: "Build the skills for your Class 7 road test.",
+        description: "Review optional in-car lesson choices; ordinary lessons are not an approved GLP course.",
       },
       {
-        label: "ICBC road test preparation",
+        label: "Road test preparation",
         href: "/road-test-prep",
-        description: "Mock tests and prep before your Class 7 road test.",
+        description: "Review preparation options for the Class 7 road test.",
       },
     ],
-    primaryCtaLabel: "Book a lesson",
+    primaryCtaLabel: "View lesson options",
   },
   {
     id: "driving-instructor-victoria",
@@ -1336,100 +1637,176 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driver-education-training",
     path: "/driver-education-training",
-    title: "Driver Education & Training in Victoria, BC | Shanaya's",
+    title: "B.C. Driver Education Options & Requirements | Shanaya's",
     metaDescription:
-      "Driver education and training in Victoria, Langford, and Greater Victoria. In BC that means ICBC-aligned knowledge test prep and in-car driving lessons through a licensed driving school.",
-    eyebrow: "Driver education & training",
-    h1: "Driver education and training in Victoria, BC",
+      "Compare free ICBC self-study, supervised practice, optional private lessons and the separately approved 32-hour GLP course under B.C.'s 2026 rules.",
+    eyebrow: "Independent B.C. driver-education guide",
+    h1: "Four driver-education options in B.C.",
     heroDescription:
-      "In BC, driver education and training means ICBC knowledge-test prep plus in-car lessons with a licensed driving school. Shanaya's covers both across Victoria, Langford, and Greater Victoria.",
+      "Separate what ICBC requires from what it recommends and what you may choose to buy, with a date-specific note about the licensing changes beginning October 19, 2026.",
     heroImage: "/landing/driver-education-training.webp",
-    targetKeyword: "driver education and training",
-    serviceAreaTitle: "Victoria and Greater Victoria",
-    serviceAreas: ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Sidney", "Sooke"],
+    targetKeyword: "B.C. driver education options",
+    serviceAreaTitle: "Verified directory location",
+    serviceAreas: ["Langford, BC"],
     intro: [
-      "\"Driver education\" and \"driver training\" are the North American terms for everything involved in learning to drive: the road-rules knowledge and the hands-on, in-car skills. In British Columbia, that is delivered through the Graduated Licensing Program, an ICBC knowledge test, and professional driving lessons, rather than a single mandatory classroom course.",
-      "Shanaya's Driving School provides both halves across Victoria, Langford, and Greater Victoria. Our ICBC-licensed instructors cover the rules and signs you need for the knowledge test, then build the practical driving skills examiners score, all in insured, dual-control cars.",
-      "So whether you searched for driver education, driver training, or drivers ed, this is the same thing: a structured path from your first lesson to a full BC licence, taught by a licensed local school.",
+      "ICBC administers B.C. driver licensing, including the official knowledge and road tests. A private driving school can provide education or practice, but it cannot issue a licence, conduct an official ICBC road test or promise a licensing result.",
+      "For a new Class 7 driver, four different activities are often called driver education: free study using ICBC materials, legal practice with a qualified supervisor, optional ordinary lessons from a licensed school, and a separately approved 32-hour GLP course. They are not interchangeable, and only the last option can carry the approved-course benefit when every condition is met.",
+      "When checked July 21, 2026, ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 LEIGH RD, LANGFORD BC V9B 4G1, telephone (250) 542-3673, for Class 5 and 7 driver training. The same identifiers did not match an entry in ICBC's separate approved-GLP school list, so this page does not state or imply that Shanaya's offers an ICBC-approved GLP course.",
     ],
     sections: [
       {
-        title: "Driver education: the knowledge side",
+        title: "Option 1: use ICBC's free study materials",
         body:
-          "The education half is the road-rules knowledge every BC driver needs, the material tested on the ICBC knowledge test. We help you learn the signs, right-of-way rules, and safe-driving decisions, and you can practise with real ICBC-style questions before you write the test.",
+          "ICBC publishes Learn to Drive Smart and an official practice knowledge test. These are the primary study sources for the Class 7 knowledge test and are available without buying a lesson or course. The official test and licence still have their own eligibility, identification and fee requirements.",
         bullets: [
-          "Road signs, traffic rules, and right-of-way explained clearly",
-          "ICBC-style practice questions to prepare for the knowledge test",
-          "The material tied to real road situations, not just memorising",
+          "Start with the current ICBC guide rather than relying on an unofficial summary",
+          "Use ICBC's practice test to check your understanding; a practice result is not an official pass",
+          "Confirm current test arrangements, identification and fees directly with ICBC",
         ],
       },
       {
-        title: "Driver training: the in-car side",
+        title: "Option 2: practise legally with a qualified supervisor",
         body:
-          "The training half is hands-on driving with a licensed instructor. Lessons progress from basic vehicle control to real Victoria and Westshore traffic, building the exact habits ICBC examiners look for on the road test.",
+          "A Class 7L learner builds driving experience with a qualified supervisor while obeying every restriction printed on the licence. Through October 18, 2026, the Learner stage lasts at least 12 months, and the supervisor must meet ICBC's current qualification rules and sit beside the learner. ICBC's Tuning Up for Drivers guide says a supervisor should plan to spend about 60 hours helping a new driver prepare for the Class 7 road test.",
         bullets: [
-          "One-on-one, in-car lessons in a dual-control vehicle",
-          "Beginner fundamentals through road-test-ready skills",
-          "Mock road tests and examiner-style feedback",
+          "The approximately 60 hours is official preparation guidance, not a statutory minimum",
+          "It is not a requirement to purchase 60 hours of professional lessons",
+          "Only legal, supervised practice counts as driving practice during the L stage",
         ],
       },
       {
-        title: "Is there a classroom driver's ed course in BC?",
+        title: "Option 3: add ordinary private lessons if useful",
         body:
-          "Unlike some places, BC does not require a classroom driver's education course to get licensed. Instead, new drivers move through the Graduated Licensing Program: pass the knowledge test for a Learner (L) licence, build supervised experience, then pass the road test. Professional lessons are the fastest, safest way to gain that experience, and completing an ICBC-approved driver-training course can also shorten the Novice stage by six months.",
+          "ICBC describes in-car-only lessons and lessons combined with classroom instruction as choices. Paid lessons from a licensed school are optional on the standard Class 7 path; they do not replace the required ICBC tests, the Learner waiting period or legal supervised practice. Ordinary lessons also do not qualify for an approved-course benefit merely because the school is licensed.",
+        bullets: [
+          "Choose lesson content and frequency according to the learner's needs rather than a promised outcome",
+          "Ask to see the current school and individual-instructor credentials relevant to the booking",
+          "Treat a private mock test or assessment as coaching, not an official ICBC test or score",
+        ],
       },
       {
-        title: "Who driver education and training is for",
+        title: "Option 4: verify a specific ICBC-approved GLP course",
         body:
-          "New teen drivers starting the GLP, adults learning from scratch, newcomers adjusting to BC roads, and licensed drivers refreshing their skills or preparing to re-test all benefit from structured education and training tailored to their stage.",
+          "A Class 7 passenger-vehicle GLP course must be specifically approved by ICBC and total at least 32 hours: 16 hours of classroom theory, 12 hours of individual on-road instruction and 4 discretionary hours. ICBC says the course must be completed within 365 days while the student holds a Class 7L. A possible six-month reduction in the N stage is conditional on completing the approved course and having no at-fault crashes, driving violations or prohibitions during the first 18 months of the N stage.",
+        bullets: [
+          "Verify the school in ICBC's separate approved-GLP directory before paying for this benefit",
+          "Confirm that the offering is the approved course, not a bundle of ordinary lessons",
+          "Shanaya's did not have a matching entry in that approved-course list when checked July 21, 2026",
+        ],
       },
       {
-        title: "Driver education and training near you",
+        title: "Current Class 7 path through October 18, 2026",
         body:
-          "Lessons run across Victoria, Langford, Colwood, Saanich, View Royal, and nearby communities, with pick-up and drop-off available from home, work, or school, so your training happens on the roads you actually drive.",
+          "Under the rules in force through October 18, a new driver obtains an L by meeting ICBC's eligibility requirements and passing the knowledge and vision tests, practises as a supervised Learner for at least 12 months, and passes the Class 7 road test to receive an N. The current N-stage minimum is 24 months without a driving prohibition, or potentially 18 months for a driver who qualifies for the approved-course reduction, before the Class 5 road test used to exit GLP.",
+      },
+      {
+        title: "What changes on October 19, 2026",
+        body:
+          "The Class 7 road test remains, but the second road test is replaced by a Driving Record Assessment. Under the new model, an eligible driver receives a Class 5 licence with restriction 55 for 12 compliant months before that restriction expires. The published minimum non-Learner driving period is 24 months for a driver under 25, 18 months for an under-25 driver who qualifies through an approved GLP course, or 12 months for a driver age 25 or older. ICBC also reduces the L-stage minimum to nine months for drivers age 25 or older; individual transition cases should follow ICBC's notice and current guidance.",
       },
     ],
     faqs: [
       {
-        question: "Is driver education the same as driving lessons in BC?",
+        question: "What are the four driver-education options for a new B.C. driver?",
         answer:
-          "Effectively, yes. In BC the practical driver training is delivered as professional driving lessons, and the driver education knowledge is the material on the ICBC knowledge test. We cover both.",
+          "They are free self-study with ICBC materials, legal practice with a qualified supervisor, optional ordinary lessons from a licensed school, and a separate ICBC-approved 32-hour GLP course. Each serves a different purpose.",
       },
       {
-        question: "Do you offer drivers ed or driver training?",
+        question: "Are paid driving lessons required for the standard Class 7 path?",
         answer:
-          "Yes. We provide the full path: knowledge-test preparation for the education side and in-car lessons for the training side, all with ICBC-licensed instructors in dual-control cars.",
+          "No. ICBC's standard path requires the official tests, the applicable waiting periods and compliance with licence conditions, including supervised practice while driving as an L. Ordinary professional lessons are an optional source of instruction.",
       },
       {
-        question: "Is there a mandatory classroom driver's ed course in BC?",
+        question: "Does ICBC require 60 hours of professional lessons?",
         answer:
-          "No. BC uses the Graduated Licensing Program instead of a required classroom course. You pass the knowledge test, build supervised driving experience, and pass the road test. An ICBC-approved driver-training course is optional and can shorten the Novice stage by six months.",
+          "No. ICBC's Tuning Up for Drivers guide says a supervisor should plan to spend about 60 hours helping a new driver prepare for the Class 7 road test. That is preparation guidance, not a statutory minimum or a requirement to buy 60 lesson hours.",
       },
       {
-        question: "Where do you offer driver education and training?",
+        question: "Are ordinary lessons the same as an ICBC-approved GLP course?",
         answer:
-          "Across Victoria, Langford, Colwood, Saanich, View Royal, Sidney, and nearby communities, with pick-up and drop-off available depending on scheduling.",
+          "No. An ordinary lesson may be offered by a licensed school, but the GLP course and the school offering it require separate ICBC approval. Only the specific approved course can support the conditional course benefit.",
+      },
+      {
+        question: "How many hours are in an approved Class 7 GLP course?",
+        answer:
+          "At least 32 hours: 16 hours of classroom theory, 12 hours of individual on-road instruction and 4 discretionary hours. ICBC says it must be completed within 365 days while the student has a Class 7L, and the possible six-month N-stage reduction has additional driving-record conditions.",
+      },
+      {
+        question: "What is the Class 7 path through October 18, 2026?",
+        answer:
+          "The sequence is L after the knowledge and vision tests, at least 12 months of supervised Learner practice, the Class 7 road test for an N, then the applicable N-stage period and a Class 5 road test to exit GLP. The current N minimum is 24 months, potentially 18 months for a driver who qualifies for the approved-course reduction.",
+      },
+      {
+        question: "What changes to driver licensing on October 19, 2026?",
+        answer:
+          "The Class 7 road test remains, but a Driving Record Assessment replaces the second road test. An eligible driver then has a Class 5 licence with restriction 55 for 12 compliant months. Minimum periods vary by age, record and approved-course eligibility, so confirm your individual transition with ICBC.",
+      },
+      {
+        question: "Is Shanaya's listed for an ICBC-approved GLP course?",
+        answer:
+          "No matching entry was found under Shanaya's exact name, Leigh Road address or telephone in ICBC's separate approved-GLP directory when checked July 21, 2026. ICBC's general directory did list SHANAYA'S DRIVING SCHOOL in Langford for Class 5 and 7 driver training; that is a licensing record, not ICBC endorsement or GLP-course approval.",
       },
     ],
-    relatedLinksTitle: "Start your driver education and training",
+    relatedLinksTitle: "Check the official path before choosing training",
     relatedLinks: [
       {
-        label: "ICBC knowledge test practice",
+        label: "Independent knowledge-test practice",
         href: "/knowledge-test-practice",
-        description: "Prepare for the education side, the ICBC knowledge test.",
+        description: "Use this unofficial study aid only as a supplement to ICBC's guide and practice test.",
       },
       {
-        label: "ICBC driving lessons in Victoria",
+        label: "Review ordinary lesson information",
         href: "/driving-lessons",
-        description: "The in-car training side, from beginner to road-test ready.",
+        description: "Compare current private-lesson information without treating it as an approved GLP course.",
       },
       {
-        label: "BC Graduated Licensing Program",
+        label: "B.C. licensing rules before and after October 19",
         href: "/bc-graduated-licensing-program",
-        description: "How the BC licensing stages work.",
+        description: "Read the detailed, date-specific GLP decision guide and its official sources.",
       },
     ],
-    primaryCtaLabel: "Book a lesson",
+    primaryCtaLabel: "Request lesson information",
+    lastReviewed: "July 21, 2026",
+    editorialNote:
+      "This independent guide separates official licensing requirements, ICBC preparation guidance, optional private lessons and a specifically approved GLP course. ICBC pages and directories were checked July 21, 2026. The Shanaya's record was matched by exact business name, Leigh Road address and telephone in the general directory, and the same identifiers were checked against the separate approved-GLP list. No current individual-instructor credential, vehicle, curriculum, course approval, service-area, road-test route, score, pass-rate or outcome claim is made. Confirm changing rules and your own eligibility directly with ICBC.",
+    officialSources: [
+      {
+        label: "ICBC - Learn to Drive Smart",
+        href: "https://www.icbc.com/driver-licensing/driving-guides/Learn-to-drive-smart",
+      },
+      {
+        label: "ICBC - official practice knowledge test",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/practice-knowledge-test",
+      },
+      {
+        label: "ICBC - current Class 7L requirements",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/Get-your-L",
+      },
+      {
+        label: "ICBC - Tuning Up for Drivers",
+        href: "https://www.icbc.com/driver-licensing/documents/tuneup-complete.pdf",
+      },
+      {
+        label: "ICBC - training options for new drivers",
+        href: "https://www.icbc.com/driver-licensing/driver-training/New-drivers-or-riders",
+      },
+      {
+        label: "ICBC - approved GLP course requirements",
+        href: "https://partners.icbc.com/driver-training/driving-schools/teach-approved-course",
+      },
+      {
+        label: "ICBC - Graduated Licensing Program changes",
+        href: "https://www.icbc.com/driver-licensing/new-drivers/graduated-licensing-program-changes",
+      },
+      {
+        label: "ICBC - choosing a driving school and general directory",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school",
+      },
+      {
+        label: "ICBC - schools offering an approved GLP course",
+        href: "https://www.icbc.com/driver-licensing/driver-training/Choosing-your-driving-school/glp-schools",
+      },
+    ],
   },
 ];
 

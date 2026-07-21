@@ -9,7 +9,7 @@ This document summarizes company data currently published or embedded in the web
 - Primary market: British Columbia, Canada
 - Core positioning: Professional driving lessons designed to build confidence, hazard awareness, and real-world driving skills
 - Instruction style: Calm, supportive, practical, confidence-building, road-test focused
-- Standards language used on the site: ICBC-aligned, licensed instructors, government approved, dual-control vehicles, insured vehicles
+- Verified status language: ICBC's general directory lists the school in Langford for Class 5 and 7 driver training. Do not call the school, its instructors, or ordinary lessons ICBC-approved, ICBC-aligned, government-approved, recommended, or endorsed. Verify individual instructor and vehicle claims from current records before publishing them.
 - Mascot / brand character referenced on the site: Ruley
 
 ## 2. Public Contact Information
@@ -189,7 +189,7 @@ These are important if you plan to train another AI on this company:
 
 Use this short summary if another AI needs a clean company introduction:
 
-"Shanaya's Driving School is a British Columbia driving school serving Langford, Victoria, Colwood, Sidney, Metchosin, Sooke, Duncan, and Salt Spring Island. The company offers ICBC-aligned driving education, knowledge test preparation, road test preparation, newcomer support, defensive driving, refresher lessons, and structured lesson packages. Public contact details shown in the website codebase are book@drivingschoolbc.ca, +1 (250) 542-3673, and Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1. The brand also promotes a referral program called Ruley Rewards Program and publishes privacy, installment, and general terms policies."
+"ICBC's general directory lists SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, telephone (250) 542-3673, for Class 5 and 7 driver training. The directory listing is not an ICBC recommendation or endorsement. The website catalogue describes lesson, knowledge-study, road-test preparation, newcomer, defensive-driving, refresher, and package options across listed B.C. locations; availability must be confirmed. As checked July 21, 2026, no matching Shanaya entry appeared in ICBC's separate approved-GLP-course directory."
 
 ## 12. Source Files
 
