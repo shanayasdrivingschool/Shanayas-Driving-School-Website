@@ -118,7 +118,7 @@ const SiteFooter = () => (
               <Link to="/driving-lessons">Driving Lessons</Link>
             </li>
             <li>
-              <Link to="/icbc-approved-driving-school">ICBC-Approved Driving School</Link>
+              <Link to="/icbc-approved-driving-school">Licensed Driving School</Link>
             </li>
             <li>
               <Link to="/bc-graduated-licensing-program">BC Graduated Licensing (GLP)</Link>
