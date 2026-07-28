@@ -1243,9 +1243,10 @@ export const blogPosts: BlogPostData[] = [
           </li>
           <li>
             a qualified supervisor so you can legally travel to the appointment as a learner and
-            leave under learner conditions if you do not pass; under the current learner restriction,
-            the supervisor must be at least 25, hold a valid Class 1, 2, 3, 4 or 5 licence and sit in
-            the front passenger seat;
+            leave under learner conditions if you do not pass. Through October 18, 2026, the
+            supervisor must be at least 25 and hold a valid Class 1, 2, 3, 4 or 5 licence; effective
+            October 19, 2026, the minimum supervisor age drops to 22 and the supervisor must hold an
+            unrestricted Class 5 licence. In either case they sit in the front passenger seat;
           </li>
           <li>glasses or contact lenses if they are required for you to drive; and</li>
           <li>
@@ -1337,8 +1338,10 @@ export const blogPosts: BlogPostData[] = [
           <li>displaying the official N sign on the back of the vehicle;</li>
           <li>no hand-held or hands-free cellphones or other electronic devices; and</li>
           <li>
-            one passenger, not counting immediate family, unless a supervisor age 25 or older with a
-            valid Class 1, 2, 3, 4 or 5 licence is seated beside you.
+            one passenger, not counting immediate family, unless a qualified supervisor is seated
+            beside you. Through October 18, 2026, that supervisor must be at least 25 with a valid
+            Class 1, 2, 3, 4 or 5 licence; effective October 19, 2026, the minimum age drops to 22 and
+            the supervisor must hold an unrestricted Class 5 licence.
           </li>
         </ul>
         <p>

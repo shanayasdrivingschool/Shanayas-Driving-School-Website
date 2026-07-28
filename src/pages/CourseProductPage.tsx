@@ -4,10 +4,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "@/components/cart/CartProvider";
 import ProductDetailTemplate from "@/components/ProductDetailTemplate";
 import {
+  ADD_ON_LESSON_DURATION_MINUTES,
   createCourseLocationPricing,
+  formatCourseAddOnLessonSummary,
   formatCourseLessonDuration,
   formatCoursePrice,
+  getCourseAddOnLessonPrice,
+  getCourseAddOnLessonTotal,
+  getCourseMaxAddOnLessonCount,
   getDefaultCourseLessonDuration,
+  isCourseAddOnLessonSelectable,
   isCourseLessonDurationSelectable,
 } from "@/data/coursePricing";
 import { courseModulesById } from "@/data/courseModules";
@@ -41,6 +47,7 @@ const CourseProductPage = () => {
   const [selectedClassCount, setSelectedClassCount] = useState(1);
   const [selectedLessonDurationOverride, setSelectedLessonDurationOverride] =
     useState<LessonDurationMinutes | null>(null);
+  const [selectedAddOnLessonCount, setSelectedAddOnLessonCount] = useState(0);
   const [learningObjective, setLearningObjective] = useState("");
 
   if (!course) {
@@ -49,12 +56,20 @@ const CourseProductPage = () => {
 
   const isCustomClassCourse = course.id === CUSTOM_CLASS_COURSE_ID;
   const canSelectLessonDuration = isCourseLessonDurationSelectable(course);
+  const canAddLessons = isCourseAddOnLessonSelectable(course);
+  const maxAddOnLessonCount = getCourseMaxAddOnLessonCount(course);
+  const addOnLessonCount = canAddLessons ? selectedAddOnLessonCount : 0;
+  const addOnLessonPrice = getCourseAddOnLessonPrice(course);
+  const addOnLessonTotal = getCourseAddOnLessonTotal(course, addOnLessonCount);
+  const addOnLessonSummary = formatCourseAddOnLessonSummary(course, addOnLessonCount);
   const selectedLessonDuration = canSelectLessonDuration
     ? selectedLessonDurationOverride ?? getDefaultCourseLessonDuration(course)
     : undefined;
-  const pricingMap = createCourseLocationPricing(course, selectedLessonDuration);
+  const pricingMap = createCourseLocationPricing(course, selectedLessonDuration, addOnLessonCount);
+  const basePricingMap = createCourseLocationPricing(course, selectedLessonDuration);
   const selectedLocation = serviceLocationsById[selectedLocationId] ?? officeLocation;
   const pricing = pricingMap[selectedLocation.pricingTier];
+  const basePricing = basePricingMap[selectedLocation.pricingTier];
   const outlineSections = courseModulesById[course.id] ?? [];
   const totalCustomClassEstimate = pricing.amount * selectedClassCount;
   const customClassCustomization = isCustomClassCourse
@@ -62,9 +77,18 @@ const CourseProductPage = () => {
     : undefined;
   const courseCustomization = sanitizeCartEntryCustomization({
     lessonDurationMinutes: selectedLessonDuration,
+    ...(canAddLessons ? { addOnLessonCount } : {}),
     ...(isCustomClassCourse ? { learningObjective } : {}),
   });
-  const lessonDurationLabel = formatCourseLessonDuration(course, selectedLessonDuration);
+  const lessonDurationLabel = [formatCourseLessonDuration(course, selectedLessonDuration), addOnLessonSummary]
+    .filter(Boolean)
+    .join(" + ");
+
+  const updateAddOnLessonCount = (nextCount: number) => {
+    setSelectedAddOnLessonCount(
+      Math.min(maxAddOnLessonCount, Math.max(0, Number.isFinite(nextCount) ? Math.floor(nextCount) : 0)),
+    );
+  };
 
   const updateSelectedClassCount = (nextCount: number) => {
     const normalizedCount = Math.min(
@@ -102,7 +126,9 @@ const CourseProductPage = () => {
       title: "Course added to cart",
       description: isCustomClassCourse
         ? `${selectedClassCount} custom ${selectedClassCount === 1 ? "class was" : "classes were"} added for ${selectedLocation.name}.`
-        : `${course.title} was added for ${selectedLocation.name}.`,
+        : addOnLessonSummary
+          ? `${course.title} with ${addOnLessonSummary} was added for ${selectedLocation.name}.`
+          : `${course.title} was added for ${selectedLocation.name}.`,
     });
   };
   const handleBuyNow = () => {
@@ -119,6 +145,10 @@ const CourseProductPage = () => {
 
     if (selectedLessonDuration) {
       searchParams.set("duration", String(selectedLessonDuration));
+    }
+
+    if (addOnLessonCount > 0) {
+      searchParams.set("lessons", String(addOnLessonCount));
     }
 
     navigate(`/checkout?${searchParams.toString()}`);
@@ -179,7 +209,7 @@ const CourseProductPage = () => {
       outcomes={outcomes}
       stats={[
         { label: "Course level", value: course.level },
-        { label: "Lesson duration", value: lessonDurationLabel },
+        { label: canAddLessons ? "Package includes" : "Lesson duration", value: lessonDurationLabel },
       ]}
       locationOptions={serviceLocations}
       selectedLocationId={selectedLocation.id}
@@ -275,6 +305,67 @@ const CourseProductPage = () => {
                   className="mt-2 w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-[#1d52a1]"
                 />
               </label>
+            </div>
+          </section>
+        ) : canAddLessons ? (
+          <section className="rounded-3xl border border-slate-200 bg-white p-5">
+            <h3 className="text-xl font-black text-slate-900">Add practice lessons</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              The base package covers road test preparation and the car for your test. Add{" "}
+              {ADD_ON_LESSON_DURATION_MINUTES}-minute lessons if you want more practice before test day.
+            </p>
+
+            <div className="mt-5 rounded-2xl bg-slate-50 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-black text-slate-900">Number of lessons</p>
+                  <p className="mt-1 text-xs font-semibold text-slate-500">
+                    {formatCoursePrice(addOnLessonPrice)} per {ADD_ON_LESSON_DURATION_MINUTES}-minute lesson
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center self-start rounded-full bg-white px-1 py-1 shadow-[inset_0_0_0_1px_rgba(226,232,240,1)] sm:self-auto">
+                  <button
+                    type="button"
+                    onClick={() => updateAddOnLessonCount(addOnLessonCount - 1)}
+                    disabled={addOnLessonCount === 0}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-slate-100 hover:text-[#1d52a1] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-slate-600"
+                    aria-label="Remove one practice lesson"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <span className="min-w-[3rem] text-center text-sm font-black text-slate-900">
+                    {addOnLessonCount}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => updateAddOnLessonCount(addOnLessonCount + 1)}
+                    disabled={addOnLessonCount >= maxAddOnLessonCount}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-slate-100 hover:text-[#1d52a1] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-slate-600"
+                    aria-label="Add one practice lesson"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <dl className="mt-4 space-y-2 border-t border-slate-200 pt-4 text-sm">
+                <div className="flex items-center justify-between gap-4">
+                  <dt className="font-semibold text-slate-600">Base package</dt>
+                  <dd className="font-bold text-slate-900">{formatCoursePrice(basePricing.amount)}</dd>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <dt className="font-semibold text-slate-600">
+                    Lessons {addOnLessonCount > 0 ? `(${addOnLessonCount} x ${formatCoursePrice(addOnLessonPrice)})` : ""}
+                  </dt>
+                  <dd className="font-bold text-slate-900">{formatCoursePrice(addOnLessonTotal)}</dd>
+                </div>
+              </dl>
+
+              <div className="mt-4 flex items-center justify-between gap-4 border-t border-slate-200 pt-4">
+                <span className="text-sm font-semibold text-slate-600">Total before tax</span>
+                <span className="text-xl font-black text-slate-900">{formatCoursePrice(pricing.amount)}</span>
+              </div>
             </div>
           </section>
         ) : null

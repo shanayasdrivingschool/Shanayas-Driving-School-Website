@@ -19,6 +19,9 @@ export type CourseCatalogItem = {
     sixtyMinutePrice?: number;
     ninetyMinutePrice?: number;
     discountPercent?: number;
+    // Price of one optional lesson a student can stack on top of the base price.
+    addOnLessonPrice?: number;
+    maxAddOnLessons?: number;
   };
 };
 
@@ -81,17 +84,18 @@ const courseCatalogSeed: CourseCatalogItem[] = [
   },
   {
     id: "lesson-road-test-prep-course",
-    title: "Lesson + Road Test Prep + Rental",
+    title: "Road Test Package",
     level: "Test Prep",
     deliveryFormat: "In-car",
-    duration: "2 x 60 min + road test prep and rental",
-    detail: "2 x 60 min + road test prep and rental",
-    description: "Two focused lessons, road test preparation, and a rental car for your road test.",
-    highlights: ["Warm-Up Lessons", "Road Test Focus", "Car Included", "Route Preparation"],
+    duration: "Road test prep + car rental",
+    detail: "Road test prep + car rental",
+    description:
+      "Road test preparation with an instructor-approved car for your ICBC road test. Add as many practice lessons as you want on top of the base package.",
+    highlights: ["Road Test Preparation", "Car Included For Test", "Route And Maneuver Practice", "Add Lessons As Needed"],
     tone: "bg-white text-black border border-gray-200",
     image: "https://www.easydriversed.com/wp-content/uploads/2025/01/the-road-test-process.jpg",
     quizTags: ["road-test", "combined", "test-prep", "maneuvers"],
-    pricing: { sixtyMinuteClasses: 2, sixtyMinutePrice: 350, ninetyMinutePrice: 450 },
+    pricing: { fixedPrice: 250, addOnLessonPrice: 89, maxAddOnLessons: 10 },
   },
   {
     id: "road-test-prep-course",

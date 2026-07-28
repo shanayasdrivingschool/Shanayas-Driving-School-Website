@@ -15,7 +15,9 @@ import { AffiliateAuthProvider } from "./components/affiliate/AffiliateAuthProvi
 import { AdminAuthProvider } from "./components/admin/AdminAuthProvider";
 import AdminRouteGuard from "./components/admin/AdminRouteGuard";
 import ReferralTracker from "./components/affiliate/ReferralTracker";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Index from "./pages/Index";
+import ServerError from "./pages/ServerError";
 
 const Courses = lazy(() => import("./pages/Courses"));
 const CourseQuiz = lazy(() => import("./pages/CourseQuiz"));
@@ -62,6 +64,9 @@ const AdminCommissions = lazy(() => import("./pages/AdminCommissions"));
 const AdminPayouts = lazy(() => import("./pages/AdminPayouts"));
 const AdminRateLimits = lazy(() => import("./pages/AdminRateLimits"));
 const ReferralRedirect = lazy(() => import("./pages/ReferralRedirect"));
+const BadRequest = lazy(() => import("./pages/BadRequest"));
+const Unauthorized = lazy(() => import("./pages/Unauthorized"));
+const Forbidden = lazy(() => import("./pages/Forbidden"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -80,6 +85,7 @@ const App = () => (
         <ScrollToTopButton />
         <PageTransition>
           <div className="site-page-scale">
+            <ErrorBoundary>
             <Suspense fallback={null}>
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -148,9 +154,18 @@ const App = () => (
                   <Route path="/admin/rate-limits" element={<AdminRateLimits />} />
                 </Route>
                 <Route path="/ref/:affiliateCode" element={<ReferralRedirect />} />
+                <Route path="/400" element={<BadRequest />} />
+                <Route path="/bad-request" element={<BadRequest />} />
+                <Route path="/401" element={<Unauthorized />} />
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="/403" element={<Forbidden />} />
+                <Route path="/forbidden" element={<Forbidden />} />
+                <Route path="/500" element={<ServerError />} />
+                <Route path="/server-error" element={<ServerError />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
+            </ErrorBoundary>
           </div>
         </PageTransition>
       </TooltipProvider>

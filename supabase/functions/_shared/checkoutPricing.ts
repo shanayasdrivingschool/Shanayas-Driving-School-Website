@@ -4,6 +4,7 @@ export type CheckoutPricingItem = {
   locationId: string;
   quantity: number;
   lessonDurationMinutes?: 60 | 90;
+  addOnLessonCount?: number;
 };
 
 export type CheckoutPricingLineItem = CheckoutPricingItem & {
@@ -42,7 +43,7 @@ const coursePricingById = {
   "knowledge-test-prep-course": { fixedPrice: 300 },
   "parking-course": { ninetyMinuteClasses: 3 },
   "make-your-own-class": { ninetyMinuteClasses: 1 },
-  "lesson-road-test-prep-course": { sixtyMinuteClasses: 2, sixtyMinutePrice: 350, ninetyMinutePrice: 450 },
+  "lesson-road-test-prep-course": { fixedPrice: 250 },
   "road-test-prep-course": { ninetyMinuteClasses: 1 },
   "new-to-canada": { ninetyMinuteClasses: 3 },
   "defensive-driving-course": { ninetyMinuteClasses: 5 },
@@ -76,7 +77,7 @@ const courseTitleById: Record<keyof typeof coursePricingById, string> = {
   "knowledge-test-prep-course": "Knowledge Test Prep Course",
   "parking-course": "Parking Course",
   "make-your-own-class": "Make Your Own Class",
-  "lesson-road-test-prep-course": "Lesson + Road Test Prep + Rental",
+  "lesson-road-test-prep-course": "Road Test Package",
   "road-test-prep-course": "Road Test Prep Course",
   "new-to-canada": "New to Canada",
   "defensive-driving-course": "Defensive Driving Course",
@@ -130,6 +131,11 @@ const fixedPackagePricingById: Record<string, Record<PricingTier, number>> = {
   },
 };
 
+// Courses that price as a fixed base package plus an adjustable number of optional lessons.
+const addOnLessonPricingById: Record<string, { price: number; maxCount: number }> = {
+  "lesson-road-test-prep-course": { price: 89, maxCount: 10 },
+};
+
 const extraPricingById: Record<string, number> = {
   "car-rental": 250,
 };
@@ -181,13 +187,30 @@ const getCourseBasePrice = (
   );
 };
 
-const getCourseUnitPrice = (courseId: string, tier: PricingTier, lessonDurationMinutes?: 60 | 90) => {
+const getCourseAddOnLessonTotal = (courseId: string, addOnLessonCount?: number) => {
+  const addOnPricing = addOnLessonPricingById[courseId];
+  if (!addOnPricing || !addOnLessonCount) {
+    return 0;
+  }
+
+  const normalizedCount = Math.min(addOnPricing.maxCount, Math.max(0, Math.floor(addOnLessonCount)));
+  return roundMoney(normalizedCount * addOnPricing.price);
+};
+
+const getCourseUnitPrice = (
+  courseId: string,
+  tier: PricingTier,
+  lessonDurationMinutes?: 60 | 90,
+  addOnLessonCount?: number,
+) => {
   const pricing = coursePricingById[courseId as keyof typeof coursePricingById];
   if (!pricing) {
     throw new Error("invalid_product_id");
   }
 
-  return getCourseBasePrice(pricing, tier, lessonDurationMinutes);
+  return roundMoney(
+    getCourseBasePrice(pricing, tier, lessonDurationMinutes) + getCourseAddOnLessonTotal(courseId, addOnLessonCount),
+  );
 };
 
 const getPackageUnitPrice = (packageId: string, tier: PricingTier, lessonDurationMinutes?: 60 | 90) => {
@@ -285,6 +308,19 @@ const asLessonDurationMinutes = (value: unknown): 60 | 90 | undefined => {
   throw new Error("invalid_lesson_duration");
 };
 
+const asAddOnLessonCount = (value: unknown) => {
+  if (value === undefined || value === null || value === "") {
+    return undefined;
+  }
+
+  const count = typeof value === "number" ? value : typeof value === "string" ? Number(value) : Number.NaN;
+  if (!Number.isFinite(count) || count < 0) {
+    throw new Error("invalid_add_on_lesson_count");
+  }
+
+  return Math.floor(count);
+};
+
 const getExtraUnitPrice = (extraId: string) => {
   const price = extraPricingById[extraId];
   if (typeof price !== "number") {
@@ -312,6 +348,7 @@ export const normalizeCheckoutPricingItems = (value: unknown): CheckoutPricingIt
       locationId: asRequiredString(item.locationId ?? item.location_id),
       quantity: asQuantity(item.quantity),
       lessonDurationMinutes: asLessonDurationMinutes(item.lessonDurationMinutes ?? item.lesson_duration_minutes),
+      addOnLessonCount: asAddOnLessonCount(item.addOnLessonCount ?? item.add_on_lesson_count),
     };
   });
 };
@@ -324,7 +361,7 @@ export const calculateCheckoutTotals = (items: CheckoutPricingItem[]) => {
       item.itemType === "package"
         ? getPackageUnitPrice(item.productId, pricingTier, item.lessonDurationMinutes)
         : item.itemType === "course"
-          ? getCourseUnitPrice(item.productId, pricingTier, item.lessonDurationMinutes)
+          ? getCourseUnitPrice(item.productId, pricingTier, item.lessonDurationMinutes, item.addOnLessonCount)
           : getExtraUnitPrice(item.productId);
 
     return {

@@ -5,6 +5,7 @@ import { packageCatalog } from "@/data/packageCatalog";
 import { officeLocation } from "@/data/serviceLocations";
 import { clearCheckoutPaymentSession } from "@/lib/checkoutPaymentSession";
 import {
+  MAX_ADD_ON_LESSON_COUNT,
   buildCartItems,
   getCartPricingSummary,
   sanitizeCartEntryCustomization,
@@ -24,6 +25,11 @@ const parseLessonDuration = (value: string | null): LessonDurationMinutes | unde
   return duration === 60 || duration === 90 ? duration : undefined;
 };
 
+const parseAddOnLessonCount = (value: string | null) => {
+  const count = value ? Number(value) : Number.NaN;
+  return Number.isFinite(count) && count > 0 ? Math.min(MAX_ADD_ON_LESSON_COUNT, Math.floor(count)) : 0;
+};
+
 export const useCheckoutSelection = () => {
   const { items: cartItems, removeItem, updateQuantity } = useCart();
   const navigate = useNavigate();
@@ -35,6 +41,7 @@ export const useCheckoutSelection = () => {
   const locationId = searchParams.get("location")?.trim() ?? officeLocation.id;
   const quantity = parseSelectionQuantity(searchParams.get("quantity"));
   const lessonDurationMinutes = parseLessonDuration(searchParams.get("duration"));
+  const addOnLessonCount = parseAddOnLessonCount(searchParams.get("lessons"));
   const querySuffix = searchParams.toString() ? `?${searchParams.toString()}` : "";
 
   const directSelectionItems = useMemo(
@@ -72,7 +79,7 @@ export const useCheckoutSelection = () => {
       const courseCustomization =
         courseId === CUSTOM_CLASS_COURSE_ID
           ? customClassCustomization
-          : sanitizeCartEntryCustomization({ lessonDurationMinutes });
+          : sanitizeCartEntryCustomization({ lessonDurationMinutes, addOnLessonCount });
 
       return buildCartItems([
         {
@@ -84,7 +91,7 @@ export const useCheckoutSelection = () => {
         },
       ]);
     },
-    [courseId, invoiceToken, lessonDurationMinutes, locationId, packageId, quantity],
+    [addOnLessonCount, courseId, invoiceToken, lessonDurationMinutes, locationId, packageId, quantity],
   );
 
   const isUsingDirectSelection = directSelectionItems.length > 0;

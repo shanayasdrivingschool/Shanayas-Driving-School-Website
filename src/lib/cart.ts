@@ -3,9 +3,11 @@ import { courseCatalogById } from "@/data/courseCatalog";
 import { optionalExtrasById } from "@/data/optionalExtras";
 import {
   createPackageLocationPricing,
+  formatCourseAddOnLessonSummary,
   formatCourseLessonDuration,
   getCourseLessonCount,
   getCoursePriceForTier,
+  normalizeCourseAddOnLessonCount,
 } from "@/data/coursePricing";
 import { getPackageIncludedCourses, packageCatalogById } from "@/data/packageCatalog";
 import type { LessonDurationMinutes, ProductPricingTier } from "@/data/productTypes";
@@ -15,6 +17,7 @@ export const CART_STORAGE_KEY = "driving-school-cart.v1";
 export const ESTIMATED_GST_RATE = 0.05;
 export const COURSE_BUNDLE_DISCOUNT_THRESHOLD = 3;
 export const COURSE_BUNDLE_DISCOUNT_PERCENT = 5;
+export const MAX_ADD_ON_LESSON_COUNT = 10;
 const CUSTOM_CLASS_COURSE_ID = "make-your-own-class";
 
 export type CartItemType = "package" | "course" | "extra";
@@ -28,6 +31,7 @@ export type CartEntryCustomization = {
   lessonDurationMinutes?: LessonDurationMinutes;
   learningObjective?: string;
   classObjectives?: CustomClassObjective[];
+  addOnLessonCount?: number;
 };
 
 export type CartEntry = {
@@ -126,6 +130,16 @@ const sanitizeLessonDurationMinutes = (value: unknown): LessonDurationMinutes | 
   return duration === 60 || duration === 90 ? duration : undefined;
 };
 
+const sanitizeAddOnLessonCount = (value: unknown) => {
+  const count = typeof value === "number" ? value : typeof value === "string" ? Number(value) : Number.NaN;
+
+  if (!Number.isFinite(count) || count <= 0) {
+    return 0;
+  }
+
+  return Math.min(MAX_ADD_ON_LESSON_COUNT, Math.floor(count));
+};
+
 export const sanitizeCartEntryCustomization = (value: unknown): CartEntryCustomization | undefined => {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return undefined;
@@ -135,8 +149,9 @@ export const sanitizeCartEntryCustomization = (value: unknown): CartEntryCustomi
   const lessonDurationMinutes = sanitizeLessonDurationMinutes(rawCustomization.lessonDurationMinutes);
   const learningObjective = sanitizeLearningObjective(rawCustomization.learningObjective);
   const classObjectives = sanitizeCustomClassObjectives(rawCustomization.classObjectives);
+  const addOnLessonCount = sanitizeAddOnLessonCount(rawCustomization.addOnLessonCount);
 
-  if (!lessonDurationMinutes && !learningObjective && classObjectives.length === 0) {
+  if (!lessonDurationMinutes && !learningObjective && classObjectives.length === 0 && addOnLessonCount === 0) {
     return undefined;
   }
 
@@ -144,6 +159,7 @@ export const sanitizeCartEntryCustomization = (value: unknown): CartEntryCustomi
     ...(lessonDurationMinutes ? { lessonDurationMinutes } : {}),
     ...(learningObjective ? { learningObjective } : {}),
     ...(classObjectives.length > 0 ? { classObjectives } : {}),
+    ...(addOnLessonCount > 0 ? { addOnLessonCount } : {}),
   };
 };
 
@@ -298,6 +314,8 @@ export const buildCartItem = (entry: CartEntry): CartItem | null => {
   }
 
   const lessonDurationMinutes = entry.customization?.lessonDurationMinutes;
+  const addOnLessonCount = normalizeCourseAddOnLessonCount(course, entry.customization?.addOnLessonCount);
+  const addOnLessonSummary = formatCourseAddOnLessonSummary(course, addOnLessonCount);
   const lessonSummary =
     lessonDurationMinutes && getCourseLessonCount(course) > 0
       ? {
@@ -305,7 +323,7 @@ export const buildCartItem = (entry: CartEntry): CartItem | null => {
           durationLabel: formatCourseLessonDuration(course, lessonDurationMinutes),
         }
       : getLessonSummary([course]);
-  const price = getCoursePriceForTier(course, location.pricingTier, lessonDurationMinutes);
+  const price = getCoursePriceForTier(course, location.pricingTier, lessonDurationMinutes, addOnLessonCount);
   const customization = (() => {
     if (course.id !== "make-your-own-class") {
       return entry.customization;
@@ -358,8 +376,8 @@ export const buildCartItem = (entry: CartEntry): CartItem | null => {
     pricingTier: location.pricingTier,
     price,
     quantity,
-    sessionCount: lessonSummary.totalSessions,
-    sessionDetail: course.detail || lessonSummary.durationLabel,
+    sessionCount: lessonSummary.totalSessions + addOnLessonCount,
+    sessionDetail: [course.detail || lessonSummary.durationLabel, addOnLessonSummary].filter(Boolean).join(" + "),
     secondaryMetricLabel: "Course format",
     secondaryMetricValue: course.deliveryFormat,
     secondaryMetricDetail: course.level,

@@ -57,6 +57,43 @@ const getCourseDiscountPercent = (course: CourseCatalogItem) => Math.max(0, Math
 export const getCourseLessonCount = (course: CourseCatalogItem) =>
   (course.pricing.sixtyMinuteClasses ?? 0) + (course.pricing.ninetyMinuteClasses ?? 0);
 
+export const ADD_ON_LESSON_DURATION_MINUTES: LessonDurationMinutes = 60;
+const DEFAULT_MAX_ADD_ON_LESSONS = 10;
+
+export const getCourseAddOnLessonPrice = (course: CourseCatalogItem) =>
+  Math.max(0, course.pricing.addOnLessonPrice ?? 0);
+
+export const isCourseAddOnLessonSelectable = (course: CourseCatalogItem) =>
+  getCourseAddOnLessonPrice(course) > 0;
+
+export const getCourseMaxAddOnLessonCount = (course: CourseCatalogItem) =>
+  isCourseAddOnLessonSelectable(course)
+    ? Math.max(0, Math.floor(course.pricing.maxAddOnLessons ?? DEFAULT_MAX_ADD_ON_LESSONS))
+    : 0;
+
+export const normalizeCourseAddOnLessonCount = (course: CourseCatalogItem, addOnLessonCount?: number) => {
+  const maxAddOnLessonCount = getCourseMaxAddOnLessonCount(course);
+
+  if (maxAddOnLessonCount === 0 || !Number.isFinite(addOnLessonCount ?? Number.NaN)) {
+    return 0;
+  }
+
+  return Math.min(maxAddOnLessonCount, Math.max(0, Math.floor(addOnLessonCount as number)));
+};
+
+export const getCourseAddOnLessonTotal = (course: CourseCatalogItem, addOnLessonCount?: number) =>
+  Number((normalizeCourseAddOnLessonCount(course, addOnLessonCount) * getCourseAddOnLessonPrice(course)).toFixed(2));
+
+export const formatCourseAddOnLessonSummary = (course: CourseCatalogItem, addOnLessonCount?: number) => {
+  const normalizedCount = normalizeCourseAddOnLessonCount(course, addOnLessonCount);
+
+  if (normalizedCount === 0) {
+    return "";
+  }
+
+  return `${normalizedCount} x ${ADD_ON_LESSON_DURATION_MINUTES} min ${normalizedCount === 1 ? "lesson" : "lessons"}`;
+};
+
 export const isCourseLessonDurationSelectable = (course: CourseCatalogItem) =>
   course.pricing.fixedPrice === undefined && getCourseLessonCount(course) > 0;
 
@@ -84,27 +121,32 @@ export const getCourseBasePriceForTier = (
   course: CourseCatalogItem,
   tier: ProductPricingTier,
   lessonDurationMinutes?: LessonDurationMinutes,
+  addOnLessonCount?: number,
 ) => {
+  const addOnLessonTotal = getCourseAddOnLessonTotal(course, addOnLessonCount);
+
   if (course.pricing.fixedPrice !== undefined) {
-    return Number(course.pricing.fixedPrice.toFixed(2));
+    return Number((course.pricing.fixedPrice + addOnLessonTotal).toFixed(2));
   }
 
   if (lessonDurationMinutes) {
     const durationPrice =
       lessonDurationMinutes === 60 ? course.pricing.sixtyMinutePrice : course.pricing.ninetyMinutePrice;
     if (durationPrice !== undefined) {
-      return Number(durationPrice.toFixed(2));
+      return Number((durationPrice + addOnLessonTotal).toFixed(2));
     }
 
-    return Number((getCourseLessonCount(course) * getLessonRateForTier(tier, lessonDurationMinutes)).toFixed(2));
+    return Number(
+      (getCourseLessonCount(course) * getLessonRateForTier(tier, lessonDurationMinutes) + addOnLessonTotal).toFixed(2),
+    );
   }
 
   if (course.pricing.sixtyMinutePrice !== undefined && (course.pricing.ninetyMinuteClasses ?? 0) === 0) {
-    return Number(course.pricing.sixtyMinutePrice.toFixed(2));
+    return Number((course.pricing.sixtyMinutePrice + addOnLessonTotal).toFixed(2));
   }
 
   if (course.pricing.ninetyMinutePrice !== undefined && (course.pricing.sixtyMinuteClasses ?? 0) === 0) {
-    return Number(course.pricing.ninetyMinutePrice.toFixed(2));
+    return Number((course.pricing.ninetyMinutePrice + addOnLessonTotal).toFixed(2));
   }
 
   const rates = rateByTier[tier];
@@ -112,15 +154,16 @@ export const getCourseBasePriceForTier = (
     (course.pricing.sixtyMinuteClasses ?? 0) * rates.sixtyMinute +
     (course.pricing.ninetyMinuteClasses ?? 0) * rates.ninetyMinute;
 
-  return Number(total.toFixed(2));
+  return Number((total + addOnLessonTotal).toFixed(2));
 };
 
 export const getCoursePriceForTier = (
   course: CourseCatalogItem,
   tier: ProductPricingTier,
   lessonDurationMinutes?: LessonDurationMinutes,
+  addOnLessonCount?: number,
 ) => {
-  const basePrice = getCourseBasePriceForTier(course, tier, lessonDurationMinutes);
+  const basePrice = getCourseBasePriceForTier(course, tier, lessonDurationMinutes, addOnLessonCount);
   const discountPercent = getCourseDiscountPercent(course);
   const discountedPrice = basePrice * (1 - discountPercent / 100);
   return Number(discountedPrice.toFixed(2));
@@ -176,28 +219,29 @@ const createLocationPricingEntry = (
 export const createCourseLocationPricing = (
   course: CourseCatalogItem,
   lessonDurationMinutes?: LessonDurationMinutes,
+  addOnLessonCount?: number,
 ): ProductLocationPricingMap => ({
   standard: createLocationPricingEntry(
     course.title,
     "standard",
-    getCourseBasePriceForTier(course, "standard", lessonDurationMinutes),
-    getCoursePriceForTier(course, "standard", lessonDurationMinutes),
+    getCourseBasePriceForTier(course, "standard", lessonDurationMinutes, addOnLessonCount),
+    getCoursePriceForTier(course, "standard", lessonDurationMinutes, addOnLessonCount),
     getCourseDiscountPercent(course),
     "course",
   ),
   regional: createLocationPricingEntry(
     course.title,
     "regional",
-    getCourseBasePriceForTier(course, "regional", lessonDurationMinutes),
-    getCoursePriceForTier(course, "regional", lessonDurationMinutes),
+    getCourseBasePriceForTier(course, "regional", lessonDurationMinutes, addOnLessonCount),
+    getCoursePriceForTier(course, "regional", lessonDurationMinutes, addOnLessonCount),
     getCourseDiscountPercent(course),
     "course",
   ),
   island: createLocationPricingEntry(
     course.title,
     "island",
-    getCourseBasePriceForTier(course, "island", lessonDurationMinutes),
-    getCoursePriceForTier(course, "island", lessonDurationMinutes),
+    getCourseBasePriceForTier(course, "island", lessonDurationMinutes, addOnLessonCount),
+    getCoursePriceForTier(course, "island", lessonDurationMinutes, addOnLessonCount),
     getCourseDiscountPercent(course),
     "course",
   ),

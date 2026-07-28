@@ -1,17 +1,10 @@
-import { AlertTriangle, CreditCard, Gavel, ShieldCheck, Users } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import NotFound from "@/pages/NotFound";
 import PageNameSection from "@/components/PageNameSection";
 import SiteFooter from "@/components/SiteFooter";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { sitePolicies } from "@/data/policies";
-
-const policyIconMap = {
-  "privacy-policy": ShieldCheck,
-  "installment-policy": CreditCard,
-  "in-vehicle-passenger-policy": Users,
-  "terms-and-conditions": Gavel,
-} as const;
+import { getPolicyIcon } from "@/data/policyIcons";
 
 const normalizeProgramName = (text: string) =>
   text
@@ -24,12 +17,9 @@ const normalizeProgramName = (text: string) =>
     .replaceAll("Participants in the referral program", "Participants in the Ruley Rewards Program")
     .replaceAll("services, or referral program", "services, or the Ruley Rewards Program");
 
-const installmentPlanOverrides = [
-  { duration: "2-month plan", frequency: "Monthly", requirement: "Standard enrollment" },
-  { duration: "3-month plan", frequency: "Monthly", requirement: "Standard enrollment" },
-  { duration: "4-month plan", frequency: "Monthly", requirement: "Standard enrollment" },
-];
 const publicPolicies = sitePolicies.filter((policy) => policy.id !== "installment-policy");
+
+const sectionAnchorId = (index: number) => `policy-section-${index}`;
 
 const PolicyDetail = () => {
   const { policyId = "" } = useParams();
@@ -43,11 +33,7 @@ const PolicyDetail = () => {
     ...policy,
     cardDescription: normalizeProgramName(policy.cardDescription),
     intro: normalizeProgramName(policy.intro),
-    highlights: policy.highlights.map((highlight) =>
-      policy.id === "installment-policy"
-        ? normalizeProgramName(highlight).replace("4 approved installment options", "3 approved installment options")
-        : normalizeProgramName(highlight),
-    ),
+    highlights: policy.highlights.map((highlight) => normalizeProgramName(highlight)),
     sections: policy.sections.map((section) => ({
       ...section,
       title: normalizeProgramName(section.title),
@@ -55,10 +41,9 @@ const PolicyDetail = () => {
       bullets: section.bullets?.map((bullet) => normalizeProgramName(bullet)),
       note: section.note ? normalizeProgramName(section.note) : section.note,
     })),
-    installmentPlans: policy.id === "installment-policy" ? installmentPlanOverrides : policy.installmentPlans,
   };
 
-  const Icon = policyIconMap[policy.id as keyof typeof policyIconMap];
+  const Icon = getPolicyIcon(policy.id);
 
   return (
     <main className="bg-white text-[#202121]">
@@ -69,171 +54,129 @@ const PolicyDetail = () => {
         backgroundImage="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=2200&q=80"
       />
 
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-        <div className="flex flex-wrap items-center gap-3">
-          <Link
-            to="/policies"
-            className="inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:bg-[#1d52a1] hover:text-white"
-          >
-            All policies
+      <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
+          <Link to="/policies" className="font-semibold text-slate-600 transition-colors hover:text-[#1d52a1]">
+            Policies
           </Link>
-          {publicPolicies.map((entry) => {
-            const isActive = entry.id === normalizedPolicy.id;
+          <span aria-hidden="true" className="text-slate-300">/</span>
+          <span aria-current="page" className="text-slate-400">{normalizedPolicy.label}</span>
+        </nav>
 
-            return (
-              <Link
-                key={entry.id}
-                to={entry.href}
-                className={isActive
-                  ? "inline-flex items-center justify-center rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white"
-                  : "inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:bg-[#1d52a1] hover:text-white"}
-              >
-                {entry.label}
-              </Link>
-            );
-          })}
+        <div className="mt-8 flex items-center gap-2 text-[#E6242A]">
+          <Icon className="h-4 w-4" aria-hidden="true" />
+          <p className="text-xs font-bold uppercase tracking-[0.2em]">Published policy</p>
         </div>
-      </section>
+        <p className="mt-3 text-sm text-slate-500">Effective {normalizedPolicy.effectiveDate}</p>
+        <p className="mt-5 max-w-[68ch] text-lg leading-relaxed text-slate-600">{normalizedPolicy.intro}</p>
 
-      <section className="pb-16 sm:pb-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.18em] text-[#E6242A]">Published policy</p>
-              <div className="mt-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1d52a1]/10 text-[#1d52a1] shadow-sm">
-                <Icon className="h-6 w-6" />
-              </div>
-              <h1 className="mt-5 text-3xl font-black leading-tight text-slate-900 sm:text-4xl md:text-5xl">
-                {normalizedPolicy.label}
-              </h1>
-              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">{normalizedPolicy.intro}</p>
-            </div>
+        <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+          {normalizedPolicy.highlights.map((highlight) => (
+            <li key={highlight} className="flex items-center gap-2 text-sm font-medium text-slate-600">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#1d52a1]" aria-hidden="true" />
+              {highlight}
+            </li>
+          ))}
+        </ul>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {normalizedPolicy.highlights.map((highlight) => (
-                <article key={highlight} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#1d52a1]">Key point</p>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-700 sm:text-base">{highlight}</p>
-                </article>
-              ))}
-            </div>
-          </div>
+        <div className="mt-12 lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-12">
+          <aside className="hidden lg:block">
+            <nav aria-label="On this page" className="sticky top-24">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">On this page</p>
+              <ul className="mt-4 space-y-1 border-l border-slate-200">
+                {normalizedPolicy.sections.map((section, index) => (
+                  <li key={section.title}>
+                    <a
+                      href={`#${sectionAnchorId(index)}`}
+                      className="-ml-px block border-l-2 border-transparent py-1 pl-4 text-sm text-slate-500 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
+                    >
+                      {section.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
 
-          {normalizedPolicy.installmentPlans ? (
-            <div className="mt-10 overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-sm">
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-left">
-                  <thead className="bg-slate-100">
-                    <tr>
-                      <th className="px-5 py-4 text-xs font-black uppercase tracking-[0.18em] text-slate-700 lg:px-6">
-                        Plan duration
-                      </th>
-                      <th className="px-5 py-4 text-xs font-black uppercase tracking-[0.18em] text-slate-700 lg:px-6">
-                        Frequency
-                      </th>
-                      <th className="px-5 py-4 text-xs font-black uppercase tracking-[0.18em] text-slate-700 lg:px-6">
-                        Requirement
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {normalizedPolicy.installmentPlans.map((plan, planIndex) => (
-                      <tr key={plan.duration} className={planIndex % 2 === 0 ? "bg-white" : "bg-slate-50/60"}>
-                        <td className="px-5 py-5 text-base font-bold text-slate-900 lg:px-6">{plan.duration}</td>
-                        <td className="px-5 py-5 text-sm font-semibold text-slate-700 lg:px-6">{plan.frequency}</td>
-                        <td className="px-5 py-5 text-sm text-slate-700 lg:px-6">{plan.requirement}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+          <div className="min-w-0">
+            <details className="mb-8 border-y border-slate-200 py-3 lg:hidden">
+              <summary className="cursor-pointer text-sm font-bold text-slate-700">Contents</summary>
+              <ul className="mt-3 space-y-2">
+                {normalizedPolicy.sections.map((section, index) => (
+                  <li key={section.title}>
+                    <a href={`#${sectionAnchorId(index)}`} className="text-sm text-slate-500 hover:text-[#1d52a1]">
+                      {section.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
 
-              <div className="border-t border-slate-200 bg-[#1d52a1]/5 px-5 py-4 lg:px-6">
-                <p className="text-sm leading-relaxed text-slate-700">
-                  Specific installment amounts and due dates are confirmed during registration through the payment
-                  schedule issued for the selected course or package.
-                </p>
-              </div>
-            </div>
-          ) : null}
-
-          <div className="mt-10 rounded-[32px] border border-slate-200 bg-white px-6 py-3 shadow-sm sm:px-8">
-            <Accordion type="single" collapsible className="w-full">
-              {normalizedPolicy.sections.map((section, sectionIndex) => (
-                <AccordionItem
-                  key={`${normalizedPolicy.id}-${section.title}`}
-                  value={`${normalizedPolicy.id}-${sectionIndex}`}
-                  className="border-slate-200"
+            <div className="space-y-10">
+              {normalizedPolicy.sections.map((section, index) => (
+                <section
+                  key={section.title}
+                  id={sectionAnchorId(index)}
+                  className="scroll-mt-24 border-t border-slate-200 pt-8 first:border-t-0 first:pt-0"
                 >
-                  <AccordionTrigger className="text-left hover:no-underline">
-                    <div className="flex flex-col items-start gap-2 py-2 sm:flex-row sm:items-center sm:gap-4">
-                      <span className="inline-flex rounded-full bg-[#E6242A]/10 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-[#E6242A]">
-                        Section {sectionIndex + 1}
-                      </span>
-                      <span className="text-lg font-black text-slate-900 sm:text-2xl">{section.title}</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-7 text-slate-600">
-                    <div className="space-y-4">
-                      {section.paragraphs.map((paragraph) => (
-                        <p key={paragraph} className="text-sm leading-relaxed sm:text-base">
-                          {paragraph}
-                        </p>
+                  <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{section.title}</h2>
+
+                  <div className="mt-4 max-w-[68ch] space-y-4 text-slate-600">
+                    {section.paragraphs.map((paragraph) => (
+                      <p key={paragraph} className="leading-relaxed">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+
+                  {section.bullets ? (
+                    <ul className="mt-4 max-w-[68ch] space-y-2.5">
+                      {section.bullets.map((bullet) => (
+                        <li key={bullet} className="flex gap-3 text-slate-600">
+                          {section.tone === "warning" ? (
+                            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[#E6242A]" aria-hidden="true" />
+                          ) : (
+                            <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-slate-400" aria-hidden="true" />
+                          )}
+                          <span className="leading-relaxed">{bullet}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
+                  ) : null}
 
-                    {section.bullets ? (
-                      <ul className="mt-5 space-y-3">
-                        {section.bullets.map((bullet) => (
-                          <li
-                            key={bullet}
-                            className="flex items-start gap-3 rounded-2xl bg-[#F2F2F2] px-4 py-4 text-sm leading-relaxed text-slate-700 sm:text-base"
-                          >
-                            <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-[#E6242A]">
-                              <AlertTriangle className="h-3.5 w-3.5" />
-                            </span>
-                            <span>{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-
-                    {section.note ? (
-                      <div className="mt-5 rounded-2xl border border-[#1d52a1]/20 bg-[#1d52a1]/5 px-4 py-4">
-                        <p className="text-sm font-semibold leading-relaxed text-slate-700 sm:text-base">{section.note}</p>
-                      </div>
-                    ) : null}
-                  </AccordionContent>
-                </AccordionItem>
+                  {section.note ? (
+                    <p className="mt-5 max-w-[68ch] border-l-2 border-[#1d52a1]/40 pl-4 leading-relaxed text-slate-600">
+                      {section.note}
+                    </p>
+                  ) : null}
+                </section>
               ))}
-            </Accordion>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-        <div className="rounded-[36px] bg-[#1d52a1] p-6 text-white sm:p-8 lg:p-10">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-sm font-black uppercase tracking-[0.16em] text-slate-200">Support</p>
-              <h2 className="mt-3 text-3xl font-black sm:text-4xl">Need clarification about this policy?</h2>
-              <p className="mt-4 text-base leading-relaxed text-slate-100 sm:text-lg">
-                Contact the school before enrolling or sharing a referral link if you need clarification on this policy.
+      <section className="mx-auto max-w-5xl px-4 pb-16 sm:px-6 sm:pb-24">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Need clarification about this policy?</h2>
+              <p className="mt-2 text-sm text-slate-600">
+                Contact the school before enrolling if you have questions about this policy.
               </p>
             </div>
-
-            <div className="flex flex-wrap gap-3 sm:gap-4">
+            <div className="flex shrink-0 flex-wrap gap-3">
               <Link
                 to="/contact"
-                className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-full bg-white px-8 py-3 text-sm font-bold text-[#1d52a1] transition-colors hover:bg-slate-100"
+                className="inline-flex items-center justify-center rounded-full bg-[#1d52a1] px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#17417f]"
               >
                 Contact us
               </Link>
               <Link
                 to="/apply"
-                className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-full border-2 border-white px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-white hover:text-[#1d52a1]"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-2.5 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
               >
-                Book your driving lesson
+                Book a lesson
               </Link>
             </div>
           </div>
@@ -246,5 +189,3 @@ const PolicyDetail = () => {
 };
 
 export default PolicyDetail;
-
-

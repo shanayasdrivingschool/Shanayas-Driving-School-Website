@@ -9,12 +9,20 @@ export type PolicyContentSection = {
   paragraphs: string[];
   bullets?: string[];
   note?: string;
+  /**
+   * Visual tone for the section's bullet list. `warning` renders cautionary
+   * (red / alert) markers; anything else renders neutral markers. Defaults to
+   * neutral so definitions, contact details, and ordinary lists never look like
+   * warnings.
+   */
+  tone?: 'neutral' | 'warning';
 };
 
 export type SitePolicy = {
   id: string;
   label: string;
   href: string;
+  effectiveDate: string;
   cardDescription: string;
   intro: string;
   highlights: string[];
@@ -34,9 +42,10 @@ const allSitePolicies: SitePolicy[] = [
     id: 'privacy-policy',
     label: 'Privacy Policy',
     href: '/policies/privacy-policy',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'How we collect, use, store, disclose, and protect personal information across the website, bookings, and Ruley Rewards referrals.',
     intro:
-      'Effective Date: March 16, 2026. Shanaya\'s Driving School ("Company", "we", "our", or "us") respects the privacy of individuals who interact with our website, services, and programs, including the Ruley Rewards Referral Program. By accessing our website, enrolling in driving services, participating in referral programs, or otherwise interacting with the Company, you consent to the practices described in this Privacy Policy.',
+      'Effective Date: April 1, 2026. Shanaya\'s Driving School ("Company", "we", "our", or "us") respects the privacy of individuals who interact with our website, services, and programs, including the Ruley Rewards Referral Program. By accessing our website, enrolling in driving services, participating in referral programs, or otherwise interacting with the Company, you consent to the practices described in this Privacy Policy.',
     highlights: ['PIPA and CASL compliance', 'Bookings, referral, and website data', 'Consent, access, and correction rights'],
     sections: [
       {
@@ -207,6 +216,7 @@ const allSitePolicies: SitePolicy[] = [
     id: 'installment-policy',
     label: 'Installment Policy',
     href: '/policies/installment-policy',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'Rules for approved installment plans, payment schedules, delinquency handling, and recovery terms.',
     intro:
       'This policy governs the installment facilities offered for professional driver training programs and sets out the payment, participation, delinquency, and recovery terms that apply once a student enrolls under an approved plan.',
@@ -230,6 +240,7 @@ const allSitePolicies: SitePolicy[] = [
       },
       {
         title: 'Missed payments and delinquency',
+        tone: 'warning',
         paragraphs: [
           'Students remain responsible for paying every scheduled installment on time. Missing a payment may trigger operational and administrative consequences.',
         ],
@@ -249,6 +260,7 @@ const allSitePolicies: SitePolicy[] = [
       },
       {
         title: 'Recovery and enforcement',
+        tone: 'warning',
         paragraphs: [
           'The school reserves the right to pursue available legal and administrative remedies to recover overdue balances.',
         ],
@@ -264,6 +276,7 @@ const allSitePolicies: SitePolicy[] = [
     id: 'in-vehicle-passenger-policy',
     label: 'In-Vehicle Passenger Policy',
     href: '/policies/in-vehicle-passenger-policy',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'Why driving lessons are conducted one-on-one between the student and certified instructor, with no ride-along passengers, and how we keep parents informed.',
     intro:
       'At Shanaya\'s Driving School, every lesson is carefully designed to provide students with a safe, professional, and distraction-free learning environment. Our goal is not only to help students pass their road test, but also to develop the confidence, judgment, and defensive driving skills needed to become safe, responsible drivers for life.',
@@ -329,6 +342,7 @@ const allSitePolicies: SitePolicy[] = [
     id: 'cookie-policy',
     label: 'Cookie Policy',
     href: '/policies/cookie-policy',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'How referral cookies, analytics, and browser storage are used on the website.',
     intro:
       'This Cookie Policy explains how the website uses cookies or similar browser storage technologies to support core site functionality, referral attribution, analytics, and security-related features.',
@@ -365,9 +379,76 @@ const allSitePolicies: SitePolicy[] = [
     ],
   },
   {
+    id: 'promotions-and-discounts',
+    label: 'Promotions & Discounts Policy',
+    href: '/policies/promotions-and-discounts',
+    effectiveDate: 'April 1, 2026',
+    cardDescription: 'Who qualifies for discounts, coupon codes, and promotional offers — and why promotional pricing applies to self-funded students only, not to enrollments paid by a third-party organization.',
+    intro:
+      'Effective Date: April 1, 2026. This Promotions & Discounts Policy governs all discounts, coupon codes, seasonal or promotional offers, bundle pricing, and referral credits offered by Shanaya\'s Driving School. It explains who qualifies for promotional pricing and the conditions that apply to every offer.',
+    highlights: ['Self-funded students only', 'Excludes sponsored enrollments', 'No retroactive discounts'],
+    sections: [
+      {
+        title: 'Definitions',
+        paragraphs: [
+          'These terms are used throughout this policy to describe who a promotion applies to.',
+        ],
+        bullets: [
+          '"Self-Funded Student" means an individual who personally pays for their own lessons or packages.',
+          '"Sponsored" or "Third-Party-Funded Enrollment" means any enrollment where lesson fees are paid, invoiced, reimbursed, or otherwise funded by a party other than the student.',
+          'Third parties include, but are not limited to, government agencies, insurers, employers, non-profit organizations, settlement or employment programs, funding bodies, and any organization arranging payment on a student\'s behalf.',
+        ],
+      },
+      {
+        title: 'Who Discounts Apply To',
+        paragraphs: [
+          'Promotions and discounts are available only to Self-Funded Students who pay for their own driver training.',
+          'They do not apply to Sponsored or Third-Party-Funded Enrollments. Where a third party pays for a student\'s training, the standard published rate applies, because funding is arranged directly with the funding organization.',
+        ],
+      },
+      {
+        title: 'Promotional Pricing & Sponsored Enrollment',
+        paragraphs: [
+          'Advertised promotional pricing reflects a benefit offered to individuals paying for their own lessons. Sponsored enrollments are billed at the standard published rate and are quoted or invoiced directly to the funding organization.',
+        ],
+        bullets: [
+          'Promotional codes and discounts cannot be combined with, or applied on top of, third-party funding.',
+          'Discounts are not applied retroactively to enrollments booked before an offer began.',
+          'Only one promotional offer may apply to an eligible enrollment unless the school states otherwise in writing.',
+        ],
+      },
+      {
+        title: 'Reclassification and Reversal',
+        paragraphs: [
+          'Eligibility is determined by who ultimately pays for the training.',
+          'If an enrollment booked as self-funded is later paid, invoiced, or reimbursed by a third party, any discount already applied may be reversed and the balance adjusted to the standard published rate.',
+        ],
+      },
+      {
+        title: 'Eligibility and Changes',
+        paragraphs: [
+          'Shanaya\'s Driving School reserves the right to determine eligibility for any promotion, to verify the source of payment, and to withdraw, change, or limit any offer at any time.',
+          'Where this policy and a specific promotion\'s stated terms differ, the specific promotion\'s terms apply to that offer.',
+        ],
+      },
+      {
+        title: 'Contact Information',
+        paragraphs: [
+          'Questions about promotional eligibility or this policy may be directed to Shanaya\'s Driving School using the details below.',
+        ],
+        bullets: [
+          '2770 Leigh Rd, Victoria, BC V9B 4G1',
+          'book@drivingschoolbc.ca',
+          '+1 (250) 542-3673',
+        ],
+      },
+    ],
+  },
+  {
     id: 'terms-and-conditions',
     label: 'Terms & Conditions',
     href: '/policies/terms-and-conditions',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'The general terms that apply when using the website, booking services, or submitting forms.',
     intro:
       'These Terms & Conditions describe the general rules that apply when using the website, submitting leads, booking lessons, purchasing packages, or participating in referral-based programs connected to Shanaya\'s Driving School.',
@@ -384,7 +465,7 @@ const allSitePolicies: SitePolicy[] = [
         title: 'Bookings, pricing, and payments',
         paragraphs: [
           'Lesson, package, and promotional pricing displayed on the site may change over time and remains subject to confirmation at the time of booking or approval.',
-          'Installment plans, discounts, and referral payouts are governed by the separate policy rules that apply to those services.',
+          'Installment plans, discounts, and referral payouts are governed by the separate policy rules that apply to those services. Promotions and discounts apply to self-funded students only and do not apply to enrollments paid by a third-party organization, as set out in the Promotions & Discounts Policy.',
         ],
       },
       {

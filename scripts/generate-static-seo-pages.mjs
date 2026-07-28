@@ -386,12 +386,12 @@ const landingPages = [
       {
         question: "What are the current Class 7 learner (L) restrictions?",
         answer:
-          "Display the official L sign. Drive only from 5 a.m. to midnight with a supervisor who is at least 25, holds a valid Class 1, 2, 3, 4 or 5 licence and sits beside you. You may carry that supervisor plus one other passenger. You must have zero alcohol and zero drugs in your blood while driving and may not use hand-held or hands-free electronic devices. Follow any additional restriction printed on your licence.",
+          "Display the official L sign. Drive only from 5 a.m. to midnight with a supervisor who is at least 25, holds a valid Class 1, 2, 3, 4 or 5 licence and sits beside you. You may carry that supervisor plus one other passenger. You must have zero alcohol and zero drugs in your blood while driving and may not use hand-held or hands-free electronic devices. Follow any additional restriction printed on your licence. These rules apply through October 18, 2026; effective October 19, 2026, the minimum supervisor age drops to 22 (unrestricted Class 5) and a learner may carry additional passengers when everyone other than the supervisor is immediate family — see the October 19, 2026 changes below.",
       },
       {
         question: "What are the current novice (N) restrictions?",
         answer:
-          "Display the official N sign, have zero alcohol and zero drugs in your blood while driving, and do not use hand-held or hands-free electronic devices. The usual limit is one passenger; the passenger limit does not apply when a qualified supervisor age 25 or older is seated beside you or when the additional passengers are immediate family. Follow every restriction printed on your licence.",
+          "Display the official N sign, have zero alcohol and zero drugs in your blood while driving, and do not use hand-held or hands-free electronic devices. The usual limit is one passenger; the passenger limit does not apply when a qualified supervisor age 25 or older is seated beside you or when the additional passengers are immediate family. Follow every restriction printed on your licence. Effective October 19, 2026, the qualified-supervisor minimum age for this passenger exception drops to 22 (unrestricted Class 5) — see the October 19, 2026 changes below.",
       },
       {
         question: "What changes to B.C.'s GLP on October 19, 2026?",
@@ -691,8 +691,9 @@ const publicPages = [
   },
   {
     path: "/courses/lesson-road-test-prep-course/",
-    title: "Lesson + Road Test Prep + Rental | Shanaya's Driving School",
-    description: "Two focused lessons, road test preparation, and a rental car for your road test.",
+    title: "Road Test Package | Shanaya's Driving School",
+    description:
+      "Road test preparation with an instructor-approved car for your ICBC road test. Add as many practice lessons as you want on top of the base package.",
   },
   {
     path: "/courses/road-test-prep-course/",

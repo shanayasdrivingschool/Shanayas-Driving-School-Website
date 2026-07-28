@@ -73,7 +73,7 @@ Pricing tiers used by the website:
 - Knowledge Test Prep Course
 - Parking Course
 - Make Your Own Class
-- Lesson + Road Test Prep + Rental
+- Road Test Package
 - Road Test Prep Course
 - New to Canada
 - Defensive Driving Course
@@ -107,7 +107,7 @@ Base lesson rates defined in code:
 - Knowledge Test Prep Course: $300 all tiers
 - Parking Course: $400.50 standard/regional, $490.50 island
 - Make Your Own Class: $133.50 standard/regional, $163.50 island
-- Lesson + Road Test Prep + Rental: $350 for 2 x 60-minute lessons or $450 for 2 x 90-minute lessons; car included
+- Road Test Package: $250 base all tiers (road test prep + car for the test, no lessons included), plus $89 per optional 60-minute lesson, up to 10 lessons
 - Road Test Prep Course: $133.50 standard/regional, $163.50 island
 - New to Canada: $400.50 standard/regional, $490.50 island
 - Defensive Driving Course: $667.50 standard/regional, $817.50 island

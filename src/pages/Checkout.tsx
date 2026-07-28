@@ -39,6 +39,7 @@ const getItemSelectionSignature = (item: CartItem) =>
     item.quantity,
     item.price,
     item.customization?.lessonDurationMinutes ?? "",
+    item.customization?.addOnLessonCount ?? "",
   ].join(":");
 
 type CheckoutInputErrorKey =

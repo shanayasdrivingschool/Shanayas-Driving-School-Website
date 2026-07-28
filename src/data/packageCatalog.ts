@@ -148,11 +148,11 @@ export const packageCatalog: PackageCatalogItem[] = [
         ],
       },
       {
-        title: "Lesson + Road Test Prep + Rental",
+        title: "Road Test Package",
         objectives: [
-          "Combine two focused driving lessons with targeted road test preparation and a rental car for exam day.",
+          "Combine targeted road test preparation with an instructor-approved car for exam day.",
           "Warm up key maneuvers, observations, and control habits that need the most attention.",
-          "Use instructor feedback to tighten performance and feel more prepared for the ICBC test.",
+          "Add practice lessons on top of the base package whenever more repetition is needed.",
         ],
       },
       {
@@ -219,11 +219,11 @@ export const packageCatalog: PackageCatalogItem[] = [
         ],
       },
       {
-        title: "Lesson + Road Test Prep + Rental",
+        title: "Road Test Package",
         objectives: [
-          "Combine two focused driving lessons with targeted road test preparation and a rental car for exam day.",
+          "Combine targeted road test preparation with an instructor-approved car for exam day.",
           "Warm up key maneuvers, observations, and route habits that still need tightening.",
-          "Use instructor feedback to sharpen control and readiness before the official test.",
+          "Add practice lessons on top of the base package to sharpen control before the official test.",
         ],
       },
       {

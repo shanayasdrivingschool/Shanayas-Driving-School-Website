@@ -14,7 +14,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import PageNameSection from "@/components/PageNameSection";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 const movingFromCanadaUrl =
@@ -161,19 +161,91 @@ const sourceLinks = [
   { label: "Approved GLP course requirements", href: approvedCourseUrl },
 ];
 
+const tocSections = [
+  { id: "choose-path", label: "Which path applies to you" },
+  { id: "deadline-heading", label: "The 90-day deadline" },
+  { id: "appointment-heading", label: "Before the appointment" },
+  { id: "experience-heading", label: "Proving your experience" },
+  { id: "first-time-heading", label: "The Class 7 path" },
+  { id: "changes-heading", label: "October 19, 2026 changes" },
+  { id: "training-heading", label: "Lessons & GLP course" },
+  { id: "sources-heading", label: "Official references" },
+];
+
+const octoberChanges = [
+  {
+    group: "Tests & timelines",
+    items: [
+      "The first Class 7 road test remains. It is still required to move from L to N.",
+      "For drivers under 25, the usual 12-month learner and 24-month novice minimums remain; the novice minimum can be 18 months after an approved GLP course when ICBC's other conditions are met.",
+      "Drivers aged 25 or older will generally have a nine-month learner minimum and a 12-month novice minimum.",
+    ],
+  },
+  {
+    group: "Driving Record Assessment",
+    items: [
+      "For eligible novice drivers, a Driving Record Assessment replaces the second road test. An upgrade leads to a Class 5 with restriction 55: zero blood alcohol and zero blood drug content for 12 months. Other individual licence restrictions, if any, remain separate.",
+      "DRA eligibility requires the applicable 24-, 18- or 12-month period with no excessive-speed or electronic-device convictions and no driving prohibitions or suspensions.",
+      "A prohibition or suspension during the restricted-Class-5 year restarts the full 12 months from the date the licence is reinstated.",
+    ],
+  },
+  {
+    group: "Supervisors & passengers",
+    items: [
+      "Parental or guardian consent will be required only for applicants under 18. The qualified-supervisor minimum age drops to 22, subject to ICBC's Class 5 and licence-condition rules.",
+      "Learners gain an immediate-family passenger exception. Novice drivers already have an immediate-family exception under the current passenger rule.",
+    ],
+  },
+];
+
 const externalLinkClassName =
   "font-bold text-[#1d52a1] underline decoration-[#1d52a1]/35 underline-offset-4 transition-colors hover:text-[#E6242A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-2";
 
 const NewcomersGuide = () => (
   <main className="bg-white text-[#202121]">
-    <PageNameSection
-      eyebrow="ICBC licence decision guide"
-      title={<span className="text-white">Moving to B.C.: Exchange or Get a B.C. Driver's Licence</span>}
-      description="Choose the correct path for your current licence, documents and driving experience before your 90-day deadline."
-      backgroundImage="/blog/newcomers-guide-bc.webp"
-      backgroundImagePosition="center 58%"
-      contentLayout="left"
-    />
+    <section className="relative bg-[#1d52a1] text-white">
+      <SiteHeader tone="brand" />
+      <div className="mx-auto w-full max-w-[1200px] px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32">
+        <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-sm font-semibold">
+          <Link to="/" className="text-white/80 transition-colors hover:text-white">
+            Home
+          </Link>
+          <span className="text-white/40">/</span>
+          <span className="text-white/55">Newcomers Guide</span>
+        </nav>
+
+        <h1
+          className="mx-auto mt-6 max-w-3xl text-center text-[clamp(2rem,4.6vw,3.25rem)] font-black leading-[1.1]"
+          style={{ textWrap: "balance" }}
+        >
+          Moving to B.C.: Exchange or Get a B.C. Driver's Licence
+        </h1>
+        <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-white/80">
+          Choose the correct path for your current licence, documents and driving experience before your 90-day
+          deadline.
+        </p>
+        <p className="mx-auto mt-4 text-center text-sm font-semibold text-white/70">Last reviewed: July 21, 2026</p>
+      </div>
+    </section>
+
+    <nav aria-label="On this page" className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 sm:pt-16">
+      <div className="rounded-3xl border border-slate-200 bg-[#F8FAFC] p-6 sm:p-8">
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#E6242A]">On this page</p>
+        <ul className="mt-4 grid gap-x-6 gap-y-1 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {tocSections.map((section, index) => (
+            <li key={section.id}>
+              <a
+                href={`#${section.id}`}
+                className="flex items-center gap-3 rounded-lg py-1.5 text-sm font-semibold text-slate-700 transition-colors hover:text-[#1d52a1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-2"
+              >
+                <span className="text-xs font-black text-slate-400">{`0${index + 1}`}</span>
+                {section.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
 
     <section aria-labelledby="choose-path" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
       <div className="max-w-4xl">
@@ -190,7 +262,7 @@ const NewcomersGuide = () => (
 
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         {decisionPaths.map((path) => (
-          <article key={path.title} className="flex h-full flex-col rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <article key={path.title} className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <div className="flex items-start gap-4">
               <span className="inline-flex shrink-0 rounded-2xl bg-[#1d52a1]/10 p-3 text-[#1d52a1]" aria-hidden="true">
                 <path.icon className="h-6 w-6" />
@@ -202,7 +274,7 @@ const NewcomersGuide = () => (
             </div>
             <p className="mt-5 text-base leading-relaxed text-slate-700">{path.summary}</p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">{path.detail}</p>
-            <a href={path.href} target="_blank" rel="noreferrer" className={`mt-6 inline-flex items-center gap-2 self-start ${externalLinkClassName}`}>
+            <a href={path.href} target="_blank" rel="noopener noreferrer" className={`mt-6 inline-flex items-center gap-2 self-start ${externalLinkClassName}`}>
               {path.label}
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -213,7 +285,7 @@ const NewcomersGuide = () => (
 
     <section aria-labelledby="deadline-heading" className="bg-[#F8FAFC] py-14 sm:py-20">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <div className="rounded-[32px] bg-[#0f172a] p-6 text-white shadow-sm sm:p-8">
+        <div className="rounded-3xl bg-[#0f172a] p-6 text-white shadow-sm sm:p-8">
           <div className="inline-flex rounded-2xl bg-white/10 p-3 text-[#F5B13A]" aria-hidden="true">
             <CalendarClock className="h-6 w-6" />
           </div>
@@ -225,7 +297,7 @@ const NewcomersGuide = () => (
             appointments can take time, and a licence that expires is no longer a valid licence for
             the 90-day driving allowance.
           </p>
-          <a href={movingFromAnotherCountryUrl} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 font-bold text-[#F5B13A] underline underline-offset-4 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+          <a href={movingFromAnotherCountryUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 font-bold text-[#F5B13A] underline underline-offset-4 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
             Read ICBC's 90-day rule
             <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
@@ -274,7 +346,7 @@ const NewcomersGuide = () => (
                   <div>
                     <h3 className="text-lg font-black text-slate-950">{item.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">{item.text}</p>
-                    <a href={item.href} target="_blank" rel="noreferrer" className={`mt-3 inline-flex items-center gap-2 text-sm ${externalLinkClassName}`}>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className={`mt-3 inline-flex items-center gap-2 text-sm ${externalLinkClassName}`}>
                       Verify with ICBC
                       <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                     </a>
@@ -285,7 +357,7 @@ const NewcomersGuide = () => (
           </div>
         </div>
 
-        <figure className="overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-sm">
+        <figure className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100 shadow-sm">
           <img
             src="/landing/bc-graduated-licensing-program.webp"
             alt="Illustrative photo of a learner practising in a car with an adult passenger"
@@ -303,7 +375,7 @@ const NewcomersGuide = () => (
 
     <section aria-labelledby="experience-heading" className="bg-[#0f172a] py-14 text-white sm:py-20">
       <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:px-6 lg:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 sm:p-8 lg:col-span-2">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 lg:col-span-2">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#F5B13A]">A document can change your path</p>
           <h2 id="experience-heading" className="mt-3 text-3xl font-black sm:text-4xl">Prove full-privilege driving experience</h2>
           <p className="mt-5 text-base leading-relaxed text-white/80 sm:text-lg">
@@ -318,13 +390,13 @@ const NewcomersGuide = () => (
             printouts do not establish the GLP exemption. If a required document is not in English,
             present the original or ICBC-stamped copy with an ICBC-approved translation.
           </p>
-          <a href={proofOfExperienceUrl} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 font-bold text-[#F5B13A] underline underline-offset-4 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+          <a href={proofOfExperienceUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 font-bold text-[#F5B13A] underline underline-offset-4 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
             Check ICBC's accepted evidence
             <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
 
-        <aside className="rounded-[28px] bg-[#F5B13A] p-6 text-slate-950 sm:p-8" aria-label="Vehicle deadline">
+        <aside className="rounded-3xl bg-[#F5B13A] p-6 text-slate-950 sm:p-8" aria-label="Vehicle deadline">
           <CarFront className="h-7 w-7" aria-hidden="true" />
           <p className="mt-5 text-sm font-black uppercase tracking-[0.16em]">Bringing a vehicle?</p>
           <h3 className="mt-3 text-3xl font-black">30 days</h3>
@@ -333,7 +405,7 @@ const NewcomersGuide = () => (
             here within 30 days of arrival. Import and inspection requirements depend on the vehicle
             and where it came from.
           </p>
-          <a href={movingVehicleUrl} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 font-bold underline underline-offset-4 hover:text-[#1d52a1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950">
+          <a href={movingVehicleUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 font-bold underline underline-offset-4 hover:text-[#1d52a1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950">
             ICBC moving and insurance guide
             <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
@@ -348,14 +420,14 @@ const NewcomersGuide = () => (
           The current Class 7 path, briefly
         </h2>
         <p className="mt-5 text-base leading-relaxed text-slate-700 sm:text-lg">
-          These passenger-vehicle steps and fees were checked against ICBC on July 21, 2026. Fees
-          can change, and an unsuccessful test means paying the test fee again.
+          These passenger-vehicle steps and fees can change, and an unsuccessful test means paying
+          the test fee again.
         </p>
       </div>
 
       <div className="mt-9 grid gap-6 lg:grid-cols-3">
         {firstTimeSteps.map((step, index) => (
-          <article key={step.title} className="rounded-[28px] border border-slate-200 bg-[#F8FAFC] p-6 sm:p-7">
+          <article key={step.title} className="rounded-3xl border border-slate-200 bg-[#F8FAFC] p-6 sm:p-7">
             <div className="flex items-center justify-between gap-4">
               <span className="inline-flex rounded-2xl bg-[#1d52a1]/10 p-3 text-[#1d52a1]" aria-hidden="true">
                 <step.icon className="h-6 w-6" />
@@ -370,13 +442,13 @@ const NewcomersGuide = () => (
 
       <p className="mt-6 text-sm leading-relaxed text-slate-600 sm:text-base">
         Verify the steps on ICBC's{" "}
-        <a href={onlineKnowledgeTestUrl} target="_blank" rel="noreferrer" className={externalLinkClassName}>online knowledge test page</a>,{" "}
-        <a href={getLUrl} target="_blank" rel="noreferrer" className={externalLinkClassName}>learner licence page</a>{" "}
+        <a href={onlineKnowledgeTestUrl} target="_blank" rel="noopener noreferrer" className={externalLinkClassName}>online knowledge test page</a>,{" "}
+        <a href={getLUrl} target="_blank" rel="noopener noreferrer" className={externalLinkClassName}>learner licence page</a>{" "}
         and{" "}
-        <a href={getNUrl} target="_blank" rel="noreferrer" className={externalLinkClassName}>novice licence page</a>.
+        <a href={getNUrl} target="_blank" rel="noopener noreferrer" className={externalLinkClassName}>novice licence page</a>.
       </p>
 
-      <div className="mt-8 overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
+      <div className="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
         <div className="flex flex-col justify-between gap-4 bg-[#1d52a1] px-5 py-5 text-white sm:flex-row sm:items-center sm:px-7">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.16em] text-[#F5B13A]">Current ICBC fees</p>
@@ -407,14 +479,14 @@ const NewcomersGuide = () => (
         </div>
         <p className="border-t border-slate-200 px-5 py-4 text-sm leading-relaxed text-slate-600 sm:px-7">
           Confirm the amount before your visit on the{" "}
-          <a href={feesUrl} target="_blank" rel="noreferrer" className={externalLinkClassName}>official ICBC fees page</a>.
+          <a href={feesUrl} target="_blank" rel="noopener noreferrer" className={externalLinkClassName}>official ICBC fees page</a>.
         </p>
       </div>
     </section>
 
     <section aria-labelledby="changes-heading" className="bg-[#F8FAFC] py-14 sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="rounded-[32px] border border-[#1d52a1]/20 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+        <div className="rounded-3xl border border-[#1d52a1]/20 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Dated transition note</p>
           <h2 id="changes-heading" className="mt-3 text-3xl font-black text-slate-950 sm:text-4xl">
             What changes on October 19, 2026
@@ -424,27 +496,28 @@ const NewcomersGuide = () => (
             Class 5 road test. ICBC says a second road test scheduled for October 19, 2026 or later
             will be cancelled, with next steps sent to the customer by email.
           </p>
-          <div className="mt-7 grid gap-4 md:grid-cols-2">
-            {[
-              "The first Class 7 road test remains. It is still required to move from L to N.",
-              "For drivers under 25, the usual 12-month learner and 24-month novice minimums remain; the novice minimum can be 18 months after an approved GLP course when ICBC's other conditions are met.",
-              "Drivers aged 25 or older will generally have a nine-month learner minimum and a 12-month novice minimum.",
-              "For eligible novice drivers, a Driving Record Assessment replaces the second road test. An upgrade leads to a Class 5 with restriction 55: zero blood alcohol and zero blood drug content for 12 months. Other individual licence restrictions, if any, remain separate.",
-              "DRA eligibility requires the applicable 24-, 18- or 12-month period with no excessive-speed or electronic-device convictions and no driving prohibitions or suspensions.",
-              "A prohibition or suspension during the restricted-Class-5 year restarts the full 12 months from the date the licence is reinstated.",
-              "Parental or guardian consent will be required only for applicants under 18. The qualified-supervisor minimum age drops to 22, subject to ICBC's Class 5 and licence-condition rules.",
-              "Learners gain an immediate-family passenger exception. Novice drivers already have an immediate-family exception under the current passenger rule.",
-            ].map((change) => (
-              <div key={change} className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-[#F8FAFC] p-4 text-sm leading-relaxed text-slate-700 sm:text-base">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#1d52a1]" aria-hidden="true" />
-                <span>{change}</span>
+          <div className="mt-7 grid gap-6 md:grid-cols-3">
+            {octoberChanges.map((group) => (
+              <div key={group.group}>
+                <h3 className="text-sm font-black uppercase tracking-[0.12em] text-[#1d52a1]">{group.group}</h3>
+                <ul className="mt-3 grid gap-3" role="list">
+                  {group.items.map((change) => (
+                    <li
+                      key={change}
+                      className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-[#F8FAFC] p-4 text-sm leading-relaxed text-slate-700 sm:text-base"
+                    >
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#1d52a1]" aria-hidden="true" />
+                      <span>{change}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
           <p className="mt-6 text-base leading-relaxed text-slate-600">
             Transition rules depend on your age, licence stage, safe-driving period and test date.
             Read{" "}
-            <a href={glpChangesUrl} target="_blank" rel="noreferrer" className={externalLinkClassName}>ICBC's current transition page</a>{" "}
+            <a href={glpChangesUrl} target="_blank" rel="noopener noreferrer" className={externalLinkClassName}>ICBC's current transition page</a>{" "}
             and our{" "}
             <Link to="/blog/bc-glp-changes-2026" className={externalLinkClassName}>source-linked GLP change guide</Link>{" "}
             before making a licensing decision.
@@ -455,7 +528,7 @@ const NewcomersGuide = () => (
 
     <section aria-labelledby="training-heading" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
       <div className="grid gap-6 lg:grid-cols-2">
-        <article className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#1d52a1]">Optional support</p>
           <h2 id="training-heading" className="mt-3 text-3xl font-black text-slate-950">Ordinary driving lessons</h2>
           <p className="mt-5 text-base leading-relaxed text-slate-700">
@@ -469,13 +542,13 @@ const NewcomersGuide = () => (
             driver training at 124–2770 Leigh Road, Langford. A directory listing is not an ICBC
             endorsement and does not make ordinary lessons an approved GLP course.
           </p>
-          <a href={schoolDirectoryUrl} target="_blank" rel="noreferrer" className={`mt-6 inline-flex items-center gap-2 ${externalLinkClassName}`}>
+          <a href={schoolDirectoryUrl} target="_blank" rel="noopener noreferrer" className={`mt-6 inline-flex items-center gap-2 ${externalLinkClassName}`}>
             Check the general ICBC directory
             <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         </article>
 
-        <article className="rounded-[32px] bg-[#0f172a] p-6 text-white shadow-sm sm:p-8">
+        <article className="rounded-3xl bg-[#0f172a] p-6 text-white shadow-sm sm:p-8">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-[#F5B13A]">Separate program</p>
           <h2 className="mt-3 text-3xl font-black">ICBC-approved GLP course</h2>
           <p className="mt-5 text-base leading-relaxed text-white/80">
@@ -489,11 +562,11 @@ const NewcomersGuide = () => (
             reduction; verify any provider directly on ICBC's current list before paying.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <a href={approvedGlpSchoolsUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#F5B13A] px-5 py-3 text-sm font-black text-slate-950 transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+            <a href={approvedGlpSchoolsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#F5B13A] px-5 py-3 text-sm font-black text-slate-950 transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
               Check approved providers
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
             </a>
-            <a href={approvedCourseUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+            <a href={approvedCourseUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
               Read course requirements
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -522,14 +595,14 @@ const NewcomersGuide = () => (
               </a>.
             </p>
           </div>
-          <aside className="rounded-[28px] border border-white/15 bg-white/10 p-6 sm:p-8" aria-label="Next steps">
+          <aside className="rounded-3xl border border-white/15 bg-white/10 p-6 sm:p-8" aria-label="Next steps">
             <h3 className="text-2xl font-black">Before you act</h3>
             <ol className="mt-5 grid gap-3 text-sm leading-relaxed text-white/85 sm:text-base">
               <li className="flex gap-3"><span className="font-black text-[#F5B13A]">1.</span><span>Choose the path matching your current valid licence.</span></li>
               <li className="flex gap-3"><span className="font-black text-[#F5B13A]">2.</span><span>Collect accepted ID and original experience records.</span></li>
               <li className="flex gap-3"><span className="font-black text-[#F5B13A]">3.</span><span>Book early and confirm your case with ICBC.</span></li>
             </ol>
-            <a href={movingFromAnotherCountryUrl} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-black text-[#1d52a1] transition-colors hover:bg-[#F5B13A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1d52a1]">
+            <a href={movingFromAnotherCountryUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-black text-[#1d52a1] transition-colors hover:bg-[#F5B13A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1d52a1]">
               Go to ICBC's newcomer guide
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -543,13 +616,14 @@ const NewcomersGuide = () => (
         <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Source ledger</p>
         <h2 id="sources-heading" className="mt-3 text-3xl font-black text-slate-950 sm:text-4xl">Official references used</h2>
         <p className="mt-4 max-w-4xl text-base leading-relaxed text-slate-600">
-          All factual licensing claims above link to primary ICBC pages. Because requirements and
-          fees can change, use these live sources to check details close to your appointment date.
+          All factual licensing claims above link to primary ICBC pages, which open in a new tab.
+          Because requirements and fees can change, use these live sources to check details close to
+          your appointment date.
         </p>
         <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
           {sourceLinks.map((source) => (
             <li key={source.href}>
-              <a href={source.href} target="_blank" rel="noreferrer" className="group flex h-full items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold leading-snug text-slate-800 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#1d52a1]/40 hover:text-[#1d52a1] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-2">
+              <a href={source.href} target="_blank" rel="noopener noreferrer" className="group flex h-full items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold leading-snug text-slate-800 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#1d52a1]/40 hover:text-[#1d52a1] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-2">
                 <span>{source.label}</span>
                 <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-[#1d52a1]" aria-hidden="true" />
               </a>

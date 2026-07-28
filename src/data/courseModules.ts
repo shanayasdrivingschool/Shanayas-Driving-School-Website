@@ -95,17 +95,24 @@ export const courseModulesById: Record<string, ProductOutlineSection[]> = {
   ],
   "lesson-road-test-prep-course": [
     {
-      title: "Warm-up correction",
+      title: "Road test preparation",
       objectives: [
-        "Use a pre-test lesson to fix the mistakes most likely to cost marks.",
+        "Review the ICBC standards, scoring, and maneuvers the examiner will assess.",
         "Tighten observations, positioning, and control before test pressure increases.",
       ],
     },
     {
-      title: "Route execution",
+      title: "Test day car rental",
       objectives: [
-        "Practice realistic route decisions, lane choices, and maneuver timing.",
-        "Reinforce the standard expected during turns, stops, shoulder checks, and parking.",
+        "Take the road test in an instructor-approved car prepared for the appointment.",
+        "Keep the vehicle setup consistent with the car used during preparation.",
+      ],
+    },
+    {
+      title: "Optional practice lessons",
+      objectives: [
+        "Add as many 60-minute lessons as you want on top of the base package.",
+        "Use the extra time on route practice, parking, or whichever habit still needs work.",
       ],
     },
     {

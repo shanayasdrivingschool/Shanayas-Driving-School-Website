@@ -144,6 +144,7 @@ export const createCheckoutPaymentIntent = async (
         location_id: item.locationId,
         quantity: item.quantity,
         lesson_duration_minutes: item.customization?.lessonDurationMinutes ?? null,
+        add_on_lesson_count: item.customization?.addOnLessonCount ?? null,
       })),
     },
   });
