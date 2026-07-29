@@ -41,6 +41,8 @@ export const loadSiteContent = async () => {
       { optionalExtras },
       { courseModulesById },
       knowledgeTestGuide,
+      { publishedAuthors, resolveAuthor },
+      authorSchema,
     ] = await Promise.all([
       server.ssrLoadModule("/src/data/blogPosts.tsx"),
       server.ssrLoadModule("/src/data/seoLandingPages.ts"),
@@ -49,9 +51,17 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/data/optionalExtras.ts"),
       server.ssrLoadModule("/src/data/courseModules.ts"),
       server.ssrLoadModule("/src/data/knowledgeTestGuide.ts"),
+      server.ssrLoadModule("/src/data/authors.ts"),
+      server.ssrLoadModule("/src/lib/authorSchema.ts"),
     ]);
 
     return {
+      /* Named content authors, plus the schema builders src/ uses for them, so
+         the crawler HTML emits the same Person graph React does rather than a
+         second hand-written copy. */
+      authors: publishedAuthors,
+      resolveAuthor,
+      authorSchema,
       knowledgeTestGuide: {
         faqs: knowledgeTestGuide.knowledgeTestGuideFaqs,
         publishedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
@@ -68,6 +78,8 @@ export const loadSiteContent = async () => {
             seoTitle: post.seoTitle,
             description: post.description,
             author: post.author,
+            authorId: post.authorId,
+            reviewedById: post.reviewedById,
             date: post.date,
             datePublished: post.datePublished,
             dateModified: post.dateModified,

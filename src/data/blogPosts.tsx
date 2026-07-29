@@ -10,7 +10,14 @@ export type BlogPostData = {
   seoTitle?: string;
   description: string;
   heroImage: string;
+  /* Organization byline, used whenever the post has no published named author. */
   author: string;
+  /* Ids from src/data/authors.ts. A named person replaces the organization in the
+     byline and in Article.author; a reviewer is shown alongside it. Unknown or
+     unpublished ids fall back to `author` above, so a post never claims a person
+     wrote it before that person's details are signed off. */
+  authorId?: string;
+  reviewedById?: string;
   /* Human-readable date shown in the UI. */
   date: string;
   /* ISO 8601 dates for Article schema. Keep in sync with `date`, which renders

@@ -5,8 +5,10 @@ import { Facebook, Linkedin, Twitter } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
+import AuthorBioCard from "@/components/AuthorBioCard";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
 import { blogPosts } from "@/data/blogPosts";
+import { authorProfilePath, resolveAuthor } from "@/data/authors";
 
 const SITE_ORIGIN = "https://www.drivingschoolbc.ca";
 type TocItem = { id: string; text: string };
@@ -77,6 +79,8 @@ const articleProseClasses = [
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts.find((p) => p.slug === slug);
+  const namedAuthor = resolveAuthor(post?.authorId);
+  const reviewer = resolveAuthor(post?.reviewedById);
 
   const [activeId, setActiveId] = useState("");
 
@@ -162,10 +166,26 @@ const BlogPost = () => {
           </h1>
 
           <p className="mt-5 text-sm text-white/80">
-            Prepared by{" "}
-            <Link to="/about" className="font-semibold text-white underline underline-offset-2">
-              {post.author}
+            {namedAuthor ? "Written by " : "Prepared by "}
+            <Link
+              to={namedAuthor ? authorProfilePath(namedAuthor) : "/about"}
+              className="font-semibold text-white underline underline-offset-2"
+            >
+              {namedAuthor ? namedAuthor.name : post.author}
             </Link>
+            {namedAuthor ? `, ${namedAuthor.jobTitle}` : null}
+            {reviewer ? (
+              <>
+                {" · Reviewed by "}
+                <Link
+                  to={authorProfilePath(reviewer)}
+                  className="font-semibold text-white underline underline-offset-2"
+                >
+                  {reviewer.name}
+                </Link>
+                {`, ${reviewer.jobTitle}`}
+              </>
+            ) : null}
           </p>
           <p className="mt-2 max-w-3xl text-xs leading-relaxed text-white/65">
             Shanaya&apos;s is an independent driving school, not ICBC. Licensing and road-safety claims link to the
@@ -232,7 +252,18 @@ const BlogPost = () => {
           )}
 
           {/* Article */}
-          <article className={articleProseClasses}>{rendered}</article>
+          <div>
+            <article className={articleProseClasses}>{rendered}</article>
+
+            {namedAuthor ? (
+              <div className="mt-10 space-y-6">
+                <AuthorBioCard author={namedAuthor} />
+                {reviewer && reviewer.id !== namedAuthor.id ? (
+                  <AuthorBioCard author={reviewer} label="Reviewed by" />
+                ) : null}
+              </div>
+            ) : null}
+          </div>
 
           {/* Sidebar */}
           <aside className="space-y-8 lg:sticky lg:top-28 lg:self-start">

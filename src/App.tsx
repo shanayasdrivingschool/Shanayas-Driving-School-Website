@@ -42,6 +42,7 @@ const EmployeeApply = lazy(() => import("./pages/EmployeeApply"));
 const HiringDashboard = lazy(() => import("./pages/HiringDashboard"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const AuthorProfile = lazy(() => import("./pages/AuthorProfile"));
 const SearchPage = lazy(() => import("./pages/Search"));
 const SeoLandingPage = lazy(() => import("./pages/SeoLandingPage"));
 const CourseProductPage = lazy(() => import("./pages/CourseProductPage"));
@@ -133,6 +134,7 @@ const App = () => (
                 <Route path="/careers/dashboard" element={<HiringDashboard />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/authors/:slug" element={<AuthorProfile />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/affiliate/signup" element={<AffiliateSignup />} />
                 <Route path="/affiliate/terms-and-conditions" element={<ReferralTerms />} />

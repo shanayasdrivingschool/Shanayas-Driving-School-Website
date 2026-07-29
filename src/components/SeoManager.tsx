@@ -1,6 +1,11 @@
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { blogPosts } from "@/data/blogPosts";
+import { resolveAuthor, type Author } from "@/data/authors";
+import {
+  buildAuthorReference,
+  buildProfilePageJsonLd,
+} from "@/lib/authorSchema";
 import {
   KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
   KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
@@ -39,6 +44,10 @@ type SeoArticleDetails = {
   section: string;
   /* Reference guides are Articles; blog posts are BlogPostings. */
   articleType?: "Article" | "BlogPosting";
+  /* Resolved named author and reviewer. Absent while a post has no published
+     author, which leaves the organization as the author exactly as before. */
+  author?: Author;
+  reviewedBy?: Author;
 };
 
 type SeoBreadcrumb = {
@@ -56,6 +65,8 @@ type SeoDetails = {
   faqs?: SeoLandingPageFaq[];
   article?: SeoArticleDetails;
   breadcrumbs?: SeoBreadcrumb[];
+  /* Set on an author profile page, which is the ProfilePage for that Person. */
+  author?: Author;
 };
 
 type JsonLdObject = Record<string, unknown>;
@@ -354,11 +365,19 @@ const buildArticleJsonLd = (
     dateModified: seo.article.dateModified,
     articleSection: seo.article.section,
     inLanguage: "en-CA",
-    author: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: `${SITE_ORIGIN}/about/`,
-    },
+    /* A named person outranks the organization as an authorship signal, but only
+       once a real author is published — otherwise the organization stays the
+       accountable author rather than the article claiming a person wrote it. */
+    author: seo.article.author
+      ? buildAuthorReference(SITE_ORIGIN, seo.article.author)
+      : {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: `${SITE_ORIGIN}/about/`,
+        },
+    ...(seo.article.reviewedBy
+      ? { reviewedBy: buildAuthorReference(SITE_ORIGIN, seo.article.reviewedBy) }
+      : {}),
     publisher: { "@id": `${SITE_ORIGIN}/#localbusiness` },
   };
 };
@@ -430,6 +449,24 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     }
   }
 
+  const authorSlug = path.match(/^\/authors\/([^/]+)$/)?.[1];
+  if (authorSlug) {
+    const author = resolveAuthor(decodePathSegment(authorSlug));
+    if (author) {
+      return {
+        title: `${author.name}, ${author.jobTitle} | ${SITE_NAME}`,
+        description: author.summary,
+        image: author.image,
+        path,
+        author,
+        breadcrumbs: [
+          { name: "Home", path: "/" },
+          { name: author.name, path: `${path}/` },
+        ],
+      };
+    }
+  }
+
   const blogSlug = path.match(/^\/blog\/([^/]+)$/)?.[1];
   if (blogSlug) {
     const post = blogPosts.find((item) => item.slug === decodePathSegment(blogSlug));
@@ -445,6 +482,8 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
           datePublished: post.datePublished,
           dateModified: post.dateModified,
           section: post.category,
+          author: resolveAuthor(post.authorId),
+          reviewedBy: resolveAuthor(post.reviewedById),
         },
       };
     }
@@ -522,6 +561,12 @@ const SeoManager = () => {
     setJsonLd("local-business-schema", localBusinessJsonLd);
     setJsonLd("faq-schema", buildFaqJsonLd(seo.faqs));
     setJsonLd("article-schema", buildArticleJsonLd(seo, canonicalUrl, imageUrl));
+    setJsonLd(
+      "profile-page-schema",
+      seo.author
+        ? buildProfilePageJsonLd(SITE_ORIGIN, seo.author, `${SITE_ORIGIN}/#localbusiness`)
+        : null,
+    );
     setJsonLd("breadcrumb-schema", buildBreadcrumbJsonLd(seo.breadcrumbs));
   }, [seo]);
 

@@ -940,10 +940,12 @@ const buildFaqSchema = (faqs) => {
 
 /* Mirrors buildArticleJsonLd in src/components/SeoManager.tsx. Keep the two in
    sync: this one serves crawlers that never execute the React bundle. */
-const buildArticleSchema = (page, canonical, image) => {
+const buildArticleSchema = (page, canonical, image, content) => {
   if (!page.article) {
     return null;
   }
+
+  const { buildAuthorReference } = content.authorSchema;
 
   return {
     "@context": "https://schema.org",
@@ -957,11 +959,18 @@ const buildArticleSchema = (page, canonical, image) => {
     dateModified: page.article.dateModified,
     articleSection: page.article.section,
     inLanguage: "en-CA",
-    author: {
-      "@type": "Organization",
-      name: siteName,
-      url: `${siteOrigin}/about/`,
-    },
+    /* Named person when src/data/authors.ts publishes one for this post,
+       otherwise the organization stays the accountable author. */
+    author: page.article.author
+      ? buildAuthorReference(siteOrigin, page.article.author)
+      : {
+          "@type": "Organization",
+          name: siteName,
+          url: `${siteOrigin}/about/`,
+        },
+    ...(page.article.reviewedBy
+      ? { reviewedBy: buildAuthorReference(siteOrigin, page.article.reviewedBy) }
+      : {}),
     publisher: { "@id": `${siteOrigin}/#localbusiness` },
   };
 };
@@ -1066,6 +1075,7 @@ const navGroups = [
     match: (path) =>
       path.startsWith("/packages/") || path.startsWith("/extras/") || path === "/payment-plan-options/",
   },
+  { label: "Content authors", match: (path) => path.startsWith("/authors/") },
   {
     label: "Guides and resources",
     paths: [
@@ -1425,22 +1435,118 @@ const buildProductBody = (product) => {
   return parts.filter(Boolean).join("\n        ");
 };
 
-const buildBlogBody = (post) => {
+/* Author profile pages exist so a Person entity in Article.author resolves to a
+   page a reader (and a quality rater) can check. The fallback mirrors what
+   src/pages/AuthorProfile.tsx renders, from the same author entry. */
+const buildAuthorBody = (author, blogContent) => {
+  const written = [...blogContent.entries()].filter(([, post]) => post.authorId === author.id);
+  const reviewed = [...blogContent.entries()].filter(
+    ([, post]) => post.reviewedById === author.id && post.authorId !== author.id,
+  );
+
+  const parts = [
+    `<h1>${escapeHtml(author.name)}</h1>`,
+    para(author.jobTitle),
+    para(author.summary),
+  ];
+
+  if (author.instructingSince) {
+    parts.push(para(`Instructing since ${author.instructingSince}`));
+  }
+
+  author.bio.forEach((paragraph) => parts.push(para(paragraph)));
+
+  if (author.credentials?.length) {
+    parts.push(`<section><h2>Credentials</h2>`);
+    parts.push(
+      list(
+        author.credentials.map((credential) =>
+          credential.issuedBy ? `${credential.name} — ${credential.issuedBy}` : credential.name,
+        ),
+      ),
+    );
+    parts.push(`</section>`);
+  }
+
+  if (author.specialties?.length) {
+    parts.push(`<section><h2>Teaching focus</h2>`);
+    parts.push(list(author.specialties));
+    parts.push(`</section>`);
+  }
+
+  if (author.languages?.length) {
+    parts.push(para(`Lessons available in ${author.languages.join(", ")}.`));
+  }
+
+  [
+    [`Articles by ${author.name}`, written],
+    [`Articles reviewed by ${author.name}`, reviewed],
+  ].forEach(([heading, posts]) => {
+    if (!posts.length) {
+      return;
+    }
+
+    parts.push(`<section><h2>${escapeHtml(heading)}</h2><ul>`);
+    posts.forEach(([slug, post]) =>
+      parts.push(
+        `<li><a href="${siteOrigin}/blog/${slug}/">${escapeHtml(post.title)}</a></li>`,
+      ),
+    );
+    parts.push(`</ul></section>`);
+  });
+
+  if (author.sameAs?.length) {
+    parts.push(`<section><h2>Elsewhere</h2><ul>`);
+    author.sameAs.forEach((profileUrl) =>
+      parts.push(
+        `<li><a href="${escapeHtml(profileUrl)}" rel="me">${escapeHtml(profileUrl)}</a></li>`,
+      ),
+    );
+    parts.push(`</ul></section>`);
+  }
+
+  parts.push(
+    para(
+      "Shanaya's Driving School is an independent driving school, not ICBC. Confirm current licensing requirements with ICBC. To report a factual error, email book@drivingschoolbc.ca.",
+    ),
+  );
+
+  return parts.filter(Boolean).join("\n        ");
+};
+
+const buildBlogBody = (post, page) => {
+  const { author, reviewedBy } = page.article ?? {};
   const byline = [
-    `By ${post.author}`,
+    author ? `Written by ${author.name}, ${author.jobTitle}` : `By ${post.author}`,
+    reviewedBy ? `Reviewed by ${reviewedBy.name}, ${reviewedBy.jobTitle}` : null,
     `Updated ${post.date}`,
     post.readTime,
     post.category,
-  ].join(" · ");
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  /* Byline links to the profile page so the Person entity is reachable by a
+     crawler that never runs the React bundle. */
+  const authorLinks = [author, reviewedBy]
+    .filter(Boolean)
+    .filter((person, index, all) => all.findIndex((other) => other.id === person.id) === index)
+    .map(
+      (person) =>
+        `<a href="${siteOrigin}/authors/${person.id}/">About ${escapeHtml(person.name)}</a>`,
+    );
 
   return [
     `<article>`,
     `<h1>${escapeHtml(post.title)}</h1>`,
     para(post.description),
     para(byline),
+    authorLinks.length ? `<p>${authorLinks.join(" · ")}</p>` : null,
     post.html,
     `</article>`,
-  ].join("\n        ");
+  ]
+    .filter(Boolean)
+    .join("\n        ");
 };
 
 const renderPageHtml = (template, page, content) => {
@@ -1470,7 +1576,14 @@ const renderPageHtml = (template, page, content) => {
   html = setMetaProperty(html, "og:image:alt", `${siteName} branded social preview`);
   html = insertJsonLd(html, "local-business-schema", localBusinessSchema);
   html = insertJsonLd(html, "faq-schema", buildFaqSchema(page.faqs));
-  html = insertJsonLd(html, "article-schema", buildArticleSchema(page, canonical, image));
+  html = insertJsonLd(html, "article-schema", buildArticleSchema(page, canonical, image, content));
+  html = insertJsonLd(
+    html,
+    "profile-page-schema",
+    page.author
+      ? content.authorSchema.buildProfilePageJsonLd(siteOrigin, page.author, `${siteOrigin}/#localbusiness`)
+      : null,
+  );
   html = insertJsonLd(html, "breadcrumb-schema", buildBreadcrumbSchema(page.breadcrumbs));
 
   const blogSlug = page.path.match(/^\/blog\/([^/]+)\/$/)?.[1];
@@ -1486,14 +1599,16 @@ const renderPageHtml = (template, page, content) => {
   html = setBlogNav(html, content.blogPosts);
   html = setSiteNav(html, page, content);
 
-  if (page.path === "/blog/") {
+  if (page.author) {
+    html = replaceFallback(html, page, () => buildAuthorBody(page.author, content.blogPosts));
+  } else if (page.path === "/blog/") {
     html = replaceFallback(html, page, () => buildBlogIndexBody(page, content.blogPosts));
   } else if (page.path === "/newcomers-guide/") {
     html = replaceFallback(html, page, () => buildNewcomersGuideBody(page));
   } else if (page.path === "/knowledge-test-guide/") {
     html = replaceFallback(html, page, () => buildKnowledgeTestGuideBody(page));
   } else if (post) {
-    html = replaceFallback(html, page, () => buildBlogBody(post));
+    html = replaceFallback(html, page, () => buildBlogBody(post, page));
   } else if (landing) {
     html = replaceFallback(html, page, () => buildLandingBody(landing));
   } else if (product) {
@@ -1558,6 +1673,38 @@ guidePage.breadcrumbs = [
   { name: "Home", path: "/" },
   { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide/" },
 ];
+
+/* Author profile pages are driven entirely by src/data/authors.ts: publishing an
+   author adds its route here, and nothing is pre-rendered while the registry is
+   empty. assertSitemapCoverage then requires the new /authors/<id>/ URL in
+   public/sitemap.xml before the build passes. */
+for (const author of content.authors) {
+  pages.push({
+    path: `/authors/${author.id}/`,
+    title: `${author.name}, ${author.jobTitle} | ${siteName}`,
+    description: author.summary,
+    image: author.image ? `${siteOrigin}${author.image}` : undefined,
+    author,
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: author.name, path: `/authors/${author.id}/` },
+    ],
+  });
+}
+
+/* Resolve each post's named author the same way src/ does, so Article.author in
+   the crawler HTML cannot disagree with what React renders for the same URL. */
+for (const page of pages) {
+  const slug = page.path.match(/^\/blog\/([^/]+)\/$/)?.[1];
+  const post = slug ? blogContent.get(slug) : undefined;
+
+  if (!post || !page.article) {
+    continue;
+  }
+
+  page.article.author = content.resolveAuthor(post.authorId);
+  page.article.reviewedBy = content.resolveAuthor(post.reviewedById);
+}
 
 /* The page entries above duplicate metadata that already lives in src/, and the
    two have silently drifted before. Fail the build rather than ship a page whose
