@@ -590,8 +590,8 @@ const NewcomersGuide = () => (
               Shanaya's is independent from ICBC. This page is general information, not a licensing
               decision or legal advice. ICBC decides each applicant's identity, experience,
               exchange, testing and licence eligibility. For a correction, email{" "}
-              <a href="mailto:book@drivingschoolbc.ca?subject=Correction%20to%20newcomer%20licence%20guide" className="font-bold text-white underline underline-offset-4 hover:text-[#F5B13A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                book@drivingschoolbc.ca
+              <a href="mailto:info@shanayasdrivingschool.com?subject=Correction%20to%20newcomer%20licence%20guide" className="font-bold text-white underline underline-offset-4 hover:text-[#F5B13A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                info@shanayasdrivingschool.com
               </a>.
             </p>
           </div>

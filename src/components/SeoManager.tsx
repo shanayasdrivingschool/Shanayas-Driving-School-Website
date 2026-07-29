@@ -17,7 +17,7 @@ import { packageCatalog } from "@/data/packageCatalog";
 import { sitePolicies } from "@/data/policies";
 import { seoLandingPagesByPath, type SeoLandingPageFaq } from "@/data/seoLandingPages";
 
-const SITE_ORIGIN = "https://www.drivingschoolbc.ca";
+const SITE_ORIGIN = "https://www.shanayasdrivingschool.com";
 const SITE_NAME = "Shanaya's Driving School";
 const DEFAULT_TITLE = "Driving Lessons Victoria BC | Shanaya's Driving School";
 const DEFAULT_DESCRIPTION =
@@ -200,7 +200,7 @@ const localBusinessJsonLd: JsonLdObject = {
   logo: `${SITE_ORIGIN}/logos/Driving%20School%20Logo%20Horizontal.png`,
   description: DEFAULT_DESCRIPTION,
   telephone: "+1-250-542-3673",
-  email: "book@drivingschoolbc.ca",
+  email: "info@shanayasdrivingschool.com",
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",

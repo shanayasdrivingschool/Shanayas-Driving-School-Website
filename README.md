@@ -4,7 +4,7 @@ Marketing website for Shanaya's Driving School, an independent B.C. school liste
 ICBC's general directory for Class 5 and 7 driver training in Langford. The directory
 listing is not ICBC approval, recommendation, or endorsement.
 
-Production site: https://www.drivingschoolbc.ca/
+Production site: https://www.shanayasdrivingschool.com/
 
 ## Tech stack
 

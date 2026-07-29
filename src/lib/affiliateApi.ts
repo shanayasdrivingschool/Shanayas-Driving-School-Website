@@ -532,7 +532,7 @@ export const registerAffiliate = async (input: AffiliateRegistrationInput): Prom
       affiliate,
       referralLink: affiliate
         ? buildAffiliateReferralLink(
-            typeof window !== "undefined" ? window.location.origin : "https://www.drivingschoolbc.ca",
+            typeof window !== "undefined" ? window.location.origin : "https://www.shanayasdrivingschool.com",
             affiliate.affiliateId,
           )
         : null,
@@ -714,7 +714,7 @@ export const recordAffiliatePurchase = (input: PurchaseCommissionInput) =>
 
 export const buildDashboardReferralLink = (affiliateCode: string) =>
   buildAffiliateReferralLink(
-    typeof window !== "undefined" ? window.location.origin : "https://www.drivingschoolbc.ca",
+    typeof window !== "undefined" ? window.location.origin : "https://www.shanayasdrivingschool.com",
     affiliateCode,
   );
 

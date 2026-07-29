@@ -110,8 +110,8 @@ const AuthorProfile = () => {
             <p className="pt-4 text-sm leading-relaxed text-slate-500">
               Shanaya&apos;s Driving School is an independent driving school, not ICBC. Confirm current licensing
               requirements with ICBC. To report a factual error in this author&apos;s articles, email{" "}
-              <a href="mailto:book@drivingschoolbc.ca" className="underline underline-offset-2">
-                book@drivingschoolbc.ca
+              <a href="mailto:info@shanayasdrivingschool.com" className="underline underline-offset-2">
+                info@shanayasdrivingschool.com
               </a>
               .
             </p>

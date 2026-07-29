@@ -615,7 +615,7 @@ const AffiliateSignup = () => {
               <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-5">
                 <p className="text-sm font-bold text-white/80">Referral ID</p>
                 <p className="mt-2 text-2xl font-black">RULEY-REF-001</p>
-                <p className="mt-3 text-sm text-white/70">www.drivingschoolbc.ca/ref/your-code</p>
+                <p className="mt-3 text-sm text-white/70">www.shanayasdrivingschool.com/ref/your-code</p>
               </div>
             </article>
 

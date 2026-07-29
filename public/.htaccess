@@ -29,8 +29,8 @@
   RewriteBase /
 
   RewriteCond %{HTTPS} !=on [OR]
-  RewriteCond %{HTTP_HOST} !^www\.drivingschoolbc\.ca$ [NC]
-  RewriteRule ^ https://www.drivingschoolbc.ca%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTP_HOST} !^www\.shanayasdrivingschool\.com$ [NC]
+  RewriteRule ^ https://www.shanayasdrivingschool.com%{REQUEST_URI} [R=301,L]
 
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f

@@ -1,6 +1,6 @@
 # Shanaya's Driving School — Design Rules
 
-Design language for **drivingschoolbc.ca**. This document is the source of truth for
+Design language for **shanayasdrivingschool.com**. This document is the source of truth for
 anyone designing new pages, sections, or components. It describes *how the brand should
 look and feel* — colours, type, shape, motion, tone. It is not a code spec.
 

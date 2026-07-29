@@ -15,7 +15,7 @@ This document summarizes company data currently published or embedded in the web
 
 ## 2. Public Contact Information
 
-- Primary email: book@drivingschoolbc.ca
+- Primary email: info@shanayasdrivingschool.com
 - Primary phone: +1 (250) 542-3673
 - Public vanity phone label: 250-LICENSE
 - WhatsApp: https://wa.me/12505423673
@@ -23,7 +23,9 @@ This document summarizes company data currently published or embedded in the web
 - Instagram: https://www.instagram.com/drivingschoolvictoria
 - Main office address: Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1
 - Office note on contact page: By appointment - Free parking available
-- Likely public site URL from backend defaults: https://www.drivingschoolbc.ca
+- Primary domain: https://www.shanayasdrivingschool.com (canonical host; .htaccess 301s every other host to it)
+- Secondary/parked domain: drivingschoolbc.ca — redirects to the primary, must not be published as a site address or used in schema, canonicals or sitemaps
+- Domain change (owner direction, 2026-07-30): the primary domain moved to shanayasdrivingschool.com and the published contact mailbox moved to info@shanayasdrivingschool.com, replacing book@drivingschoolbc.ca
 
 ## 3. Service Areas
 
@@ -165,7 +167,7 @@ Open positions listed on the careers page:
 Shared careers details:
 
 - Location used for openings: Victoria, BC
-- Careers contact email: book@drivingschoolbc.ca
+- Careers contact email: info@shanayasdrivingschool.com
 - Hiring page emphasizes supportive team culture, flexible scheduling, modern training vehicles, and inclusive hiring
 
 ## 10. Data Quality Notes

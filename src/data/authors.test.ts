@@ -9,7 +9,7 @@ import {
   buildProfilePageJsonLd,
 } from "@/lib/authorSchema";
 
-const ORIGIN = "https://www.drivingschoolbc.ca";
+const ORIGIN = "https://www.shanayasdrivingschool.com";
 const PUBLISHER_ID = `${ORIGIN}/#localbusiness`;
 
 /* A fully populated entry, used to exercise the schema builders without adding a

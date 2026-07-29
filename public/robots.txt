@@ -43,4 +43,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://www.drivingschoolbc.ca/sitemap.xml
+Sitemap: https://www.shanayasdrivingschool.com/sitemap.xml

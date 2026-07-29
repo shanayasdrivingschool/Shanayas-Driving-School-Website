@@ -18,7 +18,7 @@ type LeadStatus = "new" | "pending_review" | "reviewed" | "shortlisted" | "rejec
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-const DEFAULT_PUBLIC_SITE_URL = Deno.env.get("PUBLIC_SITE_URL") ?? "https://www.drivingschoolbc.ca";
+const DEFAULT_PUBLIC_SITE_URL = Deno.env.get("PUBLIC_SITE_URL") ?? "https://www.shanayasdrivingschool.com";
 const DEFAULT_COMMISSION_RATE = Number(Deno.env.get("AFFILIATE_COMMISSION_RATE") ?? "0.05");
 const MIN_PAYOUT_THRESHOLD = Number(Deno.env.get("AFFILIATE_MIN_PAYOUT_THRESHOLD") ?? "50");
 const CLICK_RATE_LIMIT_WINDOW_SECONDS = Math.max(60, Number(Deno.env.get("AFFILIATE_CLICK_WINDOW_SECONDS") ?? "900"));

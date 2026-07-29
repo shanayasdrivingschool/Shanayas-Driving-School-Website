@@ -205,7 +205,7 @@ const allSitePolicies: SitePolicy[] = [
         ],
         bullets: [
           '2770 Leigh Rd, Victoria, BC V9B 4G1',
-          'book@drivingschoolbc.ca',
+          'info@shanayasdrivingschool.com',
           '+1 (250) 542-3673',
         ],
         note: 'By using our website, services, or referral program, individuals confirm that they have read, understood, and agree to this Privacy Policy.',
@@ -438,7 +438,7 @@ const allSitePolicies: SitePolicy[] = [
         ],
         bullets: [
           '2770 Leigh Rd, Victoria, BC V9B 4G1',
-          'book@drivingschoolbc.ca',
+          'info@shanayasdrivingschool.com',
           '+1 (250) 542-3673',
         ],
       },

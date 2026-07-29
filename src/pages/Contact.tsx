@@ -12,21 +12,21 @@ const reachCards = [
     icon: Headphones,
     title: "Help & Support",
     text: "Have questions or need assistance? Our team is here to support students and parents with scheduling, training inquiries, and guidance for a confident start.",
-    link: "mailto:book@drivingschoolbc.ca",
+    link: "mailto:info@shanayasdrivingschool.com",
     linkLabel: "Get support",
   },
   {
     icon: Newspaper,
     title: "Press & Media",
     text: "Stay informed with our latest updates, achievements, and student success stories. Discover how we help new drivers build skill, confidence, and safe driving habits.",
-    link: "mailto:book@drivingschoolbc.ca",
+    link: "mailto:info@shanayasdrivingschool.com",
     linkLabel: "Media enquiries",
   },
   {
     icon: Briefcase,
     title: "Sales & Enquiries",
     text: "Ready to start driving? Contact our sales team to ask about lesson options, current instructor availability, and scheduling.",
-    link: "mailto:book@drivingschoolbc.ca",
+    link: "mailto:info@shanayasdrivingschool.com",
     linkLabel: "Talk to sales",
   },
 ];
@@ -109,7 +109,7 @@ const Contact = () => {
             {/* Left column â€“ contact info cards */}
             <div className="space-y-4">
               <a
-                href="mailto:book@drivingschoolbc.ca"
+                href="mailto:info@shanayasdrivingschool.com"
                 className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
               >
                 <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#1d52a1]/15 text-[#202121]">
@@ -117,7 +117,7 @@ const Contact = () => {
                 </span>
                 <span>
                   <span className="block text-xl font-black text-slate-900">Email</span>
-                  <span className="mt-1 block text-sm font-semibold text-slate-700">book@drivingschoolbc.ca</span>
+                  <span className="mt-1 block text-sm font-semibold text-slate-700">info@shanayasdrivingschool.com</span>
                   <span className="mt-2 block text-sm text-slate-500"></span>
                 </span>
               </a>
