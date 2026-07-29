@@ -40,14 +40,14 @@ export const optionalExtras: OptionalExtra[] = [
     id: "car-rental",
     title: "Car Rental",
     description:
-      "Book an instructor-approved training car for road test day when you want to test in a familiar vehicle.",
+      "Book an ICBC-approved training car for road test day when you want to test in a familiar vehicle.",
     detail: "Road test day vehicle rental",
     image:
       "https://th.bing.com/th/id/R.938bd1619651dfafcc414b34125030cc?rik=YGc%2fiHscOQkg8A&riu=http%3a%2f%2fdualcontrolvehiclehire.co.uk%2fassets%2fimages%2fdual-internal-1266x949.jpeg&ehk=sBzyh82TS%2fru%2fNH3cCjSrvjtlhpolkb8a0RbECqzZ6o%3d&risl=&pid=ImgRaw&r=0",
     price: 250,
     formatLabel: "In-car",
     highlights: [
-      "Use a familiar instructor-approved vehicle on test day.",
+      "Use a familiar ICBC-approved vehicle on test day.",
       "Keep your final practice flow aligned with the same car setup.",
       "Reduce last-minute friction around vehicle sourcing and readiness.",
       "Add the rental directly to checkout instead of arranging it separately.",
@@ -57,7 +57,7 @@ export const optionalExtras: OptionalExtra[] = [
         title: "What is included",
         objectives: [
           "Road test day use of a training car prepared for the appointment.",
-          "Instructor-approved vehicle setup that matches the school fleet standard.",
+          "ICBC-approved vehicle setup that matches the school fleet standard.",
           "Scheduling linked to the selected service area in your checkout.",
         ],
       },

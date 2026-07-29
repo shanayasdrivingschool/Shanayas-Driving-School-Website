@@ -172,6 +172,12 @@ const SiteFooter = () => (
               <Link to="/packages">Packages</Link>
             </li>
             <li>
+              <Link to="/payment-plan-options">Payment Plans</Link>
+            </li>
+            <li>
+              <Link to="/extras/car-rental">Road Test Car Rental</Link>
+            </li>
+            <li>
               <Link to="/about">About</Link>
             </li>
             <li>

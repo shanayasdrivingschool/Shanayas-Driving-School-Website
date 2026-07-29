@@ -90,8 +90,8 @@ const courseCatalogSeed: CourseCatalogItem[] = [
     duration: "Road test prep + car rental",
     detail: "Road test prep + car rental",
     description:
-      "Road test preparation with an instructor-approved car for your ICBC road test. Add as many practice lessons as you want on top of the base package.",
-    highlights: ["Road Test Preparation", "Car Included For Test", "Route And Maneuver Practice", "Add Lessons As Needed"],
+      "Road test preparation and a rental car for your ICBC road test. Add 60-minute lessons if you want extra practice before test day.",
+    highlights: ["Test Routes", "Car Rental", "Parking And Maneuvers", "Optional Practice Lessons"],
     tone: "bg-white text-black border border-gray-200",
     image: "https://www.easydriversed.com/wp-content/uploads/2025/01/the-road-test-process.jpg",
     quizTags: ["road-test", "combined", "test-prep", "maneuvers"],

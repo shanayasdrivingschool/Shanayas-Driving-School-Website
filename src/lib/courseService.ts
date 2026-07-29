@@ -23,10 +23,23 @@ export const getFallbackPublicCourses = () => courseCatalog;
 
 export const mapCourseRowToCourseCatalogItem = (row: Record<string, unknown>): CourseCatalogItem => {
   const slug = String(row.slug);
-  const catalogPricing = courseCatalog.find((course) => course.id === slug)?.pricing;
-  // The courses table has no columns for add-on lesson pricing, so courses built on that
-  // model keep their base price in the catalog instead of splitting it across two sources.
+  const catalogCourse = courseCatalog.find((course) => course.id === slug);
+  const catalogPricing = catalogCourse?.pricing;
   const usesAddOnLessonPricing = (catalogPricing?.addOnLessonPrice ?? 0) > 0;
+
+  // The courses table cannot represent a base-price-plus-add-on-lessons product: it has no
+  // add-on columns, and its duration/detail text describes a lesson count this product does
+  // not have. Keep the whole record in the catalog so a stale row cannot contradict the page.
+  if (usesAddOnLessonPricing && catalogCourse) {
+    return {
+      ...catalogCourse,
+      image: getCourseImage(slug, String(row.image)),
+      pricing: {
+        ...catalogPricing,
+        discountPercent: Number(row.discount_percent ?? 0),
+      },
+    };
+  }
 
   return {
     id: slug,
@@ -40,19 +53,14 @@ export const mapCourseRowToCourseCatalogItem = (row: Record<string, unknown>): C
     tone: String(row.tone),
     image: getCourseImage(String(row.slug), String(row.image)),
     quizTags: toStringArray(row.quiz_tags),
-    pricing: usesAddOnLessonPricing
-      ? {
-          ...catalogPricing,
-          discountPercent: Number(row.discount_percent ?? 0),
-        }
-      : {
-          fixedPrice: toOptionalNumber(row.fixed_price),
-          sixtyMinuteClasses: Number(row.sixty_minute_classes ?? 0),
-          ninetyMinuteClasses: Number(row.ninety_minute_classes ?? 0),
-          sixtyMinutePrice: catalogPricing?.sixtyMinutePrice,
-          ninetyMinutePrice: catalogPricing?.ninetyMinutePrice,
-          discountPercent: Number(row.discount_percent ?? 0),
-        },
+    pricing: {
+      fixedPrice: toOptionalNumber(row.fixed_price),
+      sixtyMinuteClasses: Number(row.sixty_minute_classes ?? 0),
+      ninetyMinuteClasses: Number(row.ninety_minute_classes ?? 0),
+      sixtyMinutePrice: catalogPricing?.sixtyMinutePrice,
+      ninetyMinutePrice: catalogPricing?.ninetyMinutePrice,
+      discountPercent: Number(row.discount_percent ?? 0),
+    },
   };
 };
 

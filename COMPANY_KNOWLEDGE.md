@@ -10,6 +10,7 @@ This document summarizes company data currently published or embedded in the web
 - Core positioning: Professional driving lessons designed to build confidence, hazard awareness, and real-world driving skills
 - Instruction style: Calm, supportive, practical, confidence-building, road-test focused
 - Verified status language: ICBC's general directory lists the school in Langford for Class 5 and 7 driver training. Do not call the school, its instructors, or ordinary lessons ICBC-approved, ICBC-aligned, government-approved, recommended, or endorsed. Verify individual instructor and vehicle claims from current records before publishing them.
+- Road test vehicle exception (owner direction, 2026-07-29): the rental/test-day car is described on the site as an "ICBC-approved vehicle", replacing the previous "instructor-approved" wording. This is a vehicle claim, not a school or lesson claim, so the rule above still bars ICBC-approved for the school, instructors, lessons, and GLP course. Keep current evidence that the car meets ICBC road test vehicle requirements on file; if that cannot be shown, fall back to "meets ICBC road test vehicle requirements".
 - Mascot / brand character referenced on the site: Ruley
 
 ## 2. Public Contact Information
@@ -107,7 +108,7 @@ Base lesson rates defined in code:
 - Knowledge Test Prep Course: $300 all tiers
 - Parking Course: $400.50 standard/regional, $490.50 island
 - Make Your Own Class: $133.50 standard/regional, $163.50 island
-- Road Test Package: $250 base all tiers (road test prep + car for the test, no lessons included), plus $89 per optional 60-minute lesson, up to 10 lessons
+- Road Test Package: $250 base all tiers (ICBC road test prep + our car on test day, no lessons included), plus $89 per optional 60-minute lesson, up to 10 lessons. Base price and copy live in `src/data/courseCatalog.ts`, not the `courses` table, which cannot represent the add-on model
 - Road Test Prep Course: $133.50 standard/regional, $163.50 island
 - New to Canada: $400.50 standard/regional, $490.50 island
 - Defensive Driving Course: $667.50 standard/regional, $817.50 island

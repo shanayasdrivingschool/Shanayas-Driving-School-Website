@@ -257,7 +257,7 @@ const landingPages = [
       {
         question: "Can I use a school car for the Victoria road test?",
         answer:
-          "Instructor-approved road test vehicle support may be available when booked in advance and paired with the right preparation.",
+          "ICBC-approved road test vehicle support may be available when booked in advance and paired with the right preparation.",
       },
     ],
   },
@@ -286,7 +286,7 @@ const landingPages = [
       {
         question: "Can I use the car for the real road test?",
         answer:
-          "Instructor-approved road test vehicle support may be available when booked in advance, so you can test in a familiar car.",
+          "ICBC-approved road test vehicle support may be available when booked in advance, so you can test in a familiar car.",
       },
     ],
   },
@@ -294,7 +294,7 @@ const landingPages = [
     path: "/road-test-vehicle/",
     title: "ICBC Road Test Car Rental in Victoria | Shanaya's Driving School",
     description:
-      "Book an instructor-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
+      "Book an ICBC-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
     image: "https://www.drivingschoolbc.ca/landing/road-test-vehicle.webp",
     faqs: [
       {
@@ -303,7 +303,7 @@ const landingPages = [
       },
       {
         question: "Is the car suitable for an ICBC road test?",
-        answer: "The rental option is built around instructor-approved training vehicles used for student lessons and test-day support.",
+        answer: "The rental option is built around ICBC-approved training vehicles used for student lessons and test-day support.",
       },
     ],
   },
@@ -693,7 +693,7 @@ const publicPages = [
     path: "/courses/lesson-road-test-prep-course/",
     title: "Road Test Package | Shanaya's Driving School",
     description:
-      "Road test preparation with an instructor-approved car for your ICBC road test. Add as many practice lessons as you want on top of the base package.",
+      "Road test preparation and a rental car for your ICBC road test in Victoria BC. Add 60-minute lessons if you want extra practice before test day.",
   },
   {
     path: "/courses/road-test-prep-course/",
@@ -765,7 +765,7 @@ const publicPages = [
   {
     path: "/extras/car-rental/",
     title: "Car Rental for Road Test Day | Shanaya's Driving School",
-    description: "Book an instructor-approved training car for road test day when you want to test in a familiar vehicle.",
+    description: "Book an ICBC-approved training car for road test day when you want to test in a familiar vehicle.",
   },
   {
     path: "/blog/bc-glp-changes-2026/",
@@ -1031,6 +1031,123 @@ const setBlogNav = (html, blogContent) => {
     blogNavPattern,
     () =>
       `<nav aria-label="Driving tips and guides">\n          ${links.join("\n          ")}\n        </nav>`,
+  );
+};
+
+const importantNavPattern = /<nav aria-label="Important pages">[\s\S]*?<\/nav>/i;
+
+/* index.html hardcodes seven links here, so 29 of the 51 sitemap URLs — every
+   course and package detail page, /courses/, /packages/, /apply/, the location
+   landing pages, /payment-plan-options/, /extras/car-rental/ — had no internal
+   link at all in the pre-rendered HTML and site audits flagged them as orphans.
+   React's footer links most of them, but that markup only exists once JS runs.
+   Build these navs from `pages` instead: every pre-rendered route then gets an
+   internal link from every other route, and a new route cannot ship orphaned. */
+const navGroups = [
+  {
+    label: "Important pages",
+    paths: [
+      "/",
+      "/driving-lessons/",
+      "/road-test-prep/",
+      "/defensive-driving/",
+      "/courses/",
+      "/packages/",
+      "/pricing/",
+      "/apply/",
+      "/about/",
+      "/contact/",
+      "/faq/",
+    ],
+  },
+  { label: "Driving courses", match: (path) => path.startsWith("/courses/") },
+  {
+    label: "Lesson packages, extras and payment plans",
+    match: (path) =>
+      path.startsWith("/packages/") || path.startsWith("/extras/") || path === "/payment-plan-options/",
+  },
+  {
+    label: "Guides and resources",
+    paths: [
+      "/knowledge-test-guide/",
+      "/knowledge-test-practice/",
+      "/newcomers-guide/",
+      "/bc-graduated-licensing-program/",
+      "/icbc-approved-driving-school/",
+    ],
+  },
+  /* Catch-all last: an unclassified route still gets linked rather than
+     silently becoming an orphan again. */
+  { label: "Service areas and specialist lessons", match: () => true },
+];
+
+/* Blog routes are linked by the "Driving tips and guides" nav instead. */
+const navPages = () => pages.filter((page) => !page.path.startsWith("/blog"));
+
+const navLabelFor = (page, content) =>
+  content.products.get(page.path)?.h1 ??
+  content.landingPages.get(page.path)?.h1 ??
+  page.title.split(" | ")[0];
+
+/* This script reads and rewrites public_html/index.html, so running it twice
+   without a `vite build` in between feeds its own output back in as the
+   template. Drop any nav block a previous run emitted before writing the new
+   set, or the second run stacks a duplicate copy of every group. */
+const stripGeneratedNavs = (html) =>
+  navGroups.reduce(
+    (acc, group) =>
+      acc.replace(
+        new RegExp(`\\s*<nav aria-label="${escapeRegExp(escapeHtml(group.label))}">[\\s\\S]*?</nav>`, "gi"),
+        "",
+      ),
+    html,
+  );
+
+const siteNavToken = "<!--site-nav-->";
+
+const setSiteNav = (html, currentPage, content) => {
+  if (!importantNavPattern.test(html)) {
+    throw new Error('Could not find the "Important pages" nav in index.html');
+  }
+
+  const linkable = navPages();
+  const remaining = new Map(linkable.map((page) => [page.path, page]));
+  const rendered = [];
+
+  for (const group of navGroups) {
+    for (const path of group.paths ?? []) {
+      if (!remaining.has(path)) {
+        throw new Error(`navGroups lists "${path}", which is not a generated route.`);
+      }
+    }
+
+    const members = group.paths
+      ? group.paths.map((path) => remaining.get(path))
+      : [...remaining.values()].filter((page) => group.match(page.path));
+
+    const links = members
+      .map((page) => {
+        remaining.delete(page.path);
+        return page.path === currentPage.path
+          ? null
+          : `<a href="${siteOrigin}${page.path}">${escapeHtml(navLabelFor(page, content))}</a>`;
+      })
+      .filter(Boolean);
+
+    if (links.length) {
+      rendered.push(
+        `<nav aria-label="${escapeHtml(group.label)}">\n          ${links.join("\n          ")}\n        </nav>`,
+      );
+    }
+  }
+
+  if (remaining.size) {
+    throw new Error(`No nav group claimed: ${[...remaining.keys()].join(", ")}`);
+  }
+
+  return stripGeneratedNavs(html.replace(importantNavPattern, siteNavToken)).replace(
+    siteNavToken,
+    () => rendered.join("\n        "),
   );
 };
 
@@ -1367,6 +1484,7 @@ const renderPageHtml = (template, page, content) => {
   const product = content.products.get(page.path);
 
   html = setBlogNav(html, content.blogPosts);
+  html = setSiteNav(html, page, content);
 
   if (page.path === "/blog/") {
     html = replaceFallback(html, page, () => buildBlogIndexBody(page, content.blogPosts));
@@ -1404,6 +1522,17 @@ const writeRouteHtml = async (page, html) => {
 };
 
 const template = await readFile(sourceIndexPath, "utf8");
+
+/* vite build restores public_html/index.html from the root index.html before
+   this runs. Running the script on its own output instead leaves the previous
+   page's copy in the fallback, because setFallbackContent only recognises the
+   pristine boilerplate paragraph. Fail loudly rather than ship that. */
+if (!/<p>\s*Shanaya's Driving School provides/i.test(template)) {
+  throw new Error(
+    "public_html/index.html is already generated output — run `npm run build` so vite restores the template first.",
+  );
+}
+
 const content = await loadSiteContent();
 const { blogPosts: blogContent, landingPages: landingContent } = content;
 
@@ -1490,6 +1619,33 @@ const assertMetadataInSync = () => {
 };
 
 assertMetadataInSync();
+
+/* sitemap.xml is hand-maintained, so it has drifted from the routes this script
+   pre-renders before: /courses/make-your-own-class/ and the Road Test Package
+   page shipped without a sitemap entry. Both directions matter — a missing entry
+   hides a live page, and a stale entry points crawlers at a 404. */
+const assertSitemapCoverage = async () => {
+  const sitemapPath = path.resolve(__dirname, "../public/sitemap.xml");
+  const sitemap = await readFile(sitemapPath, "utf8");
+  const listed = new Set(
+    [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, loc]) => loc.replace(siteOrigin, "")),
+  );
+  const generated = new Set(pages.map((page) => page.path));
+  const missing = [...generated].filter((page) => !listed.has(page));
+  const stale = [...listed].filter((loc) => !generated.has(loc));
+
+  if (missing.length || stale.length) {
+    throw new Error(
+      [
+        "public/sitemap.xml is out of sync with the pre-rendered routes:",
+        ...missing.map((page) => `  missing from sitemap: ${page}`),
+        ...stale.map((loc) => `  in sitemap but not generated: ${loc}`),
+      ].join("\n"),
+    );
+  }
+};
+
+await assertSitemapCoverage();
 
 for (const page of pages) {
   await writeRouteHtml(page, renderPageHtml(template, page, content));

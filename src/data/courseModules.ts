@@ -97,29 +97,29 @@ export const courseModulesById: Record<string, ProductOutlineSection[]> = {
     {
       title: "Road test preparation",
       objectives: [
-        "Review the ICBC standards, scoring, and maneuvers the examiner will assess.",
-        "Tighten observations, positioning, and control before test pressure increases.",
+        "Drive the routes and intersections the ICBC examiner is most likely to use.",
+        "Learn how the examiner scores your observations, lane position, and speed control.",
       ],
     },
     {
-      title: "Test day car rental",
+      title: "Car rental for test day",
       objectives: [
-        "Take the road test in an instructor-approved car prepared for the appointment.",
-        "Keep the vehicle setup consistent with the car used during preparation.",
+        "Take the test in an ICBC-approved car that is ready for the appointment.",
+        "Drive a car you already know instead of adjusting to one on the day.",
       ],
     },
     {
       title: "Optional practice lessons",
       objectives: [
-        "Add as many 60-minute lessons as you want on top of the base package.",
-        "Use the extra time on route practice, parking, or whichever habit still needs work.",
+        "Add 60-minute lessons whenever you want more time behind the wheel.",
+        "Spend that time on whatever still costs you marks, such as parking or shoulder checks.",
       ],
     },
     {
-      title: "Final readiness",
+      title: "Before you go in",
       objectives: [
-        "Finish with a short, practical action plan for the hours before the road test.",
-        "Reduce last-minute uncertainty with structured final feedback and repetition.",
+        "Leave with a short plan for the hours before your appointment.",
+        "Know which two or three habits to watch once the examiner is in the car.",
       ],
     },
   ],

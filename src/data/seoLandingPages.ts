@@ -686,7 +686,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         title: "Getting test-day ready",
         body:
-          "Start with a mock evaluation to identify weak spots, then book focused lessons close to your test date. If you want to arrive in a familiar car, instructor-approved road test vehicle support may be available when scheduled in advance.",
+          "Start with a mock evaluation to identify weak spots, then book focused lessons close to your test date. If you want to arrive in a familiar car, ICBC-approved road test vehicle support may be available when scheduled in advance.",
       },
     ],
     faqs: [
@@ -703,7 +703,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Can I use a school car for the Victoria road test?",
         answer:
-          "Instructor-approved road test vehicle support may be available when booked in advance and paired with the right preparation.",
+          "ICBC-approved road test vehicle support may be available when booked in advance and paired with the right preparation.",
       },
     ],
   },
@@ -791,7 +791,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Can I use the car for the real road test?",
         answer:
-          "Instructor-approved road test vehicle support may be available when booked in advance, so you can test in a familiar car.",
+          "ICBC-approved road test vehicle support may be available when booked in advance, so you can test in a familiar car.",
       },
     ],
     primaryCtaLabel: "Book a mock test",
@@ -801,15 +801,15 @@ export const seoLandingPages: SeoLandingPage[] = [
     path: "/road-test-vehicle",
     title: "ICBC Road Test Car Rental in Victoria | Shanaya's Driving School",
     metaDescription:
-      "Book an instructor-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
+      "Book an ICBC-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
     eyebrow: "Road test vehicle",
     h1: "ICBC road test car rental in Victoria",
     heroDescription:
-      "Use a familiar instructor-approved vehicle for road test day and keep your final preparation simple.",
+      "Use a familiar ICBC-approved vehicle for road test day and keep your final preparation simple.",
     heroImage: "/landing/road-test-vehicle.webp",
     targetKeyword: "ICBC road test car rental Victoria",
     intro: [
-      "A road test vehicle rental helps students avoid last-minute stress around car availability, insurance, mechanical readiness, or unfamiliar controls. Shanaya's Driving School offers an instructor-approved vehicle option for eligible road test bookings in Victoria, Langford, and nearby service areas.",
+      "A road test vehicle rental helps students avoid last-minute stress around car availability, insurance, mechanical readiness, or unfamiliar controls. Shanaya's Driving School offers an ICBC-approved vehicle option for eligible road test bookings in Victoria, Langford, and nearby service areas.",
       "Using a familiar training car can make test day more predictable. Students know the mirror setup, vehicle size, braking feel, blind spots, steering response, and parking reference points. That consistency can help reduce nerves when the examiner gets in the vehicle.",
       "This service is best paired with a warm-up lesson or road test preparation session. The instructor can review the final details, confirm the student is ready, and make sure the test-day logistics are clear before the appointment.",
     ],
@@ -819,7 +819,7 @@ export const seoLandingPages: SeoLandingPage[] = [
         body:
           "The vehicle rental is intended to keep the test-day process simple and consistent for students who do not have a suitable vehicle or prefer to test in the car they trained in.",
         bullets: [
-          "Instructor-approved vehicle for road test day",
+          "ICBC-approved vehicle for road test day",
           "Familiar controls, mirrors, visibility, and parking reference points",
           "Scheduling coordinated around the selected service area and appointment time",
         ],
@@ -844,7 +844,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Is the car suitable for an ICBC road test?",
         answer:
-          "The rental option is built around instructor-approved training vehicles used for student lessons and test-day support.",
+          "The rental option is built around ICBC-approved training vehicles used for student lessons and test-day support.",
       },
     ],
   },

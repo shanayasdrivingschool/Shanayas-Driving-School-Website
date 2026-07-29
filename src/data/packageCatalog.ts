@@ -150,9 +150,9 @@ export const packageCatalog: PackageCatalogItem[] = [
       {
         title: "Road Test Package",
         objectives: [
-          "Combine targeted road test preparation with an instructor-approved car for exam day.",
-          "Warm up key maneuvers, observations, and control habits that need the most attention.",
-          "Add practice lessons on top of the base package whenever more repetition is needed.",
+          "Prepare on the ICBC test routes and take the test in our dual-control car.",
+          "Sharpen the maneuvers, observations, and control habits that cost the most marks.",
+          "Add 60-minute practice lessons whenever you want more time behind the wheel.",
         ],
       },
       {
@@ -221,9 +221,9 @@ export const packageCatalog: PackageCatalogItem[] = [
       {
         title: "Road Test Package",
         objectives: [
-          "Combine targeted road test preparation with an instructor-approved car for exam day.",
-          "Warm up key maneuvers, observations, and route habits that still need tightening.",
-          "Add practice lessons on top of the base package to sharpen control before the official test.",
+          "Prepare on the ICBC test routes and take the test in our dual-control car.",
+          "Tighten the maneuvers, observations, and route habits that still feel uneven.",
+          "Add 60-minute practice lessons in the final weeks before the test.",
         ],
       },
       {

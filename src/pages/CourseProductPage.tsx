@@ -311,8 +311,8 @@ const CourseProductPage = () => {
           <section className="rounded-3xl border border-slate-200 bg-white p-5">
             <h3 className="text-xl font-black text-slate-900">Add practice lessons</h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              The base package covers road test preparation and the car for your test. Add{" "}
-              {ADD_ON_LESSON_DURATION_MINUTES}-minute lessons if you want more practice before test day.
+              The base package covers road test preparation and the rental car. Add{" "}
+              {ADD_ON_LESSON_DURATION_MINUTES}-minute lessons if you want extra practice before test day.
             </p>
 
             <div className="mt-5 rounded-2xl bg-slate-50 p-4">
@@ -356,7 +356,8 @@ const CourseProductPage = () => {
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <dt className="font-semibold text-slate-600">
-                    Lessons {addOnLessonCount > 0 ? `(${addOnLessonCount} x ${formatCoursePrice(addOnLessonPrice)})` : ""}
+                    Practice lessons{" "}
+                    {addOnLessonCount > 0 ? `(${addOnLessonCount} x ${formatCoursePrice(addOnLessonPrice)})` : ""}
                   </dt>
                   <dd className="font-bold text-slate-900">{formatCoursePrice(addOnLessonTotal)}</dd>
                 </div>
