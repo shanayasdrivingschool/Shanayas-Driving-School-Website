@@ -32,12 +32,23 @@ const sample: Author = {
 };
 
 describe("author registry", () => {
-  it("publishes nobody until a real instructor is signed off", () => {
-    /* Guards the rule in authors.ts: this file must not be seeded with invented
-       people to "have authors". Deleting this test is not the way to add one —
-       supply verified details, then update the expectation. */
-    expect(authors).toHaveLength(0);
-    expect(publishedAuthors).toHaveLength(0);
+  it("holds the staff named by the owner", () => {
+    expect(authors.map((author) => author.id)).toEqual(["joyce", "azy", "alden"]);
+    expect(publishedAuthors).toHaveLength(3);
+  });
+
+  it("claims no credential, experience date or profile that was not supplied", () => {
+    /* Guards rule 2 in authors.ts. These fields carry the Experience and
+       Expertise signals a quality rater checks, so an entry may only gain one
+       once the school can evidence it — not because a page looked empty. */
+    for (const author of publishedAuthors) {
+      for (const field of ["instructingSince", "credentials", "specialties", "languages", "sameAs", "image"] as const) {
+        expect(
+          author[field],
+          `${author.id}.${field} was set — confirm it is evidenced, then allow it here`,
+        ).toBeUndefined();
+      }
+    }
   });
 
   it("uses unique ids and requires the fields a profile page renders", () => {

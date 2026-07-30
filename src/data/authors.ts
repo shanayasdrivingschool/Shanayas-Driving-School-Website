@@ -58,9 +58,49 @@ export type Author = {
   published: boolean;
 };
 
-/* Intentionally empty. See rule 1 above: this file gets its first entry when a
-   real instructor's details are signed off, not before. */
-export const authors: Author[] = [];
+/* Staff named by the owner on 2026-07-30. Each entry carries only the name and
+   role given, plus a role statement written from it — no experience dates,
+   certifications, specialties, languages, profile links or photos, because none
+   were supplied. Those fields stay absent until they can be evidenced (rule 2),
+   which is also why no entry claims subject-matter expertise it cannot show. */
+export const authors: Author[] = [
+  {
+    id: "joyce",
+    name: "Joyce",
+    jobTitle: "Chief Executive Officer",
+    summary:
+      "Joyce is the CEO of Shanaya's Driving School and is accountable for the guidance the school publishes.",
+    bio: [
+      "Joyce leads Shanaya's Driving School, an independent driving school in Langford, B.C. ICBC's general directory lists the school for Class 5 and 7 driver training; that listing is a licensing record, not ICBC approval or endorsement.",
+      "As CEO, Joyce is accountable for what the school publishes and for acting on corrections readers report.",
+    ],
+    published: true,
+  },
+  {
+    id: "azy",
+    name: "Azy",
+    jobTitle: "Driving instructor",
+    summary:
+      "Azy is a driving instructor at Shanaya's Driving School, teaching lessons across Greater Victoria.",
+    bio: [
+      "Azy teaches driving lessons for Shanaya's Driving School in Langford, Victoria and the wider Westshore.",
+      "Lessons cover the vehicle control, observation and road-judgment habits ICBC examiners look for, using the school's dual-control vehicles.",
+    ],
+    published: true,
+  },
+  {
+    id: "alden",
+    name: "Alden",
+    jobTitle: "Administration officer",
+    summary:
+      "Alden is the administration officer at Shanaya's Driving School, supporting students with bookings and scheduling.",
+    bio: [
+      "Alden handles administration for Shanaya's Driving School, including student enquiries, bookings and lesson scheduling.",
+      "Questions about a booking, a package or a payment plan reach Alden through the school's contact channels.",
+    ],
+    published: true,
+  },
+];
 
 export const publishedAuthors = authors.filter((author) => author.published);
 
