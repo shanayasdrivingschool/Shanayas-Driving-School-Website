@@ -40,7 +40,12 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    /* data-[state=closed]:h-0 only matters when a caller passes forceMount, which
+       keeps closed content mounted so crawlers can read it. Without forceMount
+       closed content is unmounted and never renders, so this is inert. Height 0
+       plus overflow-hidden clips it visually while leaving the text rendered,
+       which indexes better than display:none. */
+    className="overflow-hidden text-sm transition-all data-[state=closed]:h-0 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
     <div className={cn("pb-4 pt-0", className)}>{children}</div>

@@ -44,6 +44,9 @@ export const loadSiteContent = async () => {
       { publishedAuthors, resolveAuthor },
       authorSchema,
       { articlesReviewedBy, articlesWrittenBy },
+      faqData,
+      { faqAnswerToPlainText, parseFaqAnswer },
+      { sitePolicies },
     ] = await Promise.all([
       server.ssrLoadModule("/src/data/blogPosts.tsx"),
       server.ssrLoadModule("/src/data/seoLandingPages.ts"),
@@ -55,6 +58,9 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/data/authors.ts"),
       server.ssrLoadModule("/src/lib/authorSchema.ts"),
       server.ssrLoadModule("/src/lib/authorCredits.ts"),
+      server.ssrLoadModule("/src/data/siteFaqs.ts"),
+      server.ssrLoadModule("/src/lib/faqAnswer.ts"),
+      server.ssrLoadModule("/src/data/policies.ts"),
     ]);
 
     return {
@@ -66,6 +72,23 @@ export const loadSiteContent = async () => {
       authorSchema,
       articlesWrittenBy,
       articlesReviewedBy,
+      /* The /faq hub renders from this data alone — the generator holds no copy
+         of the questions. parseFaqAnswer keeps the inline citations as real
+         <a href> links in the crawler HTML; faqAnswerToPlainText strips them
+         back out for FAQPage schema. */
+      siteFaqs: {
+        seo: faqData.faqPageSeo,
+        categories: faqData.faqCategories,
+        faqs: faqData.siteFaqs,
+        relatedLinks: faqData.faqRelatedLinks,
+        lastReviewed: faqData.FAQ_LAST_REVIEWED,
+        parseAnswer: parseFaqAnswer,
+        answerToPlainText: faqAnswerToPlainText,
+      },
+      /* Policy pages are ordinary React routes with no pre-rendered HTML and no
+         sitemap entry, so a crawler never saw them. The FAQ now links two of
+         them, so they get the same treatment as every other route. */
+      policies: sitePolicies,
       knowledgeTestGuide: {
         faqs: knowledgeTestGuide.knowledgeTestGuideFaqs,
         publishedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,

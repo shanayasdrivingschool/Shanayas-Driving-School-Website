@@ -23,7 +23,6 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
   const primaryLabel = page.primaryCtaLabel ?? "Book a lesson";
   const secondaryLabel = page.secondaryCtaLabel ?? "View courses";
   const isInformationGuide = [
-    "faq",
     "icbc-approved-driving-school",
     "bc-graduated-licensing-program",
     "driver-education-training",

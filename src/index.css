@@ -120,6 +120,17 @@
     overflow-x: hidden;
   }
 
+  /* overflow-x:hidden turns body and #root into scroll containers, and
+     position:sticky then has nothing to stick to. overflow-x:clip clips the same
+     horizontal overflow without creating one, so the FAQ topic rail stays
+     pinned. Scoped to that page rather than applied globally: the site's other
+     sticky asides are blocked by the same rule, but unblocking them everywhere
+     would change scrolling on pages not being worked on here. */
+  body:has(.faq-page),
+  #root:has(.faq-page) {
+    overflow-x: clip;
+  }
+
   img,
   picture,
   video,

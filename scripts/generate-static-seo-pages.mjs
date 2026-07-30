@@ -347,88 +347,8 @@ const landingPages = [
     description:
       "Verified answers about B.C. Class 7 knowledge and road tests, L and N restrictions, fees, lessons, school licensing, rentals and booking.",
     image: "https://www.shanayasdrivingschool.com/landing/faq.webp",
-    faqs: [
-      {
-        question: "What is on the B.C. Class 7 knowledge test, and what does it cost?",
-        answer:
-          "ICBC's passenger-vehicle knowledge test has 50 multiple-choice questions. You need 40 correct answers to pass, have up to 45 minutes and pay $15 for each attempt. Those figures apply to the online and in-person test options described by ICBC.",
-      },
-      {
-        question: "Does passing the online knowledge test let me start driving?",
-        answer:
-          "No. An online pass is a test result, not a learner's licence. ICBC says the result is valid for one year. You must still visit a driver licensing office with the required primary and secondary identification, pass the vision screening, complete the photo and consent steps that apply to you, and pay the separate $10 Class 7 learner-licence fee before driving.",
-      },
-      {
-        question: "When can I take the Class 7 road test, how long is it and what are the fees?",
-        answer:
-          "Under the rules in effect on July 21, 2026, a Class 7 learner may take the road test after holding the L for at least 12 months and staying driving-prohibition-free. ICBC says the test and feedback take about 35 minutes. The current fee is $35 for each attempt, plus $75 for the five-year novice licence if you pass.",
-      },
-      {
-        question: "What should I bring to a Class 7 road-test appointment?",
-        answer:
-          "Bring your current learner's licence, one accepted primary ID and one accepted secondary ID, payment, required corrective lenses, and a qualified supervisor. Bring a safe, reliable, properly insured vehicle with a Canadian plate, its registration and insurance papers, and the plate number. Bring an approved-course Declaration of Completion if it applies. A car-share vehicle may require a new original authorization letter for each attempt when you are not the named member.",
-      },
-      {
-        question: "Why might ICBC refuse the vehicle before a road test?",
-        answer:
-          "ICBC may cancel the test if the vehicle is unsafe or does not meet legal requirements. Its published common reasons include cracked or illegally tinted glass, safety-related warning lights, damaged seatbelts, lights or horn that do not work, unsafe tires, doors or windows that do not operate, unsafe or illegal modifications, a hazardous interior, too little fuel or battery charge, or an outstanding serious safety recall. Check ICBC's current vehicle list before the appointment.",
-      },
-      {
-        question: "What skills does ICBC assess, and can a school provide the test route?",
-        answer:
-          "ICBC's Road Test Skills Explainer groups the criteria under observation, space margin, speed, steering and communication. ICBC states that it does not make road-test routes available outside ICBC, so Shanaya's does not claim to provide an official or exact route. Practise transferable skills across varied legal road conditions instead of memorizing streets.",
-      },
-      {
-        question: "What are ICBC's cancellation notice and road-test retest waits?",
-        answer:
-          "Give ICBC at least 48 hours' notice when cancelling or rescheduling a road test to avoid the current $25 cancellation fee. After an unsuccessful Class 7 attempt, ICBC's minimum waits are 14 days after the first attempt, 30 days after the second and 60 days after a third or later attempt. A new test fee applies each time.",
-      },
-      {
-        question: "What are the current Class 7 learner (L) restrictions?",
-        answer:
-          "Display the official L sign. Drive only from 5 a.m. to midnight with a supervisor who is at least 25, holds a valid Class 1, 2, 3, 4 or 5 licence and sits beside you. You may carry that supervisor plus one other passenger. You must have zero alcohol and zero drugs in your blood while driving and may not use hand-held or hands-free electronic devices. Follow any additional restriction printed on your licence. These rules apply through October 18, 2026; effective October 19, 2026, the minimum supervisor age drops to 22 (unrestricted Class 5) and a learner may carry additional passengers when everyone other than the supervisor is immediate family — see the October 19, 2026 changes below.",
-      },
-      {
-        question: "What are the current novice (N) restrictions?",
-        answer:
-          "Display the official N sign, have zero alcohol and zero drugs in your blood while driving, and do not use hand-held or hands-free electronic devices. The usual limit is one passenger; the passenger limit does not apply when a qualified supervisor age 25 or older is seated beside you or when the additional passengers are immediate family. Follow every restriction printed on your licence. Effective October 19, 2026, the qualified-supervisor minimum age for this passenger exception drops to 22 (unrestricted Class 5) — see the October 19, 2026 changes below.",
-      },
-      {
-        question: "What changes to B.C.'s GLP on October 19, 2026?",
-        answer:
-          "The first Class 7 learner-to-novice road test remains. From October 19, 2026, the minimum learner period is nine months for drivers age 25 or older and remains 12 months for drivers under 25. Eligible novice drivers move toward Class 5 through a Driving Record Assessment instead of the second road test, followed by 12 months with specified Class 5 or Class 5/6 restrictions. Age, start date and driving record affect the transition, so check ICBC's change page for your case.",
-      },
-      {
-        question: "Are professional lessons required, and who conducts the official tests?",
-        answer:
-          "Professional lessons are optional for the standard Class 7 path. A learner may prepare through legal supervised practice and ICBC's free materials. ICBC—not Shanaya's—administers the official knowledge and road tests, decides eligibility and issues licences. A lesson or practice assessment cannot guarantee a pass.",
-      },
-      {
-        question: "Is Shanaya's an ICBC-approved school or an approved GLP course provider?",
-        answer:
-          "Use the terms carefully. ICBC's general driving-school directory lists SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, for Class 5 and Class 7 driver training. That supports the school's licensed status but is not an endorsement. As checked July 21, 2026, Shanaya's did not appear in ICBC's separate directory of schools offering an approved GLP course, so this page does not describe its lessons as an ICBC-approved course.",
-      },
-      {
-        question: "How many professional lessons do I need?",
-        answer:
-          "There is no fixed professional-lesson count for the standard Class 7 road-test path. ICBC recommends at least 60 hours of total practice before the Class 7 road test, but supervised practice can make up those hours. Choose any paid instruction based on observed skill gaps, legal practice available outside lessons and readiness—not a promised number of sessions or a guaranteed result.",
-      },
-      {
-        question: "What lesson prices are shown in Shanaya's current catalogue?",
-        answer:
-          "The catalogue's base rates before GST are $89 for 60 minutes and $133.50 for 90 minutes in the standard and regional service tiers. Salt Spring Island rates are $109 for 60 minutes and $163.50 for 90 minutes. Packages, fixed-price courses, discounts and add-ons can differ, so review the itemized checkout total before paying.",
-      },
-      {
-        question: "What road-test vehicle options and prices are listed?",
-        answer:
-          "The current catalogue shows a stand-alone road-test-day vehicle option at $250 and a combined lesson, road-test preparation and rental course at $350 for its 60-minute format or $450 for its 90-minute format. Prices are before GST. Booking is subject to service-area, instructor and vehicle availability and written terms, and it does not guarantee that ICBC will accept the vehicle; the examiner applies ICBC's test-day vehicle rules.",
-      },
-      {
-        question: "Where are lessons offered, and what payment or cancellation terms apply?",
-        answer:
-          "The catalogue lists Victoria, Langford, Colwood, Sidney, Metchosin, Sooke, Duncan and Salt Spring Island, all subject to instructor scheduling and routing. Checkout currently requests the full displayed total; Affirm or Afterpay/Clearpay may appear only for eligible transactions. No general school cancellation, refund or no-show rule is stated here as verified fact. Before paying, obtain written terms for your lesson or vehicle booking and written confirmation of any alternative payment arrangement.",
-      },
-    ],
+    /* title, description and faqs are assigned from src/data/siteFaqs.ts after
+       the content loader runs — see the faqPage block below. */
   },
   {
     path: "/icbc-approved-driving-school/",
@@ -1271,13 +1191,123 @@ const buildLandingBody = (landing) => {
     parts.push(`<section><h2>${escapeHtml(landing.relatedLinksTitle ?? "Related pages")}</h2><ul>`);
     landing.relatedLinks.forEach((link) => {
       const href = `${siteOrigin}${link.href.replace(/\/?$/, "/")}`;
-      const description = link.description ? ` — ${link.description}` : "";
+      const description = link.description ? `: ${link.description}` : "";
       parts.push(
         `<li><a href="${escapeHtml(href)}">${escapeHtml(link.label)}</a>${escapeHtml(description)}</li>`,
       );
     });
     parts.push(`</ul></section>`);
   }
+
+  return parts.filter(Boolean).join("\n        ");
+};
+
+/* Policy pages are bespoke React routes driven entirely by src/data/policies.ts,
+   so their crawler HTML is built from that same data — intro, highlights and each
+   section's paragraphs and bullets. */
+const buildPolicyBody = (policy) => {
+  const parts = [
+    `<h1>${escapeHtml(policy.label)}</h1>`,
+    para(policy.cardDescription),
+    para(`Effective ${policy.effectiveDate}`),
+    para(policy.intro),
+    list(policy.highlights ?? []),
+  ];
+
+  (policy.sections ?? []).forEach((section) => {
+    parts.push(`<section><h2>${escapeHtml(section.title)}</h2>`);
+    (section.paragraphs ?? []).forEach((text) => parts.push(para(text)));
+    parts.push(list(section.bullets ?? []));
+    if (section.note) {
+      parts.push(para(section.note));
+    }
+    parts.push(`</section>`);
+  });
+
+  return parts.filter(Boolean).join("\n        ");
+};
+
+/* The /policies index lists every policy, which is the only place a crawler can
+   discover the individual pages. */
+const buildPolicyIndexBody = (page, policies) => {
+  const parts = [`<h1>${escapeHtml(page.title.split(" | ")[0])}</h1>`, para(page.description), `<ul>`];
+
+  policies.forEach((policy) => {
+    const href = `${siteOrigin}${policy.href.replace(/\/?$/, "/")}`;
+    parts.push(
+      `<li><a href="${escapeHtml(href)}">${escapeHtml(policy.label)}</a>${escapeHtml(`: ${policy.cardDescription}`)}</li>`,
+    );
+  });
+
+  parts.push(`</ul>`);
+
+  return parts.join("\n        ");
+};
+
+/* FAQ answers store their citations inline as [label](href). React turns those
+   into Link/anchor elements; here they become the real <a href> a non-JS crawler
+   follows, which is the whole point of moving the old source list into the
+   answers. Internal targets get the absolute, trailing-slash form the rest of
+   this file uses; #anchors stay as-is and resolve within the page. */
+const renderFaqAnswerHtml = (answer, parseAnswer) =>
+  parseAnswer(answer)
+    .map((segment) => {
+      if (segment.type === "text") {
+        return escapeHtml(segment.value);
+      }
+
+      const href =
+        segment.kind === "internal"
+          ? `${siteOrigin}${segment.href.replace(/\/?$/, "/")}`
+          : segment.href;
+
+      return `<a href="${escapeHtml(href)}">${escapeHtml(segment.label)}</a>`;
+    })
+    .join("");
+
+/* The FAQ hub is a bespoke React page (search + category filtering), so its
+   crawler HTML is built here from the same src/data/siteFaqs.ts the page renders
+   — grouped under the same headings, with every question anchored so /faq#id
+   works for a crawler and a human alike. */
+const buildFaqBody = (faq) => {
+  const parts = [`<h1>${escapeHtml(faq.seo.h1)}</h1>`, para(faq.seo.heroDescription)];
+
+  faq.seo.intro.forEach((text) => parts.push(para(text)));
+
+  faq.categories.forEach((category) => {
+    const items = faq.faqs.filter((item) => item.category === category.id);
+
+    if (!items.length) {
+      return;
+    }
+
+    parts.push(`<section><h2>${escapeHtml(category.label)}</h2>`);
+    parts.push(para(category.description));
+
+    items.forEach((item) => {
+      parts.push(`<h3 id="${escapeHtml(item.id)}">${escapeHtml(item.question)}</h3>`);
+      parts.push(`<p>${renderFaqAnswerHtml(item.answer, faq.parseAnswer)}</p>`);
+    });
+
+    parts.push(`</section>`);
+  });
+
+  if (faq.relatedLinks.length) {
+    parts.push(`<section><h2>Read the full process</h2><ul>`);
+    faq.relatedLinks.forEach((link) => {
+      const href = `${siteOrigin}${link.href.replace(/\/?$/, "/")}`;
+      parts.push(
+        `<li><a href="${escapeHtml(href)}">${escapeHtml(link.label)}</a>${escapeHtml(`: ${link.description}`)}</li>`,
+      );
+    });
+    parts.push(`</ul></section>`);
+  }
+
+  parts.push(
+    para(
+      `Prepared by Shanaya's Driving School, an independent driving school licensed under the Motor Vehicle Act. ICBC rules and fees were checked against the linked official pages on ${faq.lastReviewed}; school prices, service areas and vehicle options were checked against this site's current catalogue.`,
+    ),
+  );
 
   return parts.filter(Boolean).join("\n        ");
 };
@@ -1611,6 +1641,12 @@ const renderPageHtml = (template, page, content) => {
     html = replaceFallback(html, page, () => buildNewcomersGuideBody(page));
   } else if (page.path === "/knowledge-test-guide/") {
     html = replaceFallback(html, page, () => buildKnowledgeTestGuideBody(page));
+  } else if (page.path === "/faq/") {
+    html = replaceFallback(html, page, () => buildFaqBody(content.siteFaqs));
+  } else if (page.policy) {
+    html = replaceFallback(html, page, () => buildPolicyBody(page.policy));
+  } else if (page.path === "/policies/") {
+    html = replaceFallback(html, page, () => buildPolicyIndexBody(page, content.policies));
   } else if (post) {
     html = replaceFallback(html, page, () => buildBlogBody(post, page));
   } else if (landing) {
@@ -1679,6 +1715,57 @@ guidePage.breadcrumbs = [
   { name: "Home", path: "/" },
   { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide/" },
 ];
+
+/* Same rule for the FAQ hub: title, description and every question come out of
+   src/data/siteFaqs.ts, so the crawler HTML and FAQPage schema physically cannot
+   drift from what React renders at /faq. Schema wants plain text, so the inline
+   [label](href) citations are stripped for that copy only. */
+const faqPage = pages.find((page) => page.path === "/faq/");
+
+if (!faqPage) {
+  throw new Error('Missing the "/faq/" page entry.');
+}
+
+faqPage.title = content.siteFaqs.seo.title;
+faqPage.description = content.siteFaqs.seo.description;
+faqPage.image = `${siteOrigin}${content.siteFaqs.seo.image}`;
+faqPage.faqs = content.siteFaqs.faqs.map((faq) => ({
+  question: faq.question,
+  answer: content.siteFaqs.answerToPlainText(faq.answer),
+}));
+faqPage.breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "FAQ", path: "/faq/" },
+];
+
+/* Policy routes come straight from src/data/policies.ts, matching the title and
+   description formulas SeoManager uses for the same URLs. Adding a policy adds
+   its route here, and assertSitemapCoverage then requires the sitemap entry
+   before the build passes. */
+pages.push({
+  path: "/policies/",
+  title: `Policies | ${siteName}`,
+  description:
+    "Review Shanaya's Driving School policies for privacy, payments, installments, cookies, and website terms.",
+  breadcrumbs: [
+    { name: "Home", path: "/" },
+    { name: "Policies", path: "/policies/" },
+  ],
+});
+
+for (const policy of content.policies) {
+  pages.push({
+    path: `${policy.href.replace(/\/?$/, "/")}`,
+    title: `${policy.label} | ${siteName}`,
+    description: policy.cardDescription,
+    policy,
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "Policies", path: "/policies/" },
+      { name: policy.label, path: `${policy.href.replace(/\/?$/, "/")}` },
+    ],
+  });
+}
 
 /* Author profile pages are driven entirely by src/data/authors.ts: publishing an
    author adds its route here, and nothing is pre-rendered while the registry is

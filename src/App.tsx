@@ -44,6 +44,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const AuthorProfile = lazy(() => import("./pages/AuthorProfile"));
 const SearchPage = lazy(() => import("./pages/Search"));
+const Faq = lazy(() => import("./pages/Faq"));
 const SeoLandingPage = lazy(() => import("./pages/SeoLandingPage"));
 const CourseProductPage = lazy(() => import("./pages/CourseProductPage"));
 const ExtraProductPage = lazy(() => import("./pages/ExtraProductPage"));
@@ -104,7 +105,7 @@ const App = () => (
                 <Route path="/road-test-vehicle" element={<SeoLandingPage pageId="road-test-vehicle" />} />
                 <Route path="/intensive-driving-course" element={<SeoLandingPage pageId="intensive-driving-course" />} />
                 <Route path="/pricing" element={<SeoLandingPage pageId="pricing" />} />
-                <Route path="/faq" element={<SeoLandingPage pageId="faq" />} />
+                <Route path="/faq" element={<Faq />} />
                 <Route path="/icbc-approved-driving-school" element={<SeoLandingPage pageId="icbc-approved-driving-school" />} />
                 <Route path="/bc-graduated-licensing-program" element={<SeoLandingPage pageId="bc-graduated-licensing-program" />} />
                 <Route path="/driving-instructor-victoria" element={<SeoLandingPage pageId="driving-instructor-victoria" />} />

@@ -11,6 +11,10 @@ type SiteHeaderProps = {
 };
 
 const logoUrl = "/logos/Driving School Logo Vertical - white.png";
+/* tone="dark" is the only tone that renders a white header bar, where the white
+   logo is invisible. The mobile menu overlay stays dark in every tone, so it
+   keeps the white one. */
+const darkToneLogoUrl = "/logos/Driving School Logo Vertical.png";
 
 type NavItem = {
   label: string;
@@ -692,7 +696,12 @@ const SiteHeader = ({ tone = "light", className = "" }: SiteHeaderProps) => {
             className="w-[120px] shrink-0 md:w-[140px] lg:w-[160px]"
             aria-label="Go to home page"
           >
-            <img src={logoUrl} alt="Shanaya's Driving School" decoding="async" className="w-full" />
+            <img
+              src={isInvertedTone ? logoUrl : darkToneLogoUrl}
+              alt="Shanaya's Driving School"
+              decoding="async"
+              className="w-full"
+            />
           </Link>
 
           <nav

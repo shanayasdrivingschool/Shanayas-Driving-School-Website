@@ -18,6 +18,8 @@ import { optionalExtras } from "@/data/optionalExtras";
 import { packageCatalog } from "@/data/packageCatalog";
 import { sitePolicies } from "@/data/policies";
 import { seoLandingPagesByPath, type SeoLandingPageFaq } from "@/data/seoLandingPages";
+import { faqPageSeo, siteFaqs } from "@/data/siteFaqs";
+import { faqAnswerToPlainText } from "@/lib/faqAnswer";
 
 const SITE_ORIGIN = "https://www.shanayasdrivingschool.com";
 const SITE_NAME = "Shanaya's Driving School";
@@ -139,6 +141,22 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
       { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide" },
     ],
   },
+  /* The FAQ hub is its own page rather than an SEO landing page, so its title,
+     description and FAQPage schema come straight from src/data/siteFaqs.ts. The
+     schema text needs the inline [label](href) citations stripped back out. */
+  "/faq": {
+    title: faqPageSeo.title,
+    description: faqPageSeo.description,
+    image: faqPageSeo.image,
+    faqs: siteFaqs.map((faq) => ({
+      question: faq.question,
+      answer: faqAnswerToPlainText(faq.answer),
+    })),
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "FAQ", path: "/faq" },
+    ],
+  },
   "/blog": {
     title: "Driving Tips & Road Test Resources | Shanaya's Driving School",
     description:
@@ -163,6 +181,10 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
     title: "Policies | Shanaya's Driving School",
     description:
       "Review Shanaya's Driving School policies for privacy, payments, installments, cookies, and website terms.",
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "Policies", path: "/policies" },
+    ],
   },
 };
 
@@ -501,6 +523,11 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
         title: `${policy.label} | ${SITE_NAME}`,
         description: policy.cardDescription,
         path,
+        breadcrumbs: [
+          { name: "Home", path: "/" },
+          { name: "Policies", path: "/policies" },
+          { name: policy.label, path },
+        ],
       };
     }
   }
