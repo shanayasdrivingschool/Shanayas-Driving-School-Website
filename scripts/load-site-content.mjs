@@ -43,6 +43,7 @@ export const loadSiteContent = async () => {
       knowledgeTestGuide,
       { publishedAuthors, resolveAuthor },
       authorSchema,
+      { articlesReviewedBy, articlesWrittenBy },
     ] = await Promise.all([
       server.ssrLoadModule("/src/data/blogPosts.tsx"),
       server.ssrLoadModule("/src/data/seoLandingPages.ts"),
@@ -53,6 +54,7 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/data/knowledgeTestGuide.ts"),
       server.ssrLoadModule("/src/data/authors.ts"),
       server.ssrLoadModule("/src/lib/authorSchema.ts"),
+      server.ssrLoadModule("/src/lib/authorCredits.ts"),
     ]);
 
     return {
@@ -62,10 +64,14 @@ export const loadSiteContent = async () => {
       authors: publishedAuthors,
       resolveAuthor,
       authorSchema,
+      articlesWrittenBy,
+      articlesReviewedBy,
       knowledgeTestGuide: {
         faqs: knowledgeTestGuide.knowledgeTestGuideFaqs,
         publishedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
         reviewedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
+        authorId: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
+        reviewerId: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
       },
       blogPosts: new Map(
         blogPosts.map((post) => [

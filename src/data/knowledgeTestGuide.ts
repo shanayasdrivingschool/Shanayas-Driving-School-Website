@@ -6,6 +6,15 @@ import type { SeoLandingPageFaq } from "@/data/seoLandingPages";
 export const KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO = "2026-07-21";
 export const KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO = "2026-06-12";
 
+/* Credited author and reviewer, the equivalent of authorId / reviewedById on a
+   blog post. This guide is administrative process — registration, accepted ID,
+   fees, appointments, licence issuance — so it is credited to the administration
+   officer with an instructor reviewing it. Ids come from src/data/authors.ts.
+   Three places read these: the page byline, SeoManager's Article schema and the
+   static generator, so they live here rather than in any one of them. */
+export const KNOWLEDGE_TEST_GUIDE_AUTHOR_ID = "alden";
+export const KNOWLEDGE_TEST_GUIDE_REVIEWER_ID = "azy";
+
 export const KNOWLEDGE_TEST_GUIDE_REVIEWED_LABEL = new Date(
   `${KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO}T00:00:00Z`,
 ).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });

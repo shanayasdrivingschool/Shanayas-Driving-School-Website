@@ -39,6 +39,8 @@ export const blogPosts: BlogPostData[] = [
       "A sourced guide to B.C.'s October 19, 2026 GLP changes: the Driving Record Assessment, age-based timelines, restricted Class 5 stage and transition rules.",
     heroImage: "/landing/bc-graduated-licensing-program.webp",
     author: "Shanaya's Driving School",
+    authorId: "joyce",
+    reviewedById: "azy",
     date: "July 21, 2026",
     datePublished: "2026-07-21",
     dateModified: "2026-07-21",
@@ -530,6 +532,8 @@ export const blogPosts: BlogPostData[] = [
     heroImage:
       "/blog/how-to-pass-driving-test-victoria-bc.webp",
     author: "Shanaya's Driving School",
+    authorId: "azy",
+    reviewedById: "joyce",
     date: "July 21, 2026",
     datePublished: "2026-07-05",
     dateModified: "2026-07-21",
@@ -759,6 +763,8 @@ export const blogPosts: BlogPostData[] = [
     heroImage:
       "/blog/icbc-road-test-tips-victoria.webp",
     author: "Shanaya's Driving School",
+    authorId: "azy",
+    reviewedById: "joyce",
     date: "July 21, 2026",
     datePublished: "2026-07-05",
     dateModified: "2026-07-21",
@@ -1098,6 +1104,8 @@ export const blogPosts: BlogPostData[] = [
     heroImage:
       "/blog/road-test-tips.webp",
     author: "Shanaya's Driving School",
+    authorId: "azy",
+    reviewedById: "alden",
     date: "July 21, 2026",
     datePublished: "2026-03-01",
     dateModified: "2026-07-21",
@@ -1436,6 +1444,8 @@ export const blogPosts: BlogPostData[] = [
     heroImage:
       "/blog/what-is-defensive-driving.webp",
     author: "Shanaya's Driving School",
+    authorId: "azy",
+    reviewedById: "joyce",
     date: "July 21, 2026",
     datePublished: "2026-02-20",
     dateModified: "2026-07-21",
@@ -1810,6 +1820,8 @@ export const blogPosts: BlogPostData[] = [
       "A source-checked overview of B.C.'s 90-day licence deadline, newcomer licensing paths, vehicle deadline, and five road rules for passenger drivers.",
     heroImage: "/blog/newcomers-guide-bc.webp",
     author: "Shanaya's Driving School",
+    authorId: "alden",
+    reviewedById: "azy",
     date: "July 21, 2026",
     datePublished: "2026-02-10",
     dateModified: "2026-07-21",

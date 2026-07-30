@@ -7,7 +7,7 @@ import SiteCtaSection, {
   siteCtaSecondaryClassName,
 } from "@/components/SiteCtaSection";
 import { resolveAuthor } from "@/data/authors";
-import { blogPosts } from "@/data/blogPosts";
+import { articlesReviewedBy, articlesWrittenBy } from "@/lib/authorCredits";
 
 /* An author's profile page: the page Google's author-profile guidance expects a
    Person entity to resolve to, and the page a reader lands on from a byline to
@@ -36,10 +36,8 @@ const AuthorProfile = () => {
     );
   }
 
-  const written = blogPosts.filter((post) => post.authorId === author.id);
-  const reviewed = blogPosts.filter(
-    (post) => post.reviewedById === author.id && post.authorId !== author.id,
-  );
+  const written = articlesWrittenBy(author.id);
+  const reviewed = articlesReviewedBy(author.id);
 
   return (
     <div className="min-h-screen bg-white">
@@ -72,17 +70,15 @@ const AuthorProfile = () => {
               <section className="pt-4">
                 <h2 className="text-xl font-black text-slate-900">Articles by {author.name}</h2>
                 <ul className="mt-4 space-y-3">
-                  {written.map((post) => (
-                    <li key={post.slug}>
+                  {written.map((article) => (
+                    <li key={article.path}>
                       <Link
-                        to={`/blog/${post.slug}`}
+                        to={article.path}
                         className="font-semibold text-[#1d52a1] underline underline-offset-2"
                       >
-                        {post.title}
+                        {article.title}
                       </Link>
-                      <p className="mt-1 text-sm text-slate-600">
-                        {post.category} · Updated {post.date}
-                      </p>
+                      <p className="mt-1 text-sm text-slate-600">{article.meta}</p>
                     </li>
                   ))}
                 </ul>
@@ -93,13 +89,13 @@ const AuthorProfile = () => {
               <section className="pt-4">
                 <h2 className="text-xl font-black text-slate-900">Articles reviewed by {author.name}</h2>
                 <ul className="mt-4 space-y-3">
-                  {reviewed.map((post) => (
-                    <li key={post.slug}>
+                  {reviewed.map((article) => (
+                    <li key={article.path}>
                       <Link
-                        to={`/blog/${post.slug}`}
+                        to={article.path}
                         className="font-semibold text-[#1d52a1] underline underline-offset-2"
                       >
-                        {post.title}
+                        {article.title}
                       </Link>
                     </li>
                   ))}

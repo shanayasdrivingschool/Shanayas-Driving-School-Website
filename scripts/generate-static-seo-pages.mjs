@@ -1165,6 +1165,30 @@ const para = (text) => `<p>${escapeHtml(text)}</p>`;
 const list = (items) =>
   items.length ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "";
 
+/* "Written by X, role · Reviewed by Y, role", followed by links to their profile
+   pages so a crawler that never runs the React bundle can still reach the Person
+   entity behind the byline. Shared by the blog posts and the knowledge-test
+   guide, which credit authors the same way. */
+const buildBylineParts = (page, { fallback, extra = [] } = {}) => {
+  const { author, reviewedBy } = page.article ?? {};
+
+  const credits = [
+    author ? `Written by ${author.name}, ${author.jobTitle}` : fallback,
+    reviewedBy ? `Reviewed by ${reviewedBy.name}, ${reviewedBy.jobTitle}` : null,
+    ...extra,
+  ].filter(Boolean);
+
+  const links = [author, reviewedBy]
+    .filter(Boolean)
+    .filter((person, index, all) => all.findIndex((other) => other.id === person.id) === index)
+    .map((person) => `<a href="${siteOrigin}/authors/${person.id}/">About ${escapeHtml(person.name)}</a>`);
+
+  return [
+    credits.length ? para(credits.join(" · ")) : null,
+    links.length ? `<p>${links.join(" · ")}</p>` : null,
+  ].filter(Boolean);
+};
+
 /* Replaces the generic #seo-fallback boilerplate with real page content built
    from the same data src/ renders. Keeps the site-wide <nav> blocks, which are
    the only internal links a non-JS crawler ever sees. This changes nothing a
@@ -1303,6 +1327,9 @@ const buildKnowledgeTestGuideBody = (page) => {
     `<article>`,
     `<h1>B.C. Class 7 Knowledge Test: Online and In-Person Guide</h1>`,
     para(page.description),
+    /* Same byline the React page shows, so the crawler HTML credits the same
+       people and links their profiles. */
+    ...buildBylineParts(page),
     para("Prepared and maintained by Shanaya's Driving School, an independent driving school. This is not an ICBC publication. Information checked against the linked official sources on July 21, 2026."),
     `<section><h2>Current Class 7 test facts</h2>`,
     list([
@@ -1438,11 +1465,9 @@ const buildProductBody = (product) => {
 /* Author profile pages exist so a Person entity in Article.author resolves to a
    page a reader (and a quality rater) can check. The fallback mirrors what
    src/pages/AuthorProfile.tsx renders, from the same author entry. */
-const buildAuthorBody = (author, blogContent) => {
-  const written = [...blogContent.entries()].filter(([, post]) => post.authorId === author.id);
-  const reviewed = [...blogContent.entries()].filter(
-    ([, post]) => post.reviewedById === author.id && post.authorId !== author.id,
-  );
+const buildAuthorBody = (author, content) => {
+  const written = content.articlesWrittenBy(author.id);
+  const reviewed = content.articlesReviewedBy(author.id);
 
   const parts = [
     `<h1>${escapeHtml(author.name)}</h1>`,
@@ -1481,15 +1506,15 @@ const buildAuthorBody = (author, blogContent) => {
   [
     [`Articles by ${author.name}`, written],
     [`Articles reviewed by ${author.name}`, reviewed],
-  ].forEach(([heading, posts]) => {
-    if (!posts.length) {
+  ].forEach(([heading, articles]) => {
+    if (!articles.length) {
       return;
     }
 
     parts.push(`<section><h2>${escapeHtml(heading)}</h2><ul>`);
-    posts.forEach(([slug, post]) =>
+    articles.forEach((article) =>
       parts.push(
-        `<li><a href="${siteOrigin}/blog/${slug}/">${escapeHtml(post.title)}</a></li>`,
+        `<li><a href="${siteOrigin}${article.path}/">${escapeHtml(article.title)}</a></li>`,
       ),
     );
     parts.push(`</ul></section>`);
@@ -1514,40 +1539,19 @@ const buildAuthorBody = (author, blogContent) => {
   return parts.filter(Boolean).join("\n        ");
 };
 
-const buildBlogBody = (post, page) => {
-  const { author, reviewedBy } = page.article ?? {};
-  const byline = [
-    author ? `Written by ${author.name}, ${author.jobTitle}` : `By ${post.author}`,
-    reviewedBy ? `Reviewed by ${reviewedBy.name}, ${reviewedBy.jobTitle}` : null,
-    `Updated ${post.date}`,
-    post.readTime,
-    post.category,
-  ]
-    .filter(Boolean)
-    .join(" · ");
-
-  /* Byline links to the profile page so the Person entity is reachable by a
-     crawler that never runs the React bundle. */
-  const authorLinks = [author, reviewedBy]
-    .filter(Boolean)
-    .filter((person, index, all) => all.findIndex((other) => other.id === person.id) === index)
-    .map(
-      (person) =>
-        `<a href="${siteOrigin}/authors/${person.id}/">About ${escapeHtml(person.name)}</a>`,
-    );
-
-  return [
-    `<article>`,
-    `<h1>${escapeHtml(post.title)}</h1>`,
-    para(post.description),
-    para(byline),
-    authorLinks.length ? `<p>${authorLinks.join(" · ")}</p>` : null,
-    post.html,
-    `</article>`,
-  ]
-    .filter(Boolean)
-    .join("\n        ");
-};
+const buildBlogBody = (post, page) => [
+  `<article>`,
+  `<h1>${escapeHtml(post.title)}</h1>`,
+  para(post.description),
+  ...buildBylineParts(page, {
+    fallback: `By ${post.author}`,
+    extra: [`Updated ${post.date}`, post.readTime, post.category],
+  }),
+  post.html,
+  `</article>`,
+]
+  .filter(Boolean)
+  .join("\n        ");
 
 const renderPageHtml = (template, page, content) => {
   const canonical = `${siteOrigin}${page.path}`;
@@ -1600,7 +1604,7 @@ const renderPageHtml = (template, page, content) => {
   html = setSiteNav(html, page, content);
 
   if (page.author) {
-    html = replaceFallback(html, page, () => buildAuthorBody(page.author, content.blogPosts));
+    html = replaceFallback(html, page, () => buildAuthorBody(page.author, content));
   } else if (page.path === "/blog/") {
     html = replaceFallback(html, page, () => buildBlogIndexBody(page, content.blogPosts));
   } else if (page.path === "/newcomers-guide/") {
@@ -1668,6 +1672,8 @@ guidePage.article = {
   datePublished: content.knowledgeTestGuide.publishedIso,
   dateModified: content.knowledgeTestGuide.reviewedIso,
   section: "Learner Licensing",
+  author: content.resolveAuthor(content.knowledgeTestGuide.authorId),
+  reviewedBy: content.resolveAuthor(content.knowledgeTestGuide.reviewerId),
 };
 guidePage.breadcrumbs = [
   { name: "Home", path: "/" },

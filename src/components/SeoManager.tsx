@@ -7,8 +7,10 @@ import {
   buildProfilePageJsonLd,
 } from "@/lib/authorSchema";
 import {
+  KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
   KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
   KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
+  KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
   knowledgeTestGuideFaqs,
 } from "@/data/knowledgeTestGuide";
 import { courseCatalog } from "@/data/courseCatalog";
@@ -128,6 +130,8 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
       datePublished: KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
       dateModified: KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
       section: "Learner Licensing",
+      author: resolveAuthor(KNOWLEDGE_TEST_GUIDE_AUTHOR_ID),
+      reviewedBy: resolveAuthor(KNOWLEDGE_TEST_GUIDE_REVIEWER_ID),
     },
     faqs: knowledgeTestGuideFaqs,
     breadcrumbs: [

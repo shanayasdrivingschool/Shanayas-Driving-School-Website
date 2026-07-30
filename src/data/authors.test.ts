@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { authors, publishedAuthors, resolveAuthor, type Author } from "./authors";
-import { blogPosts } from "./blogPosts";
+import { creditedArticles } from "@/lib/authorCredits";
 import {
   authorPersonId,
   authorProfileUrl,
@@ -72,17 +72,24 @@ describe("author registry", () => {
     }
   });
 
-  it("keeps every author id referenced by a post resolvable", () => {
-    /* A post pointing at a missing or unpublished id silently loses its byline,
-       so catch the typo here instead of in production. */
-    for (const post of blogPosts) {
-      for (const id of [post.authorId, post.reviewedById].filter(Boolean)) {
+  it("keeps every author id referenced by credited content resolvable", () => {
+    /* An article pointing at a missing or unpublished id silently loses its
+       byline, so catch the typo here instead of in production. Covers the
+       knowledge-test guide as well as the blog, since its ids live in their own
+       data module. */
+    for (const article of creditedArticles) {
+      for (const id of [article.authorId, article.reviewedById].filter(Boolean)) {
         expect(
           authors.some((author) => author.id === id),
-          `blog post "${post.slug}" references unknown author id "${id}"`,
+          `"${article.path}" references unknown author id "${id}"`,
         ).toBe(true);
       }
     }
+  });
+
+  it("credits every article to a named author", () => {
+    const uncredited = creditedArticles.filter((article) => !article.authorId);
+    expect(uncredited.map((article) => article.path)).toEqual([]);
   });
 });
 

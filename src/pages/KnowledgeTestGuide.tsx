@@ -19,11 +19,18 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
 import {
+  KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
   KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
   KNOWLEDGE_TEST_GUIDE_REVIEWED_LABEL,
+  KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
   knowledgeTestGuideFaqs,
   knowledgeTestGuideSections,
 } from "@/data/knowledgeTestGuide";
+import { authorProfilePath, resolveAuthor } from "@/data/authors";
+import AuthorBioCard from "@/components/AuthorBioCard";
+
+const guideAuthor = resolveAuthor(KNOWLEDGE_TEST_GUIDE_AUTHOR_ID);
+const guideReviewer = resolveAuthor(KNOWLEDGE_TEST_GUIDE_REVIEWER_ID);
 
 const OFFICIAL_URLS = {
   onlineTest: "https://www.icbc.com/driver-licensing/new-drivers/online-knowledge-test",
@@ -153,6 +160,32 @@ const KnowledgeTestGuide = () => (
           A source-backed guide to eligibility, study materials, test formats, fees, identification and the steps
           required before ICBC issues your learner&apos;s licence.
         </p>
+        {/* Visible byline, not just Article.author in the schema: Google expects
+            author information a reader can actually see and follow. */}
+        {guideAuthor ? (
+          <p className="mt-5 text-sm text-white/80">
+            Written by{" "}
+            <Link
+              to={authorProfilePath(guideAuthor)}
+              className="font-semibold text-white underline underline-offset-2"
+            >
+              {guideAuthor.name}
+            </Link>
+            {`, ${guideAuthor.jobTitle}`}
+            {guideReviewer ? (
+              <>
+                {" · Reviewed by "}
+                <Link
+                  to={authorProfilePath(guideReviewer)}
+                  className="font-semibold text-white underline underline-offset-2"
+                >
+                  {guideReviewer.name}
+                </Link>
+                {`, ${guideReviewer.jobTitle}`}
+              </>
+            ) : null}
+          </p>
+        ) : null}
         <p className="mt-5 text-sm font-semibold text-white/75">
           Information checked against the linked official sources on{" "}
           <time dateTime={KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO}>{KNOWLEDGE_TEST_GUIDE_REVIEWED_LABEL}</time>.
@@ -513,6 +546,15 @@ const KnowledgeTestGuide = () => (
               </li>
             ))}
           </ul>
+
+          {guideAuthor ? (
+            <div className="mt-10 space-y-6">
+              <AuthorBioCard author={guideAuthor} />
+              {guideReviewer && guideReviewer.id !== guideAuthor.id ? (
+                <AuthorBioCard author={guideReviewer} label="Reviewed by" />
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </section>
     </AnimatedSection>
