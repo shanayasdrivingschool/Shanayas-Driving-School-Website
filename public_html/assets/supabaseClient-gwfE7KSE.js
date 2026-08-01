@@ -1,1 +1,0 @@
-import{c as a}from"./supabase-CMDoRd9N.js";import"./vendor-ffisdVBI.js";import"./react-vendor-4atPn5OY.js";const o="https://czygbsdelictijcmkucx.supabase.co",s="sb_publishable_zJODaTuToSJ3pEWbU9wAxQ_mHiREafx",e=!!s,b=e?a(o,s):null;export{e as isSupabaseConfigured,b as supabase,s as supabaseAnonKey,o as supabaseUrl};
