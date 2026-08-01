@@ -1,0 +1,1 @@
+import{aA as s,aB as o,aC as e,a7 as i,ad as c,aD as n}from"./vendor-ffisdVBI.js";const t={"privacy-policy":c,"installment-policy":i,"in-vehicle-passenger-policy":e,"promotions-and-discounts":o,"terms-and-conditions":s},r=a=>t[a]??n;export{r as g};
