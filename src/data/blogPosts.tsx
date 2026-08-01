@@ -32,6 +32,454 @@ export type BlogPostData = {
 
 export const blogPosts: BlogPostData[] = [
   {
+    slug: "icbc-road-test-victoria-mckenzie-office",
+    title: "ICBC's Victoria Road Test Office on McKenzie Avenue: What the Area Asks of You",
+    seoTitle: "ICBC Road Test Victoria: The McKenzie Ave Office",
+    description:
+      "ICBC's Victoria road test office on McKenzie Ave: counted traffic, school zones, hills, cyclists and the four failure reasons.",
+    heroImage: "/landing/road-test-prep-victoria.webp",
+    author: "Shanaya's Driving School",
+    authorId: "azy",
+    reviewedById: "joyce",
+    date: "August 2, 2026",
+    datePublished: "2026-08-02",
+    dateModified: "2026-08-02",
+    readTime: "7 min read",
+    category: "Victoria Road Test",
+    relatedSlugs: [
+      "icbc-road-test-tips-victoria",
+      "how-to-pass-driving-test-victoria-bc",
+      "pass-road-test",
+    ],
+    content: (
+      <>
+        <p>
+          ICBC&apos;s Victoria driver licensing office is at <strong>1-1150 McKenzie Ave</strong>, and
+          it books Class 5, 6, 7 and 8 road tests online. Every few weeks someone asks us for the
+          route that leaves it. Nobody outside ICBC has it, and ICBC says so plainly on its{" "}
+          <a
+            href="https://www.icbc.com/driver-licensing/visit-dl-office/Book-a-road-test"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Book a road test
+          </a>{" "}
+          page: <em>&ldquo;any sites which claim to sell our test routes did not obtain that
+          information from ICBC. We do not make this information available outside ICBC.&rdquo;</em>
+        </p>
+        <p>
+          What you can prepare for is the area. The streets around that office have been counted and
+          signed by public bodies, so what they demand is on record rather than rumour. For
+          eligibility, booking, fees and what to bring, use our{" "}
+          <Link to="/blog/how-to-pass-driving-test-victoria-bc">Class 7 preparation guide</Link> and{" "}
+          <Link to="/blog/pass-road-test">test-day checklist</Link> instead. No article or lesson can
+          guarantee a pass.
+        </p>
+
+        <h2>What makes you fail an ICBC road test?</h2>
+        <p>
+          In a{" "}
+          <a
+            href="https://www.icbc.com/about-icbc/newsroom/2023-june19"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            July 19, 2023 announcement
+          </a>
+          , ICBC said <strong>nearly half</strong> of drivers were failing to pass their first
+          attempt. That was a province-wide figure published in 2023, not a pass rate for the
+          Victoria office — ICBC publishes no office-level breakdown. Its{" "}
+          <a
+            href="https://www.icbc.com/assets/en/49OS8RJMWgWKgOx4U0EGOa/skills-explainer.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Road Test Skills Explainer
+          </a>{" "}
+          scores five competencies — Observation, Space Margin, Speed, Steering and Communication —
+          then lists four reasons a test can be failed.
+        </p>
+
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table>
+            <caption>
+              ICBC&apos;s four published failure reasons, quoted from the Skills Explainer, with what
+              each one means while you are driving.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Failure reason</th>
+                <th scope="col">ICBC&apos;s definition</th>
+                <th scope="col">What it means on the road</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Skills</th>
+                <td>
+                  Inability to meet the minimum criteria for the driving skills listed in each of the
+                  core competencies.
+                </td>
+                <td>
+                  No single dramatic event is needed; repeated errors across the five competencies
+                  can end a test.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Dangerous Action</th>
+                <td>
+                  An action or lack of action which could result in a collision or loss of control.
+                  Driver Examiner or other vehicle must take action to prevent collision.
+                </td>
+                <td>
+                  If the examiner or another road user has to act to avoid you, the outcome is
+                  effectively decided.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Violation</th>
+                <td>
+                  Behaviour that exceeds the range in the applicable criteria and is typically a
+                  ticketable offence, e.g. does not stop at red light.
+                </td>
+                <td>
+                  Speeding in a school or playground zone, running a red, missing a required stop.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Other</th>
+                <td>
+                  Inability to operate equipment once test has begun. Unwilling or unable to perform
+                  manoeuvre. Hitting objects, driving over curbs/sidewalks.
+                </td>
+                <td>
+                  Not knowing your own controls, declining a manoeuvre or mounting a curb are each
+                  enough.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          ICBC publishes no numeric pass mark, so a school or video quoting an exact &ldquo;point
+          cutoff&rdquo; is not quoting ICBC. Note too one distinction people merge: ICBC&apos;s{" "}
+          <a
+            href="https://www.icbc.com/assets/pa/HFwP1rzxuRYALIqdQki5P/what-to-expect-road-test.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            What to expect during your road test
+          </a>{" "}
+          sheet states that &ldquo;when completing a parking manoeuvre, touching the curb is not a
+          FAIL&rdquo; — while <em>driving over</em> curbs or sidewalks sits under Other. Light contact
+          is not fatal; mounting the curb is a different matter.
+        </p>
+
+        <h2>The traffic around the office is measurably heavy</h2>
+        <p>
+          The District of Saanich counts this corridor. A week-long count on McKenzie between Borden
+          and Blenkinsop, from October 25 to November 1, 2023, recorded an average weekday volume of{" "}
+          <strong>29,797 vehicles</strong> at an average speed of 49 km/h. Six-hour intersection
+          counts the same month logged 21,503 vehicles at McKenzie and Quadra and 18,031 at McKenzie
+          and Borden.
+        </p>
+        <p>
+          One detail beats those headline numbers. Saanich noted that westbound volumes in the
+          weekday 3–4 p.m. hour were &ldquo;significantly affected by queuing through the
+          corridor,&rdquo; causing the counter to under-report by as much as 40 per cent — the queues
+          here defeated the counting equipment. The busiest single hour was not the afternoon but{" "}
+          <strong>8–9 a.m., at 2,312 vehicles</strong>, so an early appointment puts you in the
+          heaviest hour of the week and inside school-zone hours at once. Saanich states its counts
+          are informational and not guaranteed accurate, and they say nothing about which streets an
+          examiner will use.
+        </p>
+
+        <h2>When does a 30 km/h school zone apply in B.C.?</h2>
+        <p>
+          A school zone signed 30 km/h applies on a <strong>regular school day, 8 a.m. to 5
+          p.m.</strong>, or the longer times shown on the sign. A playground zone signed 30 km/h
+          applies <strong>dawn to dusk, every day</strong> — weekends and holidays included. That last
+          difference is the one drivers miss.
+        </p>
+        <p>
+          Both rules come from{" "}
+          <a
+            href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96318_05"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Motor Vehicle Act section 147
+          </a>
+          . They matter here because Reynolds Secondary sits at <strong>3963 Borden St</strong>, just
+          south of the McKenzie and Borden intersection counted above. ICBC names speeding in these
+          zones among the most common road test mistakes, and a school warning sign without a 30 km/h
+          tab does not by itself create the limit.
+        </p>
+
+        <h2>Speed limits change quickly across this area</h2>
+        <p>
+          The office is in Saanich, but test driving crosses municipal lines. The City of Victoria
+          completed <strong>30 km/h limits on local streets in December 2025</strong> and is moving
+          most major streets to <strong>40 km/h during 2026</strong>, though Blanshard and Douglas
+          north of Caledonia stay at 50. Those changes do not apply automatically in Saanich, Oak Bay
+          or Esquimalt. Read every sign and never inherit your speed from the car ahead. ICBC also
+          warns that &ldquo;in addition to speeding violations, you may be assessed for
+          going too slow in low risk situations.&rdquo;
+        </p>
+
+        <h2>Pedestrians, cyclists and turns</h2>
+        <p>
+          The Quadra count logged roughly 1,365 pedestrian crossings and 260 buses in six hours. That
+          volume is why turn observation carries so much weight here. ICBC&apos;s tip sheet is
+          specific: shoulder check right on every right turn for cyclists and pedestrians, scan the
+          intersection before entering even on a green, stop fully behind the stop line, and mirror,
+          signal and shoulder check before any lane or direction change.
+        </p>
+        <p>
+          When passing a cyclist or another person covered by{" "}
+          <a
+            href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96318_05#section157.1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            section 157.1
+          </a>{" "}
+          and{" "}
+          <a
+            href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/26_58_16"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Division 48
+          </a>
+          , the minimum lateral distance is generally 1 metre at 50 km/h or less, 1.5 metres above 50
+          km/h, and 0.5 metre where the person is on a sidewalk or in a protected cycle lane. A
+          minimum distance never makes an otherwise unsafe pass acceptable.
+        </p>
+        <p>
+          On left turns, section 174 requires you to yield to oncoming traffic in the intersection or
+          &ldquo;so close as to constitute an immediate hazard.&rdquo; The weak turns we see in
+          McKenzie congestion are rarely reckless ones — they are indecisive, and ICBC assesses
+          drivers for being unnecessarily cautious as well as unnecessarily aggressive. Keep the
+          wheels straight while you wait, too: ICBC&apos;s steering criteria say to avoid angling the
+          car or wheels to the left when waiting to turn left.
+        </p>
+
+        <h2>Which way do you turn your wheels parking on a hill?</h2>
+        <p>
+          Hill parking appears on the test, and ICBC&apos;s{" "}
+          <a
+            href="https://www.icbc.com/assets/en/7piwqMyGnoxb1F6ONZSMqr/tuneup-complete.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Tuning Up for Drivers
+          </a>{" "}
+          manual gives the wheel positions directly. Its own summary line is the one to memorise:{" "}
+          <em>
+            the only time you leave your wheels turned out to the left is when you park uphill with a
+            curb.
+          </em>
+        </p>
+
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table>
+            <caption>
+              Front-wheel direction for each hill-parking situation, from ICBC&apos;s Tuning Up for
+              Drivers manual. Left appears only once, in the second row.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Situation</th>
+                <th scope="col">Turn the front wheels</th>
+                <th scope="col">How you set it</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Downhill with a curb</th>
+                <td>Right</td>
+                <td>Move forward slowly until the right front wheel touches the curb.</td>
+              </tr>
+              <tr>
+                <th scope="row">Uphill with a curb</th>
+                <td>Left</td>
+                <td>Let the vehicle roll back slowly until the tire touches the curb.</td>
+              </tr>
+              <tr>
+                <th scope="row">Uphill or downhill without a curb</th>
+                <td>Right</td>
+                <td>If the vehicle rolls, it rolls away from the street rather than into it.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          In each case, park within 30 cm of the curb and apply the parking brake fully. On a very
+          steep uphill start in an automatic, ICBC says you may need the parking brake to stop the car
+          rolling back. The manual assumes a two-way street, so reverse right and left on the left
+          side of a one-way.
+        </p>
+
+        <h2>What surprises people on an ICBC road test?</h2>
+        <ul>
+          <li>
+            <strong>Touching the curb while parking is not a fail.</strong> Stated in those words.
+          </li>
+          <li>
+            <strong>Back-up cameras do not need to be disabled</strong>, but you should not rely
+            solely on the camera while backing.
+          </li>
+          <li>
+            <strong>When asked to pull over and park</strong>, park as if you were leaving the vehicle
+            overnight. Leave the engine running.
+          </li>
+          <li>
+            <strong>You may ask questions</strong>, best before the test starts, and the examiner will
+            not trick you or ask you to break the law.
+          </li>
+          <li>
+            <strong>GPS, navigation and recording devices must be off.</strong> ICBC recommends
+            turning a phone off completely.
+          </li>
+        </ul>
+
+        <h2>Practising for these roads</h2>
+        <p>
+          Build practice around what the area demands: arterial pacing on McKenzie, sign recognition
+          on a school day near Reynolds, right turns with a deliberate cyclist scan, hill parking
+          until the wheel direction is automatic, and left-turn gap judgment at busy signals.
+          Practise legally, with a qualified supervisor.
+        </p>
+
+        <h2>Does the October 19, 2026 change affect this?</h2>
+        <p>
+          The Class 7 road test from learner to novice is unchanged. What changes is the second road
+          test, which a Driving Record Assessment replaces for eligible novice drivers. Read our{" "}
+          <Link to="/blog/bc-glp-changes-2026">GLP change summary</Link> before relying on a future
+          date.
+        </p>
+
+        <h2>Optional local preparation</h2>
+        <p>
+          A learner can prepare entirely through legal supervised practice and ICBC&apos;s free
+          guides. For structured feedback on these specific roads,{" "}
+          <Link to="/road-test-prep-victoria">road test preparation</Link> and{" "}
+          <Link to="/driving-lessons">driving lessons</Link> are options. A lesson or mock evaluation
+          does not reproduce an ICBC examination and cannot guarantee a passing result.
+        </p>
+
+        <h2>Official sources</h2>
+        <ul>
+          <li>
+            ICBC,{" "}
+            <a
+              href="https://www.icbc.com/assets/en/49OS8RJMWgWKgOx4U0EGOa/skills-explainer.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Road Test — Skills Explainer
+            </a>{" "}
+            (MV2959) and{" "}
+            <a
+              href="https://www.icbc.com/assets/pa/HFwP1rzxuRYALIqdQki5P/what-to-expect-road-test.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              What to expect during your road test
+            </a>{" "}
+            (MV2661).
+          </li>
+          <li>
+            ICBC,{" "}
+            <a
+              href="https://www.icbc.com/about-icbc/newsroom/2023-june19"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              road test success tips
+            </a>{" "}
+            (July 19, 2023), and{" "}
+            <a
+              href="https://www.icbc.com/driver-licensing/visit-dl-office/Book-a-road-test"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Book a road test
+            </a>
+            .
+          </li>
+          <li>
+            ICBC,{" "}
+            <a
+              href="https://www.icbc.com/assets/en/7piwqMyGnoxb1F6ONZSMqr/tuneup-complete.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Tuning Up for Drivers
+            </a>{" "}
+            — hill parking and hill starts.
+          </li>
+          <li>
+            District of Saanich traffic counts:{" "}
+            <a
+              href="https://www.saanich.ca/assets/Community/Documents/Engineering/Traffic/2023/MCKENZIE%20AVE%20BETWEEN%20BORDEN%20AND%20BLENKINSOP%20-%20OCT%202023.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              McKenzie between Borden and Blenkinsop
+            </a>
+            ,{" "}
+            <a
+              href="https://www.saanich.ca/assets/Community/Documents/Engineering/Intersection/2023~Fall/McKenzie%20Ave%20and%20Quadra%20St%20-%20October%202023.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              McKenzie and Quadra
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://www.saanich.ca/assets/Community/Documents/Engineering/Intersection/2023~Fall/McKenzie%20Ave%20and%20Borden%20St%20-%20October%202023.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              McKenzie and Borden
+            </a>{" "}
+            (October 2023).
+          </li>
+          <li>
+            City of Victoria,{" "}
+            <a
+              href="https://www.victoria.ca/getting-around/driving/lower-speed-limits"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Lower Speed Limits
+            </a>
+            .
+          </li>
+          <li>
+            Province of B.C.,{" "}
+            <a
+              href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96318_05"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Motor Vehicle Act
+            </a>{" "}
+            — sections 147, 157.1 and 174.
+          </li>
+        </ul>
+        <p>
+          Sources were checked on August 2, 2026. What these bodies publish can change, and posted
+          signs always govern. Confirm the official pages and your licence conditions before booking.
+        </p>
+      </>
+    ),
+  },
+  {
     slug: "bc-glp-changes-2026",
     title: "B.C. GLP Changes on October 19, 2026: Second Road Test, DRA and New Timelines",
     seoTitle: "B.C. GLP Changes: What Starts October 19, 2026",
@@ -770,7 +1218,12 @@ export const blogPosts: BlogPostData[] = [
     dateModified: "2026-07-21",
     readTime: "8 min read",
     category: "Road Test Tips",
-    relatedSlugs: ["bc-glp-changes-2026", "how-to-pass-driving-test-victoria-bc", "pass-road-test"],
+    relatedSlugs: [
+      "icbc-road-test-victoria-mckenzie-office",
+      "bc-glp-changes-2026",
+      "how-to-pass-driving-test-victoria-bc",
+      "pass-road-test",
+    ],
     content: (
       <>
         <p>
@@ -1111,7 +1564,11 @@ export const blogPosts: BlogPostData[] = [
     dateModified: "2026-07-21",
     readTime: "8 min read",
     category: "Road Test Checklist",
-    relatedSlugs: ["bc-glp-changes-2026", "icbc-road-test-tips-victoria", "newcomers-guide-bc"],
+    relatedSlugs: [
+      "bc-glp-changes-2026",
+      "icbc-road-test-tips-victoria",
+      "icbc-road-test-victoria-mckenzie-office",
+    ],
     content: (
       <>
         <p>

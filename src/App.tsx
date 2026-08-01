@@ -13,11 +13,15 @@ import SeoManager from "./components/SeoManager";
 import { CartProvider } from "./components/cart/CartProvider";
 import { AffiliateAuthProvider } from "./components/affiliate/AffiliateAuthProvider";
 import { AdminAuthProvider } from "./components/admin/AdminAuthProvider";
-import AdminRouteGuard from "./components/admin/AdminRouteGuard";
 import ReferralTracker from "./components/affiliate/ReferralTracker";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Index from "./pages/Index";
 import ServerError from "./pages/ServerError";
+
+/* Lazy like the routes it guards: it pulls in useAdminSession -> affiliateApi ->
+   the Supabase client, which no public visitor needs. It only renders inside the
+   /admin route element, which already sits under the Suspense boundary below. */
+const AdminRouteGuard = lazy(() => import("./components/admin/AdminRouteGuard"));
 
 const Courses = lazy(() => import("./pages/Courses"));
 const CourseQuiz = lazy(() => import("./pages/CourseQuiz"));

@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setAffiliateReferralCookie } from "@/lib/affiliateCookies";
 import { buildAffiliateFingerprint } from "@/lib/affiliateFingerprint";
-import { trackAffiliateReferral } from "@/lib/affiliateApi";
 
 const ReferralTracker = () => {
   const location = useLocation();
@@ -22,6 +21,10 @@ const ReferralTracker = () => {
 
     const track = async () => {
       try {
+        /* This component mounts on every page, but only a visit carrying ?ref=
+           reaches this point. Importing affiliateApi dynamically keeps its Supabase
+           dependency (~188 kB) out of the bundle every other visitor downloads. */
+        const { trackAffiliateReferral } = await import("@/lib/affiliateApi");
         const fingerprintHash = await buildAffiliateFingerprint();
         const result = await trackAffiliateReferral({
           referralCode: ref,

@@ -9,6 +9,16 @@ const sourceIndexPath = path.join(distDir, "index.html");
 
 const siteOrigin = "https://www.shanayasdrivingschool.com";
 const siteName = "Shanaya's Driving School";
+
+/* Titles are capped so they do not truncate in search results. The brand suffix
+   costs 27 characters, which most page names cannot afford, so it is appended
+   only when the finished title still fits. Mirrors withBrand in
+   src/components/SeoManager.tsx — assertMetadataInSync fails if they disagree. */
+const MAX_TITLE_LENGTH = 50;
+const withBrand = (core) => {
+  const branded = `${core} | ${siteName}`;
+  return branded.length <= MAX_TITLE_LENGTH ? branded : core;
+};
 const defaultImage = `${siteOrigin}/logos/For%20Social%20Media.jpg`;
 const defaultDescription =
   "Class 5 and 7 driving lessons, road-test preparation, knowledge-test support, and confidence-building training in Langford, Victoria, and listed B.C. service areas.";
@@ -63,9 +73,9 @@ const localBusinessSchema = {
 const landingPages = [
   {
     path: "/driving-lessons/",
-    title: "ICBC Driving Lessons Victoria BC | Shanaya's Driving School",
+    title: "ICBC Driving Lessons in Victoria & Langford, BC",
     description:
-      "Beginner driving lessons in Victoria, Langford, and Greater Victoria with ICBC-aligned coaching, dual-control vehicles, and calm instructor support.",
+      "Beginner driving lessons in Victoria, Langford, and Greater Victoria with road-test-focused coaching, dual-control vehicles, and calm instructor support.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons.webp",
     faqs: [
       {
@@ -80,9 +90,9 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-langford/",
-    title: "Driving Lessons in Langford, BC | Shanaya's Driving School",
+    title: "Driving Lessons in Langford, BC",
     description:
-      "Langford driving school offering lessons across the Westshore, BC with ICBC-aligned coaching, dual-control cars, and lessons that start from our Leigh Rd office.",
+      "Langford driving school with road-test-focused coaching, dual-control cars, and lessons that start from our Leigh Rd office in the Westshore.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-langford.webp",
     faqs: [
       {
@@ -104,9 +114,9 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-colwood/",
-    title: "Driving Lessons in Colwood, BC | Shanaya's Driving School",
+    title: "Driving Lessons in Colwood, BC",
     description:
-      "Driving lessons in Colwood and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Sooke Road, the Colwood interchange, and Royal Bay.",
+      "Driving lessons in Colwood and the Westshore, BC with road-test-focused coaching, dual-control cars, and practice on Sooke Road and Royal Bay.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-colwood.webp",
     faqs: [
       {
@@ -128,9 +138,9 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-saanich/",
-    title: "Driving Lessons in Saanich, BC | Shanaya's Driving School",
+    title: "Driving Lessons in Saanich, BC",
     description:
-      "Driving lessons in Saanich, BC with ICBC-aligned coaching and dual-control cars. Practice Douglas, Blanshard, McKenzie, and the routes near the Saanich test centre.",
+      "Driving lessons in Saanich, BC with road-test-focused coaching and dual-control cars. Practice Douglas, Blanshard, McKenzie and test-centre routes.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-saanich.webp",
     faqs: [
       {
@@ -152,9 +162,9 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-view-royal/",
-    title: "Driving Lessons in View Royal, BC | Shanaya's Driving School",
+    title: "Driving Lessons in View Royal, BC",
     description:
-      "Driving lessons in View Royal and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Highway 1 and the Old Island Highway.",
+      "Driving lessons in View Royal and the Westshore, BC with road-test-focused coaching, dual-control cars, and practice on Highway 1.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-view-royal.webp",
     faqs: [
       {
@@ -176,7 +186,7 @@ const landingPages = [
   },
   {
     path: "/nervous-driver-lessons-victoria/",
-    title: "Nervous Driver Lessons in Victoria, BC | Shanaya's Driving School",
+    title: "Nervous Driver Lessons in Victoria, BC",
     description:
       "Calm, patient driving lessons for nervous drivers in Victoria, BC. Judgment-free coaching, dual-control cars, and lessons paced to build confidence at your speed.",
     image: "https://www.shanayasdrivingschool.com/landing/nervous-driver-lessons-victoria.webp",
@@ -200,7 +210,7 @@ const landingPages = [
   },
   {
     path: "/defensive-driving/",
-    title: "Defensive Driving Course in Victoria, BC | Shanaya's Driving School",
+    title: "Defensive Driving Course in Victoria, BC",
     description:
       "Defensive driving course in Victoria and Langford focused on hazard perception, safe spacing, traffic awareness, and confident decision-making.",
     image: "https://www.shanayasdrivingschool.com/landing/defensive-driving.webp",
@@ -217,7 +227,7 @@ const landingPages = [
   },
   {
     path: "/road-test-prep/",
-    title: "ICBC Road Test Preparation in BC | Shanaya's Driving School",
+    title: "ICBC Road Test Preparation in B.C.",
     description:
       "ICBC road test preparation across Vancouver Island, with mock tests, parking practice, and examiner-style feedback. Find road test prep near your test centre.",
     image: "https://www.shanayasdrivingschool.com/landing/road-test-prep.webp",
@@ -239,7 +249,7 @@ const landingPages = [
   },
   {
     path: "/road-test-prep-victoria/",
-    title: "Road Test Prep in Victoria, BC | Shanaya's Driving School",
+    title: "Road Test Prep in Victoria, BC",
     description:
       "ICBC road test preparation in Victoria, BC. Practice the Saanich and Victoria test-centre routes with mock tests, parking drills, and examiner-style feedback before test day.",
     image: "https://www.shanayasdrivingschool.com/landing/road-test-prep-victoria.webp",
@@ -263,7 +273,7 @@ const landingPages = [
   },
   {
     path: "/mock-road-test-victoria/",
-    title: "Mock Road Test in Victoria, BC | Shanaya's Driving School",
+    title: "Mock Road Test in Victoria, BC",
     description:
       "Book a mock ICBC road test in Victoria, BC. A full practice run on the real Saanich and Victoria routes with examiner-style scoring and feedback before your test.",
     image: "https://www.shanayasdrivingschool.com/landing/mock-road-test-victoria.webp",
@@ -292,7 +302,7 @@ const landingPages = [
   },
   {
     path: "/road-test-vehicle/",
-    title: "ICBC Road Test Car Rental in Victoria | Shanaya's Driving School",
+    title: "ICBC Road Test Car Rental in Victoria",
     description:
       "Book an ICBC-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
     image: "https://www.shanayasdrivingschool.com/landing/road-test-vehicle.webp",
@@ -309,7 +319,7 @@ const landingPages = [
   },
   {
     path: "/intensive-driving-course/",
-    title: "Intensive Driving Course in Victoria, BC | Shanaya's Driving School",
+    title: "Intensive Driving Course in Victoria, BC",
     description:
       "Intensive driving course support in Victoria and Langford for learners who want focused lessons, faster progress, and structured road test preparation.",
     image: "https://www.shanayasdrivingschool.com/landing/intensive-driving-course.webp",
@@ -326,7 +336,7 @@ const landingPages = [
   },
   {
     path: "/pricing/",
-    title: "Driving Lesson Prices in Victoria, BC | Shanaya's Driving School",
+    title: "Driving Lesson Prices in Victoria, BC",
     description:
       "Driving lesson pricing for Victoria and Langford: $89 for 60 minutes, $133.50 for 90. Compare courses, packages, road test prep, and payment plans.",
     image: "https://www.shanayasdrivingschool.com/landing/pricing.webp",
@@ -343,7 +353,7 @@ const landingPages = [
   },
   {
     path: "/faq/",
-    title: "BC Knowledge Test, Road Test & Lesson FAQ | Shanaya's",
+    title: "BC Knowledge Test, Road Test & Lesson FAQ",
     description:
       "Verified answers about B.C. Class 7 knowledge and road tests, L and N restrictions, fees, lessons, school licensing, rentals and booking.",
     image: "https://www.shanayasdrivingschool.com/landing/faq.webp",
@@ -352,7 +362,7 @@ const landingPages = [
   },
   {
     path: "/icbc-approved-driving-school/",
-    title: "Licensed Driving School in Langford, BC | Shanaya's",
+    title: "Licensed Driving School in Langford, BC",
     description:
       "Verify Shanaya's Driving School's Langford listing for Class 5 and 7 driver training, and learn why a licensed school is not the same as an ICBC-approved GLP course.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-langford.webp",
@@ -386,7 +396,7 @@ const landingPages = [
   },
   {
     path: "/bc-graduated-licensing-program/",
-    title: "B.C. GLP Rules Before and After October 19, 2026 | Shanaya's",
+    title: "B.C. GLP Rules Before & After Oct 19, 2026",
     description:
       "Compare B.C. GLP stages, restrictions and minimum timelines before and from October 19, 2026, including the DRA and restricted Class 5 year.",
     image: "https://www.shanayasdrivingschool.com/landing/bc-graduated-licensing-program.webp",
@@ -440,7 +450,7 @@ const landingPages = [
   },
   {
     path: "/driving-instructor-victoria/",
-    title: "Driving Instructor in Victoria BC | Shanaya's Driving School",
+    title: "Driving Instructor in Victoria, BC",
     description:
       "Looking for a driving instructor in Victoria or Langford? Shanaya's ICBC-licensed instructors give patient, one-on-one lessons in dual-control cars, with pick-up and drop-off across Greater Victoria.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-instructor-victoria.webp",
@@ -474,7 +484,7 @@ const landingPages = [
   },
   {
     path: "/driver-education-training/",
-    title: "B.C. Driver Education Options & Requirements | Shanaya's",
+    title: "B.C. Driver Education Options",
     description:
       "Compare free ICBC self-study, supervised practice, optional private lessons and the separately approved 32-hour GLP course under B.C.'s 2026 rules.",
     image: "https://www.shanayasdrivingschool.com/landing/driver-education-training.webp",
@@ -526,30 +536,30 @@ const landingPages = [
 const publicPages = [
   {
     path: "/",
-    title: "Driving Lessons Victoria BC | Shanaya's Driving School",
+    title: "Driving Lessons in Victoria & Langford, BC",
     description: defaultDescription,
   },
   {
     path: "/courses/",
-    title: "Driving Courses in Victoria & Langford, BC | Shanaya's Driving School",
+    title: "Driving Courses in Victoria & Langford, BC",
     description:
       "Browse beginner lessons, ICBC road test prep, parking practice, defensive driving, refresher training, and newcomer driving support.",
   },
   {
     path: "/packages/",
-    title: "Driving Lesson Packages in Greater Victoria | Shanaya's Driving School",
+    title: "Driving Lesson Packages in Greater Victoria",
     description:
       "Compare structured driving lesson packages for new drivers, road test preparation, confidence building, and flexible training plans.",
   },
   {
     path: "/about/",
-    title: "About Shanaya's Driving School | Victoria & Langford Driving Lessons",
+    title: "About Shanaya's Driving School, Victoria BC",
     description:
       "Learn about Shanaya's Driving School, its Langford Class 5 and 7 directory listing, supportive training approach, and student-first instruction.",
   },
   {
     path: "/contact/",
-    title: "Contact Shanaya's Driving School | Book Driving Lessons in BC",
+    title: "Contact Shanaya's Driving School",
     description:
       "Contact Shanaya's Driving School to book driving lessons, ask about packages, or get help choosing the right training plan.",
   },
@@ -561,42 +571,42 @@ const publicPages = [
   },
   {
     path: "/newcomers-guide/",
-    title: "Moving to B.C.: Exchange or Get a B.C. Driver's Licence | Shanaya's",
+    title: "Moving to B.C.: Exchange or Get a Licence",
     description:
       "Choose the correct ICBC path to exchange a valid licence or start B.C.'s Class 7 process, with document, experience, deadline, fee and source details.",
   },
   {
     path: "/knowledge-test-practice/",
-    title: "Independent B.C. Class 7 Knowledge Test Practice | Shanaya's",
+    title: "B.C. Class 7 Knowledge Test Practice",
     description:
       "Use an independent 20-question Class 7 study bank, then verify every rule with ICBC's official guide and practice test.",
   },
   {
     path: "/knowledge-test-guide/",
-    title: "B.C. Class 7 Knowledge Test: Online & In-Person Guide | Shanaya's",
+    title: "B.C. Class 7 Knowledge Test Guide",
     description:
       "Current Class 7 guide to ICBC's online and in-person B.C. knowledge test: eligibility, 50 questions, fees, study sources, ID and licence steps.",
   },
   {
     path: "/blog/",
-    title: "Driving Tips & Road Test Resources | Shanaya's Driving School",
+    title: "Driving Tips & Road Test Resources",
     description:
       "Read practical driving tips, ICBC road test guidance, defensive driving advice, and newcomer resources for BC drivers.",
   },
   {
     path: "/payment-plan-options/",
-    title: "Driving Lesson Payment Plans | Shanaya's Driving School",
+    title: "Driving Lesson Payment Plans in B.C.",
     description:
       "Explore installment options for eligible driving lesson packages with clear monthly payment choices and predictable scheduling.",
   },
   {
     path: "/courses/beginner-driving-course/",
-    title: "Beginner's Driving Course in Victoria & Langford, BC | Shanaya's Driving School",
+    title: "Beginner's Driving Course in Victoria, BC",
     description: "Perfect for first-time drivers, covering essential car control, traffic rules, and safe driving habits.",
   },
   {
     path: "/courses/knowledge-test-prep-course/",
-    title: "Knowledge Test Prep Course | Shanaya's Driving School",
+    title: "Knowledge Test Prep Course in Victoria",
     description: "Build confidence for the knowledge test by learning road signs, traffic rules, and exam-style practice questions.",
   },
   {
@@ -622,18 +632,18 @@ const publicPages = [
   },
   {
     path: "/courses/defensive-driving-course/",
-    title: "Defensive Driving Course | Shanaya's Driving School",
+    title: "Defensive Driving Course in Victoria",
     description:
       "Focused on defensive driving techniques, hazard perception, and proactive strategies to reduce risk in complex traffic conditions.",
   },
   {
     path: "/courses/new-to-canada/",
-    title: "New to Canada Driving Course | Shanaya's Driving School",
+    title: "New to Canada Driving Course",
     description: "Helpful for drivers adjusting to local road rules, driving culture, and test expectations in Canada.",
   },
   {
     path: "/courses/refresher-driving-course/",
-    title: "Refresher Driving Course | Shanaya's Driving School",
+    title: "Refresher Driving Course in Victoria",
     description:
       "Ideal for licensed drivers returning after a break or preparing to re-test, focused on rebuilding confidence and refreshing core driving skills.",
   },
@@ -644,7 +654,7 @@ const publicPages = [
   },
   {
     path: "/courses/confidence-booster-course/",
-    title: "Confidence Booster Course | Shanaya's Driving School",
+    title: "Confidence Booster Course in Victoria",
     description: "Perfect for drivers with basic skills who need a confidence boost to feel comfortable and safe on the road.",
   },
   {
@@ -660,32 +670,46 @@ const publicPages = [
   },
   {
     path: "/courses/seniors-driving-course/",
-    title: "Enhanced Road Assessment | Shanaya's Driving School",
+    title: "Enhanced Road Assessment in Victoria",
     description:
       "Tailored for senior drivers, focusing on safe habits, awareness, reaction time, and refreshing important road rules.",
   },
   {
     path: "/packages/fresh-start/",
-    title: "Fresh Start Driving Package | Shanaya's Driving School",
+    title: "Fresh Start Driving Package",
     description:
       "A beginner-friendly package focused on essential driving skills, vehicle control, parking techniques, and road test preparation.",
   },
   {
     path: "/packages/skill-builder/",
-    title: "Skill Builder Driving Package | Shanaya's Driving School",
+    title: "Skill Builder Driving Package",
     description:
       "A focused package for drivers with some experience, designed to sharpen key skills, build road confidence, and prepare for the ICBC road test.",
   },
   {
     path: "/packages/final-lap/",
-    title: "Final Lap Driving Package | Shanaya's Driving School",
+    title: "Final Lap Driving Package",
     description:
       "For drivers with foundational experience who want to refine driving skills, improve confidence, and prepare for more advanced driving scenarios.",
   },
   {
     path: "/extras/car-rental/",
-    title: "Car Rental for Road Test Day | Shanaya's Driving School",
+    title: "Car Rental for Road Test Day",
     description: "Book an ICBC-approved training car for road test day when you want to test in a familiar vehicle.",
+  },
+  {
+    path: "/blog/icbc-road-test-victoria-mckenzie-office/",
+    title: "ICBC Road Test Victoria: The McKenzie Ave Office",
+    description:
+      "ICBC's Victoria road test office on McKenzie Ave: counted traffic, school zones, hills, cyclists and the four failure reasons.",
+    type: "article",
+    image: `${siteOrigin}/landing/road-test-prep-victoria.webp`,
+    article: {
+      headline: "ICBC's Victoria Road Test Office on McKenzie Avenue: What the Area Asks of You",
+      section: "Victoria Road Test",
+      datePublished: "2026-08-02",
+      dateModified: "2026-08-02",
+    },
   },
   {
     path: "/blog/bc-glp-changes-2026/",
@@ -1744,7 +1768,7 @@ faqPage.breadcrumbs = [
    before the build passes. */
 pages.push({
   path: "/policies/",
-  title: `Policies | ${siteName}`,
+  title: withBrand("Policies"),
   description:
     "Review Shanaya's Driving School policies for privacy, payments, installments, cookies, and website terms.",
   breadcrumbs: [
@@ -1756,7 +1780,7 @@ pages.push({
 for (const policy of content.policies) {
   pages.push({
     path: `${policy.href.replace(/\/?$/, "/")}`,
-    title: `${policy.label} | ${siteName}`,
+    title: withBrand(policy.label),
     description: policy.cardDescription,
     policy,
     breadcrumbs: [
@@ -1774,7 +1798,7 @@ for (const policy of content.policies) {
 for (const author of content.authors) {
   pages.push({
     path: `/authors/${author.id}/`,
-    title: `${author.name}, ${author.jobTitle} | ${siteName}`,
+    title: withBrand(`${author.name}, ${author.jobTitle}`),
     description: author.summary,
     image: author.image ? `${siteOrigin}${author.image}` : undefined,
     author,
@@ -1785,13 +1809,27 @@ for (const author of content.authors) {
   });
 }
 
-/* Resolve each post's named author the same way src/ does, so Article.author in
-   the crawler HTML cannot disagree with what React renders for the same URL. */
+/* Give every post its breadcrumb trail and resolve its named author the same way
+   src/ does, so neither Article.author nor BreadcrumbList in the crawler HTML can
+   disagree with what React renders for the same URL. */
 for (const page of pages) {
   const slug = page.path.match(/^\/blog\/([^/]+)\/$/)?.[1];
   const post = slug ? blogContent.get(slug) : undefined;
 
-  if (!post || !page.article) {
+  if (!post) {
+    continue;
+  }
+
+  /* Mirrors the visible Home / Blog / <category> trail in src/pages/BlogPost.tsx.
+     Google only renders breadcrumb rich results when the markup matches what the
+     reader sees, so the last crumb is the category shown there, not the headline. */
+  page.breadcrumbs = [
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog/" },
+    { name: post.category, path: page.path },
+  ];
+
+  if (!page.article) {
     continue;
   }
 
@@ -1823,7 +1861,7 @@ const assertMetadataInSync = () => {
         slug,
         "blogPosts",
         {
-          title: post.seoTitle ?? `${post.title} | ${siteName}`,
+          title: post.seoTitle ?? withBrand(post.title),
           description: post.description,
           "article.headline": post.title,
           "article.datePublished": post.datePublished,

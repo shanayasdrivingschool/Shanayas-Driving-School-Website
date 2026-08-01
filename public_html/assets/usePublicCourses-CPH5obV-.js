@@ -1,0 +1,1 @@
+import{k as e}from"./react-vendor-4atPn5OY.js";import{g as s,a as u}from"./courseService-UDDiFPsT.js";const i=()=>e({queryKey:["public-courses"],queryFn:s,initialData:u(),staleTime:6e4});export{i as u};

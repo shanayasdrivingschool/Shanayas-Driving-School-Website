@@ -74,13 +74,13 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driving-lessons",
     path: "/driving-lessons",
-    title: "ICBC Driving Lessons Victoria BC | Shanaya's Driving School",
+    title: "ICBC Driving Lessons in Victoria & Langford, BC",
     metaDescription:
-      "Beginner driving lessons in Victoria, Langford, and Greater Victoria with ICBC-aligned coaching, dual-control vehicles, and calm instructor support.",
+      "Beginner driving lessons in Victoria, Langford, and Greater Victoria with road-test-focused coaching, dual-control vehicles, and calm instructor support.",
     eyebrow: "Beginner driving lessons",
     h1: "ICBC driving lessons in Victoria, BC",
     heroDescription:
-      "Learn safe vehicle control, road awareness, and everyday driving habits with structured, ICBC-aligned beginner lessons across Victoria and Langford.",
+      "Learn safe vehicle control, road awareness, and everyday driving habits with structured, structured beginner lessons across Victoria and Langford.",
     heroImage: "/landing/driving-lessons.webp",
     targetKeyword: "driving lessons Victoria BC",
     intro: [
@@ -126,13 +126,13 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driving-lessons-langford",
     path: "/driving-lessons-langford",
-    title: "Driving Lessons in Langford, BC | Shanaya's Driving School",
+    title: "Driving Lessons in Langford, BC",
     metaDescription:
-      "Langford driving school offering lessons across the Westshore, BC with ICBC-aligned coaching, dual-control cars, and lessons that start from our Leigh Rd office.",
+      "Langford driving school with road-test-focused coaching, dual-control cars, and lessons that start from our Leigh Rd office in the Westshore.",
     eyebrow: "Langford driving lessons",
     h1: "Driving lessons in Langford, BC",
     heroDescription:
-      "Learn to drive with confidence across Langford and the Westshore, with calm, ICBC-aligned instruction on roundabouts, Goldstream Avenue traffic, highway merges, and parking from our local Langford hub.",
+      "Learn to drive with confidence across Langford and the Westshore, with calm, road-test-focused instruction on roundabouts, Goldstream Avenue traffic, highway merges, and parking from our local Langford hub.",
     heroImage: "/landing/driving-lessons-langford.webp",
     targetKeyword: "driving lessons Langford BC",
     testimonial: {
@@ -191,13 +191,13 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driving-lessons-colwood",
     path: "/driving-lessons-colwood",
-    title: "Driving Lessons in Colwood, BC | Shanaya's Driving School",
+    title: "Driving Lessons in Colwood, BC",
     metaDescription:
-      "Driving lessons in Colwood and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Sooke Road, the Colwood interchange, and Royal Bay.",
+      "Driving lessons in Colwood and the Westshore, BC with road-test-focused coaching, dual-control cars, and practice on Sooke Road and Royal Bay.",
     eyebrow: "Colwood driving lessons",
     h1: "Driving lessons in Colwood, BC",
     heroDescription:
-      "Learn to drive with confidence across Colwood and the Westshore, with calm, ICBC-aligned instruction on Sooke Road, the Colwood interchange, Ocean Boulevard, and Royal Bay's newer streets.",
+      "Learn to drive with confidence across Colwood and the Westshore, with calm, road-test-focused instruction on Sooke Road, the Colwood interchange, Ocean Boulevard, and Royal Bay's newer streets.",
     heroImage: "/landing/driving-lessons-colwood.webp",
     targetKeyword: "driving lessons Colwood BC",
     testimonial: {
@@ -245,7 +245,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "Driving lessons in Victoria",
         href: "/driving-lessons",
-        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
       },
       {
         label: "Road test prep in Victoria",
@@ -274,13 +274,13 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driving-lessons-saanich",
     path: "/driving-lessons-saanich",
-    title: "Driving Lessons in Saanich, BC | Shanaya's Driving School",
+    title: "Driving Lessons in Saanich, BC",
     metaDescription:
-      "Driving lessons in Saanich, BC with ICBC-aligned coaching and dual-control cars. Practice Douglas, Blanshard, McKenzie, and the routes near the Saanich test centre.",
+      "Driving lessons in Saanich, BC with road-test-focused coaching and dual-control cars. Practice Douglas, Blanshard, McKenzie and test-centre routes.",
     eyebrow: "Saanich driving lessons",
     h1: "Driving lessons in Saanich, BC",
     heroDescription:
-      "Learn to drive with confidence across Saanich and Greater Victoria, with calm, ICBC-aligned instruction on busy arterials like Douglas, Blanshard, and McKenzie, plus the local routes near the Saanich road test centre.",
+      "Learn to drive with confidence across Saanich and Greater Victoria, with calm, road-test-focused instruction on busy arterials like Douglas, Blanshard, and McKenzie, plus the local routes near the Saanich road test centre.",
     heroImage: "/landing/driving-lessons-saanich.webp",
     targetKeyword: "driving lessons Saanich BC",
     testimonial: {
@@ -323,7 +323,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "Driving lessons in Victoria",
         href: "/driving-lessons",
-        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
       },
       {
         label: "Road test prep in Victoria",
@@ -357,13 +357,13 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driving-lessons-view-royal",
     path: "/driving-lessons-view-royal",
-    title: "Driving Lessons in View Royal, BC | Shanaya's Driving School",
+    title: "Driving Lessons in View Royal, BC",
     metaDescription:
-      "Driving lessons in View Royal and the Westshore, BC with ICBC-aligned coaching, dual-control cars, and practice on Highway 1 and the Old Island Highway.",
+      "Driving lessons in View Royal and the Westshore, BC with road-test-focused coaching, dual-control cars, and practice on Highway 1.",
     eyebrow: "View Royal driving lessons",
     h1: "Driving lessons in View Royal, BC",
     heroDescription:
-      "Learn to drive with confidence across View Royal and the Westshore, with calm, ICBC-aligned instruction on Highway 1, the Old Island Highway, the Helmcken interchange, and quieter streets near Thetis Lake.",
+      "Learn to drive with confidence across View Royal and the Westshore, with calm, road-test-focused instruction on Highway 1, the Old Island Highway, the Helmcken interchange, and quieter streets near Thetis Lake.",
     heroImage: "/landing/driving-lessons-view-royal.webp",
     targetKeyword: "driving lessons View Royal BC",
     testimonial: {
@@ -411,7 +411,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "Driving lessons in Victoria",
         href: "/driving-lessons",
-        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
       },
       {
         label: "Road test prep in Victoria",
@@ -440,7 +440,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "nervous-driver-lessons-victoria",
     path: "/nervous-driver-lessons-victoria",
-    title: "Nervous Driver Lessons in Victoria, BC | Shanaya's Driving School",
+    title: "Nervous Driver Lessons in Victoria, BC",
     metaDescription:
       "Calm, patient driving lessons for nervous drivers in Victoria, BC. Judgment-free coaching, dual-control cars, and lessons paced to build confidence at your speed.",
     eyebrow: "Nervous driver lessons",
@@ -495,7 +495,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "Driving lessons in Victoria",
         href: "/driving-lessons",
-        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
       },
       {
         label: "Road test prep in Victoria",
@@ -524,7 +524,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "defensive-driving",
     path: "/defensive-driving",
-    title: "Defensive Driving Course in Victoria, BC | Shanaya's Driving School",
+    title: "Defensive Driving Course in Victoria, BC",
     metaDescription:
       "Defensive driving course in Victoria and Langford focused on hazard perception, safe spacing, traffic awareness, and confident decision-making.",
     eyebrow: "Defensive driving",
@@ -576,7 +576,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "road-test-prep",
     path: "/road-test-prep",
-    title: "ICBC Road Test Preparation in BC | Shanaya's Driving School",
+    title: "ICBC Road Test Preparation in B.C.",
     metaDescription:
       "ICBC road test preparation across Vancouver Island, with mock tests, parking practice, and examiner-style feedback. Find road test prep near your test centre.",
     eyebrow: "Road test prep",
@@ -644,7 +644,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "road-test-prep-victoria",
     path: "/road-test-prep-victoria",
-    title: "Road Test Prep in Victoria, BC | Shanaya's Driving School",
+    title: "Road Test Prep in Victoria, BC",
     metaDescription:
       "ICBC road test preparation in Victoria, BC. Practice the Saanich and Victoria test-centre routes with mock tests, parking drills, and examiner-style feedback before test day.",
     eyebrow: "Victoria road test prep",
@@ -709,7 +709,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "mock-road-test-victoria",
     path: "/mock-road-test-victoria",
-    title: "Mock Road Test in Victoria, BC | Shanaya's Driving School",
+    title: "Mock Road Test in Victoria, BC",
     metaDescription:
       "Book a mock ICBC road test in Victoria, BC. A full practice run on the real Saanich and Victoria routes with examiner-style scoring and feedback before your test.",
     eyebrow: "Mock road test",
@@ -768,7 +768,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "Driving lessons in Victoria",
         href: "/driving-lessons",
-        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
       },
     ],
     faqs: [
@@ -798,7 +798,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "road-test-vehicle",
     path: "/road-test-vehicle",
-    title: "ICBC Road Test Car Rental in Victoria | Shanaya's Driving School",
+    title: "ICBC Road Test Car Rental in Victoria",
     metaDescription:
       "Book an ICBC-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
     eyebrow: "Road test vehicle",
@@ -850,7 +850,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "intensive-driving-course",
     path: "/intensive-driving-course",
-    title: "Intensive Driving Course in Victoria, BC | Shanaya's Driving School",
+    title: "Intensive Driving Course in Victoria, BC",
     metaDescription:
       "Intensive driving course support in Victoria and Langford for learners who want focused lessons, faster progress, and structured road test preparation.",
     eyebrow: "Intensive training",
@@ -902,7 +902,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "pricing",
     path: "/pricing",
-    title: "Driving Lesson Prices in Victoria, BC | Shanaya's Driving School",
+    title: "Driving Lesson Prices in Victoria, BC",
     metaDescription:
       "Driving lesson pricing for Victoria and Langford: $89 for 60 minutes, $133.50 for 90. Compare courses, packages, road test prep, and payment plans.",
     eyebrow: "Pricing",
@@ -966,7 +966,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "icbc-approved-driving-school",
     path: "/icbc-approved-driving-school",
-    title: "Licensed Driving School in Langford, BC | Shanaya's",
+    title: "Licensed Driving School in Langford, BC",
     metaDescription:
       "Verify Shanaya's Driving School's Langford listing for Class 5 and 7 driver training, and learn why a licensed school is not the same as an ICBC-approved GLP course.",
     eyebrow: "B.C.-licensed driving school",
@@ -1086,7 +1086,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "bc-graduated-licensing-program",
     path: "/bc-graduated-licensing-program",
-    title: "B.C. GLP Rules Before and After October 19, 2026 | Shanaya's",
+    title: "B.C. GLP Rules Before & After Oct 19, 2026",
     metaDescription:
       "Compare B.C. GLP stages, restrictions and minimum timelines before and from October 19, 2026, including the DRA and restricted Class 5 year.",
     eyebrow: "Independent B.C. licensing guide",
@@ -1315,7 +1315,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driving-instructor-victoria",
     path: "/driving-instructor-victoria",
-    title: "Driving Instructor in Victoria BC | Shanaya's Driving School",
+    title: "Driving Instructor in Victoria, BC",
     metaDescription:
       "Looking for a driving instructor in Victoria or Langford? Shanaya's ICBC-licensed instructors give patient, one-on-one lessons in dual-control cars, with pick-up and drop-off across Greater Victoria.",
     eyebrow: "Driving instructors",
@@ -1396,7 +1396,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "ICBC driving lessons in Victoria",
         href: "/driving-lessons",
-        description: "Beginner-friendly, ICBC-aligned lessons across Greater Victoria.",
+        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
       },
       {
         label: "Nervous driver lessons",
@@ -1414,7 +1414,7 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "driver-education-training",
     path: "/driver-education-training",
-    title: "B.C. Driver Education Options & Requirements | Shanaya's",
+    title: "B.C. Driver Education Options",
     metaDescription:
       "Compare free ICBC self-study, supervised practice, optional private lessons and the separately approved 32-hour GLP course under B.C.'s 2026 rules.",
     eyebrow: "Independent B.C. driver-education guide",

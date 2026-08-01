@@ -46,7 +46,7 @@ export const FAQ_LAST_REVIEWED = "July 21, 2026";
 export const FAQ_EXPANDED_REVIEWED = "July 31, 2026";
 
 export const faqPageSeo = {
-  title: "BC Knowledge Test, Road Test & Lesson FAQ | Shanaya's",
+  title: "BC Knowledge Test, Road Test & Lesson FAQ",
   description:
     "Search verified answers about B.C. Class 7 knowledge and road tests, L and N restrictions, GLP changes, instructors, insurance, lesson prices and booking.",
   image: "/landing/faq.webp",

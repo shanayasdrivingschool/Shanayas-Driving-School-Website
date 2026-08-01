@@ -23,7 +23,18 @@ import { faqAnswerToPlainText } from "@/lib/faqAnswer";
 
 const SITE_ORIGIN = "https://www.shanayasdrivingschool.com";
 const SITE_NAME = "Shanaya's Driving School";
-const DEFAULT_TITLE = "Driving Lessons Victoria BC | Shanaya's Driving School";
+
+/* Titles are capped so they do not truncate in search results. The brand suffix
+   costs 27 characters, which most page names cannot afford, so it is appended
+   only when the finished title still fits. Keep MAX_TITLE_LENGTH in sync with
+   the identical helper in scripts/generate-static-seo-pages.mjs. */
+const MAX_TITLE_LENGTH = 50;
+const withBrand = (core: string) => {
+  const branded = `${core} | ${SITE_NAME}`;
+  return branded.length <= MAX_TITLE_LENGTH ? branded : core;
+};
+
+const DEFAULT_TITLE = "Driving Lessons in Victoria & Langford, BC";
 const DEFAULT_DESCRIPTION =
   "Class 5 and 7 driving lessons, road-test preparation, knowledge-test support, and confidence-building training in Langford, Victoria, and listed B.C. service areas.";
 const DEFAULT_IMAGE_PATH = "/logos/For Social Media.jpg";
@@ -81,22 +92,22 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
     description: DEFAULT_DESCRIPTION,
   },
   "/courses": {
-    title: "Driving Courses in Victoria & Langford, BC | Shanaya's Driving School",
+    title: "Driving Courses in Victoria & Langford, BC",
     description:
       "Browse beginner lessons, ICBC road test prep, parking practice, defensive driving, refresher training, and newcomer driving support.",
   },
   "/packages": {
-    title: "Driving Lesson Packages in Greater Victoria | Shanaya's Driving School",
+    title: "Driving Lesson Packages in Greater Victoria",
     description:
       "Compare structured driving lesson packages for new drivers, road test preparation, confidence building, and flexible training plans.",
   },
   "/about": {
-    title: "About Shanaya's Driving School | Victoria & Langford Driving Lessons",
+    title: "About Shanaya's Driving School, Victoria BC",
     description:
       "Learn about Shanaya's Driving School, its Langford Class 5 and 7 directory listing, supportive training approach, and student-first instruction.",
   },
   "/contact": {
-    title: "Contact Shanaya's Driving School | Book Driving Lessons in BC",
+    title: "Contact Shanaya's Driving School",
     description:
       "Contact Shanaya's Driving School to book driving lessons, ask about packages, or get help choosing the right training plan.",
   },
@@ -106,22 +117,22 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
       "Start your driving lesson booking with Shanaya's Driving School and get matched with training that fits your goals and schedule.",
   },
   "/payment-plan-options": {
-    title: "Driving Lesson Payment Plans | Shanaya's Driving School",
+    title: "Driving Lesson Payment Plans in B.C.",
     description:
       "Explore installment options for eligible driving lesson packages with clear monthly payment choices and predictable scheduling.",
   },
   "/newcomers-guide": {
-    title: "Moving to B.C.: Exchange or Get a B.C. Driver's Licence | Shanaya's",
+    title: "Moving to B.C.: Exchange or Get a Licence",
     description:
       "Choose the correct ICBC path to exchange a valid licence or start B.C.'s Class 7 process, with document, experience, deadline, fee and source details.",
   },
   "/knowledge-test-practice": {
-    title: "Independent B.C. Class 7 Knowledge Test Practice | Shanaya's",
+    title: "B.C. Class 7 Knowledge Test Practice",
     description:
       "Use an independent 20-question Class 7 study bank, then verify every rule with ICBC's official guide and practice test.",
   },
   "/knowledge-test-guide": {
-    title: "B.C. Class 7 Knowledge Test: Online & In-Person Guide | Shanaya's",
+    title: "B.C. Class 7 Knowledge Test Guide",
     description:
       "Current Class 7 guide to ICBC's online and in-person B.C. knowledge test: eligibility, 50 questions, fees, study sources, ID and licence steps.",
     robots: "index, follow",
@@ -158,12 +169,12 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
     ],
   },
   "/blog": {
-    title: "Driving Tips & Road Test Resources | Shanaya's Driving School",
+    title: "Driving Tips & Road Test Resources",
     description:
       "Read practical driving tips, ICBC road test guidance, defensive driving advice, and newcomer resources for BC drivers.",
   },
   "/careers": {
-    title: "Driving Instructor Careers | Shanaya's Driving School",
+    title: "Driving Instructor Careers in B.C.",
     description:
       "Explore instructor, support, and contractor opportunities with Shanaya's Driving School in British Columbia.",
   },
@@ -444,7 +455,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     const course = courseCatalog.find((item) => item.id === decodePathSegment(courseSlug));
     if (course) {
       return {
-        title: `${course.title} in Victoria & Langford, BC | ${SITE_NAME}`,
+        title: withBrand(`${course.title} in Victoria, BC`),
         description: course.description,
         path,
       };
@@ -456,7 +467,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     const packageItem = packageCatalog.find((item) => item.id === decodePathSegment(packageSlug));
     if (packageItem) {
       return {
-        title: `${packageItem.title} Driving Package | ${SITE_NAME}`,
+        title: withBrand(`${packageItem.title} Driving Package`),
         description: packageItem.description,
         path,
       };
@@ -468,7 +479,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     const extra = optionalExtras.find((item) => item.id === decodePathSegment(extraSlug));
     if (extra && typeof extra.price === "number") {
       return {
-        title: `${extra.title} | ${SITE_NAME}`,
+        title: withBrand(extra.title),
         description: extra.description,
         path,
       };
@@ -480,7 +491,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     const author = resolveAuthor(decodePathSegment(authorSlug));
     if (author) {
       return {
-        title: `${author.name}, ${author.jobTitle} | ${SITE_NAME}`,
+        title: withBrand(`${author.name}, ${author.jobTitle}`),
         description: author.summary,
         image: author.image,
         path,
@@ -498,11 +509,18 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     const post = blogPosts.find((item) => item.slug === decodePathSegment(blogSlug));
     if (post) {
       return {
-        title: post.seoTitle ?? `${post.title} | ${SITE_NAME}`,
+        title: post.seoTitle ?? withBrand(post.title),
         description: post.description,
         image: post.heroImage,
         path,
         type: "article",
+        /* Mirrors the visible Home / Blog / <category> trail rendered by
+           src/pages/BlogPost.tsx, and the same trail the static generator emits. */
+        breadcrumbs: [
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog/" },
+          { name: post.category, path: `${path}/` },
+        ],
         article: {
           headline: post.title,
           datePublished: post.datePublished,
@@ -520,7 +538,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
     const policy = sitePolicies.find((item) => item.id === decodePathSegment(policySlug));
     if (policy) {
       return {
-        title: `${policy.label} | ${SITE_NAME}`,
+        title: withBrand(policy.label),
         description: policy.cardDescription,
         path,
         breadcrumbs: [
@@ -552,7 +570,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
   }
 
   return {
-    title: `Page Not Found | ${SITE_NAME}`,
+    title: withBrand("Page Not Found"),
     description: "The page you are looking for could not be found.",
     path,
     robots: "noindex, follow",
