@@ -1,0 +1,1 @@
+import{j as t,c as n}from"./index-P8IDWV2B.js";const i=({label:e,toneClassName:s})=>t.jsx("span",{className:n("inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide",s),children:e});export{i as A};

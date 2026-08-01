@@ -5,7 +5,6 @@ import { Facebook, Linkedin, Twitter } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
-import AuthorBioCard from "@/components/AuthorBioCard";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
 import { blogPosts } from "@/data/blogPosts";
 import { authorProfilePath, resolveAuthor } from "@/data/authors";
@@ -251,18 +250,11 @@ const BlogPost = () => {
             <div className="hidden lg:block" aria-hidden="true" />
           )}
 
-          {/* Article */}
+          {/* Article. The author and reviewer bio cards that used to sit here were
+              removed at the owner's request; the masthead byline still credits and
+              links both people, and Article.author / reviewedBy schema is unchanged. */}
           <div>
             <article className={articleProseClasses}>{rendered}</article>
-
-            {namedAuthor ? (
-              <div className="mt-10 space-y-6">
-                <AuthorBioCard author={namedAuthor} />
-                {reviewer && reviewer.id !== namedAuthor.id ? (
-                  <AuthorBioCard author={reviewer} label="Reviewed by" />
-                ) : null}
-              </div>
-            ) : null}
           </div>
 
           {/* Sidebar */}

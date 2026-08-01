@@ -88,7 +88,7 @@ export const blogPosts: BlogPostData[] = [
           </a>
           , ICBC said <strong>nearly half</strong> of drivers were failing to pass their first
           attempt. That was a province-wide figure published in 2023, not a pass rate for the
-          Victoria office — ICBC publishes no office-level breakdown. Its{" "}
+          Victoria office, and ICBC publishes no office-level breakdown. Its{" "}
           <a
             href="https://www.icbc.com/assets/en/49OS8RJMWgWKgOx4U0EGOa/skills-explainer.pdf"
             target="_blank"
@@ -96,8 +96,8 @@ export const blogPosts: BlogPostData[] = [
           >
             Road Test Skills Explainer
           </a>{" "}
-          scores five competencies — Observation, Space Margin, Speed, Steering and Communication —
-          then lists four reasons a test can be failed.
+          scores five competencies (Observation, Space Margin, Speed, Steering and
+          Communication), then lists four reasons a test can be failed.
         </p>
 
         <div className="overflow-x-auto rounded-xl border border-slate-200">
@@ -172,7 +172,7 @@ export const blogPosts: BlogPostData[] = [
             What to expect during your road test
           </a>{" "}
           sheet states that &ldquo;when completing a parking manoeuvre, touching the curb is not a
-          FAIL&rdquo; — while <em>driving over</em> curbs or sidewalks sits under Other. Light contact
+          FAIL&rdquo;, while <em>driving over</em> curbs or sidewalks sits under Other. Light contact
           is not fatal; mounting the curb is a different matter.
         </p>
 
@@ -187,7 +187,7 @@ export const blogPosts: BlogPostData[] = [
         <p>
           One detail beats those headline numbers. Saanich noted that westbound volumes in the
           weekday 3–4 p.m. hour were &ldquo;significantly affected by queuing through the
-          corridor,&rdquo; causing the counter to under-report by as much as 40 per cent — the queues
+          corridor,&rdquo; causing the counter to under-report by as much as 40 per cent. The queues
           here defeated the counting equipment. The busiest single hour was not the afternoon but{" "}
           <strong>8–9 a.m., at 2,312 vehicles</strong>, so an early appointment puts you in the
           heaviest hour of the week and inside school-zone hours at once. Saanich states its counts
@@ -199,7 +199,7 @@ export const blogPosts: BlogPostData[] = [
         <p>
           A school zone signed 30 km/h applies on a <strong>regular school day, 8 a.m. to 5
           p.m.</strong>, or the longer times shown on the sign. A playground zone signed 30 km/h
-          applies <strong>dawn to dusk, every day</strong> — weekends and holidays included. That last
+          applies <strong>dawn to dusk, every day</strong>, weekends and holidays included. That last
           difference is the one drivers miss.
         </p>
         <p>
@@ -260,7 +260,7 @@ export const blogPosts: BlogPostData[] = [
         <p>
           On left turns, section 174 requires you to yield to oncoming traffic in the intersection or
           &ldquo;so close as to constitute an immediate hazard.&rdquo; The weak turns we see in
-          McKenzie congestion are rarely reckless ones — they are indecisive, and ICBC assesses
+          McKenzie congestion are rarely the reckless ones. They are indecisive, and ICBC assesses
           drivers for being unnecessarily cautious as well as unnecessarily aggressive. Keep the
           wheels straight while you wait, too: ICBC&apos;s steering criteria say to avoid angling the
           car or wheels to the left when waiting to turn left.
@@ -380,7 +380,7 @@ export const blogPosts: BlogPostData[] = [
               target="_blank"
               rel="noopener noreferrer"
             >
-              Road Test — Skills Explainer
+              Road Test Skills Explainer
             </a>{" "}
             (MV2959) and{" "}
             <a
@@ -420,7 +420,7 @@ export const blogPosts: BlogPostData[] = [
             >
               Tuning Up for Drivers
             </a>{" "}
-            — hill parking and hill starts.
+            : hill parking and hill starts.
           </li>
           <li>
             District of Saanich traffic counts:{" "}
@@ -469,7 +469,7 @@ export const blogPosts: BlogPostData[] = [
             >
               Motor Vehicle Act
             </a>{" "}
-            — sections 147, 157.1 and 174.
+            : sections 147, 157.1 and 174.
           </li>
         </ul>
         <p>

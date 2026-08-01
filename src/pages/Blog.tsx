@@ -6,6 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
 import { blogPosts, type BlogPostData } from "@/data/blogPosts";
+import { resolveAuthor } from "@/data/authors";
 import { seoLandingPages } from "@/data/seoLandingPages";
 
 const cleanTitle = (title: string) => title.split(" | ")[0];
@@ -28,15 +29,26 @@ const sortLabels: Record<SortOption, string> = {
 const byNewest = (a: BlogPostData, b: BlogPostData) =>
   new Date(b.date).getTime() - new Date(a.date).getTime();
 
-const PostMeta = ({ post }: { post: BlogPostData }) => (
-  <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
-    <span className="font-semibold text-slate-600 underline underline-offset-2">{post.author}</span>
-    <span aria-hidden="true">·</span>
-    <span>{post.date}</span>
-    <span aria-hidden="true">·</span>
-    <span>{post.readTime}</span>
-  </p>
-);
+/* Credit the named author the same way the article page does, so a post written by
+   a person is not attributed to the organization here. Rendered as plain text, not
+   a profile link: two of the three call sites sit inside the card's <Link>, and an
+   anchor inside an anchor is invalid. Unpublished or unknown ids resolve to
+   undefined, which falls back to the organization byline. */
+const PostMeta = ({ post }: { post: BlogPostData }) => {
+  const namedAuthor = resolveAuthor(post.authorId);
+
+  return (
+    <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
+      <span className="font-semibold text-slate-600 underline underline-offset-2">
+        {namedAuthor ? namedAuthor.name : post.author}
+      </span>
+      <span aria-hidden="true">·</span>
+      <span>{post.date}</span>
+      <span aria-hidden="true">·</span>
+      <span>{post.readTime}</span>
+    </p>
+  );
+};
 
 const Blog = () => {
   const [search, setSearch] = useState("");

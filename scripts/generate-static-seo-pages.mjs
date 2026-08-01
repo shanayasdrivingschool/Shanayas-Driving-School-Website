@@ -1350,10 +1350,15 @@ const buildBlogIndexBody = (page, blogContent) => {
   ];
 
   posts.forEach(([slug, post]) => {
+    /* Mirrors PostMeta in src/pages/Blog.tsx, which credits the named author and
+       falls back to the organization when a post has none. */
+    const namedAuthor = content.resolveAuthor(post.authorId);
+    const byline = namedAuthor ? namedAuthor.name : post.author;
+
     parts.push(
       `<li><article><h2><a href="${siteOrigin}/blog/${slug}/">${escapeHtml(post.title)}</a></h2>` +
         `${para(post.description)}` +
-        `${para(`${post.category} · Updated ${post.date} · ${post.readTime}`)}</article></li>`,
+        `${para(`${byline} · ${post.category} · Updated ${post.date} · ${post.readTime}`)}</article></li>`,
     );
   });
 
