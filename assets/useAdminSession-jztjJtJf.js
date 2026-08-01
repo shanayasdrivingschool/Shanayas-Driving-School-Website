@@ -1,1 +1,0 @@
-import{k as s}from"./react-vendor-4atPn5OY.js";import{u as o}from"./index-BaOOcL7P.js";import{getAdminSession as n}from"./affiliateApi-C_iXRtd3.js";const t=()=>{const{user:e}=o();return s({queryKey:["admin-session",e==null?void 0:e.id],queryFn:n,enabled:!!e,staleTime:6e4})};export{t as u};
