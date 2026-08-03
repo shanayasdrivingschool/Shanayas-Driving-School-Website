@@ -768,16 +768,22 @@
    Edge on Windows, and 0 wherever overlay scrollbars are used, which is why it does
    not reproduce in headless browsers.
 
-   Left unlayered and marked !important so it beats the rule the scroll-lock library
-   injects at runtime, which is itself unlayered and sets padding-right without
-   !important.
+   The compensation arrives as BOTH padding-right and margin-right. Measured with
+   real scrollbars enabled, margin-right is the one that actually moves the page:
+   body drops from 1425px to 1410px and the content slides 7.5px left.
+
+   Selector is `html body[...]` rather than `body[...]` on purpose. The library sets
+   margin-right with !important, and its <style> is injected into <head> at runtime,
+   so it lands after this file. At equal specificity the later !important wins and a
+   plain `body[data-scroll-locked]` override loses. The extra element bumps
+   specificity to (0,1,2) so this wins regardless of source order.
 
    Gated on @supports because the reasoning only holds where scrollbar-gutter is
    honoured. A browser that ignores it (Safari before 18.2) really does lose the
    scrollbar on lock, so there the library's compensation is correct and removing it
    would introduce the very shift this fixes. */
 @supports (scrollbar-gutter: stable) {
-  body[data-scroll-locked] {
+  html body[data-scroll-locked] {
     padding-right: 0 !important;
     margin-right: 0 !important;
   }
