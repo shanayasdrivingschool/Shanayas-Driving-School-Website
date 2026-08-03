@@ -73,48 +73,74 @@ const trialLabel = freeTrial.durationMinutes
 
 type BookingIntent = "free_assessment_drive" | "lesson_booking";
 
-const BookingForm = ({ intent }: { intent: BookingIntent }) => {
+/* The confirmation takes over the whole dialog rather than sitting under the form's
+   heading: leaving "Book your lessons" above a success panel reads as though the
+   booking still has a step left. The dialog header is hidden (kept for screen
+   readers) while this is on screen, so this component owns the title.
+
+   Entrance animation deliberately splits the two: the badge scales, the text only
+   fades and slides. Scaling glyphs is what caused the doubled-text ghosting the
+   DialogContent overrides below already work around, so no transform touches type.
+   All of it is motion-safe and stops dead under prefers-reduced-motion. */
+const BookingSuccess = ({ intent }: { intent: BookingIntent }) => {
+  const isLessonBooking = intent === "lesson_booking";
+
+  return (
+    <div className="flex flex-col items-center py-4 text-center">
+      <span className="relative flex h-20 w-20 items-center justify-center motion-safe:animate-in motion-safe:zoom-in-50 motion-safe:duration-500">
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 rounded-full bg-emerald-500/25 motion-safe:animate-cta-ring"
+        />
+        <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/30">
+          <Check className="h-10 w-10 text-white" strokeWidth={3} aria-hidden="true" />
+        </span>
+      </span>
+
+      <div className="motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-500">
+        <h3 className="mt-5 text-2xl font-black text-slate-900">Thank you</h3>
+        <p className="mt-2 text-base font-bold text-emerald-700">We will call you shortly</p>
+        <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-slate-600">
+          {isLessonBooking
+            ? "We have your details and will confirm your lessons and find times that fit around your week."
+            : `We have your details and will arrange your ${trialLabel}.`}
+        </p>
+      </div>
+
+      {/* WhatsApp reaches the school straight away, so it is the honest answer to
+          "how soon?" without promising a callback window. Grid, not flex, so both
+          buttons are exactly equal; whitespace-nowrap stops the phone number
+          wrapping mid-number inside a half-width button. */}
+      <div className="mt-6 grid w-full gap-2.5 sm:grid-cols-2 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-700">
+        <a
+          href={beginnerLandingWhatsApp.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full border-2 border-transparent bg-[#25D366] px-4 text-sm font-black text-white transition-opacity duration-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/40"
+        >
+          <WhatsAppIcon />
+          WhatsApp us
+        </a>
+        <a
+          href={beginnerLandingPhone.href}
+          className="inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full border-2 border-emerald-700 px-4 text-sm font-black text-emerald-800 transition-colors duration-200 hover:bg-emerald-700 hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-700/40"
+        >
+          <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+          {beginnerLandingPhone.display}
+        </a>
+      </div>
+    </div>
+  );
+};
+
+const BookingForm = ({ intent, onSuccess }: { intent: BookingIntent; onSuccess: () => void }) => {
   const isLessonBooking = intent === "lesson_booking";
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
-
-  if (submitted) {
-    return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
-        <h3 className="text-lg font-black text-emerald-900">Request received</h3>
-        <p className="mt-2 text-sm text-emerald-800">
-          {isLessonBooking
-            ? "We will call you to confirm your lessons and find times that work."
-            : `We will call you to arrange your ${trialLabel}.`}
-        </p>
-        {/* WhatsApp reaches the school straight away, so it is the honest answer to
-            "how soon?" without promising a callback window. */}
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-center">
-          <a
-            href={beginnerLandingWhatsApp.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-black text-white transition-opacity duration-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/40"
-          >
-            <WhatsAppIcon />
-            Message us now
-          </a>
-          <a
-            href={beginnerLandingPhone.href}
-            className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-emerald-700 px-5 py-2.5 text-sm font-black text-emerald-800 transition-colors duration-200 hover:bg-emerald-700 hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-700/40"
-          >
-            <Phone className="h-4 w-4" aria-hidden="true" />
-            {beginnerLandingPhone.display}
-          </a>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <form
@@ -144,7 +170,7 @@ const BookingForm = ({ intent }: { intent: BookingIntent }) => {
             sourcePage: PAGE_PATH,
             emailProvided: email.trim().length > 0,
           });
-          setSubmitted(true);
+          onSuccess();
         } catch (error) {
           console.error("Free trial submit failed:", error);
           setSubmitError(
@@ -242,6 +268,9 @@ const BookingForm = ({ intent }: { intent: BookingIntent }) => {
 
 const BeginnerDrivingLessons = () => {
   const [bookingIntent, setBookingIntent] = useState<BookingIntent | null>(null);
+  /* Lifted out of BookingForm so the dialog header can swap to the thank-you state
+     as well; the form only reports success upward now. */
+  const [bookingSubmitted, setBookingSubmitted] = useState(false);
   /* The sticky bar only appears once the hero's own buttons have scrolled away.
      Showing both at once puts two "Call now" buttons within a thumb's width of
      each other on a phone, which reads as clutter rather than convenience. */
@@ -988,25 +1017,49 @@ const BeginnerDrivingLessons = () => {
 
       {/* The booking form moved out of the hero into a dialog, so every CTA on the
           page opens the same form instead of scrolling back to a panel. */}
-      <Dialog open={bookingIntent !== null} onOpenChange={(open) => !open && setBookingIntent(null)}>
+      <Dialog
+        open={bookingIntent !== null}
+        onOpenChange={(open) => {
+          if (open) return;
+          setBookingIntent(null);
+          // Clear the confirmation so the next visitor to open the dialog gets the
+          // form, not a stale thank-you screen from the previous submission.
+          setBookingSubmitted(false);
+        }}
+      >
         {/* The shared DialogContent enters with zoom-in-95 + slide-in-from-top, which
             scales the text for 200ms and renders it doubled on some GPUs. Neutralising
             the scale and slide leaves a plain fade: same entrance, no transform on the
             glyphs, no ghosting. */}
         <DialogContent className="max-h-[90vh] max-w-md overflow-y-auto data-[state=closed]:[--tw-exit-scale:1] data-[state=closed]:[--tw-exit-translate-y:0] data-[state=open]:[--tw-enter-scale:1] data-[state=open]:[--tw-enter-translate-y:0]">
-          <DialogHeader>
+          {/* Once submitted the header is hidden visually but kept in the accessibility
+              tree: Radix requires a DialogTitle, and removing it drops the dialog's
+              accessible name for screen-reader users mid-flow. */}
+          <DialogHeader className={bookingSubmitted ? "sr-only" : undefined}>
             {/* pr-8 keeps the longest title clear of the absolutely-positioned close
                 button, which it otherwise ran under on a 360px screen. */}
             <DialogTitle className="pr-8 text-2xl font-black leading-tight text-[#1d52a1]">
-              {bookingIntent === "lesson_booking" ? "Book your lessons" : `Book your ${trialLabel}`}
+              {bookingSubmitted
+                ? "Thank you, we will call you shortly"
+                : bookingIntent === "lesson_booking"
+                  ? "Book your lessons"
+                  : `Book your ${trialLabel}`}
             </DialogTitle>
             <DialogDescription className="text-slate-600">
-              {bookingIntent === "lesson_booking"
-                ? "Leave your details and we will call to confirm your lessons and find times that fit around your week."
-                : "Leave your details and we will call to arrange a time. An instructor assesses where you are, answers your questions and explains what your road test will need."}
+              {bookingSubmitted
+                ? "Your request has been received."
+                : bookingIntent === "lesson_booking"
+                  ? "Leave your details and we will call to confirm your lessons and find times that fit around your week."
+                  : "Leave your details and we will call to arrange a time. An instructor assesses where you are, answers your questions and explains what your road test will need."}
             </DialogDescription>
           </DialogHeader>
-          {bookingIntent ? <BookingForm intent={bookingIntent} /> : null}
+          {bookingIntent ? (
+            bookingSubmitted ? (
+              <BookingSuccess intent={bookingIntent} />
+            ) : (
+              <BookingForm intent={bookingIntent} onSuccess={() => setBookingSubmitted(true)} />
+            )
+          ) : null}
         </DialogContent>
       </Dialog>
 

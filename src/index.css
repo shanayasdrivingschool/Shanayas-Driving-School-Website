@@ -757,3 +757,28 @@
     display: none !important;
   }
 }
+
+/* Dialogs, sheets and dropdowns lock scrolling by setting body[data-scroll-locked],
+   which hides body overflow and adds padding-right equal to the scrollbar width to
+   replace the scrollbar that disappears. On this site the scrollbar never
+   disappears: html sets scrollbar-gutter: stable (see @layer base above), so the
+   gutter stays reserved whether or not a scrollbar is drawn. The compensation is
+   therefore added on top of space that was never lost, and the page visibly jumps
+   left by the scrollbar width every time a modal opens - about 15px in Chrome and
+   Edge on Windows, and 0 wherever overlay scrollbars are used, which is why it does
+   not reproduce in headless browsers.
+
+   Left unlayered and marked !important so it beats the rule the scroll-lock library
+   injects at runtime, which is itself unlayered and sets padding-right without
+   !important.
+
+   Gated on @supports because the reasoning only holds where scrollbar-gutter is
+   honoured. A browser that ignores it (Safari before 18.2) really does lose the
+   scrollbar on lock, so there the library's compensation is correct and removing it
+   would introduce the very shift this fixes. */
+@supports (scrollbar-gutter: stable) {
+  body[data-scroll-locked] {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+}
