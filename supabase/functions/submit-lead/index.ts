@@ -293,6 +293,71 @@ const isCustomPackageLead = (lead: LeadInsert) =>
   lead.lead_type === "custom_package_request" ||
   (typeof lead.payload.request_type === "string" && lead.payload.request_type === "custom_package_request");
 
+/* Emails the school when a lead is stored. Deliberately best-effort:
+ *  - if RESEND_API_KEY is unset this is a no-op, so the function behaves exactly as
+ *    before until the key is configured;
+ *  - every failure is caught and logged. A notification must never turn a lead that
+ *    was already saved into an error for the visitor.
+ * LEAD_NOTIFY_FROM must be a domain verified in Resend. Until the domain is
+ * verified, use "onboarding@resend.dev", which can only deliver to the address
+ * that owns the Resend account.
+ */
+const notifyNewLead = async (lead: LeadInsert) => {
+  const apiKey = Deno.env.get("RESEND_API_KEY");
+  const to = Deno.env.get("LEAD_NOTIFY_TO");
+  if (!apiKey || !to) return;
+
+  const from = Deno.env.get("LEAD_NOTIFY_FROM") ?? "onboarding@resend.dev";
+
+  /* Contact details lead so the phone number survives a lock-screen preview,
+     which truncates at roughly 100 characters. The free-text note is pulled
+     out of the payload rather than left inside the JSON dump: it is the only
+     field the visitor writes themselves, so it is the one worth reading. */
+  const payload = (lead.payload ?? {}) as Record<string, unknown>;
+  const note = typeof payload.note === "string" ? payload.note.trim() : "";
+  const requestType = typeof payload.request_type === "string" ? payload.request_type : "";
+
+  const lines = [
+    `Name:    ${lead.full_name ?? "-"}`,
+    `Phone:   ${lead.phone ?? "-"}`,
+    `Email:   ${lead.email ?? "not provided"}`,
+    requestType ? `Request: ${requestType.replace(/_/g, " ")}` : "",
+    note ? `Note:    ${note}` : "",
+    "",
+    `Page:    ${lead.source_page}`,
+    `Type:    ${lead.lead_type}`,
+    "",
+    "Full payload:",
+    JSON.stringify(payload, null, 2),
+  ]
+    .filter((line, index, all) => line !== "" || all[index - 1] !== "")
+    .join("\n");
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to: to.split(",").map((address) => address.trim()).filter(Boolean),
+        subject: `New lead: ${lead.full_name ?? "unnamed"} - ${lead.source_page}`,
+        text: lines,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("lead notification rejected", {
+        status: response.status,
+        body: (await response.text()).slice(0, 300),
+      });
+    }
+  } catch (notifyError) {
+    console.error("lead notification failed", {
+      message: notifyError instanceof Error ? notifyError.message : String(notifyError),
+    });
+  }
+};
+
 Deno.serve(async (request) => {
   const origin = request.headers.get("origin");
   const corsHeaders = buildCorsHeaders({
@@ -421,6 +486,7 @@ Deno.serve(async (request) => {
       });
 
       if (!fallbackInsertError) {
+        await notifyNewLead(lead);
         return jsonResponse(200, { ok: true }, corsHeaders);
       }
 
@@ -448,6 +514,7 @@ Deno.serve(async (request) => {
     return jsonResponse(500, { error: "insert_failed" }, corsHeaders);
   }
 
+  await notifyNewLead(lead);
   return jsonResponse(200, { ok: true }, corsHeaders);
 });
 

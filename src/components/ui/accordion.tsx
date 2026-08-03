@@ -37,15 +37,21 @@ AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+>(({ className, children, forceMount, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    /* data-[state=closed]:h-0 only matters when a caller passes forceMount, which
-       keeps closed content mounted so crawlers can read it. Without forceMount
-       closed content is unmounted and never renders, so this is inert. Height 0
-       plus overflow-hidden clips it visually while leaving the text rendered,
-       which indexes better than display:none. */
-    className="overflow-hidden text-sm transition-all data-[state=closed]:h-0 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    forceMount={forceMount}
+    /* h-0 is applied only under forceMount, which keeps closed content mounted so
+       crawlers can read it — height 0 plus overflow-hidden clips it visually while
+       leaving the text rendered, which indexes better than display:none.
+
+       It must NOT be applied otherwise: a static height:0 the instant state flips
+       to closed pre-empts the accordion-up keyframes, so the panel snapped shut
+       with no closing animation while opening animated correctly. */
+    className={cn(
+      "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+      forceMount && "data-[state=closed]:h-0",
+    )}
     {...props}
   >
     <div className={cn("pb-4 pt-0", className)}>{children}</div>

@@ -94,6 +94,19 @@ export default {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        /* Attention loop for a primary CTA. Ring expands and fades on a pseudo
+           layer behind the button, so only transform/opacity animate and the
+           button's own box is never resized — no layout shift, no reflow. */
+        "cta-ring": {
+          "0%": { transform: "scale(1)", opacity: "0.55" },
+          "70%, 100%": { transform: "scale(1.35)", opacity: "0" },
+        },
+        /* Barely-there breathe on the button itself, long enough to read as
+           deliberate rather than a nervous twitch. */
+        "cta-breathe": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.035)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -101,6 +114,8 @@ export default {
         "float": "float 6s ease-in-out infinite",
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
         "scroll": "scroll 20s linear infinite",
+        "cta-ring": "cta-ring 2.6s cubic-bezier(0, 0, 0.2, 1) infinite",
+        "cta-breathe": "cta-breathe 2.6s ease-in-out infinite",
       },
     },
   },

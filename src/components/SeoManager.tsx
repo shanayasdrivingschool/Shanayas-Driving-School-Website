@@ -17,6 +17,7 @@ import { courseCatalog } from "@/data/courseCatalog";
 import { optionalExtras } from "@/data/optionalExtras";
 import { packageCatalog } from "@/data/packageCatalog";
 import { sitePolicies } from "@/data/policies";
+import { faqs as beginnerLandingFaqs } from "@/data/beginnerCourseLanding";
 import { seoLandingPagesByPath, type SeoLandingPageFaq } from "@/data/seoLandingPages";
 import { faqPageSeo, siteFaqs } from "@/data/siteFaqs";
 import { faqAnswerToPlainText } from "@/lib/faqAnswer";
@@ -120,6 +121,20 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
     title: "Driving Lesson Payment Plans in B.C.",
     description:
       "Explore installment options for eligible driving lesson packages with clear monthly payment choices and predictable scheduling.",
+  },
+  "/beginner-driving-lessons-victoria": {
+    title: "Beginner Driving Lessons in Victoria, BC",
+    description:
+      "Learn to drive in Victoria and Langford with a free assessment drive, dual-control cars and a structured plan built around the ICBC road test.",
+    image: "/landing/driving-lessons-saanich.webp",
+    /* Paid-traffic landing page — see the matching note in
+       scripts/generate-static-seo-pages.mjs. */
+    robots: "noindex, follow",
+    faqs: beginnerLandingFaqs,
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "Beginner driving lessons", path: "/beginner-driving-lessons-victoria/" },
+    ],
   },
   "/newcomers-guide": {
     title: "Moving to B.C.: Exchange or Get a Licence",

@@ -570,6 +570,19 @@ const publicPages = [
       "Start your driving lesson booking with Shanaya's Driving School and get matched with training that fits your goals and schedule.",
   },
   {
+    path: "/beginner-driving-lessons-victoria/",
+    title: "Beginner Driving Lessons in Victoria, BC",
+    description:
+      "Learn to drive in Victoria and Langford with a free assessment drive, dual-control cars and a structured plan built around the ICBC road test.",
+    image: `${siteOrigin}/landing/driving-lessons-saanich.webp`,
+    /* Paid-traffic landing page. It sells the same course as
+       /courses/beginner-driving-course and overlaps /driving-lessons, so leaving it
+       indexable would put three of our own pages in the same auction. noindex keeps
+       it out of organic entirely; follow still lets link equity flow onward. Ads
+       Quality Score is unaffected by noindex. */
+    robots: "noindex, follow",
+  },
+  {
     path: "/newcomers-guide/",
     title: "Moving to B.C.: Exchange or Get a Licence",
     description:
@@ -1622,7 +1635,7 @@ const renderPageHtml = (template, page, content) => {
   html = setCanonical(html, canonical);
   html = setHreflangLinks(html, canonical);
   html = setMetaName(html, "description", page.description);
-  html = setMetaName(html, "robots", "index, follow");
+  html = setMetaName(html, "robots", page.robots ?? "index, follow");
   html = setMetaName(html, "author", siteName);
   html = setMetaName(html, "twitter:card", "summary_large_image");
   html = setMetaName(html, "twitter:title", page.title);
@@ -1743,6 +1756,22 @@ guidePage.article = {
 guidePage.breadcrumbs = [
   { name: "Home", path: "/" },
   { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide/" },
+];
+
+/* The beginner landing page is a bespoke React route, so its questions only exist
+   in src/data/beginnerCourseLanding.ts. Pull them through the loader rather than
+   keeping a second copy here, so the crawler HTML and FAQPage schema cannot drift
+   from what the page renders. */
+const beginnerPage = pages.find((page) => page.path === "/beginner-driving-lessons-victoria/");
+
+if (!beginnerPage) {
+  throw new Error('Missing the "/beginner-driving-lessons-victoria/" page entry.');
+}
+
+beginnerPage.faqs = content.beginnerLanding.faqs;
+beginnerPage.breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Beginner driving lessons", path: "/beginner-driving-lessons-victoria/" },
 ];
 
 /* Same rule for the FAQ hub: title, description and every question come out of
@@ -1913,16 +1942,24 @@ const assertSitemapCoverage = async () => {
   const listed = new Set(
     [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, loc]) => loc.replace(siteOrigin, "")),
   );
-  const generated = new Set(pages.map((page) => page.path));
+  /* A noindex route must be absent from the sitemap: listing a page you have told
+     Google not to index is a contradiction, and Search Console reports it as one.
+     So those routes are held to the opposite rule from every other page. */
+  const indexable = pages.filter((page) => !String(page.robots ?? "").includes("noindex"));
+  const noIndexed = pages.filter((page) => String(page.robots ?? "").includes("noindex"));
+
+  const generated = new Set(indexable.map((page) => page.path));
   const missing = [...generated].filter((page) => !listed.has(page));
   const stale = [...listed].filter((loc) => !generated.has(loc));
+  const wrongfullyListed = noIndexed.filter((page) => listed.has(page.path));
 
-  if (missing.length || stale.length) {
+  if (missing.length || stale.length || wrongfullyListed.length) {
     throw new Error(
       [
         "public/sitemap.xml is out of sync with the pre-rendered routes:",
         ...missing.map((page) => `  missing from sitemap: ${page}`),
         ...stale.map((loc) => `  in sitemap but not generated: ${loc}`),
+        ...wrongfullyListed.map((page) => `  noindex route must not be in sitemap: ${page.path}`),
       ].join("\n"),
     );
   }

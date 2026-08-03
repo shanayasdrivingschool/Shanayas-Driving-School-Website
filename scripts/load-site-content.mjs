@@ -47,6 +47,7 @@ export const loadSiteContent = async () => {
       faqData,
       { faqAnswerToPlainText, parseFaqAnswer },
       { sitePolicies },
+      beginnerLanding,
     ] = await Promise.all([
       server.ssrLoadModule("/src/data/blogPosts.tsx"),
       server.ssrLoadModule("/src/data/seoLandingPages.ts"),
@@ -61,6 +62,7 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/data/siteFaqs.ts"),
       server.ssrLoadModule("/src/lib/faqAnswer.ts"),
       server.ssrLoadModule("/src/data/policies.ts"),
+      server.ssrLoadModule("/src/data/beginnerCourseLanding.ts"),
     ]);
 
     return {
@@ -88,6 +90,14 @@ export const loadSiteContent = async () => {
       /* Policy pages are ordinary React routes with no pre-rendered HTML and no
          sitemap entry, so a crawler never saw them. The FAQ now links two of
          them, so they get the same treatment as every other route. */
+      /* The beginner landing page is a bespoke React route, so its FAQs would
+         otherwise have no crawler HTML and no FAQPage schema. */
+      beginnerLanding: {
+        faqs: beginnerLanding.faqs,
+        sellingPoints: beginnerLanding.sellingPoints,
+        courseFacts: beginnerLanding.courseFacts,
+        reviews: beginnerLanding.reviews,
+      },
       policies: sitePolicies,
       knowledgeTestGuide: {
         faqs: knowledgeTestGuide.knowledgeTestGuideFaqs,

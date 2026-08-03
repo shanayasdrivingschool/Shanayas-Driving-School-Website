@@ -40,6 +40,22 @@ type ContactLeadInput = {
   captchaAction?: string;
 };
 
+type FreeTrialLeadInput = {
+  fullName: string;
+  phone: string;
+  /* Optional on the landing page form, so it may arrive empty. */
+  email?: string;
+  /* Free-text note, only collected on the lesson-booking variant. */
+  note?: string;
+  /* Which button the visitor pressed. Kept in the payload so the two intents can
+     be told apart in admin without a second lead_type (and therefore no migration). */
+  intent: "free_assessment_drive" | "lesson_booking";
+  sourcePage: string;
+  captchaProvider?: CaptchaProvider;
+  captchaToken?: string;
+  captchaAction?: string;
+};
+
 type StudentAssessmentLeadInput = {
   fullName: string;
   phone: string;
@@ -285,6 +301,32 @@ export const submitContactLead = async (input: ContactLeadInput) => {
       first_name: input.firstName,
       last_name: input.lastName,
       message: input.message,
+    },
+    captcha_provider: input.captchaProvider,
+    captcha_token: input.captchaToken,
+    captcha_action: input.captchaAction,
+  });
+};
+
+/* Free assessment-drive requests from the beginner landing page. These reuse the
+   existing student_assessment lead type on purpose: the leads table constrains
+   lead_type, and a new value would need a migration applied by hand in the
+   Supabase SQL editor. source_page and the request_type flag in the payload are
+   what tell these apart from the full /apply assessment form. */
+export const submitFreeTrialLead = async (input: FreeTrialLeadInput) => {
+  const email = normalizeSingle(input.email ?? "");
+  const note = normalizeSingle(input.note ?? "");
+
+  await insertLead({
+    lead_type: "student_assessment",
+    full_name: normalizeSingle(input.fullName),
+    phone: normalizeSingle(input.phone),
+    email: email || undefined,
+    source_page: input.sourcePage,
+    payload: {
+      request_type: input.intent,
+      email_provided: Boolean(email),
+      note: note || undefined,
     },
     captcha_provider: input.captchaProvider,
     captcha_token: input.captchaToken,

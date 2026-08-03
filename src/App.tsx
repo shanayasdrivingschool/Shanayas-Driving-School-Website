@@ -50,6 +50,7 @@ const AuthorProfile = lazy(() => import("./pages/AuthorProfile"));
 const SearchPage = lazy(() => import("./pages/Search"));
 const Faq = lazy(() => import("./pages/Faq"));
 const SeoLandingPage = lazy(() => import("./pages/SeoLandingPage"));
+const BeginnerDrivingLessons = lazy(() => import("./pages/BeginnerDrivingLessons"));
 const CourseProductPage = lazy(() => import("./pages/CourseProductPage"));
 const ExtraProductPage = lazy(() => import("./pages/ExtraProductPage"));
 const AffiliateSignup = lazy(() => import("./pages/AffiliateSignup"));
@@ -101,6 +102,7 @@ const App = () => (
                 <Route path="/driving-lessons-colwood" element={<SeoLandingPage pageId="driving-lessons-colwood" />} />
                 <Route path="/driving-lessons-saanich" element={<SeoLandingPage pageId="driving-lessons-saanich" />} />
                 <Route path="/driving-lessons-view-royal" element={<SeoLandingPage pageId="driving-lessons-view-royal" />} />
+                <Route path="/beginner-driving-lessons-victoria" element={<BeginnerDrivingLessons />} />
                 <Route path="/nervous-driver-lessons-victoria" element={<SeoLandingPage pageId="nervous-driver-lessons-victoria" />} />
                 <Route path="/defensive-driving" element={<SeoLandingPage pageId="defensive-driving" />} />
                 <Route path="/road-test-prep" element={<SeoLandingPage pageId="road-test-prep" />} />

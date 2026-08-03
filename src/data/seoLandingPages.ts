@@ -493,6 +493,11 @@ export const seoLandingPages: SeoLandingPage[] = [
         description: "A focused course to help anxious drivers feel comfortable and in control.",
       },
       {
+        label: "Beginner lessons and a free assessment drive",
+        href: "/beginner-driving-lessons-victoria",
+        description: "Never driven before? Start with a free assessment drive in a dual-control car.",
+      },
+      {
         label: "Driving lessons in Victoria",
         href: "/driving-lessons",
         description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
