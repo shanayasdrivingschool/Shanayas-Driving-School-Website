@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getCaptchaVerification } from "@/lib/captcha";
+import { pushLeadConversion } from "@/lib/analytics";
 import { submitFreeTrialLead } from "@/lib/leadService";
 import {
   Carousel,
@@ -135,6 +136,13 @@ const BookingForm = ({ intent }: { intent: BookingIntent }) => {
             captchaProvider: captcha.provider ?? undefined,
             captchaToken: captcha.token ?? undefined,
             captchaAction: captcha.action ?? undefined,
+          });
+          // After the await, so only a lead that actually reached the database
+          // counts as a conversion.
+          pushLeadConversion({
+            intent,
+            sourcePage: PAGE_PATH,
+            emailProvided: email.trim().length > 0,
           });
           setSubmitted(true);
         } catch (error) {
@@ -312,20 +320,35 @@ const BeginnerDrivingLessons = () => {
                 ))}
               </ul>
 
-              <div ref={heroCtaRef} className="mt-8 flex flex-col gap-3 sm:flex-row">
+              {/* Both CTAs are sized identically: full width stacked, then an equal
+                  half each once they sit side by side. Capped at max-w-xl to match the
+                  paragraph and feature list above, so "equal" does not become
+                  "stretched across the whole hero" on a wide screen.
+
+                  Grid, not flex, on purpose. Two flex-1 items are NOT equal: a flex
+                  item's min-width defaults to auto, so the wider label was floored at
+                  its min-content width and the other button absorbed the remainder
+                  (measured 302px vs 244px). Tailwind's grid-cols-2 is
+                  repeat(2, minmax(0, 1fr)), and that 0 floor makes the tracks exactly
+                  equal whatever the labels say. */}
+              <div ref={heroCtaRef} className="mt-8 grid max-w-xl gap-3 sm:grid-cols-2">
                 {/* Primary intent: ready to book. The attention loop is the pulsing
                     ring on the sibling span only — the button itself never scales, so
                     the click target does not move under the pointer. Stops entirely
                     under prefers-reduced-motion. */}
-                <span className="relative inline-flex">
+                <span className="relative flex w-full">
                   <span
                     aria-hidden="true"
                     className="absolute inset-0 rounded-full bg-[#E6242A] animate-cta-ring motion-reduce:animate-none"
                   />
+                  {/* border-2 border-transparent matches the secondary's visible border.
+                      Without it the two buttons differ by 4px in height: no explicit
+                      height is set, so height is content + padding + border, and
+                      border-box sizing does not fold the border in. */}
                   <button
                     type="button"
                     onClick={() => setBookingIntent("lesson_booking")}
-                    className="relative inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#E6242A] px-7 py-3.5 text-base font-black text-white transition-transform duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/70 motion-reduce:animate-none motion-reduce:hover:scale-100"
+                    className="relative inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-transparent bg-[#E6242A] px-7 py-3.5 text-base font-black text-white transition-transform duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/70 motion-reduce:animate-none motion-reduce:hover:scale-100"
                   >
                     Book your lessons now
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -335,7 +358,7 @@ const BeginnerDrivingLessons = () => {
                 <button
                   type="button"
                   onClick={() => setBookingIntent("free_assessment_drive")}
-                  className="inline-flex cursor-pointer items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-base font-black text-white transition-colors duration-200 hover:bg-white hover:text-[#1d52a1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/70"
+                  className="inline-flex w-full cursor-pointer items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-base font-black text-white transition-colors duration-200 hover:bg-white hover:text-[#1d52a1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/70"
                 >
                   Book a free trial
                 </button>
