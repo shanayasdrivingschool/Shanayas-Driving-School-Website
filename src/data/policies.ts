@@ -448,11 +448,11 @@ const allSitePolicies: SitePolicy[] = [
     id: 'terms-and-conditions',
     label: 'Terms & Conditions',
     href: '/policies/terms-and-conditions',
-    effectiveDate: 'April 1, 2026',
-    cardDescription: 'The general terms that apply when using the website, booking services, or submitting forms.',
+    effectiveDate: 'August 13, 2026',
+    cardDescription: 'The general terms that apply when using the website, booking services, or submitting forms, including how lesson cancellations are handled.',
     intro:
       'These Terms & Conditions describe the general rules that apply when using the website, submitting leads, booking lessons, purchasing packages, or participating in referral-based programs connected to Shanaya\'s Driving School.',
-    highlights: ['Website use', 'Booking and payment terms', 'Operational rules'],
+    highlights: ['Website use', 'Booking and payment terms', '24-hour cancellation rule'],
     sections: [
       {
         title: 'Website and service use',
@@ -469,7 +469,20 @@ const allSitePolicies: SitePolicy[] = [
         ],
       },
       {
-        title: 'Cancellations, attendance, and conduct',
+        title: 'Lesson cancellations and rescheduling',
+        paragraphs: [
+          'Cancellation notice must reach the school or your instructor before the instructor sets out for your lesson. Notice given after the instructor is already on the way is treated as a cancellation inside the one-hour window below.',
+          'How much of the lesson fee is protected depends on how much notice we receive:',
+        ],
+        bullets: [
+          'At least 24 hours before the lesson start time: the lesson fee is refunded in full, or the lesson is rescheduled at no charge, whichever you prefer.',
+          'Less than 24 hours before the lesson start time: half of the lesson fee is deducted and the remaining half is credited toward a rescheduled lesson.',
+          'Less than 1 hour before the lesson start time: the lesson is charged in full and is not rescheduled or credited.',
+        ],
+        note: 'Cancellations made by the school or the instructor, and lessons cut short for reasons outside your control, are always rescheduled or refunded in full.',
+      },
+      {
+        title: 'Attendance and conduct',
         paragraphs: [
           'Students are expected to follow lesson scheduling, attendance, and conduct rules communicated by the school or instructor.',
           'Repeated no-shows, misuse of the website, abusive conduct, or submission of false information may result in refusal of service, cancellation, or removal from certain programs.',

@@ -1,0 +1,1 @@
+import{u as e}from"./useQuery-BXrTrXU4.js";import{g as s,a as u}from"./courseService-B1totTgF.js";const i=()=>e({queryKey:["public-courses"],queryFn:s,initialData:u(),staleTime:6e4});export{i as u};

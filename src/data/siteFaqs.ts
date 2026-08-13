@@ -57,7 +57,7 @@ export const faqPageSeo = {
   intro: [
     "There are two kinds of answer on this page, and we keep them apart. Some come from ICBC and RoadSafetyBC, who run the tests and decide who gets a licence. The rest come from our own catalogue. A driving school can't issue a licence, pick your test route or promise you a pass, so we don't pretend otherwise.",
     "Every rule and figure here was checked against the official page it links to. Requirements and fees do change, so open the link before you rely on an amount or a deadline.",
-    "School prices are catalogue amounts before GST. Course, instructor, vehicle and service-area availability all depend on the date you want, and you should get your booking, cancellation and refund terms in writing before you pay.",
+    "School prices are catalogue amounts before GST. Course, instructor, vehicle and service-area availability all depend on the date you want. Our lesson cancellation terms are published in full, and turn on how much notice you give: 24 hours or more, inside 24 hours, or inside an hour.",
   ],
 };
 
@@ -384,11 +384,19 @@ export const siteFaqs: SiteFaq[] = [
     keywords: ["book", "booking", "how do I sign up", "pick up", "pickup", "drop off", "door to door", "free", "home", "work", "school", "where do we meet"],
   },
   {
+    id: "cancel-or-reschedule-a-lesson",
+    category: "pricing-booking",
+    question: "What happens if I cancel or reschedule a driving lesson?",
+    answer:
+      "Tell us before your instructor sets out, and the notice window decides what happens. With 24 hours' notice or more, we refund the lesson fee in full or reschedule it at no charge, whichever you prefer. Inside 24 hours, half the lesson fee is deducted and the other half is credited to your rescheduled lesson. Inside 1 hour, the lesson is charged in full and can't be rescheduled or credited, because the instructor and the time slot are already committed. If we cancel, or a lesson is cut short for a reason outside your control, you get a full reschedule or refund. The full wording is in our [terms and conditions](/policies/terms-and-conditions). This is our own lesson policy and is separate from [ICBC's road-test cancellation rules](#book-reschedule-or-cancel-road-test).",
+    keywords: ["cancel", "cancellation", "reschedule", "change my lesson", "24 hours", "refund", "late cancellation", "miss a lesson", "no show"],
+  },
+  {
     id: "service-areas-and-payment",
     category: "pricing-booking",
     question: "Where are lessons offered, and what payment or cancellation terms apply?",
     answer:
-      "We cover Victoria, Langford, Colwood, Sidney, Metchosin, Sooke, Duncan and Salt Spring Island, all subject to instructor scheduling and routing. Checkout asks for the full displayed total, and Affirm or Afterpay/Clearpay appear only for eligible transactions, which you can read about in [payment plan options](/payment-plan-options) and the [installment policy](/policies/installment-policy). Our [terms and conditions](/policies/terms-and-conditions) cover attendance and conduct, including that repeated no-shows can lead to refusal of service. We haven't published a general lesson cancellation or refund schedule, so please ask for your booking's written terms before you pay rather than assuming one. [Contact us](/contact) to check availability in your area.",
+      "We cover Victoria, Langford, Colwood, Sidney, Metchosin, Sooke, Duncan and Salt Spring Island, all subject to instructor scheduling and routing. Checkout asks for the full displayed total, and Affirm or Afterpay/Clearpay appear only for eligible transactions, which you can read about in [payment plan options](/payment-plan-options) and the [installment policy](/policies/installment-policy). Cancelling with at least 24 hours' notice means a full refund or a free reschedule; inside 24 hours half the fee is deducted and half is credited; inside 1 hour the lesson is charged in full, as set out in our [terms and conditions](/policies/terms-and-conditions), which also cover attendance and conduct. [Contact us](/contact) to check availability in your area.",
     keywords: ["service area", "refund", "cancel a lesson", "afterpay", "affirm", "clearpay", "installments", "Saanich", "areas"],
   },
 
