@@ -9,10 +9,13 @@ export const useAdminSession = () => {
     queryKey: ["admin-session", user?.id],
     queryFn: getAdminSession,
     enabled: Boolean(user),
-    /* Whether an account is an admin does not change within a sitting, and the key is
-       scoped to the user id, so signing in as someone else refetches. Holding it for the
-       session stops every route change from re-running the check. Revoked access still
-       takes effect immediately at the database level via RLS. */
-    staleTime: Infinity,
+    /* Held long enough that route changes do not re-run the check, but not indefinitely:
+       an admin whose access is withdrawn mid-session should be returned to the login screen
+       on its own. The interval re-asks even while the tab sits idle, and the route guard
+       redirects as soon as the answer comes back false. Data was never exposed either way --
+       the database enforces this independently on every query. */
+    staleTime: 5 * 60_000,
+    refetchInterval: 5 * 60_000,
+    refetchOnWindowFocus: true,
   });
 };

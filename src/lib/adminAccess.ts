@@ -44,10 +44,21 @@ export const requireSessionUser = async (client: SupabaseClient) => {
    dashboard, table and mutation re-read the same row before doing any real work. The
    promise is cached rather than the result so concurrent callers -- the route guard and
    the page query it unblocks -- collapse into one request instead of racing. */
-let cachedAdminCheck: { userId: string; result: Promise<boolean> } | null = null;
+/* The cache expires so that revoking someone's admin access takes effect in the interface
+   on its own, rather than persisting until they happen to sign out. Their data access was
+   never at stake -- the database re-checks is_admin_user() on every query regardless -- but
+   an admin who has been removed should stop being shown admin screens without anyone
+   having to remember to force it. Five minutes keeps the lookup off the hot path while
+   bounding how long a stale "yes" can survive. */
+const ADMIN_CHECK_TTL_MS = 5 * 60_000;
+
+let cachedAdminCheck: { userId: string; checkedAt: number; result: Promise<boolean> } | null = null;
 
 export const isAdminUser = (client: SupabaseClient, userId: string) => {
-  if (cachedAdminCheck?.userId === userId) {
+  if (
+    cachedAdminCheck?.userId === userId &&
+    Date.now() - cachedAdminCheck.checkedAt < ADMIN_CHECK_TTL_MS
+  ) {
     return cachedAdminCheck.result;
   }
 
@@ -73,7 +84,7 @@ export const isAdminUser = (client: SupabaseClient, userId: string) => {
     }
   });
 
-  cachedAdminCheck = { userId, result };
+  cachedAdminCheck = { userId, checkedAt: Date.now(), result };
   return result;
 };
 

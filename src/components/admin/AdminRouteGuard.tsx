@@ -7,8 +7,16 @@ const AdminRouteGuard = () => {
   const { loading, user } = useAdminAuth();
   const adminSession = useAdminSession();
 
-  /* Only the session restore blocks, and that is a local read. */
-  if (loading) {
+  const resolved = adminSession.isSuccess || adminSession.isError;
+
+  /* Nothing renders until the admin flag is known.
+
+     This was briefly relaxed to let the page mount in parallel, back when the check cost a
+     network round trip and the wait was worth avoiding. It no longer costs one: the answer
+     is resolved once per sign-in and shared from adminAccess, so by the time this runs it
+     is almost always already in hand. Waiting is now essentially free, and it keeps a
+     signed-in non-admin from seeing admin navigation before being redirected. */
+  if (loading || (user && !resolved)) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white px-6">
         <div className="rounded-[28px] border border-slate-200 bg-white p-8 text-center shadow-sm">
@@ -23,15 +31,7 @@ const AdminRouteGuard = () => {
     return <Navigate to="/admin/login" replace state={{ from: location.pathname }} />;
   }
 
-  /* The admin flag is still in flight. Render the route anyway so the page mounts and
-     starts its own query now instead of waiting a full round trip for this guard to
-     clear -- both resolve against the same cached lookup in adminAccess, so the page
-     costs nothing extra. A non-admin sees only empty page chrome for that moment: every
-     table is RLS-protected, so no record can load, and the redirect below fires as soon
-     as the answer arrives. */
-  const resolved = adminSession.isSuccess || adminSession.isError;
-
-  if (resolved && adminSession.data?.isAdmin !== true) {
+  if (adminSession.data?.isAdmin !== true) {
     return <Navigate to="/admin/login" replace state={{ from: location.pathname, denied: true }} />;
   }
 
