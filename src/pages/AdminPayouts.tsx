@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Download, Plus, SquarePen, Trash2, Wallet } from "lucide-react";
 import { toast } from "sonner";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
 import AffiliateStatusBadge from "@/components/affiliate/AffiliateStatusBadge";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -28,6 +29,12 @@ import { downloadCsv } from "@/lib/exportCsv";
 import { formatAffiliateCurrency, payoutMethodLabels } from "@/lib/affiliateProgram";
 import type { PayoutStatus, PreferredPayoutMethod } from "@/lib/affiliateTypes";
 import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
+import {
+  adminDangerOutlineButtonClassName,
+  adminPrimaryButtonClassName,
+  adminRowButtonClassName,
+  adminSecondaryButtonClassName,
+} from "@/components/admin/styles";
 
 const payoutStatusOptions: Array<"all" | PayoutStatus> = ["all", "pending", "approved", "paid", "failed", "cancelled"];
 
@@ -214,20 +221,20 @@ const AdminPayouts = () => {
       pageDescription="This page upgrades the existing payout tools with full table filtering, pagination, searchable payout history, and direct record management."
     >
       {payoutsQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading payout records...</div>
+        <div className={`${adminSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading payout records...</div>
       ) : payoutsQuery.isError || !payoutsQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {payoutsQuery.error instanceof Error ? payoutsQuery.error.message : "Unable to load payouts."}
         </div>
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-3">
-            <AffiliateMetricCard label="Eligible affiliates" value={payoutsQuery.data.eligibleAffiliates.length.toString()} icon={<Wallet className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Open payouts" value={payoutsQuery.data.payouts.filter((item) => item.paymentStatus !== "paid").length.toString()} />
-            <AffiliateMetricCard label="Paid batches" value={payoutsQuery.data.payouts.filter((item) => item.paymentStatus === "paid").length.toString()} />
+            <AdminMetricCard label="Eligible affiliates" value={payoutsQuery.data.eligibleAffiliates.length.toString()} icon={<Wallet className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Open payouts" value={payoutsQuery.data.payouts.filter((item) => item.paymentStatus !== "paid").length.toString()} />
+            <AdminMetricCard label="Paid batches" value={payoutsQuery.data.payouts.filter((item) => item.paymentStatus === "paid").length.toString()} />
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Eligible affiliates</p>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               {payoutsQuery.data.eligibleAffiliates.length > 0 ? (
@@ -256,7 +263,7 @@ const AdminPayouts = () => {
             </div>
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 xl:flex-1">
                 <Input value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Search affiliate or notes..." className="h-12 rounded-xl border-slate-200" />
@@ -276,9 +283,9 @@ const AdminPayouts = () => {
                 <button
                   type="button"
                   onClick={openCreate}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                  className={adminPrimaryButtonClassName}
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-4 w-4" aria-hidden="true" />
                   Add payout
                 </button>
                 <button
@@ -297,9 +304,9 @@ const AdminPayouts = () => {
                       })),
                     )
                   }
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                  className={adminSecondaryButtonClassName}
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className="h-4 w-4" aria-hidden="true" />
                   Export CSV
                 </button>
               </div>
@@ -326,20 +333,20 @@ const AdminPayouts = () => {
                           <p className="text-xs text-slate-500">{payout.affiliateId}</p>
                         </div>
                       </TableCell>
-                      <TableCell>{formatAffiliateCurrency(payout.amount)}</TableCell>
+                      <TableCell className="tabular-nums">{formatAffiliateCurrency(payout.amount)}</TableCell>
                       <TableCell>{payoutMethodLabels[payout.paymentMethod]}</TableCell>
                       <TableCell>
                         <AffiliateStatusBadge type="payout" value={payout.paymentStatus} />
                       </TableCell>
-                      <TableCell>{new Date(payout.requestedAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="tabular-nums">{new Date(payout.requestedAt).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <button
                             type="button"
                             onClick={() => openEdit(payout)}
-                            className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                            className={adminRowButtonClassName}
                           >
-                            <SquarePen className="h-3.5 w-3.5" />
+                            <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
                             Edit
                           </button>
                           <button type="button" onClick={() => void runPayoutAction({ action: "approve", payoutId: payout.id })} className="rounded-full bg-[#1d52a1] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#17488d]">Approve</button>
@@ -348,9 +355,9 @@ const AdminPayouts = () => {
                           <button
                             type="button"
                             onClick={() => setDeleteTarget({ id: payout.id, label: `${payout.affiliateName} ${formatAffiliateCurrency(payout.amount)}` })}
-                            className="inline-flex items-center gap-1 rounded-full border border-[#E6242A] px-3 py-2 text-xs font-bold text-[#E6242A] transition-colors hover:bg-[#E6242A] hover:text-white"
+                            className={adminDangerOutlineButtonClassName}
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                             Delete
                           </button>
                         </div>
@@ -360,6 +367,17 @@ const AdminPayouts = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* A filter that matches nothing used to leave a bare header row above blank
+                space, which reads as a failed load rather than as an excluded result. */}
+            {filteredPayouts.length === 0 ? (
+              <div className="mt-6">
+                <AdminEmptyState
+                  noun="payouts"
+                  filtered={(payoutsQuery.data?.payouts ?? []).length > 0}
+                />
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between">
               <p>Showing {paginated.items.length} of {filteredPayouts.length} filtered payouts.</p>

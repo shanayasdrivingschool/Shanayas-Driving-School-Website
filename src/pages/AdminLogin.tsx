@@ -68,7 +68,7 @@ const AdminLogin = () => {
         <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
           <article className="rounded-[28px] border border-slate-200 bg-[#F2F2F2] p-6 shadow-sm sm:p-8">
             <span className="inline-flex rounded-2xl bg-[#1d52a1]/10 p-3 text-[#1d52a1]">
-              <ShieldCheck className="h-6 w-6" />
+              <ShieldCheck className="h-6 w-6" aria-hidden="true" />
             </span>
             <h2 className="mt-5 text-3xl font-black text-slate-900">Dedicated admin workspace</h2>
             <ul className="mt-6 space-y-4 text-sm leading-relaxed text-slate-700">

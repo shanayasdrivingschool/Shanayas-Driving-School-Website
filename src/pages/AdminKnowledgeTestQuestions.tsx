@@ -2,12 +2,13 @@ import { useMemo, useRef, useState, type ChangeEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CircleHelp, Download, FileText, ListChecks, Plus, Search, SquarePen, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Input } from "@/components/ui/input";
@@ -37,6 +38,13 @@ import {
   knowledgeTestQuestionOptionLabels,
 } from "@/lib/knowledgeTestService";
 import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
+import {
+  adminAccentButtonClassName,
+  adminDangerOutlineButtonClassName,
+  adminPrimaryButtonClassName,
+  adminRowButtonClassName,
+  adminSecondaryButtonClassName,
+} from "@/components/admin/styles";
 
 type QuestionEditorState = {
   recordId?: string;
@@ -334,9 +342,9 @@ const AdminKnowledgeTestQuestions = () => {
       pageDescription="Use this page to maintain question wording, answer options, categories, and learning explanations. Changes appear on the public practice test after the next query refresh."
     >
       {questionsQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading question bank...</div>
+        <div className={`${adminSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading question bank...</div>
       ) : questionsQuery.isError || !questionsQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {questionsQuery.error instanceof Error ? questionsQuery.error.message : "Unable to load questions."}
         </div>
       ) : (
@@ -350,13 +358,13 @@ const AdminKnowledgeTestQuestions = () => {
           />
 
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            <AffiliateMetricCard label="Total questions" value={questionsQuery.data.totals.totalQuestions.toString()} icon={<CircleHelp className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Categories covered" value={questionsQuery.data.totals.categoriesCovered.toString()} icon={<ListChecks className="h-5 w-5" />} />
-            <AffiliateMetricCard label="With explanations" value={questionsQuery.data.totals.withExplanations.toString()} icon={<FileText className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Search results" value={filteredQuestions.length.toString()} icon={<Search className="h-5 w-5" />} />
+            <AdminMetricCard label="Total questions" value={questionsQuery.data.totals.totalQuestions.toString()} icon={<CircleHelp className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Categories covered" value={questionsQuery.data.totals.categoriesCovered.toString()} icon={<ListChecks className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="With explanations" value={questionsQuery.data.totals.withExplanations.toString()} icon={<FileText className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Search results" value={filteredQuestions.length.toString()} icon={<Search className="h-5 w-5" aria-hidden="true" />} />
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="grid gap-4 md:grid-cols-2 xl:flex-1">
                 <Input
@@ -393,26 +401,26 @@ const AdminKnowledgeTestQuestions = () => {
                 <button
                   type="button"
                   onClick={() => setEditorState({ values: createEmptyQuestionValues() })}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                  className={adminPrimaryButtonClassName}
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-4 w-4" aria-hidden="true" />
                   Add question
                 </button>
                 <button
                   type="button"
                   onClick={() => importInputRef.current?.click()}
                   disabled={isImporting}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#1d52a1] px-4 py-2 text-sm font-bold text-[#1d52a1] transition-colors hover:bg-[#1d52a1] hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                  className={adminAccentButtonClassName}
                 >
-                  <Upload className="h-4 w-4" />
+                  <Upload className="h-4 w-4" aria-hidden="true" />
                   {isImporting ? "Importing..." : "Import CSV"}
                 </button>
                 <button
                   type="button"
                   onClick={() => downloadCsv("knowledge-test-import-template.csv", csvTemplateRows)}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                  className={adminSecondaryButtonClassName}
                 >
-                  <FileText className="h-4 w-4" />
+                  <FileText className="h-4 w-4" aria-hidden="true" />
                   Download template
                 </button>
                 <button
@@ -432,16 +440,16 @@ const AdminKnowledgeTestQuestions = () => {
                       })),
                     )
                   }
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                  className={adminSecondaryButtonClassName}
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className="h-4 w-4" aria-hidden="true" />
                   Export CSV
                 </button>
               </div>
             </div>
 
             <Alert className="mt-6 rounded-3xl border-[#1d52a1]/20 bg-[#1d52a1]/5 text-slate-800 [&>svg]:text-[#1d52a1]">
-              <FileText className="h-4 w-4" />
+              <FileText className="h-4 w-4" aria-hidden="true" />
               <AlertTitle className="text-sm font-black uppercase tracking-[0.16em] text-[#1d52a1]">
                 CSV import format
               </AlertTitle>
@@ -495,23 +503,23 @@ const AdminKnowledgeTestQuestions = () => {
                           {question.explanation?.trim() ? question.explanation : "No explanation added yet."}
                         </p>
                       </TableCell>
-                      <TableCell>{new Date(question.updatedAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="tabular-nums">{new Date(question.updatedAt).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <button
                             type="button"
                             onClick={() => setEditorState({ recordId: question.id, values: toEditorValues(question) })}
-                            className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                            className={adminRowButtonClassName}
                           >
-                            <SquarePen className="h-3.5 w-3.5" />
+                            <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
                             Edit
                           </button>
                           <button
                             type="button"
                             onClick={() => setDeleteTarget({ id: question.id, label: question.questionText })}
-                            className="inline-flex items-center gap-1 rounded-full border border-[#E6242A] px-3 py-2 text-xs font-bold text-[#E6242A] transition-colors hover:bg-[#E6242A] hover:text-white"
+                            className={adminDangerOutlineButtonClassName}
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                             Delete
                           </button>
                         </div>
@@ -521,6 +529,17 @@ const AdminKnowledgeTestQuestions = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* A filter that matches nothing used to leave a bare header row above blank
+                space, which reads as a failed load rather than as an excluded result. */}
+            {filteredQuestions.length === 0 ? (
+              <div className="mt-6">
+                <AdminEmptyState
+                  noun="questions"
+                  filtered={(questionsQuery.data?.questions ?? []).length > 0}
+                />
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between">
               <p>Showing {paginated.items.length} of {filteredQuestions.length} filtered questions.</p>

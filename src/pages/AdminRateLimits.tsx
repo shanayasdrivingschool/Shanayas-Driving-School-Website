@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, SquarePen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminTableSkeleton from "@/components/admin/AdminTableSkeleton";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -23,6 +24,11 @@ import { deleteAdminRateLimit, saveAdminRateLimit } from "@/lib/adminCrudApi";
 import { getAdminRateLimits } from "@/lib/affiliateApi";
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } from "@/lib/adminPanel";
 import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
+import {
+  adminDangerOutlineButtonClassName,
+  adminPrimaryButtonClassName,
+  adminRowButtonClassName,
+} from "@/components/admin/styles";
 
 type RateLimitEditorState = {
   originalKey?: string;
@@ -162,24 +168,24 @@ const AdminRateLimits = () => {
       {rateLimitsQuery.isLoading ? (
         <AdminTableSkeleton metricCards={3} />
       ) : rateLimitsQuery.isError || !rateLimitsQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {rateLimitsQuery.error instanceof Error ? rateLimitsQuery.error.message : "Unable to load rate-limit activity."}
         </div>
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-3">
-            <AffiliateMetricCard
+            <AdminMetricCard
               label={rateLimitsQuery.data.isPartial ? "Tracked windows (counting...)" : "Tracked windows"}
               value={`${rateLimitsQuery.data.totals.totalWindows}${rateLimitsQuery.data.isPartial ? "+" : ""}`}
             />
-            <AffiliateMetricCard
+            <AdminMetricCard
               label={rateLimitsQuery.data.isPartial ? "Flagged windows (counting...)" : "Flagged windows"}
               value={`${rateLimitsQuery.data.totals.flaggedWindows}${rateLimitsQuery.data.isPartial ? "+" : ""}`}
             />
-            <AffiliateMetricCard label="Unique endpoints" value={rateLimitsQuery.data.totals.uniqueEndpoints.toString()} />
+            <AdminMetricCard label="Unique endpoints" value={rateLimitsQuery.data.totals.uniqueEndpoints.toString()} />
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 xl:flex-1">
                 <Input
@@ -203,9 +209,9 @@ const AdminRateLimits = () => {
               <button
                 type="button"
                 onClick={openCreate}
-                className="inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                className={adminPrimaryButtonClassName}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4" aria-hidden="true" />
                 Add window
               </button>
             </div>
@@ -237,24 +243,24 @@ const AdminRateLimits = () => {
                           {row.count}
                         </span>
                       </TableCell>
-                      <TableCell>{new Date(row.windowStart).toLocaleString()}</TableCell>
-                      <TableCell>{new Date(row.updatedAt).toLocaleString()}</TableCell>
+                      <TableCell className="tabular-nums">{new Date(row.windowStart).toLocaleString()}</TableCell>
+                      <TableCell className="tabular-nums">{new Date(row.updatedAt).toLocaleString()}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <button
                             type="button"
                             onClick={() => openEdit(row)}
-                            className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                            className={adminRowButtonClassName}
                           >
-                            <SquarePen className="h-3.5 w-3.5" />
+                            <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
                             Edit
                           </button>
                           <button
                             type="button"
                             onClick={() => setDeleteTarget({ key: row.key, label: `${row.endpoint} (${row.key.slice(0, 8)})` })}
-                            className="inline-flex items-center gap-1 rounded-full border border-[#E6242A] px-3 py-2 text-xs font-bold text-[#E6242A] transition-colors hover:bg-[#E6242A] hover:text-white"
+                            className={adminDangerOutlineButtonClassName}
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                             Delete
                           </button>
                         </div>
@@ -264,6 +270,17 @@ const AdminRateLimits = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* A filter that matches nothing used to leave a bare header row above blank
+                space, which reads as a failed load rather than as an excluded result. */}
+            {filteredRows.length === 0 ? (
+              <div className="mt-6">
+                <AdminEmptyState
+                  noun="rate-limit windows"
+                  filtered={(rateLimitsQuery.data?.rateLimits ?? []).length > 0}
+                />
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between">
               <p>Showing {paginated.items.length} of {filteredRows.length} filtered windows.</p>

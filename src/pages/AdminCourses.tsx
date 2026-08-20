@@ -2,11 +2,12 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BookOpen, Download, Eye, EyeOff, Plus, SquarePen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,12 @@ import { getAdminCourses } from "@/lib/affiliateApi";
 import type { AdminCourseRecord } from "@/lib/affiliateTypes";
 import { downloadCsv } from "@/lib/exportCsv";
 import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
+import {
+  adminDangerOutlineButtonClassName,
+  adminPrimaryButtonClassName,
+  adminRowButtonClassName,
+  adminSecondaryButtonClassName,
+} from "@/components/admin/styles";
 
 const levelOptions: AdminCourseRecord["level"][] = ["Beginner", "Intermediate", "Advanced", "Test Prep", "Flexible", "Senior Support"];
 const deliveryOptions: AdminCourseRecord["deliveryFormat"][] = ["In-class", "In-car", "In-class + In-car"];
@@ -310,21 +317,21 @@ const AdminCourses = () => {
       pageDescription="This page manages the course records stored in Supabase. Public course pages, the course list, and the custom package builder now read from these records instead of relying only on the hardcoded catalog."
     >
       {coursesQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading courses...</div>
+        <div className={`${adminSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading courses...</div>
       ) : coursesQuery.isError || !coursesQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {coursesQuery.error instanceof Error ? coursesQuery.error.message : "Unable to load courses."}
         </div>
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            <AffiliateMetricCard label="Total courses" value={coursesQuery.data.totals.totalCourses.toString()} icon={<BookOpen className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Visible" value={coursesQuery.data.totals.visibleCourses.toString()} />
-            <AffiliateMetricCard label="Hidden" value={coursesQuery.data.totals.hiddenCourses.toString()} />
-            <AffiliateMetricCard label="Discounted" value={coursesQuery.data.totals.discountedCourses.toString()} />
+            <AdminMetricCard label="Total courses" value={coursesQuery.data.totals.totalCourses.toString()} icon={<BookOpen className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Visible" value={coursesQuery.data.totals.visibleCourses.toString()} />
+            <AdminMetricCard label="Hidden" value={coursesQuery.data.totals.hiddenCourses.toString()} />
+            <AdminMetricCard label="Discounted" value={coursesQuery.data.totals.discountedCourses.toString()} />
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:flex-1">
                 <Input
@@ -359,9 +366,9 @@ const AdminCourses = () => {
                 <button
                   type="button"
                   onClick={openCreate}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                  className={adminPrimaryButtonClassName}
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-4 w-4" aria-hidden="true" />
                   Add course
                 </button>
                 <button
@@ -382,9 +389,9 @@ const AdminCourses = () => {
                       })),
                     )
                   }
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                  className={adminSecondaryButtonClassName}
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className="h-4 w-4" aria-hidden="true" />
                   Export CSV
                 </button>
               </div>
@@ -460,23 +467,23 @@ const AdminCourses = () => {
                               disabled={busyCourseId === course.recordId}
                               className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
                             >
-                              {course.isVisible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                              {course.isVisible ? <EyeOff className="h-3.5 w-3.5" aria-hidden="true" /> : <Eye className="h-3.5 w-3.5" aria-hidden="true" />}
                               {course.isVisible ? "Hide" : "Unhide"}
                             </button>
                             <button
                               type="button"
                               onClick={() => openEdit(course)}
-                              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                              className={adminRowButtonClassName}
                             >
-                              <SquarePen className="h-3.5 w-3.5" />
+                              <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
                               Edit
                             </button>
                             <button
                               type="button"
                               onClick={() => setDeleteTarget({ id: course.recordId, label: course.title })}
-                              className="inline-flex items-center gap-1 rounded-full border border-[#E6242A] px-3 py-2 text-xs font-bold text-[#E6242A] transition-colors hover:bg-[#E6242A] hover:text-white"
+                              className={adminDangerOutlineButtonClassName}
                             >
-                              <Trash2 className="h-3.5 w-3.5" />
+                              <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                               Delete
                             </button>
                           </div>
@@ -487,6 +494,17 @@ const AdminCourses = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* A filter that matches nothing used to leave a bare header row above blank
+                space, which reads as a failed load rather than as an excluded result. */}
+            {filteredCourses.length === 0 ? (
+              <div className="mt-6">
+                <AdminEmptyState
+                  noun="courses"
+                  filtered={(coursesQuery.data?.courses ?? []).length > 0}
+                />
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between">
               <p>Showing {paginated.items.length} of {filteredCourses.length} filtered courses.</p>

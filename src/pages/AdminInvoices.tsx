@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Copy, FileText, Plus, SquarePen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -28,6 +29,11 @@ import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } from "@/lib/adminPanel";
 import type { CheckoutInvoiceStatus } from "@/lib/affiliateTypes";
 import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
+import {
+  adminDangerOutlineButtonClassName,
+  adminPrimaryButtonClassName,
+  adminRowButtonClassName,
+} from "@/components/admin/styles";
 
 const invoiceAvailabilityLabels = {
   draft: "Draft",
@@ -266,21 +272,21 @@ const AdminInvoices = () => {
       pageDescription="These records create private payment links for the regular checkout page. The amount is resolved on the server from the invoice record, not from the browser."
     >
       {invoicesQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading invoices...</div>
+        <div className={`${adminSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading invoices...</div>
       ) : invoicesQuery.isError || !invoicesQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {invoicesQuery.error instanceof Error ? invoicesQuery.error.message : "Unable to load invoices."}
         </div>
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            <AffiliateMetricCard label="Total invoices" value={invoicesQuery.data.totals.totalInvoices.toString()} icon={<FileText className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Open" value={invoicesQuery.data.totals.openInvoices.toString()} />
-            <AffiliateMetricCard label="Paid" value={invoicesQuery.data.totals.paidInvoices.toString()} />
-            <AffiliateMetricCard label="Open amount" value={formatAffiliateCurrency(invoicesQuery.data.totals.openAmount)} />
+            <AdminMetricCard label="Total invoices" value={invoicesQuery.data.totals.totalInvoices.toString()} icon={<FileText className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Open" value={invoicesQuery.data.totals.openInvoices.toString()} />
+            <AdminMetricCard label="Paid" value={invoicesQuery.data.totals.paidInvoices.toString()} />
+            <AdminMetricCard label="Open amount" value={formatAffiliateCurrency(invoicesQuery.data.totals.openAmount)} />
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 xl:flex-1">
                 <Input
@@ -310,9 +316,9 @@ const AdminInvoices = () => {
               <button
                 type="button"
                 onClick={openCreate}
-                className="inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                className={adminPrimaryButtonClassName}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4" aria-hidden="true" />
                 Add invoice
               </button>
             </div>
@@ -348,7 +354,7 @@ const AdminInvoices = () => {
                             <p className="text-xs text-slate-500">{invoice.customerEmail ?? "No customer email"}</p>
                           </div>
                         </TableCell>
-                        <TableCell>{formatAffiliateCurrency(invoice.amount)}</TableCell>
+                        <TableCell className="tabular-nums">{formatAffiliateCurrency(invoice.amount)}</TableCell>
                         <TableCell>
                           <AdminStatusBadge
                             label={invoiceAvailabilityLabels[availability]}
@@ -368,25 +374,25 @@ const AdminInvoices = () => {
                             <button
                               type="button"
                               onClick={() => void handleCopyLink(invoice.publicToken)}
-                              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                              className={adminRowButtonClassName}
                             >
-                              <Copy className="h-3.5 w-3.5" />
+                              <Copy className="h-3.5 w-3.5" aria-hidden="true" />
                               Copy link
                             </button>
                             <button
                               type="button"
                               onClick={() => openEdit(invoice)}
-                              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                              className={adminRowButtonClassName}
                             >
-                              <SquarePen className="h-3.5 w-3.5" />
+                              <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
                               Edit
                             </button>
                             <button
                               type="button"
                               onClick={() => setDeleteTarget({ id: invoice.id, label: invoice.title })}
-                              className="inline-flex items-center gap-1 rounded-full border border-[#E6242A] px-3 py-2 text-xs font-bold text-[#E6242A] transition-colors hover:bg-[#E6242A] hover:text-white"
+                              className={adminDangerOutlineButtonClassName}
                             >
-                              <Trash2 className="h-3.5 w-3.5" />
+                              <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                               Delete
                             </button>
                           </div>
@@ -397,6 +403,17 @@ const AdminInvoices = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* A filter that matches nothing used to leave a bare header row above blank
+                space, which reads as a failed load rather than as an excluded result. */}
+            {filteredInvoices.length === 0 ? (
+              <div className="mt-6">
+                <AdminEmptyState
+                  noun="invoices"
+                  filtered={(invoicesQuery.data?.invoices ?? []).length > 0}
+                />
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between">
               <p>Showing {paginated.items.length} of {filteredInvoices.length} filtered invoices.</p>

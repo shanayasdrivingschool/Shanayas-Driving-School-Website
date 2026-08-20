@@ -1,4 +1,4 @@
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type AdminTableSkeletonProps = {
@@ -18,7 +18,7 @@ const AdminTableSkeleton = ({ metricCards = 3, rows = 8 }: AdminTableSkeletonPro
     {metricCards > 0 ? (
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: metricCards }, (_, index) => (
-          <div key={index} className={`${affiliateSurfaceClassName} !p-6`}>
+          <div key={index} className={`${adminSurfaceClassName} !p-6`}>
             <Skeleton className="h-3 w-24 bg-slate-200" />
             <Skeleton className="mt-4 h-8 w-16 bg-slate-200" />
           </div>
@@ -26,7 +26,7 @@ const AdminTableSkeleton = ({ metricCards = 3, rows = 8 }: AdminTableSkeletonPro
       </div>
     ) : null}
 
-    <div className={affiliateSurfaceClassName}>
+    <div className={adminSurfaceClassName}>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {Array.from({ length: 4 }, (_, index) => (
           <Skeleton key={index} className="h-12 rounded-xl bg-slate-200" />

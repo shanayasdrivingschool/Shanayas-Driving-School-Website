@@ -2,14 +2,15 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, SquarePen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminJsonDialog from "@/components/admin/AdminJsonDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -29,6 +30,11 @@ import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems, p
 import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
 import type { PaymentStatus } from "@/lib/affiliateTypes";
 import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
+import {
+  adminDangerButtonClassName,
+  adminPrimaryButtonClassName,
+  adminRowButtonClassName,
+} from "@/components/admin/styles";
 
 const paymentStatusOptions: PaymentStatus[] = [
   "pending",
@@ -242,24 +248,24 @@ const AdminOrders = () => {
       pageDescription="This view reads directly from public.orders and surfaces customer, affiliate, metadata, and risk information without changing the schema."
     >
       {ordersQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading orders...</div>
+        <div className={`${adminSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading orders...</div>
       ) : ordersQuery.isError || !ordersQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {ordersQuery.error instanceof Error ? ordersQuery.error.message : "Unable to load orders."}
         </div>
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-7">
-            <AffiliateMetricCard label="All orders" value={ordersQuery.data.totals.totalOrders.toString()} />
-            <AffiliateMetricCard label="Paid" value={ordersQuery.data.totals.paid.toString()} />
-            <AffiliateMetricCard label="Pending payment" value={ordersQuery.data.totals.pendingPayment.toString()} />
-            <AffiliateMetricCard label="Processing" value={ordersQuery.data.totals.processingPayment.toString()} />
-            <AffiliateMetricCard label="Refunded" value={ordersQuery.data.totals.refunded.toString()} />
-            <AffiliateMetricCard label="Cancelled" value={ordersQuery.data.totals.cancelled.toString()} />
-            <AffiliateMetricCard label="Suspicious" value={ordersQuery.data.totals.suspicious.toString()} />
+            <AdminMetricCard label="All orders" value={ordersQuery.data.totals.totalOrders.toString()} />
+            <AdminMetricCard label="Paid" value={ordersQuery.data.totals.paid.toString()} />
+            <AdminMetricCard label="Pending payment" value={ordersQuery.data.totals.pendingPayment.toString()} />
+            <AdminMetricCard label="Processing" value={ordersQuery.data.totals.processingPayment.toString()} />
+            <AdminMetricCard label="Refunded" value={ordersQuery.data.totals.refunded.toString()} />
+            <AdminMetricCard label="Cancelled" value={ordersQuery.data.totals.cancelled.toString()} />
+            <AdminMetricCard label="Suspicious" value={ordersQuery.data.totals.suspicious.toString()} />
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5 xl:flex-1">
                 <Input
@@ -298,9 +304,9 @@ const AdminOrders = () => {
               <button
                 type="button"
                 onClick={openCreate}
-                className="inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                className={adminPrimaryButtonClassName}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4" aria-hidden="true" />
                 Add order
               </button>
             </div>
@@ -339,7 +345,7 @@ const AdminOrders = () => {
                           <p className="text-xs text-slate-500">{order.referralCode ?? "No referral code"}</p>
                         </div>
                       </TableCell>
-                      <TableCell>{formatAffiliateCurrency(order.amount)}</TableCell>
+                      <TableCell className="tabular-nums">{formatAffiliateCurrency(order.amount)}</TableCell>
                       <TableCell>
                         <AdminStatusBadge label={paymentStatusLabels[order.paymentStatus]} toneClassName={paymentStatusTone[order.paymentStatus]} />
                       </TableCell>
@@ -365,17 +371,17 @@ const AdminOrders = () => {
                           <button
                             type="button"
                             onClick={() => openEdit(order)}
-                            className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                            className={adminRowButtonClassName}
                           >
-                            <SquarePen className="h-3.5 w-3.5" />
+                            <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
                             Edit
                           </button>
                           <button
                             type="button"
                             onClick={() => setDeleteTarget({ id: order.id, label: order.externalOrderId ?? order.packageName })}
-                            className="inline-flex items-center gap-1 rounded-full bg-[#E6242A] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#C41E23]"
+                            className={adminDangerButtonClassName}
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                             Delete
                           </button>
                         </div>
@@ -385,6 +391,17 @@ const AdminOrders = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* A filter that matches nothing used to leave a bare header row above blank
+                space, which reads as a failed load rather than as an excluded result. */}
+            {filteredOrders.length === 0 ? (
+              <div className="mt-6">
+                <AdminEmptyState
+                  noun="orders"
+                  filtered={(ordersQuery.data?.orders ?? []).length > 0}
+                />
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between">
               <p>Showing {paginated.items.length} of {filteredOrders.length} filtered orders.</p>

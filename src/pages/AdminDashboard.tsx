@@ -1,10 +1,10 @@
 ﻿import { useQuery } from "@tanstack/react-query";
 import { Activity, CreditCard, FileText, ShoppingCart, ShieldAlert, Users, Wallet } from "lucide-react";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
 import AffiliateStatusBadge from "@/components/affiliate/AffiliateStatusBadge";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAdminDashboard } from "@/lib/affiliateApi";
 import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
@@ -31,25 +31,25 @@ const AdminDashboard = () => {
       pageDescription="Track the health of the sales and referral funnel, then drill into the latest submissions and revenue events without leaving the branded admin workspace."
     >
       {dashboardQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading admin dashboard...</div>
+        <div className={`${adminSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading admin dashboard...</div>
       ) : dashboardQuery.isError || !dashboardQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {dashboardQuery.error instanceof Error ? dashboardQuery.error.message : "Unable to load the admin dashboard."}
         </div>
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            <AffiliateMetricCard label="Total leads" value={dashboardQuery.data.totals.totalLeads.toString()} icon={<FileText className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Affiliates" value={dashboardQuery.data.totals.totalAffiliates.toString()} icon={<Users className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Referral clicks" value={dashboardQuery.data.totals.totalReferralClicks.toString()} icon={<Activity className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Orders" value={dashboardQuery.data.totals.totalOrders.toString()} icon={<ShoppingCart className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Commissions" value={dashboardQuery.data.totals.totalCommissions.toString()} icon={<Wallet className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Payouts" value={dashboardQuery.data.totals.totalPayouts.toString()} icon={<CreditCard className="h-5 w-5" />} />
-            <AffiliateMetricCard label="Suspicious activity" value={dashboardQuery.data.totals.suspiciousActivityCount.toString()} icon={<ShieldAlert className="h-5 w-5" />} />
+            <AdminMetricCard label="Total leads" value={dashboardQuery.data.totals.totalLeads.toString()} icon={<FileText className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Affiliates" value={dashboardQuery.data.totals.totalAffiliates.toString()} icon={<Users className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Referral clicks" value={dashboardQuery.data.totals.totalReferralClicks.toString()} icon={<Activity className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Orders" value={dashboardQuery.data.totals.totalOrders.toString()} icon={<ShoppingCart className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Commissions" value={dashboardQuery.data.totals.totalCommissions.toString()} icon={<Wallet className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Payouts" value={dashboardQuery.data.totals.totalPayouts.toString()} icon={<CreditCard className="h-5 w-5" aria-hidden="true" />} />
+            <AdminMetricCard label="Suspicious activity" value={dashboardQuery.data.totals.suspiciousActivityCount.toString()} icon={<ShieldAlert className="h-5 w-5" aria-hidden="true" />} />
           </div>
 
           <div className="grid gap-6 xl:grid-cols-2">
-            <div className={affiliateSurfaceClassName}>
+            <div className={adminSurfaceClassName}>
               <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Recent leads</p>
               <h3 className="mt-2 text-2xl font-black text-slate-900">Latest submissions</h3>
               <div className="mt-5 overflow-x-auto">
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            <div className={affiliateSurfaceClassName}>
+            <div className={adminSurfaceClassName}>
               <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Recent orders</p>
               <h3 className="mt-2 text-2xl font-black text-slate-900">Latest purchases</h3>
               <div className="mt-5 overflow-x-auto">
@@ -106,7 +106,7 @@ const AdminDashboard = () => {
                             <p className="text-xs text-slate-500">{order.customerEmail ?? order.affiliateName ?? "No linked email"}</p>
                           </div>
                         </TableCell>
-                        <TableCell>{formatAffiliateCurrency(order.amount)}</TableCell>
+                        <TableCell className="tabular-nums">{formatAffiliateCurrency(order.amount)}</TableCell>
                         <TableCell>
                           <AdminStatusBadge label={paymentStatusLabels[order.paymentStatus]} toneClassName={paymentStatusTone[order.paymentStatus]} />
                         </TableCell>
@@ -118,7 +118,7 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Recent affiliate signups</p>
             <h3 className="mt-2 text-2xl font-black text-slate-900">Newest partners</h3>
             <div className="mt-5 overflow-x-auto">
@@ -144,7 +144,7 @@ const AdminDashboard = () => {
                       <TableCell>
                         <AffiliateStatusBadge type="affiliate" value={affiliate.status} />
                       </TableCell>
-                      <TableCell>{new Date(affiliate.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="tabular-nums">{new Date(affiliate.createdAt).toLocaleDateString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -2,9 +2,7 @@ import { useEffect, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LogOut, Shield } from "lucide-react";
-import AffiliatePortalLayout from "@/components/affiliate/AffiliatePortalLayout";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
-import { affiliateSecondaryButtonClassName, affiliateSurfaceClassName } from "@/components/affiliate/styles";
 import { ADMIN_NAV_LINKS } from "@/lib/adminPanel";
 import { prefetchAdminRoute } from "@/lib/adminQueries";
 import { preloadAdminRouteModule, preloadAdminRouteModules } from "@/lib/adminRouteModules";
@@ -12,24 +10,20 @@ import { signOutAdmin } from "@/lib/affiliateApi";
 import { cn } from "@/lib/utils";
 
 type AdminPortalShellProps = {
-  eyebrow: string;
-  title: ReactNode;
-  description: string;
   pageTitle: string;
   pageDescription: string;
   children: ReactNode;
+  /* Still accepted so the twelve pages need no edit, but no longer rendered. These fed a
+     500px marketing hero -- stock photograph, eyebrow, oversized headline -- that sat above
+     every table in the panel. On a tool people open to read records, that is half a screen
+     of decoration before the first row, plus a remote image fetched on each visit. */
+  eyebrow?: string;
+  title?: ReactNode;
+  description?: string;
   backgroundImage?: string;
 };
 
-const AdminPortalShell = ({
-  eyebrow,
-  title,
-  description,
-  pageTitle,
-  pageDescription,
-  children,
-  backgroundImage,
-}: AdminPortalShellProps) => {
+const AdminPortalShell = ({ pageTitle, pageDescription, children }: AdminPortalShellProps) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useAdminAuth();
@@ -56,27 +50,48 @@ const AdminPortalShell = ({
   };
 
   return (
-    <AffiliatePortalLayout
-      eyebrow={eyebrow}
-      title={title}
-      description={description}
-      backgroundImage={backgroundImage}
-    >
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
-        <div className="grid gap-6 lg:grid-cols-[260px_1fr] lg:items-start">
-          <aside className="lg:sticky lg:top-24">
-            <div className={affiliateSurfaceClassName}>
-              <div className="flex items-center gap-3">
-                <span className="inline-flex rounded-2xl bg-[#1d52a1]/10 p-3 text-[#1d52a1]">
-                  <Shield className="h-5 w-5" />
-                </span>
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Admin workspace</p>
-                  <p className="mt-1 text-lg font-black text-slate-900">Driving school control panel</p>
-                </div>
-              </div>
+    <div className="min-h-dvh bg-slate-50 text-slate-900">
+      {/* One slim bar carries identity and the account actions, replacing the hero. */}
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-[100rem] items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <div className="flex items-center gap-2.5">
+            <Shield className="h-5 w-5 text-[#1d52a1]" aria-hidden="true" />
+            <span className="text-sm font-black tracking-tight text-slate-900">Admin</span>
+          </div>
 
-              <nav className="mt-6 space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="hidden max-w-[16rem] truncate text-xs text-slate-500 sm:block">
+              {user?.email ?? "Authenticated admin"}
+            </span>
+            <Link
+              to="/"
+              className="rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1]"
+            >
+              Website
+            </Link>
+            <button
+              type="button"
+              onClick={() => void handleSignOut()}
+              className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold text-[#E6242A] transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E6242A]"
+            >
+              <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
+              Sign out
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-[100rem] px-4 py-6 sm:px-6">
+        <div className="grid gap-6 lg:grid-cols-[13rem_1fr] lg:items-start">
+          {/* The navigation no longer sits inside a card. A list of links does not need a
+              bordered, shadowed container to be understood as a list of links. */}
+          <aside className="lg:sticky lg:top-[4.25rem]">
+            <div>
+              {/* Every item used to carry a filled grey background, so twelve solid blocks
+                  competed with the one that mattered and the current page barely stood out.
+                  Resting state is now plain; the fill is reserved for where you actually
+                  are, which is the only item that needs to be found at a glance. */}
+              <nav aria-label="Admin sections" className="mt-6 space-y-1">
                 {ADMIN_NAV_LINKS.map((link) => (
                   <NavLink
                     key={link.to}
@@ -86,50 +101,50 @@ const AdminPortalShell = ({
                     onPointerDown={() => warmRoute(link.to)}
                     className={({ isActive }) =>
                       cn(
-                        "flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold transition-colors",
+                        "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-colors",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-2",
                         isActive
                           ? "bg-[#1d52a1] text-white"
-                          : "bg-[#F2F2F2] text-slate-700 hover:bg-slate-200",
+                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
                       )
                     }
                   >
-                    {link.label}
+                    {({ isActive }) => (
+                      <>
+                        {/* A bar rather than a colour change alone: position and shape read
+                            instantly, and the state survives for anyone who cannot rely on
+                            the colour difference. */}
+                        <span
+                          aria-hidden="true"
+                          className={cn(
+                            "h-5 w-1 shrink-0 rounded-full transition-colors",
+                            isActive ? "bg-[#F5B13A]" : "bg-transparent",
+                          )}
+                        />
+                        {link.label}
+                      </>
+                    )}
                   </NavLink>
                 ))}
               </nav>
 
-              <div className="mt-6 rounded-2xl border border-slate-200 bg-[#F2F2F2] p-4">
-                <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Admin session</p>
-                <p className="mt-2 text-sm font-semibold text-slate-900">{user?.email ?? "Authenticated admin"}</p>
-                <button
-                  type="button"
-                  onClick={() => void handleSignOut()}
-                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#E6242A] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Sign out
-                </button>
-              </div>
             </div>
           </aside>
 
-          <div className="space-y-6">
-            <div className={`${affiliateSurfaceClassName} flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between`}>
-              <div>
-                <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Operations center</p>
-                <h2 className="mt-2 text-3xl font-black text-slate-900">{pageTitle}</h2>
-                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">{pageDescription}</p>
-              </div>
-              <Link to="/" className={affiliateSecondaryButtonClassName}>
-                Back to website
-              </Link>
+          <div className="min-w-0 space-y-5">
+            {/* A heading and a line of context. This was a bordered, shadowed card carrying
+                an "Operations center" eyebrow above the same words -- a label for the panel
+                you are already looking at. */}
+            <div>
+              <h1 className="text-xl font-black tracking-tight text-slate-900 sm:text-2xl">{pageTitle}</h1>
+              <p className="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">{pageDescription}</p>
             </div>
 
             {children}
           </div>
         </div>
-      </section>
-    </AffiliatePortalLayout>
+      </div>
+    </div>
   );
 };
 

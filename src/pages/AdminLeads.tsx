@@ -2,14 +2,15 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, SquarePen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
+import AdminMetricCard from "@/components/admin/AdminMetricCard";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminJsonDialog from "@/components/admin/AdminJsonDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
-import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
+import { adminSurfaceClassName } from "@/components/admin/styles";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -37,6 +38,11 @@ import {
 } from "@/lib/adminPanel";
 import type { AdminLeadsResponse, LeadStatus, LeadType } from "@/lib/affiliateTypes";
 import { adminQueryOptions, optimisticAdminUpdate, refreshAdminQueries } from "@/lib/adminQueries";
+import {
+  adminDangerButtonClassName,
+  adminPrimaryButtonClassName,
+  adminRowButtonClassName,
+} from "@/components/admin/styles";
 
 const leadTypeOptions: LeadType[] = ["contact", "student_assessment", "employee_application", "custom_package_request"];
 
@@ -240,22 +246,22 @@ const AdminLeads = () => {
       pageDescription="Every row on this page comes directly from public.leads. Filters are client-side so admins can search, inspect, and page through the full returned dataset quickly."
     >
       {leadsQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading leads...</div>
+        <div className={`${adminSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading leads...</div>
       ) : leadsQuery.isError || !leadsQuery.data ? (
-        <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
+        <div className={`${adminSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {leadsQuery.error instanceof Error ? leadsQuery.error.message : "Unable to load leads."}
         </div>
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-            <AffiliateMetricCard label="All leads" value={leadsQuery.data.totals.totalLeads.toString()} />
-            <AffiliateMetricCard label="Contact" value={leadsQuery.data.totals.contact.toString()} />
-            <AffiliateMetricCard label="Assessment" value={leadsQuery.data.totals.studentAssessment.toString()} />
-            <AffiliateMetricCard label="Hiring" value={leadsQuery.data.totals.employeeApplications.toString()} />
-            <AffiliateMetricCard label="Custom package" value={leadsQuery.data.totals.customPackageRequests.toString()} />
+            <AdminMetricCard label="All leads" value={leadsQuery.data.totals.totalLeads.toString()} />
+            <AdminMetricCard label="Contact" value={leadsQuery.data.totals.contact.toString()} />
+            <AdminMetricCard label="Assessment" value={leadsQuery.data.totals.studentAssessment.toString()} />
+            <AdminMetricCard label="Hiring" value={leadsQuery.data.totals.employeeApplications.toString()} />
+            <AdminMetricCard label="Custom package" value={leadsQuery.data.totals.customPackageRequests.toString()} />
           </div>
 
-          <div className={affiliateSurfaceClassName}>
+          <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5 xl:flex-1">
                 <Input
@@ -338,22 +344,103 @@ const AdminLeads = () => {
               <button
                 type="button"
                 onClick={openCreate}
-                className="inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                className={adminPrimaryButtonClassName}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4" aria-hidden="true" />
                 Add lead
               </button>
             </div>
 
-            <div className="mt-6 overflow-x-auto">
+            {/* Below md the table is replaced outright rather than scrolled sideways. Six
+                columns cannot fit a phone, and the Actions column -- the only route to
+                open, edit or delete a lead -- ended up off the right edge where it could
+                not be reached at all. Every field and every control the table offers is
+                repeated in the cards below, so nothing is desktop-only. */}
+            <div className="mt-6 space-y-3 md:hidden">
+              {paginated.items.map((lead) => {
+                const effectiveLeadType =
+                  lead.requestType === "custom_package_request" ? "custom_package_request" : lead.leadType;
+
+                return (
+                  <article key={lead.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-slate-900">{lead.fullName ?? "Unnamed lead"}</p>
+                        <p className="break-words text-xs text-slate-500">
+                          {lead.email ?? lead.phone ?? "No contact details"}
+                        </p>
+                      </div>
+                      <AdminStatusBadge
+                        label={leadStatusLabels[lead.status]}
+                        toneClassName={leadStatusTone[lead.status]}
+                      />
+                    </div>
+
+                    <dl className="mt-3 grid grid-cols-[5.5rem_1fr] gap-x-3 gap-y-1 text-xs">
+                      <dt className="font-bold text-slate-500">Type</dt>
+                      <dd className="text-slate-700">{leadTypeLabels[effectiveLeadType]}</dd>
+                      <dt className="font-bold text-slate-500">Source</dt>
+                      <dd className="break-all text-slate-700">{lead.sourcePage}</dd>
+                      <dt className="font-bold text-slate-500">Submitted</dt>
+                      <dd className="text-slate-700">{new Date(lead.createdAt).toLocaleString()}</dd>
+                    </dl>
+
+                    <Select
+                      value={lead.status}
+                      onValueChange={(value: LeadStatus) => void handleStatusChange(lead.id, value)}
+                    >
+                      <SelectTrigger className="mt-3 h-10 w-full rounded-xl border-slate-200 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {leadStatusesForType(effectiveLeadType).map((entry) => (
+                          <SelectItem key={entry} value={entry}>
+                            {leadStatusLabels[entry]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <AdminJsonDialog
+                        title={lead.fullName ?? "Lead payload"}
+                        description={`Payload stored for ${lead.email ?? lead.sourcePage}`}
+                        payload={lead.payload}
+                        triggerLabel="View payload"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => openEdit(lead)}
+                        className={adminRowButtonClassName}
+                      >
+                        <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setDeleteTarget({ id: lead.id, label: lead.fullName ?? lead.email ?? lead.id })
+                        }
+                        className={adminDangerButtonClassName}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                        Delete
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            <div className="mt-6 hidden overflow-x-auto md:block">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Lead</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Source</TableHead>
+                    <TableHead className="hidden md:table-cell">Type</TableHead>
+                    <TableHead className="hidden lg:table-cell">Source</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Submitted</TableHead>
+                    <TableHead className="hidden lg:table-cell">Submitted</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -364,18 +451,35 @@ const AdminLeads = () => {
                     return (
                       <TableRow key={lead.id}>
                         <TableCell>
-                          <div>
+                          <div className="min-w-0">
                             <p className="font-semibold text-slate-900">{lead.fullName ?? "Unnamed lead"}</p>
-                            <p className="text-xs text-slate-500">{lead.email ?? lead.phone ?? "No contact details"}</p>
+                            <p className="break-words text-xs text-slate-500">{lead.email ?? lead.phone ?? "No contact details"}</p>
+                            {/* Six columns cannot fit a phone, so Type, Source and Submitted are
+                                hidden at that width and restated here instead. Hiding a column
+                                outright would have cost the information; this only moves it. */}
+                            <dl className="mt-2 space-y-0.5 text-xs text-slate-500 lg:hidden">
+                              <div className="md:hidden">
+                                <dt className="sr-only">Type</dt>
+                                <dd>{leadTypeLabels[effectiveLeadType]}</dd>
+                              </div>
+                              <div>
+                                <dt className="sr-only">Source</dt>
+                                <dd className="break-all">{lead.sourcePage}</dd>
+                              </div>
+                              <div>
+                                <dt className="sr-only">Submitted</dt>
+                                <dd>{new Date(lead.createdAt).toLocaleString()}</dd>
+                              </div>
+                            </dl>
                           </div>
                         </TableCell>
-                        <TableCell>{leadTypeLabels[effectiveLeadType]}</TableCell>
-                        <TableCell>{lead.sourcePage}</TableCell>
+                        <TableCell className="hidden md:table-cell">{leadTypeLabels[effectiveLeadType]}</TableCell>
+                        <TableCell className="hidden lg:table-cell">{lead.sourcePage}</TableCell>
                         <TableCell>
                           <div className="space-y-2">
                             <AdminStatusBadge label={leadStatusLabels[lead.status]} toneClassName={leadStatusTone[lead.status]} />
                             <Select value={lead.status} onValueChange={(value: LeadStatus) => void handleStatusChange(lead.id, value)}>
-                              <SelectTrigger className="h-9 w-[170px] rounded-xl border-slate-200 text-xs">
+                              <SelectTrigger className="h-9 w-full min-w-[8rem] rounded-xl border-slate-200 text-xs md:w-[170px]">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -386,7 +490,7 @@ const AdminLeads = () => {
                             </Select>
                           </div>
                         </TableCell>
-                        <TableCell>{new Date(lead.createdAt).toLocaleString()}</TableCell>
+                        <TableCell className="hidden lg:table-cell">{new Date(lead.createdAt).toLocaleString()}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <AdminJsonDialog
@@ -398,17 +502,17 @@ const AdminLeads = () => {
                             <button
                               type="button"
                               onClick={() => openEdit(lead)}
-                              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                              className={adminRowButtonClassName}
                             >
-                              <SquarePen className="h-3.5 w-3.5" />
+                              <SquarePen className="h-3.5 w-3.5" aria-hidden="true" />
                               Edit
                             </button>
                             <button
                               type="button"
                               onClick={() => setDeleteTarget({ id: lead.id, label: lead.fullName ?? lead.email ?? lead.id })}
-                              className="inline-flex items-center gap-1 rounded-full bg-[#E6242A] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#C41E23]"
+                              className={adminDangerButtonClassName}
                             >
-                              <Trash2 className="h-3.5 w-3.5" />
+                              <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                               Delete
                             </button>
                           </div>
@@ -419,6 +523,17 @@ const AdminLeads = () => {
                 </TableBody>
               </Table>
             </div>
+
+            {/* A filter that matches nothing used to leave a bare header row above blank
+                space, which reads as a failed load rather than as an excluded result. */}
+            {filteredLeads.length === 0 ? (
+              <div className="mt-6">
+                <AdminEmptyState
+                  noun="leads"
+                  filtered={(leadsQuery.data?.leads ?? []).length > 0}
+                />
+              </div>
+            ) : null}
 
             <div className="mt-6 flex flex-col gap-3 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between">
               <p>Showing {paginated.items.length} of {filteredLeads.length} filtered leads.</p>
