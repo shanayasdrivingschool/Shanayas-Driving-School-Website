@@ -305,7 +305,18 @@ const isCustomPackageLead = (lead: LeadInsert) =>
 const notifyNewLead = async (lead: LeadInsert) => {
   const apiKey = Deno.env.get("RESEND_API_KEY");
   const to = Deno.env.get("LEAD_NOTIFY_TO");
-  if (!apiKey || !to) return;
+
+  /* Logged rather than returned silently. A silent skip is indistinguishable in the
+     logs from "no leads came in", which makes a missing secret impossible to
+     diagnose from the dashboard. */
+  if (!apiKey || !to) {
+    console.log("lead notification skipped", {
+      reason: "missing configuration",
+      has_resend_api_key: Boolean(apiKey),
+      has_lead_notify_to: Boolean(to),
+    });
+    return;
+  }
 
   const from = Deno.env.get("LEAD_NOTIFY_FROM") ?? "onboarding@resend.dev";
 
@@ -346,10 +357,15 @@ const notifyNewLead = async (lead: LeadInsert) => {
     });
 
     if (!response.ok) {
+      /* `from` is logged because the most common rejection is a sender whose domain
+         is not verified in Resend, and the message alone does not name it. */
       console.error("lead notification rejected", {
         status: response.status,
+        from,
         body: (await response.text()).slice(0, 300),
       });
+    } else {
+      console.log("lead notification sent", { to, from });
     }
   } catch (notifyError) {
     console.error("lead notification failed", {
