@@ -25,6 +25,10 @@ type ReadableObjectViewProps = {
   title?: string;
   value: Record<string, unknown>;
   compact?: boolean;
+  /* Field values an ancestor has already displayed. Nested groups use this to leave out
+     what would otherwise be a second identical copy. Absent at the top level, where
+     everything is shown. */
+  seen?: Map<string, string>;
 };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -43,6 +47,13 @@ const formatLabel = (value: string) =>
     .replace(/\s+/g, " ")
     .trim()
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+/* Keys are compared with punctuation and case stripped: the same answer is stored as
+   has_valid_bc_learner_licence in one place and has_valid_bclearner_licence in another,
+   and those are the same field to a human reading the record. */
+const normalizeKey = (key: string) => key.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const fingerprintValue = (value: unknown) => JSON.stringify(value ?? null);
 
 const isLikelyIsoDate = (value: string) => /^(\d{4}-\d{2}-\d{2})([tT ].*)?$/.test(value.trim());
 
@@ -152,10 +163,22 @@ const FieldValue = ({ value }: { value: unknown }) => {
   return <p className="text-sm font-semibold text-slate-500">No value</p>;
 };
 
-function ReadableObjectView({ title, value, compact = false }: ReadableObjectViewProps) {
+function ReadableObjectView({ title, value, compact = false, seen }: ReadableObjectViewProps) {
   const entries = Object.entries(value);
-  const directFields = entries.filter(([, entryValue]) => isScalarValue(entryValue) || isScalarArray(entryValue));
+  const ownFields = entries.filter(([, entryValue]) => isScalarValue(entryValue) || isScalarArray(entryValue));
   const groupedFields = entries.filter(([, entryValue]) => !isScalarValue(entryValue) && !isScalarArray(entryValue));
+
+  /* Only an exact match on both key and value is dropped. A field whose value differs from
+     the copy above is genuinely new information and always survives. */
+  const directFields = seen
+    ? ownFields.filter(([key, entryValue]) => seen.get(normalizeKey(key)) !== fingerprintValue(entryValue))
+    : ownFields;
+  const duplicateCount = ownFields.length - directFields.length;
+
+  const seenByChildren = new Map(seen ?? []);
+  for (const [key, entryValue] of ownFields) {
+    seenByChildren.set(normalizeKey(key), fingerprintValue(entryValue));
+  }
 
   if (entries.length === 0) {
     return (
@@ -174,13 +197,23 @@ function ReadableObjectView({ title, value, compact = false }: ReadableObjectVie
         </div>
       ) : null}
 
+      {duplicateCount > 0 ? (
+        <p className="text-xs font-semibold text-slate-500">
+          {duplicateCount} field{duplicateCount === 1 ? "" : "s"} repeated the values shown above and {duplicateCount === 1 ? "was" : "were"} left out.
+        </p>
+      ) : null}
+
       {directFields.length > 0 ? (
-        <div className="rounded-3xl border border-slate-200 bg-slate-50/80 p-5">
-          <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-3">
+          {/* Columns rather than a grid. In a grid every card in a row is stretched to match
+              the tallest one, so a one-word value like Student Age was padded out to the height
+              of the three-line Training Goals card beside it -- visible as dead white space and
+              paid for in scrolling. Column flow lets each card take only the height it needs. */}
+          <dl className="columns-[12.5rem] gap-3">
             {directFields.map(([key, entryValue]) => (
-              <div key={key} className="rounded-2xl border border-white bg-white px-4 py-3 shadow-sm shadow-slate-200/40">
+              <div key={key} className="mb-3 break-inside-avoid rounded-xl border border-white bg-white px-3 py-2.5 shadow-sm shadow-slate-200/40">
                 <dt className="text-[11px] font-black uppercase tracking-[0.16em] text-slate-500">{formatLabel(key)}</dt>
-                <dd className="mt-2">
+                <dd className="mt-1">
                   <FieldValue value={entryValue} />
                 </dd>
               </div>
@@ -190,12 +223,16 @@ function ReadableObjectView({ title, value, compact = false }: ReadableObjectVie
       ) : null}
 
       {groupedFields.map(([key, entryValue]) => (
-        <section key={key} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/30">
-          <div className="mb-4 flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+        <section key={key} className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm shadow-slate-200/30">
+          <div className="mb-3 flex items-center justify-between gap-3 border-b border-slate-100 pb-2">
             <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1d52a1]">{formatLabel(key)}</p>
             <span className="text-xs font-semibold text-slate-500">{getCollectionSummary(entryValue)}</span>
           </div>
-          <FieldValue value={entryValue} />
+          {isRecord(entryValue) ? (
+            <ReadableObjectView value={entryValue} compact seen={seenByChildren} />
+          ) : (
+            <FieldValue value={entryValue} />
+          )}
         </section>
       ))}
     </div>
@@ -227,8 +264,8 @@ const AdminJsonDialog = ({ title, description, payload, triggerLabel }: AdminJso
           {triggerLabel}
         </button>
       </DialogTrigger>
-      <DialogContent className="flex max-h-[92vh] w-[min(96vw,90rem)] max-w-none flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white p-0 shadow-xl">
-        <DialogHeader className="border-b border-slate-200 px-6 py-5">
+      <DialogContent className="flex max-h-[94vh] w-[min(98vw,110rem)] max-w-none flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white p-0 shadow-xl">
+        <DialogHeader className="border-b border-slate-200 px-5 py-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <DialogTitle className="text-2xl font-black text-slate-900">{title}</DialogTitle>
@@ -239,27 +276,27 @@ const AdminJsonDialog = ({ title, description, payload, triggerLabel }: AdminJso
               onClick={() => void handleCopyJson()}
               className="inline-flex items-center justify-center gap-2 self-start rounded-full border border-[#1d52a1] px-4 py-2 text-sm font-bold text-[#1d52a1] transition-colors hover:bg-[#1d52a1] hover:text-white"
             >
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+              {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
               {copied ? "Copied" : "Copy JSON"}
             </button>
           </div>
         </DialogHeader>
 
-        <Tabs defaultValue="summary" className="flex min-h-0 flex-1 flex-col overflow-hidden px-6 py-5">
+        <Tabs defaultValue="summary" className="flex min-h-0 flex-1 flex-col overflow-hidden px-5 py-4">
           <div className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
             <TabsList className="h-auto rounded-full bg-slate-100 p-1">
               <TabsTrigger
                 value="summary"
                 className="rounded-full px-4 py-2 text-sm font-bold data-[state=active]:bg-white data-[state=active]:text-slate-900"
               >
-                <LayoutList className="h-4 w-4" />
+                <LayoutList className="h-4 w-4" aria-hidden="true" />
                 Readable view
               </TabsTrigger>
               <TabsTrigger
                 value="json"
                 className="rounded-full px-4 py-2 text-sm font-bold data-[state=active]:bg-white data-[state=active]:text-slate-900"
               >
-                <FileJson className="h-4 w-4" />
+                <FileJson className="h-4 w-4" aria-hidden="true" />
                 Raw JSON
               </TabsTrigger>
             </TabsList>
@@ -269,8 +306,8 @@ const AdminJsonDialog = ({ title, description, payload, triggerLabel }: AdminJso
           </div>
 
           <TabsContent value="summary" className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div className="mt-5 flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-slate-50/80">
-              <div className="flex-1 overflow-y-auto p-5">
+            <div className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/80">
+              <div className="flex-1 overflow-y-auto p-3">
                 {isRecord(payload) ? (
                   <ReadableObjectView value={payload} />
                 ) : (
