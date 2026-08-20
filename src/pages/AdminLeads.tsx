@@ -35,7 +35,8 @@ import {
   paginateItems,
   STUDENT_LEAD_STATUSES,
 } from "@/lib/adminPanel";
-import type { LeadStatus, LeadType } from "@/lib/affiliateTypes";
+import type { AdminLeadsResponse, LeadStatus, LeadType } from "@/lib/affiliateTypes";
+import { adminQueryOptions, optimisticAdminUpdate, refreshAdminQueries } from "@/lib/adminQueries";
 
 const leadTypeOptions: LeadType[] = ["contact", "student_assessment", "employee_application", "custom_package_request"];
 
@@ -95,6 +96,7 @@ const AdminLeads = () => {
   const leadsQuery = useQuery({
     queryKey: ["admin-leads"],
     queryFn: getAdminLeads,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [leadType, setLeadType] = useState<LeadTypeFilter>("all");
@@ -186,8 +188,7 @@ const AdminLeads = () => {
       });
       toast.success(editorState.id ? "Lead updated." : "Lead created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-leads"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-leads", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save lead.");
     } finally {
@@ -202,8 +203,7 @@ const AdminLeads = () => {
       await deleteAdminLead(deleteTarget.id);
       toast.success("Lead deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-leads"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-leads", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete lead.");
     } finally {
@@ -212,11 +212,17 @@ const AdminLeads = () => {
   };
 
   const handleStatusChange = async (leadId: string, nextStatus: LeadStatus) => {
+    const rollback = optimisticAdminUpdate<AdminLeadsResponse>(queryClient, "admin-leads", (current) => ({
+      ...current,
+      leads: current.leads.map((lead) => (lead.id === leadId ? { ...lead, status: nextStatus } : lead)),
+    }));
+
     try {
       await updateLeadStatus({ leadId, status: nextStatus });
       toast.success("Lead status updated.");
-      await queryClient.invalidateQueries({ queryKey: ["admin-leads"] });
+      refreshAdminQueries(queryClient, ["admin-leads", "admin-dashboard"]);
     } catch (error) {
+      rollback();
       toast.error(error instanceof Error ? error.message : "Unable to update lead status.");
     }
   };

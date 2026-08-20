@@ -355,6 +355,9 @@ export type AdminRateLimitRecord = {
 
 export type AdminRateLimitsResponse = {
   rateLimits: AdminRateLimitRecord[];
+  /* True while later batches are still arriving, so the view can mark the counts as
+     provisional instead of presenting a subtotal as the final figure. */
+  isPartial?: boolean;
   totals: {
     totalWindows: number;
     flaggedWindows: number;

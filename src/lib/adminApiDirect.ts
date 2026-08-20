@@ -33,7 +33,8 @@ import type {
   PayoutActionInput,
   PreferredPayoutMethod,
 } from "@/lib/affiliateTypes";
-import { isSupabaseConfigured, supabase, supabaseAnonKey, supabaseUrl } from "@/lib/supabaseClient";
+import { requireAdminUser } from "@/lib/adminAccess";
+import { supabase } from "@/lib/supabaseClient";
 import { COURSE_SELECT, mapCourseRowToAdminCourse } from "@/lib/courseService";
 import { getCouponAvailability } from "@/lib/couponService";
 import { KNOWLEDGE_TEST_QUESTION_SELECT, mapKnowledgeTestQuestionRow } from "@/lib/knowledgeTestService";
@@ -48,51 +49,7 @@ type AffiliateLookup = {
   affiliateName: string;
 };
 
-const ensureSupabaseClient = () => {
-  if (!supabase || !isSupabaseConfigured || !supabaseUrl || !supabaseAnonKey) {
-    throw new Error("Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
-  }
-
-  return supabase;
-};
-
-const ensureAuthenticatedUser = async (client: SupabaseClient) => {
-  const {
-    data: { user },
-    error,
-  } = await client.auth.getUser();
-
-  if (error) {
-    throw error;
-  }
-
-  if (!user) {
-    throw new Error("You must be signed in to continue.");
-  }
-
-  return user;
-};
-
-const ensureAdminUser = async () => {
-  const client = ensureSupabaseClient();
-  const user = await ensureAuthenticatedUser(client);
-  const { data, error } = await client
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", user.id)
-    .eq("status", "active")
-    .maybeSingle();
-
-  if (error) {
-    throw error;
-  }
-
-  if (!data) {
-    throw new Error("This account does not have admin access.");
-  }
-
-  return { client, user };
-};
+const ensureAdminUser = requireAdminUser;
 
 const fetchAllRows = async <T,>(
   queryPage: (from: number, to: number) => Promise<{ data: T[] | null; error: { message?: string } | null }>,
@@ -345,14 +302,19 @@ export const getDirectAdminDashboard = async (): Promise<AdminDashboardResponse>
     recentOrdersResult,
     recentAffiliatesResult,
   ] = await Promise.all([
-    client.from("leads").select("id", { count: "exact", head: true }),
-    client.from("affiliates").select("id", { count: "exact", head: true }),
-    client.from("affiliate_clicks").select("id", { count: "exact", head: true }),
-    client.from("orders").select("id", { count: "exact", head: true }),
-    client.from("affiliate_commissions").select("id", { count: "exact", head: true }),
-    client.from("payouts").select("id", { count: "exact", head: true }),
-    client.from("affiliate_clicks").select("id", { count: "exact", head: true }).eq("is_suspicious", true),
-    client.from("orders").select("id", { count: "exact", head: true }).eq("is_suspicious", true),
+    /* These eight totals feed headline metric cards, so they use "estimated" rather than
+       "exact". An exact count scans the whole table and, because every row is filtered
+       through the admin RLS policy, that scan was the slowest part of loading the panel.
+       "estimated" still returns the exact figure while a table is small and falls back to
+       the planner's estimate only once a table is large enough for the scan to hurt. */
+    client.from("leads").select("id", { count: "estimated", head: true }),
+    client.from("affiliates").select("id", { count: "estimated", head: true }),
+    client.from("affiliate_clicks").select("id", { count: "estimated", head: true }),
+    client.from("orders").select("id", { count: "estimated", head: true }),
+    client.from("affiliate_commissions").select("id", { count: "estimated", head: true }),
+    client.from("payouts").select("id", { count: "estimated", head: true }),
+    client.from("affiliate_clicks").select("id", { count: "estimated", head: true }).eq("is_suspicious", true),
+    client.from("orders").select("id", { count: "estimated", head: true }).eq("is_suspicious", true),
     client
       .from("leads")
       .select("id, lead_type, full_name, email, phone, source_page, status, payload, created_at")
@@ -1005,25 +967,62 @@ export const submitDirectPayoutAction = async (input: PayoutActionInput) => {
   return { success: true };
 };
 
-export const getDirectAdminRateLimits = async (): Promise<AdminRateLimitsResponse> => {
+const buildRateLimitsResponse = (
+  rateLimits: AdminRateLimitRecord[],
+  isPartial: boolean,
+): AdminRateLimitsResponse => ({
+  rateLimits,
+  isPartial,
+  totals: {
+    totalWindows: rateLimits.length,
+    flaggedWindows: rateLimits.filter((row) => row.count >= 5).length,
+    uniqueEndpoints: new Set(rateLimits.map((row) => row.endpoint)).size,
+  },
+});
+
+/* Streams the table instead of withholding it.
+
+   edge_rate_limits grows a row per key per window, so it is the fastest-growing table in
+   the panel, and this used to await every 500-row batch in turn before returning anything
+   -- the page sat on a loading state for the length of the whole download. Rows come back
+   newest-first, so the first batch is already what an admin opening this view is looking
+   for; handing it over immediately lets the table render while the tail keeps arriving.
+
+   onPartial is invoked only for batches that are not the last, so a table under one batch
+   -- the common case -- resolves in a single round trip with no intermediate render. The
+   isPartial flag lets the page say the count is still climbing rather than showing a
+   subtotal as though it were final. */
+export const getDirectAdminRateLimits = async (
+  onPartial?: (response: AdminRateLimitsResponse) => void,
+): Promise<AdminRateLimitsResponse> => {
   const { client } = await ensureAdminUser();
-  const rows = await fetchAllRows(async (from, to) =>
-    client
+  const rateLimits: AdminRateLimitRecord[] = [];
+  let from = 0;
+
+  while (true) {
+    const to = from + ADMIN_FETCH_BATCH_SIZE - 1;
+    const { data, error } = await client
       .from("edge_rate_limits")
       .select("key, endpoint, window_start, count, created_at, updated_at")
       .order("updated_at", { ascending: false })
-      .range(from, to),
-  );
+      .range(from, to);
 
-  const rateLimits = rows.map((row) => mapRateLimit(row as Record<string, unknown>));
-  return {
-    rateLimits,
-    totals: {
-      totalWindows: rateLimits.length,
-      flaggedWindows: rateLimits.filter((row) => row.count >= 5).length,
-      uniqueEndpoints: new Set(rateLimits.map((row) => row.endpoint)).size,
-    },
-  };
+    if (error) {
+      throw new Error(error.message ?? "Unable to load data from Supabase.");
+    }
+
+    const batch = data ?? [];
+    for (const row of batch) {
+      rateLimits.push(mapRateLimit(row as Record<string, unknown>));
+    }
+
+    if (batch.length < ADMIN_FETCH_BATCH_SIZE) {
+      return buildRateLimitsResponse(rateLimits, false);
+    }
+
+    onPartial?.(buildRateLimitsResponse([...rateLimits], true));
+    from += ADMIN_FETCH_BATCH_SIZE;
+  }
 };
 
 

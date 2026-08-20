@@ -28,6 +28,7 @@ import { getAdminAffiliates, getAdminOrders } from "@/lib/affiliateApi";
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems, paymentStatusLabels, paymentStatusTone } from "@/lib/adminPanel";
 import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
 import type { PaymentStatus } from "@/lib/affiliateTypes";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 const paymentStatusOptions: PaymentStatus[] = [
   "pending",
@@ -71,10 +72,12 @@ const AdminOrders = () => {
   const ordersQuery = useQuery({
     queryKey: ["admin-orders"],
     queryFn: getAdminOrders,
+    ...adminQueryOptions,
   });
   const affiliatesQuery = useQuery({
     queryKey: ["admin-affiliates"],
     queryFn: getAdminAffiliates,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [paymentStatus, setPaymentStatus] = useState<"all" | PaymentStatus>("all");
@@ -203,9 +206,7 @@ const AdminOrders = () => {
       });
       toast.success(editorState.id ? "Order updated." : "Order created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
+      refreshAdminQueries(queryClient, ["admin-orders", "admin-dashboard", "admin-commissions"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save order.");
     } finally {
@@ -220,9 +221,7 @@ const AdminOrders = () => {
       await deleteAdminOrder(deleteTarget.id);
       toast.success("Order deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
+      refreshAdminQueries(queryClient, ["admin-orders", "admin-dashboard", "admin-commissions"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete order.");
     } finally {

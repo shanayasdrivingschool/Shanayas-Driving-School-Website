@@ -1,10 +1,13 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LogOut, Shield } from "lucide-react";
 import AffiliatePortalLayout from "@/components/affiliate/AffiliatePortalLayout";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
 import { affiliateSecondaryButtonClassName, affiliateSurfaceClassName } from "@/components/affiliate/styles";
 import { ADMIN_NAV_LINKS } from "@/lib/adminPanel";
+import { prefetchAdminRoute } from "@/lib/adminQueries";
+import { preloadAdminRouteModule, preloadAdminRouteModules } from "@/lib/adminRouteModules";
 import { signOutAdmin } from "@/lib/affiliateApi";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +31,24 @@ const AdminPortalShell = ({
   backgroundImage,
 }: AdminPortalShellProps) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { user } = useAdminAuth();
+
+  /* Pull every admin route chunk in the background as soon as the panel is open, so a nav
+     click never waits on a module download. See adminRouteModules for why this covers the
+     chunks only and leaves each page's data to the hover prefetch below. */
+  useEffect(() => {
+    preloadAdminRouteModules();
+  }, []);
+
+  /* Hover and focus are the early signals; pointerdown is the backstop for a click that
+     arrives without either -- touch, or a pointer moving fast enough that hover and click
+     land together. Warming twice is free: the module preload is idempotent and
+     prefetchQuery honours staleTime, so the second call is a no-op. */
+  const warmRoute = (path: string) => {
+    preloadAdminRouteModule(path);
+    prefetchAdminRoute(queryClient, path);
+  };
 
   const handleSignOut = async () => {
     await signOutAdmin();
@@ -61,6 +81,9 @@ const AdminPortalShell = ({
                   <NavLink
                     key={link.to}
                     to={link.to}
+                    onMouseEnter={() => warmRoute(link.to)}
+                    onFocus={() => warmRoute(link.to)}
+                    onPointerDown={() => warmRoute(link.to)}
                     className={({ isActive }) =>
                       cn(
                         "flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold transition-colors",

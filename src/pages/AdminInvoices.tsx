@@ -27,6 +27,7 @@ import { getAdminInvoices } from "@/lib/affiliateApi";
 import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } from "@/lib/adminPanel";
 import type { CheckoutInvoiceStatus } from "@/lib/affiliateTypes";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 const invoiceAvailabilityLabels = {
   draft: "Draft",
@@ -118,6 +119,7 @@ const AdminInvoices = () => {
   const invoicesQuery = useQuery({
     queryKey: ["admin-invoices"],
     queryFn: getAdminInvoices,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | InvoiceAvailability>("all");
@@ -227,7 +229,7 @@ const AdminInvoices = () => {
       });
       toast.success(editorState.id ? "Invoice updated." : "Invoice created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-invoices"] });
+      refreshAdminQueries(queryClient, ["admin-invoices"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save invoice.");
     } finally {
@@ -243,7 +245,7 @@ const AdminInvoices = () => {
       await deleteAdminInvoice(deleteTarget.id);
       toast.success("Invoice deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-invoices"] });
+      refreshAdminQueries(queryClient, ["admin-invoices"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete invoice.");
     } finally {

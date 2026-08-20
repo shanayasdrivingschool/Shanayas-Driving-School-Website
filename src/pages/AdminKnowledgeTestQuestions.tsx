@@ -36,6 +36,7 @@ import {
   knowledgeTestQuestionCategoryLabels,
   knowledgeTestQuestionOptionLabels,
 } from "@/lib/knowledgeTestService";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 type QuestionEditorState = {
   recordId?: string;
@@ -213,6 +214,7 @@ const AdminKnowledgeTestQuestions = () => {
   const questionsQuery = useQuery({
     queryKey: ["admin-knowledge-test-questions"],
     queryFn: getAdminKnowledgeTestQuestions,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<"all" | KnowledgeTestQuestionCategory>("all");
@@ -256,8 +258,7 @@ const AdminKnowledgeTestQuestions = () => {
   };
 
   const refreshQuestions = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["admin-knowledge-test-questions"] });
-    await queryClient.invalidateQueries({ queryKey: ["knowledge-test-questions"] });
+    refreshAdminQueries(queryClient, ["admin-knowledge-test-questions", "knowledge-test-questions"]);
   };
 
   const handleSave = async () => {

@@ -25,6 +25,7 @@ import { getAdminCoupons } from "@/lib/affiliateApi";
 import type { CouponType } from "@/lib/affiliateTypes";
 import { type CouponAvailability, getCouponAvailability } from "@/lib/couponService";
 import { downloadCsv } from "@/lib/exportCsv";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 const couponTypeLabels: Record<CouponType, string> = {
   one_time: "One-time",
@@ -72,6 +73,7 @@ const AdminCoupons = () => {
   const couponsQuery = useQuery({
     queryKey: ["admin-coupons"],
     queryFn: getAdminCoupons,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | CouponType>("all");
@@ -173,7 +175,7 @@ const AdminCoupons = () => {
       });
       toast.success(editorState.id ? "Coupon updated." : "Coupon created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
+      refreshAdminQueries(queryClient, ["admin-coupons"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save coupon.");
     } finally {
@@ -189,7 +191,7 @@ const AdminCoupons = () => {
       await deleteAdminCoupon(deleteTarget.id);
       toast.success("Coupon deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
+      refreshAdminQueries(queryClient, ["admin-coupons"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete coupon.");
     } finally {

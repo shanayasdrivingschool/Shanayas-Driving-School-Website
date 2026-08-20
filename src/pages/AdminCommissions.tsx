@@ -24,7 +24,8 @@ import { getAdminAffiliates, getAdminCommissions, getAdminOrders, updateCommissi
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } from "@/lib/adminPanel";
 import { downloadCsv } from "@/lib/exportCsv";
 import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
-import type { CommissionStatus } from "@/lib/affiliateTypes";
+import type { AdminCommissionsResponse, CommissionStatus } from "@/lib/affiliateTypes";
+import { adminQueryOptions, optimisticAdminUpdate, refreshAdminQueries } from "@/lib/adminQueries";
 
 const commissionStatusOptions: CommissionStatus[] = ["pending", "approved", "paid", "reversed", "rejected"];
 
@@ -52,14 +53,17 @@ const AdminCommissions = () => {
   const commissionsQuery = useQuery({
     queryKey: ["admin-commissions"],
     queryFn: getAdminCommissions,
+    ...adminQueryOptions,
   });
   const affiliatesQuery = useQuery({
     queryKey: ["admin-affiliates"],
     queryFn: getAdminAffiliates,
+    ...adminQueryOptions,
   });
   const ordersQuery = useQuery({
     queryKey: ["admin-orders"],
     queryFn: getAdminOrders,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | CommissionStatus>("all");
@@ -141,6 +145,13 @@ const AdminCommissions = () => {
   };
 
   const mutateStatus = async (commissionId: string, status: Extract<CommissionStatus, "approved" | "paid" | "reversed" | "rejected">) => {
+    const rollback = optimisticAdminUpdate<AdminCommissionsResponse>(queryClient, "admin-commissions", (current) => ({
+      ...current,
+      commissions: current.commissions.map((commission) =>
+        commission.id === commissionId ? { ...commission, status } : commission,
+      ),
+    }));
+
     try {
       await updateCommissionStatus({
         commissionId,
@@ -148,9 +159,9 @@ const AdminCommissions = () => {
         reversalReason: status === "reversed" ? "Reversed by admin review." : status === "rejected" ? "Rejected by admin review." : undefined,
       });
       toast.success(`Commission ${status}.`);
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-payouts"] });
+      refreshAdminQueries(queryClient, ["admin-commissions", "admin-payouts"]);
     } catch (error) {
+      rollback();
       toast.error(error instanceof Error ? error.message : "Unable to update commission.");
     }
   };
@@ -175,8 +186,7 @@ const AdminCommissions = () => {
       });
       toast.success(editorState.id ? "Commission updated." : "Commission created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-payouts"] });
+      refreshAdminQueries(queryClient, ["admin-commissions", "admin-payouts"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save commission.");
     } finally {
@@ -191,8 +201,7 @@ const AdminCommissions = () => {
       await deleteAdminCommission(deleteTarget.id);
       toast.success("Commission deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-payouts"] });
+      refreshAdminQueries(queryClient, ["admin-commissions", "admin-payouts"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete commission.");
     } finally {

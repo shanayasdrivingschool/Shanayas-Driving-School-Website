@@ -27,6 +27,7 @@ import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } 
 import { downloadCsv } from "@/lib/exportCsv";
 import { formatAffiliateCurrency, payoutMethodLabels } from "@/lib/affiliateProgram";
 import type { PayoutStatus, PreferredPayoutMethod } from "@/lib/affiliateTypes";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 const payoutStatusOptions: Array<"all" | PayoutStatus> = ["all", "pending", "approved", "paid", "failed", "cancelled"];
 
@@ -53,10 +54,12 @@ const AdminPayouts = () => {
   const payoutsQuery = useQuery({
     queryKey: ["admin-payouts"],
     queryFn: getAdminPayouts,
+    ...adminQueryOptions,
   });
   const affiliatesQuery = useQuery({
     queryKey: ["admin-affiliates"],
     queryFn: getAdminAffiliates,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | PayoutStatus>("all");
@@ -148,9 +151,7 @@ const AdminPayouts = () => {
     try {
       await submitPayoutAction(input);
       toast.success("Payout updated.");
-      await queryClient.invalidateQueries({ queryKey: ["admin-payouts"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-payouts", "admin-commissions", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to update payout.");
     }
@@ -176,9 +177,7 @@ const AdminPayouts = () => {
       });
       toast.success(editorState.id ? "Payout updated." : "Payout created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-payouts"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-payouts", "admin-commissions", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save payout.");
     } finally {
@@ -194,9 +193,7 @@ const AdminPayouts = () => {
       await deleteAdminPayout(deleteTarget.id);
       toast.success("Payout deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-payouts"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-payouts", "admin-commissions", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete payout.");
     } finally {

@@ -16,6 +16,7 @@ import { deleteAdminReferral, saveAdminReferral } from "@/lib/adminCrudApi";
 import { getAdminAffiliates, getAdminReferrals } from "@/lib/affiliateApi";
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } from "@/lib/adminPanel";
 import { downloadCsv } from "@/lib/exportCsv";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 type ReferralEditorState = {
   id?: string;
@@ -39,10 +40,12 @@ const AdminReferrals = () => {
   const referralsQuery = useQuery({
     queryKey: ["admin-referrals"],
     queryFn: getAdminReferrals,
+    ...adminQueryOptions,
   });
   const affiliatesQuery = useQuery({
     queryKey: ["admin-affiliates"],
     queryFn: getAdminAffiliates,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [suspicionFilter, setSuspicionFilter] = useState<"all" | "flagged" | "clean">("all");
@@ -137,8 +140,7 @@ const AdminReferrals = () => {
       });
       toast.success(editorState.id ? "Referral updated." : "Referral created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-referrals"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-referrals", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save referral.");
     } finally {
@@ -153,8 +155,7 @@ const AdminReferrals = () => {
       await deleteAdminReferral(deleteTarget.id);
       toast.success("Referral deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-referrals"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-referrals", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete referral.");
     } finally {

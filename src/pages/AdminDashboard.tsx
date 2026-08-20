@@ -9,11 +9,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getAdminDashboard } from "@/lib/affiliateApi";
 import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
 import { leadStatusLabels, leadStatusTone, leadTypeLabels, paymentStatusLabels, paymentStatusTone } from "@/lib/adminPanel";
+import { adminQueryOptions } from "@/lib/adminQueries";
 
 const AdminDashboard = () => {
   const dashboardQuery = useQuery({
     queryKey: ["admin-dashboard"],
     queryFn: getAdminDashboard,
+    ...adminQueryOptions,
   });
 
   return (

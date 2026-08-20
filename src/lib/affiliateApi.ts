@@ -53,6 +53,7 @@ import type {
   PurchaseCommissionResult,
   ReferralTrackingResult,
 } from "@/lib/affiliateTypes";
+import { clearAdminAccessCache, isAdminUser, requireSessionUser } from "@/lib/adminAccess";
 import { isSupabaseConfigured, supabase, supabaseAnonKey, supabaseUrl } from "@/lib/supabaseClient";
 
 const AFFILIATE_API_FUNCTION = "affiliate-api";
@@ -280,37 +281,9 @@ const ensureAffiliateProfileRecord = async (client: NonNullable<typeof supabase>
   return mapAffiliateProfile(createdAffiliate as Record<string, unknown>);
 };
 
-const ensureAuthenticatedUser = async (client: NonNullable<typeof supabase>) => {
-  const {
-    data: { user },
-    error,
-  } = await client.auth.getUser();
+const ensureAuthenticatedUser = requireSessionUser;
 
-  if (error) {
-    throw error;
-  }
-
-  if (!user) {
-    throw new Error("You must be signed in to continue.");
-  }
-
-  return user;
-};
-
-const getAdminUserFlag = async (client: NonNullable<typeof supabase>, userId: string) => {
-  const { data, error } = await client
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", userId)
-    .eq("status", "active")
-    .maybeSingle();
-
-  if (error) {
-    throw error;
-  }
-
-  return Boolean(data);
-};
+const getAdminUserFlag = isAdminUser;
 
 const getDirectAffiliateDashboardData = async (): Promise<AffiliateDashboardResponse> => {
   const client = ensureSupabase();
@@ -572,23 +545,25 @@ export const signInAffiliate = async (email: string, password: string) => {
 
 export const signInAdmin = async (email: string, password: string) => {
   const client = ensureSupabase();
-  const { error } = await client.auth.signInWithPassword({
+
+  /* signInWithPassword already returns the authenticated user, so the getUser() round
+     trip that used to sit here was re-fetching what we were holding. */
+  const { data, error } = await client.auth.signInWithPassword({
     email: email.trim().toLowerCase(),
     password,
   });
 
   if (error) throw error;
 
-  const {
-    data: { user },
-    error: userError,
-  } = await client.auth.getUser();
+  const user = data.user;
 
-  if (userError || !user) {
+  if (!user) {
     await client.auth.signOut().catch(() => undefined);
-    throw userError ?? new Error("Unable to verify admin session.");
+    throw new Error("Unable to verify admin session.");
   }
 
+  /* The route guard and the dashboard both ask for this flag moments from now; caching
+     it here means the whole sign-in resolves it exactly once. */
   const isAdmin = await getAdminUserFlag(client, user.id);
   if (!isAdmin) {
     await client.auth.signOut().catch(() => undefined);
@@ -600,6 +575,7 @@ export const signOutAffiliate = async () => {
   const client = ensureSupabase();
   const { error } = await client.auth.signOut();
   if (error) throw error;
+  clearAdminAccessCache();
 };
 
 export const signOutAdmin = signOutAffiliate;
@@ -697,8 +673,10 @@ export const getAdminPayouts = async () => {
   return getDirectAdminPayouts();
 };
 
-export const getAdminRateLimits = async () => {
-  return getDirectAdminRateLimits();
+export const getAdminRateLimits = async (
+  onPartial?: (response: AdminRateLimitsResponse) => void,
+) => {
+  return getDirectAdminRateLimits(onPartial);
 };
 
 export const submitPayoutAction = async (input: PayoutActionInput) => {

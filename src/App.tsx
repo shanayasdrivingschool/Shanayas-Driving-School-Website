@@ -21,6 +21,8 @@ import ServerError from "./pages/ServerError";
 /* Lazy like the routes it guards: it pulls in useAdminSession -> affiliateApi ->
    the Supabase client, which no public visitor needs. It only renders inside the
    /admin route element, which already sits under the Suspense boundary below. */
+import { ADMIN_ROUTE_MODULES } from "@/lib/adminRouteModules";
+
 const AdminRouteGuard = lazy(() => import("./components/admin/AdminRouteGuard"));
 
 const Courses = lazy(() => import("./pages/Courses"));
@@ -58,18 +60,18 @@ const AffiliateLogin = lazy(() => import("./pages/AffiliateLogin"));
 const AffiliateDashboard = lazy(() => import("./pages/AffiliateDashboard"));
 const ReferralTerms = lazy(() => import("./pages/ReferralTerms"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-const AdminInvoices = lazy(() => import("./pages/AdminInvoices"));
-const AdminCourses = lazy(() => import("./pages/AdminCourses"));
-const AdminKnowledgeTestQuestions = lazy(() => import("./pages/AdminKnowledgeTestQuestions"));
-const AdminLeads = lazy(() => import("./pages/AdminLeads"));
-const AdminCoupons = lazy(() => import("./pages/AdminCoupons"));
-const AdminAffiliates = lazy(() => import("./pages/AdminAffiliates"));
-const AdminReferrals = lazy(() => import("./pages/AdminReferrals"));
-const AdminOrders = lazy(() => import("./pages/AdminOrders"));
-const AdminCommissions = lazy(() => import("./pages/AdminCommissions"));
-const AdminPayouts = lazy(() => import("./pages/AdminPayouts"));
-const AdminRateLimits = lazy(() => import("./pages/AdminRateLimits"));
+const AdminDashboard = lazy(ADMIN_ROUTE_MODULES["/admin/dashboard"]);
+const AdminInvoices = lazy(ADMIN_ROUTE_MODULES["/admin/invoices"]);
+const AdminCourses = lazy(ADMIN_ROUTE_MODULES["/admin/courses"]);
+const AdminKnowledgeTestQuestions = lazy(ADMIN_ROUTE_MODULES["/admin/knowledge-test"]);
+const AdminLeads = lazy(ADMIN_ROUTE_MODULES["/admin/leads"]);
+const AdminCoupons = lazy(ADMIN_ROUTE_MODULES["/admin/coupons"]);
+const AdminAffiliates = lazy(ADMIN_ROUTE_MODULES["/admin/affiliates"]);
+const AdminReferrals = lazy(ADMIN_ROUTE_MODULES["/admin/referrals"]);
+const AdminOrders = lazy(ADMIN_ROUTE_MODULES["/admin/orders"]);
+const AdminCommissions = lazy(ADMIN_ROUTE_MODULES["/admin/commissions"]);
+const AdminPayouts = lazy(ADMIN_ROUTE_MODULES["/admin/payouts"]);
+const AdminRateLimits = lazy(ADMIN_ROUTE_MODULES["/admin/rate-limits"]);
 const ReferralRedirect = lazy(() => import("./pages/ReferralRedirect"));
 const BadRequest = lazy(() => import("./pages/BadRequest"));
 const Unauthorized = lazy(() => import("./pages/Unauthorized"));

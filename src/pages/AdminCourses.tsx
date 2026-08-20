@@ -25,6 +25,7 @@ import { ADMIN_ROWS_PER_PAGE, matchesSearch, paginateItems } from "@/lib/adminPa
 import { getAdminCourses } from "@/lib/affiliateApi";
 import type { AdminCourseRecord } from "@/lib/affiliateTypes";
 import { downloadCsv } from "@/lib/exportCsv";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 const levelOptions: AdminCourseRecord["level"][] = ["Beginner", "Intermediate", "Advanced", "Test Prep", "Flexible", "Senior Support"];
 const deliveryOptions: AdminCourseRecord["deliveryFormat"][] = ["In-class", "In-car", "In-class + In-car"];
@@ -202,6 +203,7 @@ const AdminCourses = () => {
   const coursesQuery = useQuery({
     queryKey: ["admin-courses"],
     queryFn: getAdminCourses,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [visibilityFilter, setVisibilityFilter] = useState<"all" | "visible" | "hidden">("all");
@@ -247,8 +249,7 @@ const AdminCourses = () => {
   };
 
   const refreshCourses = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["admin-courses"] });
-    await queryClient.invalidateQueries({ queryKey: ["public-courses"] });
+    refreshAdminQueries(queryClient, ["admin-courses", "public-courses"]);
   };
 
   const handleSave = async () => {

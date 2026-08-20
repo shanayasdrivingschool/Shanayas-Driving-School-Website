@@ -6,6 +6,7 @@ import AffiliateMetricCard from "@/components/affiliate/AffiliateMetricCard";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminPortalShell from "@/components/admin/AdminPortalShell";
+import AdminTableSkeleton from "@/components/admin/AdminTableSkeleton";
 import AdminRecordDialog, { type AdminRecordDialogField } from "@/components/admin/AdminRecordDialog";
 import { affiliateSurfaceClassName } from "@/components/affiliate/styles";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ import {
 import { deleteAdminRateLimit, saveAdminRateLimit } from "@/lib/adminCrudApi";
 import { getAdminRateLimits } from "@/lib/affiliateApi";
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } from "@/lib/adminPanel";
+import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
 
 type RateLimitEditorState = {
   originalKey?: string;
@@ -38,9 +40,15 @@ const createEmptyRateLimitValues = (): AdminFormValues => ({
 
 const AdminRateLimits = () => {
   const queryClient = useQueryClient();
+  /* Publishing each batch into the cache as it arrives is what lets the table paint on the
+     first one rather than after the last. setQueryData on a still-pending query resolves it
+     with the partial rows, so the skeleton clears immediately and the remaining batches
+     append underneath; the queryFn's own return value settles the final state. */
   const rateLimitsQuery = useQuery({
     queryKey: ["admin-rate-limits"],
-    queryFn: getAdminRateLimits,
+    queryFn: () =>
+      getAdminRateLimits((partial) => queryClient.setQueryData(["admin-rate-limits"], partial)),
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [windowFilter, setWindowFilter] = useState<"all" | "flagged" | "normal">("all");
@@ -115,8 +123,7 @@ const AdminRateLimits = () => {
       });
       toast.success(editorState.originalKey ? "Rate-limit window updated." : "Rate-limit window created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-rate-limits"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-rate-limits", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save rate-limit window.");
     } finally {
@@ -132,8 +139,7 @@ const AdminRateLimits = () => {
       await deleteAdminRateLimit(deleteTarget.key);
       toast.success("Rate-limit window deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-rate-limits"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-rate-limits", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete rate-limit window.");
     } finally {
@@ -154,7 +160,7 @@ const AdminRateLimits = () => {
       pageDescription="This is the operational spam-monitoring view for public edge endpoints. High-count windows are surfaced here so admins can spot abuse patterns fast."
     >
       {rateLimitsQuery.isLoading ? (
-        <div className={`${affiliateSurfaceClassName} text-sm font-semibold text-slate-600`}>Loading rate-limit windows...</div>
+        <AdminTableSkeleton metricCards={3} />
       ) : rateLimitsQuery.isError || !rateLimitsQuery.data ? (
         <div className={`${affiliateSurfaceClassName} text-sm leading-relaxed text-slate-600`}>
           {rateLimitsQuery.error instanceof Error ? rateLimitsQuery.error.message : "Unable to load rate-limit activity."}
@@ -162,8 +168,14 @@ const AdminRateLimits = () => {
       ) : (
         <>
           <div className="grid gap-5 md:grid-cols-3">
-            <AffiliateMetricCard label="Tracked windows" value={rateLimitsQuery.data.totals.totalWindows.toString()} />
-            <AffiliateMetricCard label="Flagged windows" value={rateLimitsQuery.data.totals.flaggedWindows.toString()} />
+            <AffiliateMetricCard
+              label={rateLimitsQuery.data.isPartial ? "Tracked windows (counting...)" : "Tracked windows"}
+              value={`${rateLimitsQuery.data.totals.totalWindows}${rateLimitsQuery.data.isPartial ? "+" : ""}`}
+            />
+            <AffiliateMetricCard
+              label={rateLimitsQuery.data.isPartial ? "Flagged windows (counting...)" : "Flagged windows"}
+              value={`${rateLimitsQuery.data.totals.flaggedWindows}${rateLimitsQuery.data.isPartial ? "+" : ""}`}
+            />
             <AffiliateMetricCard label="Unique endpoints" value={rateLimitsQuery.data.totals.uniqueEndpoints.toString()} />
           </div>
 

@@ -24,7 +24,8 @@ import { getAdminAffiliates, updateAffiliateStatus } from "@/lib/affiliateApi";
 import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems } from "@/lib/adminPanel";
 import { downloadCsv } from "@/lib/exportCsv";
 import { formatAffiliateCurrency, payoutMethodLabels } from "@/lib/affiliateProgram";
-import type { AffiliateStatus, PreferredPayoutMethod } from "@/lib/affiliateTypes";
+import type { AdminAffiliatesResponse, AffiliateStatus, PreferredPayoutMethod } from "@/lib/affiliateTypes";
+import { adminQueryOptions, optimisticAdminUpdate, refreshAdminQueries } from "@/lib/adminQueries";
 
 const createEmptyAffiliateValues = (): AdminFormValues => ({
   authUserId: "",
@@ -58,6 +59,7 @@ const AdminAffiliates = () => {
   const affiliatesQuery = useQuery({
     queryKey: ["admin-affiliates"],
     queryFn: getAdminAffiliates,
+    ...adminQueryOptions,
   });
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | AffiliateStatus>("all");
@@ -159,12 +161,19 @@ const AdminAffiliates = () => {
   };
 
   const handleStatusUpdate = async (affiliateId: string, status: "approved" | "blocked") => {
+    const rollback = optimisticAdminUpdate<AdminAffiliatesResponse>(queryClient, "admin-affiliates", (current) => ({
+      ...current,
+      affiliates: current.affiliates.map((affiliate) =>
+        affiliate.affiliateId === affiliateId ? { ...affiliate, status } : affiliate,
+      ),
+    }));
+
     try {
       await updateAffiliateStatus({ affiliateId, status });
       toast.success(`Affiliate ${status}.`);
-      await queryClient.invalidateQueries({ queryKey: ["admin-affiliates"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-affiliates", "admin-dashboard"]);
     } catch (error) {
+      rollback();
       toast.error(error instanceof Error ? error.message : "Unable to update affiliate.");
     }
   };
@@ -199,8 +208,7 @@ const AdminAffiliates = () => {
       });
       toast.success(editorState.id ? "Affiliate updated." : "Affiliate created.");
       setEditorState(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-affiliates"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
+      refreshAdminQueries(queryClient, ["admin-affiliates", "admin-dashboard"]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to save affiliate changes.");
     } finally {
@@ -215,12 +223,14 @@ const AdminAffiliates = () => {
       await deleteAdminAffiliate(deleteTarget.id);
       toast.success("Affiliate deleted.");
       setDeleteTarget(null);
-      await queryClient.invalidateQueries({ queryKey: ["admin-affiliates"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-dashboard"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-referrals"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-commissions"] });
-      await queryClient.invalidateQueries({ queryKey: ["admin-payouts"] });
+      refreshAdminQueries(queryClient, [
+        "admin-affiliates",
+        "admin-dashboard",
+        "admin-referrals",
+        "admin-orders",
+        "admin-commissions",
+        "admin-payouts",
+      ]);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to delete affiliate.");
     } finally {

@@ -9,6 +9,10 @@ export const useAdminSession = () => {
     queryKey: ["admin-session", user?.id],
     queryFn: getAdminSession,
     enabled: Boolean(user),
-    staleTime: 60_000,
+    /* Whether an account is an admin does not change within a sitting, and the key is
+       scoped to the user id, so signing in as someone else refetches. Holding it for the
+       session stops every route change from re-running the check. Revoked access still
+       takes effect immediately at the database level via RLS. */
+    staleTime: Infinity,
   });
 };

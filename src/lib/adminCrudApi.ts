@@ -11,46 +11,10 @@ import type {
   AdminRateLimitUpsertInput,
   AdminReferralUpsertInput,
 } from "@/lib/affiliateTypes";
-import { isSupabaseConfigured, supabase, supabaseAnonKey, supabaseUrl } from "@/lib/supabaseClient";
-
-const ensureSupabaseClient = () => {
-  if (!supabase || !isSupabaseConfigured || !supabaseUrl || !supabaseAnonKey) {
-    throw new Error("Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
-  }
-
-  return supabase;
-};
+import { requireAdminUser } from "@/lib/adminAccess";
 
 const ensureAdminClient = async () => {
-  const client = ensureSupabaseClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await client.auth.getUser();
-
-  if (authError) {
-    throw authError;
-  }
-
-  if (!user) {
-    throw new Error("You must be signed in to continue.");
-  }
-
-  const { data, error } = await client
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", user.id)
-    .eq("status", "active")
-    .maybeSingle();
-
-  if (error) {
-    throw error;
-  }
-
-  if (!data) {
-    throw new Error("This account does not have admin access.");
-  }
-
+  const { client } = await requireAdminUser();
   return client;
 };
 

@@ -43,10 +43,22 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(data.session);
       setLoading(false);
 
+      /* Imported here rather than at module scope: adminAccess pulls in the Supabase
+         client, and a static import would drag that bundle back onto the critical path
+         the dynamic import above exists to keep it off. */
+      const { clearAdminAccessCache } = await import("@/lib/adminAccess");
+
       const {
         data: { subscription },
       } = supabase.auth.onAuthStateChange((_event, nextSession) => {
         if (!active) return;
+
+        /* Covers sign-outs this tab did not initiate -- a revoked token, or signing out
+           in another tab -- which would otherwise leave the cached admin flag behind. */
+        if (!nextSession) {
+          clearAdminAccessCache();
+        }
+
         setSession(nextSession);
         setLoading(false);
       });
