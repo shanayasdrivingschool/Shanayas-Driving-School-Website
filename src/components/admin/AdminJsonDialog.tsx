@@ -176,7 +176,7 @@ function ReadableObjectView({ title, value, compact = false }: ReadableObjectVie
 
       {directFields.length > 0 ? (
         <div className="rounded-3xl border border-slate-200 bg-slate-50/80 p-5">
-          <dl className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {directFields.map(([key, entryValue]) => (
               <div key={key} className="rounded-2xl border border-white bg-white px-4 py-3 shadow-sm shadow-slate-200/40">
                 <dt className="text-[11px] font-black uppercase tracking-[0.16em] text-slate-500">{formatLabel(key)}</dt>
@@ -227,7 +227,7 @@ const AdminJsonDialog = ({ title, description, payload, triggerLabel }: AdminJso
           {triggerLabel}
         </button>
       </DialogTrigger>
-      <DialogContent className="flex h-[90vh] max-h-[90vh] max-w-5xl flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white p-0 shadow-xl">
+      <DialogContent className="flex max-h-[92vh] w-[min(96vw,90rem)] max-w-none flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white p-0 shadow-xl">
         <DialogHeader className="border-b border-slate-200 px-6 py-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
