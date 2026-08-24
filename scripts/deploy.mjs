@@ -284,12 +284,15 @@ if (!added.length && !changed.length && !removed.length) {
   process.exit(0);
 }
 
+/* A dry run writes nothing, so the deletion guard only needs to inform there.
+   Dying instead would hide the very summary the dry run exists to show. */
 if (removed.length > DELETION_THRESHOLD && !opts.yes) {
-  die(
-    `This publish would delete ${removed.length} files from the live site.`,
+  const detail =
+    `This publish would delete ${removed.length} files from the live site.\n` +
     "If that is intended (for example, clearing the stale nested public_html/ " +
-      "directory), re-run with --yes. Otherwise check the build first.",
-  );
+    "directory), re-run with --yes. Otherwise check the build first.";
+  if (opts.dryRun) warn(detail.replace(/\n/g, "\n       "));
+  else die(detail.split("\n")[0], detail.split("\n").slice(1).join("\n"));
 }
 
 if (opts.dryRun) {
