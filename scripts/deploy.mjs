@@ -284,13 +284,21 @@ if (!added.length && !changed.length && !removed.length) {
   process.exit(0);
 }
 
-/* A dry run writes nothing, so the deletion guard only needs to inform there.
-   Dying instead would hide the very summary the dry run exists to show. */
-if (removed.length > DELETION_THRESHOLD && !opts.yes) {
+/* Vite fingerprints every bundle, so a routine deploy retires the entire
+   previous assets/ set — well over a hundred files every time. Counting those
+   against the guard would fire it on every deploy and train the reader to wave
+   it through, which is exactly when a real deletion slips past. Only content
+   losses (pages, sitemap, images, .htaccess) are worth stopping for. */
+const isHashedAsset = (f) => /^assets\/.+-[A-Za-z0-9_-]{8}\.(js|css)$/.test(f);
+const removedContent = removed.filter((f) => !isHashedAsset(f));
+const rotated = removed.length - removedContent.length;
+if (rotated) info(`${C.dim}(${rotated} of those are routine hashed-asset rotations)${C.reset}`);
+
+if (removedContent.length > DELETION_THRESHOLD && !opts.yes) {
   const detail =
-    `This publish would delete ${removed.length} files from the live site.\n` +
-    "If that is intended (for example, clearing the stale nested public_html/ " +
-    "directory), re-run with --yes. Otherwise check the build first.";
+    `This publish would delete ${removedContent.length} content files from the live site.\n` +
+    "That is pages or assets disappearing, not routine bundle rotation. " +
+    "Check the build, or re-run with --yes if the removal is intended.";
   if (opts.dryRun) warn(detail.replace(/\n/g, "\n       "));
   else die(detail.split("\n")[0], detail.split("\n").slice(1).join("\n"));
 }

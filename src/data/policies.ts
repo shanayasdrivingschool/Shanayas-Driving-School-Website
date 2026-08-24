@@ -449,25 +449,26 @@ const allSitePolicies: SitePolicy[] = [
     label: 'Cancellation & Rescheduling Policy',
     href: '/policies/cancellation-and-rescheduling',
     effectiveDate: 'April 1, 2026',
-    cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, and what happens to the fee at each notice level. Lessons/packages are rescheduled, never refunded.',
+    cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, and how the fee is credited at each notice level.',
     intro:
       'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled or rescheduled. It applies to every booking made with Shanaya\'s Driving School and should be read together with our Terms & Conditions.',
-    highlights: ['Rescheduling only, never refunds', '24 hours notice to reschedule free of charge', 'Notice received weekdays, 8:30 to 4:30'],
+    highlights: ['Rescheduling and credits only', '24 hours notice to reschedule free of charge', 'Notice received weekdays, 8:30 to 4:30'],
     sections: [
       {
         title: '1. Scope and definitions',
         paragraphs: [
-          'In this policy, "lesson/package" means any driving lesson, course session, mock evaluation, or multi-lesson package you have booked with the school, and "fee" means the amount payable for that lesson/package.',
+          'In this policy, "lesson/package" means anything you have booked with the school. This includes a single driving lesson, any course, any lesson package, the Road Test Package, a Mock Test Evaluation, an Enhanced Road Assessment, and any other session or program offered by the school.',
+          '"Fee" means the amount payable for that lesson/package, and "credit" means an amount held on your account and applied to a future booking.',
           'This policy governs the cancellation and rescheduling of any lesson/package. It applies both to cancellations made by you and to cancellations made by the school. It does not govern the purchase, pricing, or payment of a lesson/package, which are dealt with in the Terms & Conditions and the Installment Policy.',
         ],
       },
       {
-        title: '2. Rescheduling, not refunds',
+        title: '2. Rescheduling and credits',
         paragraphs: [
-          'Fees are not refundable. Where a booked lesson/package is cancelled, the remedy under this policy is to reschedule that lesson/package. No amount is returned to your original method of payment, at any notice level.',
-          'Any amount that carries forward is held as a credit on your account and applied to the cost of your rescheduled lesson/package. Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
+          'Where a booked lesson/package is cancelled, it is settled by rescheduling and, where this policy provides for it, by credit held on your account.',
+          'Amounts paid to the school stay with the school and are applied to your rescheduled booking. Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
         ],
-        note: 'By booking a lesson/package you accept that fees are non-refundable and that rescheduling is the only remedy available for a cancellation.',
+        note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit only.',
         tone: 'warning',
       },
       {
@@ -477,7 +478,7 @@ const allSitePolicies: SitePolicy[] = [
         ],
         bullets: [
           'At least 24 hours notice: the lesson/package is rescheduled at no charge and the full fee carries forward.',
-          'Less than 24 hours but more than 2 hours notice: the lesson/package is rescheduled, half the fee is retained, and half carries forward.',
+          'Less than 24 hours but more than 2 hours notice: the lesson/package is rescheduled, half the fee is retained, and half carries forward as credit.',
           'Less than 2 hours notice, or no notice at all: the full fee is retained and the lesson/package is not rescheduled.',
           'Cancelled by the school: the lesson/package is rescheduled at no charge and the full fee carries forward.',
         ],
@@ -493,7 +494,7 @@ const allSitePolicies: SitePolicy[] = [
         bullets: [
           'Telephone: +1 (250) 542-3673',
           'WhatsApp: +1 (250) 542-3673',
-          'Email: info@shanayasdrivingschool.com',
+          'Email: book@drivingschoolbc.ca',
         ],
         note: 'Worked examples. A message sent Tuesday at 2:00 p.m. is received Tuesday at 2:00 p.m. A message sent Tuesday at 8:00 p.m. is received Wednesday at 8:30 a.m. A message sent at any time on Saturday is received the following Monday at 8:30 a.m. Keep a record of when you sent your notice; where timing is in question, the received timestamp on the call, message, or email applies.',
       },
@@ -539,7 +540,8 @@ const allSitePolicies: SitePolicy[] = [
         title: '9. How credits are applied',
         paragraphs: [
           'A credit arising under this policy is recorded against your account and applied to the cost of your rescheduled lesson/package, reducing the amount payable at that time.',
-          'Where a single session within a multi-lesson package is cancelled, any amount retained or credited is calculated on the value of that individual session, not on the value of the package as a whole. The remaining sessions in the package are unaffected.',
+          'Where a single session within a multi-session package is cancelled, any amount retained or credited is calculated on the value of that individual session, not on the value of the package as a whole. The remaining sessions in the package are unaffected.',
+          'Where the Road Test Package is cancelled, the road test vehicle booking is cancelled with it, and the notice levels in sections 5 to 7 apply to the package as booked.',
         ],
       },
       {
@@ -551,7 +553,7 @@ const allSitePolicies: SitePolicy[] = [
         bullets: [
           'Shanaya\'s Driving School',
           'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
-          'info@shanayasdrivingschool.com',
+          'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],
       },
