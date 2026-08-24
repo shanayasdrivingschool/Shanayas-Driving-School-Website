@@ -33,7 +33,7 @@ const referralSteps: ReferralStep[] = [
     icon: <Send className="h-5 w-5" />,
   },
   {
-    title: "Enrollment",
+    title: "Enrolment",
     text: "Your referral qualifies once a package is booked and fully paid through your link.",
     icon: <CreditCard className="h-5 w-5" />,
   },

@@ -31,8 +31,8 @@ export type SitePolicy = {
 };
 
 const installmentPlans: PolicyInstallmentPlan[] = [
-  { duration: '4-month plan', frequency: 'Monthly', requirement: 'Standard enrollment' },
-  { duration: '6-month plan', frequency: 'Monthly', requirement: 'Standard enrollment' },
+  { duration: '4-month plan', frequency: 'Monthly', requirement: 'Standard enrolment' },
+  { duration: '6-month plan', frequency: 'Monthly', requirement: 'Standard enrolment' },
   { duration: '8-month plan', frequency: 'Monthly', requirement: 'Verification required' },
   { duration: '12-month plan', frequency: 'Monthly', requirement: 'Verification required' },
 ];
@@ -61,7 +61,7 @@ const allSitePolicies: SitePolicy[] = [
           'IP address',
           'Referral identifiers',
           'Payment records',
-          'Course enrollment details',
+          'Course enrolment details',
           'Communications with the Company',
         ],
         note: 'Personal information does not include aggregated or anonymized data that cannot reasonably identify an individual.',
@@ -87,7 +87,7 @@ const allSitePolicies: SitePolicy[] = [
         ],
         bullets: [
           'Administering driving lesson bookings.',
-          'Processing payments and enrollments.',
+          'Processing payments and enrolments.',
           'Operating the Ruley Rewards Referral Program.',
           'Verifying referral eligibility.',
           'Issuing referral commissions.',
@@ -234,7 +234,7 @@ const allSitePolicies: SitePolicy[] = [
         title: 'Authorized plans',
         paragraphs: [
           'Installment plans are offered only in the approved durations listed by the school at the time of registration.',
-          'All plans remain subject to identity verification, internal review, and confirmation through the individual payment schedule issued at enrollment.',
+          'All plans remain subject to identity verification, internal review, and confirmation through the individual payment schedule issued at enrolment.',
         ],
         note: 'Specific payment amounts and due dates are confirmed during registration and may differ by package or course selection.',
       },
@@ -254,7 +254,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: 'Attendance and withdrawal',
         paragraphs: [
-          'Installment enrollment applies to the full course commitment, not a pay-as-you-go arrangement for each lesson attended.',
+          'Installment enrolment applies to the full course commitment, not a pay-as-you-go arrangement for each lesson attended.',
           'Stopping attendance, delaying booking activity, or voluntarily withdrawing does not automatically reduce the outstanding balance owed under the approved agreement.',
         ],
       },
@@ -351,7 +351,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: 'Why cookies are used',
         paragraphs: [
-          'Cookies help the website remember useful information between visits, support smoother user interactions, and maintain essential functionality such as referral attribution or session-related behavior.',
+          'Cookies help the website remember useful information between visits, support smoother user interactions, and maintain essential functionality such as referral attribution or session-related behaviour.',
           'Some cookies may also support analytics, anti-spam checks, or other tools used to measure site usage and protect the website from abuse.',
         ],
       },
@@ -366,7 +366,7 @@ const allSitePolicies: SitePolicy[] = [
         title: 'Managing cookies',
         paragraphs: [
           'Most browsers allow you to review, restrict, or delete cookies through browser settings. You may also clear stored referral or site data from your browser at any time.',
-          'Disabling some cookies may reduce site functionality, interfere with form behavior, or prevent referrals from being attributed correctly.',
+          'Disabling some cookies may reduce site functionality, interfere with form behaviour, or prevent referrals from being attributed correctly.',
         ],
       },
       {
@@ -383,10 +383,10 @@ const allSitePolicies: SitePolicy[] = [
     label: 'Promotions & Discounts Policy',
     href: '/policies/promotions-and-discounts',
     effectiveDate: 'April 1, 2026',
-    cardDescription: 'Who qualifies for discounts, coupon codes, and promotional offers — and why promotional pricing applies to self-funded students only, not to enrollments paid by a third-party organization.',
+    cardDescription: 'Who qualifies for discounts, coupon codes, and promotional offers — and why promotional pricing applies to self-funded students only, not to enrolments paid by a third-party organization.',
     intro:
       'Effective Date: April 1, 2026. This Promotions & Discounts Policy governs all discounts, coupon codes, seasonal or promotional offers, bundle pricing, and referral credits offered by Shanaya\'s Driving School. It explains who qualifies for promotional pricing and the conditions that apply to every offer.',
-    highlights: ['Self-funded students only', 'Excludes sponsored enrollments', 'No retroactive discounts'],
+    highlights: ['Self-funded students only', 'Excludes sponsored enrolments', 'No retroactive discounts'],
     sections: [
       {
         title: 'Definitions',
@@ -395,7 +395,7 @@ const allSitePolicies: SitePolicy[] = [
         ],
         bullets: [
           '"Self-Funded Student" means an individual who personally pays for their own lessons or packages.',
-          '"Sponsored" or "Third-Party-Funded Enrollment" means any enrollment where lesson fees are paid, invoiced, reimbursed, or otherwise funded by a party other than the student.',
+          '"Sponsored" or "Third-Party-Funded Enrolment" means any enrolment where lesson fees are paid, invoiced, reimbursed, or otherwise funded by a party other than the student.',
           'Third parties include, but are not limited to, government agencies, insurers, employers, non-profit organizations, settlement or employment programs, funding bodies, and any organization arranging payment on a student\'s behalf.',
         ],
       },
@@ -403,25 +403,25 @@ const allSitePolicies: SitePolicy[] = [
         title: 'Who Discounts Apply To',
         paragraphs: [
           'Promotions and discounts are available only to Self-Funded Students who pay for their own driver training.',
-          'They do not apply to Sponsored or Third-Party-Funded Enrollments. Where a third party pays for a student\'s training, the standard published rate applies, because funding is arranged directly with the funding organization.',
+          'They do not apply to Sponsored or Third-Party-Funded Enrolments. Where a third party pays for a student\'s training, the standard published rate applies, because funding is arranged directly with the funding organization.',
         ],
       },
       {
-        title: 'Promotional Pricing & Sponsored Enrollment',
+        title: 'Promotional Pricing & Sponsored Enrolment',
         paragraphs: [
-          'Advertised promotional pricing reflects a benefit offered to individuals paying for their own lessons. Sponsored enrollments are billed at the standard published rate and are quoted or invoiced directly to the funding organization.',
+          'Advertised promotional pricing reflects a benefit offered to individuals paying for their own lessons. Sponsored enrolments are billed at the standard published rate and are quoted or invoiced directly to the funding organization.',
         ],
         bullets: [
           'Promotional codes and discounts cannot be combined with, or applied on top of, third-party funding.',
-          'Discounts are not applied retroactively to enrollments booked before an offer began.',
-          'Only one promotional offer may apply to an eligible enrollment unless the school states otherwise in writing.',
+          'Discounts are not applied retroactively to enrolments booked before an offer began.',
+          'Only one promotional offer may apply to an eligible enrolment unless the school states otherwise in writing.',
         ],
       },
       {
         title: 'Reclassification and Reversal',
         paragraphs: [
           'Eligibility is determined by who ultimately pays for the training.',
-          'If an enrollment booked as self-funded is later paid, invoiced, or reimbursed by a third party, any discount already applied may be reversed and the balance adjusted to the standard published rate.',
+          'If an enrolment booked as self-funded is later paid, invoiced, or reimbursed by a third party, any discount already applied may be reversed and the balance adjusted to the standard published rate.',
         ],
       },
       {
@@ -449,89 +449,104 @@ const allSitePolicies: SitePolicy[] = [
     label: 'Cancellation & Rescheduling Policy',
     href: '/policies/cancellation-and-rescheduling',
     effectiveDate: 'August 24, 2026',
-    cardDescription: 'How much notice to give before a booked lesson, what is refunded or rescheduled at 24 hours and inside 2 hours, and how cancellations made by the school are handled.',
+    cardDescription: 'How to cancel or reschedule a booked lesson, how much notice is required, and what happens to the lesson fee at each notice level. Lessons are rescheduled, never refunded.',
     intro:
-      'Effective Date: August 24, 2026. This policy sets out what happens when a booked lesson is cancelled or rescheduled. It applies to every scheduled lesson, course session, and mock evaluation booked with Shanaya\'s Driving School. How much of the lesson fee is protected depends on one thing: how much notice the school receives before the scheduled start time.',
-    highlights: ['24 hours notice for a full refund', 'Half refunded, half credited inside 24 hours', 'No refund inside 2 hours'],
+      'Effective Date: August 24, 2026. This policy explains what happens when a booked lesson is cancelled or rescheduled. It applies to every lesson, course session, and mock evaluation booked with Shanaya\'s Driving School, and should be read together with our Terms & Conditions.',
+    highlights: ['Rescheduling only, never refunds', '24 hours notice to reschedule free of charge', 'Notice received weekdays, 8:30 to 4:30'],
     sections: [
       {
-        title: 'How to give notice',
+        title: '1. Scope',
         paragraphs: [
-          'Cancellation and rescheduling notice must be given to the school directly, using one of the contact channels below. Notice takes effect from the moment it is received by the school, not from the moment it is sent.',
+          'This policy governs the cancellation and rescheduling of any lesson or session you have booked with the school, whether that lesson was purchased on its own or as part of a package.',
+          'It applies both to cancellations made by you and to cancellations made by the school. It does not govern the purchase, pricing, or payment of lessons, which are dealt with in the Terms & Conditions and the Installment Policy.',
+        ],
+      },
+      {
+        title: '2. Rescheduling, not refunds',
+        paragraphs: [
+          'Lesson fees are not refundable. Where a booked lesson is cancelled, the remedy under this policy is to reschedule that lesson. No amount is returned to your original method of payment, at any notice level.',
+          'Any amount that carries forward is held as a credit on your account and applied to the cost of your rescheduled lesson. Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
+        ],
+        note: 'By booking a lesson you accept that fees are non-refundable and that rescheduling is the only remedy available for a cancellation.',
+        tone: 'warning',
+      },
+      {
+        title: '3. Notice levels at a glance',
+        paragraphs: [
+          'How much of your lesson fee carries forward to the rescheduled lesson depends on one thing: how much notice the school receives before the scheduled start time.',
         ],
         bullets: [
-          'Phone: +1 (250) 542-3673',
+          'At least 24 hours notice: the lesson is rescheduled at no charge and the full fee carries forward.',
+          'Less than 24 hours but more than 2 hours notice: the lesson is rescheduled, half the fee is retained, and half carries forward.',
+          'Less than 2 hours notice, or no notice at all: the full fee is retained and the lesson is not rescheduled.',
+          'Cancelled by the school: the lesson is rescheduled at no charge and the full fee carries forward.',
+        ],
+        note: 'Section 4 explains how the notice period is calculated. Sections 5 to 8 set out each level in full.',
+      },
+      {
+        title: '4. Giving notice, and when it is received',
+        paragraphs: [
+          'Notice of a cancellation must be given to the school directly, by telephone, WhatsApp, or email. Notice takes effect when it is received by the school, not when it is sent.',
+          'The office is staffed Monday to Friday, 8:30 a.m. to 4:30 p.m. Pacific time, and notice is received, reviewed, and acted on only during those hours.',
+          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 8:30 a.m. on the next weekday. Your notice period is measured from that time to the scheduled start time of the lesson.',
+        ],
+        bullets: [
+          'Telephone: +1 (250) 542-3673',
           'WhatsApp: +1 (250) 542-3673',
           'Email: info@shanayasdrivingschool.com',
         ],
+        note: 'Worked examples. A message sent Tuesday at 2:00 p.m. is received Tuesday at 2:00 p.m. A message sent Tuesday at 8:00 p.m. is received Wednesday at 8:30 a.m. A message sent at any time on Saturday is received the following Monday at 8:30 a.m. Keep a record of when you sent your notice; where timing is in question, the received timestamp on the call, message, or email applies.',
       },
       {
-        title: 'When notice is received',
+        title: '5. Notice of at least 24 hours',
         paragraphs: [
-          'Notice is received, reviewed, and acted on only during office hours: Monday to Friday, 8:30 am to 4:30 pm Pacific time. The office is not staffed outside these hours.',
-          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 8:30 am on the next weekday. The notice period is then measured from that time to the scheduled start time of the lesson.',
+          'Where the school receives your notice at least 24 hours before the scheduled start time, the lesson is rescheduled to another available time at no additional charge.',
+          'No part of the lesson fee is retained, and the full value of the lesson carries forward to the rescheduled booking. Rescheduled times are subject to availability.',
+        ],
+      },
+      {
+        title: '6. Notice within 24 hours',
+        paragraphs: [
+          'Where the school receives your notice less than 24 hours before the scheduled start time, but more than 2 hours before it, the lesson is rescheduled to another available time on the following basis.',
         ],
         bullets: [
-          'A message sent Tuesday at 2:00 pm is received Tuesday at 2:00 pm.',
-          'A message sent Tuesday at 8:00 pm is received Wednesday at 8:30 am.',
-          'A message sent Saturday at any time is received the following Monday at 8:30 am.',
+          'Half of the lesson fee is retained by the school as a late-notice charge.',
+          'The remaining half is held as a credit and applied to the cost of your rescheduled lesson.',
         ],
-        note: 'Plan cancellations around office hours. Because notice cannot be received outside them, a message sent the evening before an early lesson does not count as notice given that evening. Keep a record of when you sent your notice; where there is a question about timing, the received timestamp on the call, message, or email is used.',
+        note: 'The credited half is not lost. It remains on your account and reduces the amount payable for the rescheduled lesson. Contact the office at any time to confirm your current credit balance.',
         tone: 'warning',
       },
       {
-        title: 'Notice of at least 24 hours',
+        title: '7. Notice within the last 2 hours, or no notice',
         paragraphs: [
-          'If the school receives your notice at least 24 hours before the scheduled start time, you may choose either of the following. No fee is deducted and no penalty applies at this notice level.',
+          'Where the school receives your notice less than 2 hours before the scheduled start time, the lesson is treated as delivered.',
         ],
         bullets: [
-          'Reschedule the lesson to another available time at no additional charge.',
-          'Receive a full refund of the lesson fee.',
-        ],
-      },
-      {
-        title: 'Notice within 24 hours',
-        paragraphs: [
-          'If the school receives your notice less than 24 hours before the scheduled start time, but more than 2 hours before it, you may choose either of the following.',
-        ],
-        bullets: [
-          'Reschedule the lesson to another available time.',
-          'Receive a refund of half of the lesson fee. The remaining half is not refunded in cash. It is held as a credit and adjusted against a later lesson.',
-        ],
-        note: 'The credited half is not lost. It stays on your account and is applied to the cost of your next booked lesson or course with the school. Contact the office at any time to confirm your current credit balance.',
-        tone: 'warning',
-      },
-      {
-        title: 'Notice within the last 2 hours',
-        paragraphs: [
-          'If the school receives your notice less than 2 hours before the scheduled start time, the lesson is charged in full.',
-        ],
-        bullets: [
-          'No refund is issued.',
-          'The lesson is not rescheduled and no credit is carried forward.',
-          'A lesson missed without any notice at all is treated the same way as notice given inside the last 2 hours.',
+          'The full lesson fee is retained.',
+          'The lesson is not rescheduled and no credit carries forward.',
+          'A lesson missed without any notice is treated in the same way as notice given inside the last 2 hours.',
         ],
         tone: 'warning',
       },
       {
-        title: 'Cancellations made by the school',
+        title: '8. Cancellations made by the school',
         paragraphs: [
-          'Where the school cancels or cuts short a lesson, including for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, the lesson is rescheduled in full at no charge to you.',
-          'No part of the lesson fee is deducted in these circumstances, and no notice period applies to a cancellation made by the school.',
+          'Where the school cancels a lesson, or a lesson is cut short for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, the lesson is rescheduled in full at no charge to you.',
+          'No part of the lesson fee is retained in these circumstances, and no notice period applies to a cancellation made by the school.',
         ],
       },
       {
-        title: 'How refunds and credits are issued',
+        title: '9. Credits and package bookings',
         paragraphs: [
-          'Refunds under this policy are returned to the original method of payment. Processing times depend on your payment provider and are outside the school\'s control.',
-          'Credits are recorded against your account rather than returned to your payment method. A credit is applied to the cost of your next booked lesson or course, reducing the amount payable at that time. Credits cannot be exchanged for cash.',
-          'Where the cancelled lesson forms part of a package or multi-lesson booking, any refund or credit is calculated on the value of the individual lesson cancelled, not on the package as a whole.',
+          'A credit arising under this policy is recorded against your account and applied to the cost of your rescheduled lesson, reducing the amount payable at that time.',
+          'Where the cancelled lesson forms part of a package or multi-lesson booking, any amount retained or credited is calculated on the value of the individual lesson cancelled, not on the value of the package as a whole. The remainder of the package is unaffected.',
         ],
       },
       {
-        title: 'Questions about a cancellation',
+        title: '10. Questions, and changes to this policy',
         paragraphs: [
-          'If you believe a cancellation has been recorded incorrectly, contact the school and we will review the record of when notice was received.',
+          'If you believe a cancellation has been recorded incorrectly, contact the school and we will review the record of when your notice was received.',
+          'The school may update this policy from time to time. The version published on this page at the time of your booking is the version that applies to that booking.',
         ],
         bullets: [
           'Shanaya\'s Driving School',
@@ -563,7 +578,7 @@ const allSitePolicies: SitePolicy[] = [
         title: 'Bookings, pricing, and payments',
         paragraphs: [
           'Lesson, package, and promotional pricing displayed on the site may change over time and remains subject to confirmation at the time of booking or approval.',
-          'Installment plans, discounts, and referral payouts are governed by the separate policy rules that apply to those services. Promotions and discounts apply to self-funded students only and do not apply to enrollments paid by a third-party organization, as set out in the Promotions & Discounts Policy.',
+          'Installment plans, discounts, and referral payouts are governed by the separate policy rules that apply to those services. Promotions and discounts apply to self-funded students only and do not apply to enrolments paid by a third-party organization, as set out in the Promotions & Discounts Policy.',
         ],
       },
       {
@@ -582,7 +597,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: 'Liability and updates',
         paragraphs: [
-          'The website content is provided for general information and operational use. While the school aims for accuracy, some information may change and may require direct confirmation before purchase or enrollment.',
+          'The website content is provided for general information and operational use. While the school aims for accuracy, some information may change and may require direct confirmation before purchase or enrolment.',
           'Continued use of the website after policy or content updates means you accept the latest published terms displayed on the site.',
         ],
       },
