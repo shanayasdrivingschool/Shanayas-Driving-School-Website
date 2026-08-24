@@ -96,7 +96,7 @@ ok("on branch main");
    site does not read as "uncommitted work" — the build output is committed to
    main further down, after it has been verified. Everything else must be clean,
    so source and published site stay in step. */
-const dirty = git(["status", "--porcelain", "--", ".", ":(exclude)public_html"]);
+const dirty = git(["status", "--porcelain", "--untracked-files=no", "--", ".", ":(exclude)public_html"]);
 if (dirty && !opts.allowDirty) {
   console.error(`\n${C.yellow}Uncommitted changes on main:${C.reset}`);
   console.error(dirty.split("\n").slice(0, 20).join("\n"));
@@ -107,6 +107,20 @@ if (dirty && !opts.allowDirty) {
 }
 if (dirty) warn("deploying with uncommitted changes (--allow-dirty)");
 else ok("working tree clean");
+
+/* Untracked files do not block: stray screenshots at the repo root are not part
+   of a build. Anything untracked under public/ is different — Vite copies that
+   directory verbatim into the output, so it would go live without ever being
+   committed. That case is called out by name. */
+const untracked = git(["ls-files", "--others", "--exclude-standard", "--", ".", ":(exclude)public_html"]);
+if (untracked) {
+  const files = untracked.split("\n").filter(Boolean);
+  const inPublic = files.filter((f) => f.startsWith("public/"));
+  warn(`${files.length} untracked file(s), not committed: ${files.slice(0, 6).join(", ")}${files.length > 6 ? ", ..." : ""}`);
+  if (inPublic.length) {
+    warn(`${C.yellow}${inPublic.length} of them are under public/ and WILL be published:${C.reset} ${inPublic.join(", ")}`);
+  }
+}
 
 /* Locate the deploy worktree by branch rather than by path, so moving or
    recreating the worktree does not silently publish to the wrong place. */
