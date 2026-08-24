@@ -532,7 +532,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: '8. Cancellations made by the school',
         paragraphs: [
-          'Where the school cancels a lesson/package, or a session is cut short for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, it is rescheduled in full at no charge to you.',
+          'Where the school cancels a lesson/package, including for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, the lesson/package is rescheduled at no charge to you.',
           'No part of the fee is retained in these circumstances, and no notice period applies to a cancellation made by the school.',
         ],
       },
@@ -545,14 +545,14 @@ const allSitePolicies: SitePolicy[] = [
         ],
       },
       {
-        title: '10. Questions, and changes to this policy',
+        title: '10. Discretion, questions, and changes',
         paragraphs: [
+          'The application of this policy, and of all school policies, is at the discretion of the school. The school may vary how this policy is applied in an individual case, and doing so does not set a precedent for any other booking or for any other student.',
           'If you believe a cancellation has been recorded incorrectly, contact the school and we will review the record of when your notice was received.',
           'The school may update this policy from time to time. The version published on this page at the time of your booking is the version that applies to that booking.',
         ],
         bullets: [
           'Shanaya\'s Driving School',
-          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
           'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],
