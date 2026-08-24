@@ -552,7 +552,6 @@ const allSitePolicies: SitePolicy[] = [
           'The school may update this policy from time to time. The version published on this page at the time of your booking is the version that applies to that booking.',
         ],
         bullets: [
-          'Shanaya\'s Driving School',
           'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],
