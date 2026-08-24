@@ -459,7 +459,7 @@ const allSitePolicies: SitePolicy[] = [
         paragraphs: [
           'In this policy, "lesson/package" means anything you have booked with the school. This includes a single driving lesson, any course, any lesson package, the Road Test Package, a Mock Test Evaluation, an Enhanced Road Assessment, and any other session or program offered by the school.',
           '"Fee" means the amount payable for that lesson/package, and "credit" means an amount held on your account and applied to a future booking.',
-          'This policy governs the cancellation and rescheduling of any lesson/package. It applies both to cancellations made by you and to cancellations made by the school. It does not govern the purchase, pricing, or payment of a lesson/package, which are dealt with in the Terms & Conditions and the Installment Policy.',
+          'This policy governs the cancellation and rescheduling of a lesson/package by you. It does not govern the purchase, pricing, or payment of a lesson/package, which are dealt with in the Terms & Conditions and the Installment Policy.',
         ],
       },
       {
@@ -540,6 +540,7 @@ const allSitePolicies: SitePolicy[] = [
         title: '9. How credits are applied',
         paragraphs: [
           'A credit arising under this policy is recorded against your account and applied to the cost of your rescheduled lesson/package, reducing the amount payable at that time.',
+          'Any amount retained or credited under this policy is calculated on the standard published price of the lesson/package, not on any discounted, promotional, or coupon price that may have been paid for it.',
           'Where a single session within a multi-session package is cancelled, any amount retained or credited is calculated on the value of that individual session, not on the value of the package as a whole. The remaining sessions in the package are unaffected.',
           'Where the Road Test Package is cancelled, the road test vehicle booking is cancelled with it, and the notice levels in sections 5 to 7 apply to the package as booked.',
         ],
