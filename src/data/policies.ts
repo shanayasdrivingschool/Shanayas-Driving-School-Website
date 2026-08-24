@@ -448,38 +448,38 @@ const allSitePolicies: SitePolicy[] = [
     id: 'cancellation-and-rescheduling',
     label: 'Cancellation & Rescheduling Policy',
     href: '/policies/cancellation-and-rescheduling',
-    effectiveDate: 'August 24, 2026',
-    cardDescription: 'How to cancel or reschedule a booked lesson, how much notice is required, and what happens to the lesson fee at each notice level. Lessons are rescheduled, never refunded.',
+    effectiveDate: 'April 1, 2026',
+    cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, and what happens to the fee at each notice level. Lessons/packages are rescheduled, never refunded.',
     intro:
-      'Effective Date: August 24, 2026. This policy explains what happens when a booked lesson is cancelled or rescheduled. It applies to every lesson, course session, and mock evaluation booked with Shanaya\'s Driving School, and should be read together with our Terms & Conditions.',
+      'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled or rescheduled. It applies to every booking made with Shanaya\'s Driving School and should be read together with our Terms & Conditions.',
     highlights: ['Rescheduling only, never refunds', '24 hours notice to reschedule free of charge', 'Notice received weekdays, 8:30 to 4:30'],
     sections: [
       {
-        title: '1. Scope',
+        title: '1. Scope and definitions',
         paragraphs: [
-          'This policy governs the cancellation and rescheduling of any lesson or session you have booked with the school, whether that lesson was purchased on its own or as part of a package.',
-          'It applies both to cancellations made by you and to cancellations made by the school. It does not govern the purchase, pricing, or payment of lessons, which are dealt with in the Terms & Conditions and the Installment Policy.',
+          'In this policy, "lesson/package" means any driving lesson, course session, mock evaluation, or multi-lesson package you have booked with the school, and "fee" means the amount payable for that lesson/package.',
+          'This policy governs the cancellation and rescheduling of any lesson/package. It applies both to cancellations made by you and to cancellations made by the school. It does not govern the purchase, pricing, or payment of a lesson/package, which are dealt with in the Terms & Conditions and the Installment Policy.',
         ],
       },
       {
         title: '2. Rescheduling, not refunds',
         paragraphs: [
-          'Lesson fees are not refundable. Where a booked lesson is cancelled, the remedy under this policy is to reschedule that lesson. No amount is returned to your original method of payment, at any notice level.',
-          'Any amount that carries forward is held as a credit on your account and applied to the cost of your rescheduled lesson. Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
+          'Fees are not refundable. Where a booked lesson/package is cancelled, the remedy under this policy is to reschedule that lesson/package. No amount is returned to your original method of payment, at any notice level.',
+          'Any amount that carries forward is held as a credit on your account and applied to the cost of your rescheduled lesson/package. Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
         ],
-        note: 'By booking a lesson you accept that fees are non-refundable and that rescheduling is the only remedy available for a cancellation.',
+        note: 'By booking a lesson/package you accept that fees are non-refundable and that rescheduling is the only remedy available for a cancellation.',
         tone: 'warning',
       },
       {
         title: '3. Notice levels at a glance',
         paragraphs: [
-          'How much of your lesson fee carries forward to the rescheduled lesson depends on one thing: how much notice the school receives before the scheduled start time.',
+          'How much of your fee carries forward to the rescheduled lesson/package depends on one thing: how much notice the school receives before the scheduled start time.',
         ],
         bullets: [
-          'At least 24 hours notice: the lesson is rescheduled at no charge and the full fee carries forward.',
-          'Less than 24 hours but more than 2 hours notice: the lesson is rescheduled, half the fee is retained, and half carries forward.',
-          'Less than 2 hours notice, or no notice at all: the full fee is retained and the lesson is not rescheduled.',
-          'Cancelled by the school: the lesson is rescheduled at no charge and the full fee carries forward.',
+          'At least 24 hours notice: the lesson/package is rescheduled at no charge and the full fee carries forward.',
+          'Less than 24 hours but more than 2 hours notice: the lesson/package is rescheduled, half the fee is retained, and half carries forward.',
+          'Less than 2 hours notice, or no notice at all: the full fee is retained and the lesson/package is not rescheduled.',
+          'Cancelled by the school: the lesson/package is rescheduled at no charge and the full fee carries forward.',
         ],
         note: 'Section 4 explains how the notice period is calculated. Sections 5 to 8 set out each level in full.',
       },
@@ -488,7 +488,7 @@ const allSitePolicies: SitePolicy[] = [
         paragraphs: [
           'Notice of a cancellation must be given to the school directly, by telephone, WhatsApp, or email. Notice takes effect when it is received by the school, not when it is sent.',
           'The office is staffed Monday to Friday, 8:30 a.m. to 4:30 p.m. Pacific time, and notice is received, reviewed, and acted on only during those hours.',
-          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 8:30 a.m. on the next weekday. Your notice period is measured from that time to the scheduled start time of the lesson.',
+          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 8:30 a.m. on the next weekday. Your notice period is measured from that time to the scheduled start time of the lesson/package.',
         ],
         bullets: [
           'Telephone: +1 (250) 542-3673',
@@ -500,46 +500,46 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: '5. Notice of at least 24 hours',
         paragraphs: [
-          'Where the school receives your notice at least 24 hours before the scheduled start time, the lesson is rescheduled to another available time at no additional charge.',
-          'No part of the lesson fee is retained, and the full value of the lesson carries forward to the rescheduled booking. Rescheduled times are subject to availability.',
+          'Where the school receives your notice at least 24 hours before the scheduled start time, the lesson/package is rescheduled to another available time at no additional charge.',
+          'No part of the fee is retained, and the full value carries forward to the rescheduled booking. Rescheduled times are subject to availability.',
         ],
       },
       {
         title: '6. Notice within 24 hours',
         paragraphs: [
-          'Where the school receives your notice less than 24 hours before the scheduled start time, but more than 2 hours before it, the lesson is rescheduled to another available time on the following basis.',
+          'Where the school receives your notice less than 24 hours before the scheduled start time, but more than 2 hours before it, the lesson/package is rescheduled to another available time on the following basis.',
         ],
         bullets: [
-          'Half of the lesson fee is retained by the school as a late-notice charge.',
-          'The remaining half is held as a credit and applied to the cost of your rescheduled lesson.',
+          'Half of the fee is retained by the school as a late-notice charge.',
+          'The remaining half is held as a credit and applied to the cost of your rescheduled lesson/package.',
         ],
-        note: 'The credited half is not lost. It remains on your account and reduces the amount payable for the rescheduled lesson. Contact the office at any time to confirm your current credit balance.',
+        note: 'The credited half is not lost. It remains on your account and reduces the amount payable for the rescheduled lesson/package. Contact the office at any time to confirm your current credit balance.',
         tone: 'warning',
       },
       {
         title: '7. Notice within the last 2 hours, or no notice',
         paragraphs: [
-          'Where the school receives your notice less than 2 hours before the scheduled start time, the lesson is treated as delivered.',
+          'Where the school receives your notice less than 2 hours before the scheduled start time, the lesson/package is treated as delivered.',
         ],
         bullets: [
-          'The full lesson fee is retained.',
-          'The lesson is not rescheduled and no credit carries forward.',
-          'A lesson missed without any notice is treated in the same way as notice given inside the last 2 hours.',
+          'The full fee is retained.',
+          'The lesson/package is not rescheduled and no credit carries forward.',
+          'A lesson/package missed without any notice is treated in the same way as notice given inside the last 2 hours.',
         ],
         tone: 'warning',
       },
       {
         title: '8. Cancellations made by the school',
         paragraphs: [
-          'Where the school cancels a lesson, or a lesson is cut short for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, the lesson is rescheduled in full at no charge to you.',
-          'No part of the lesson fee is retained in these circumstances, and no notice period applies to a cancellation made by the school.',
+          'Where the school cancels a lesson/package, or a session is cut short for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, it is rescheduled in full at no charge to you.',
+          'No part of the fee is retained in these circumstances, and no notice period applies to a cancellation made by the school.',
         ],
       },
       {
-        title: '9. Credits and package bookings',
+        title: '9. How credits are applied',
         paragraphs: [
-          'A credit arising under this policy is recorded against your account and applied to the cost of your rescheduled lesson, reducing the amount payable at that time.',
-          'Where the cancelled lesson forms part of a package or multi-lesson booking, any amount retained or credited is calculated on the value of the individual lesson cancelled, not on the value of the package as a whole. The remainder of the package is unaffected.',
+          'A credit arising under this policy is recorded against your account and applied to the cost of your rescheduled lesson/package, reducing the amount payable at that time.',
+          'Where a single session within a multi-lesson package is cancelled, any amount retained or credited is calculated on the value of that individual session, not on the value of the package as a whole. The remaining sessions in the package are unaffected.',
         ],
       },
       {
