@@ -378,7 +378,7 @@ const Careers = () => {
                 {/* Action buttons */}
                 <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-slate-100 pt-6">
                   <a
-                    href={`mailto:info@shanayasdrivingschool.com?subject=Application%20-%20${encodeURIComponent(pos.title)}`}
+                    href={`mailto:book@drivingschoolbc.ca?subject=Application%20-%20${encodeURIComponent(pos.title)}`}
                     className={`inline-flex rounded-full px-7 py-3 text-sm font-bold text-white transition-colors ${
                       pos.buttonStyle === "red"
                         ? "bg-[#E6242A] hover:bg-[#C41E23]"
@@ -510,17 +510,17 @@ const Careers = () => {
 
         <div className="mt-8 mx-auto w-full max-w-xl rounded-2xl border border-[#1d52a1]/30 bg-white px-4 py-4 sm:px-6">
           <a
-            href="mailto:info@shanayasdrivingschool.com"
+            href="mailto:book@drivingschoolbc.ca"
             className="flex items-center justify-center gap-3 text-center text-sm font-bold text-[#1d52a1] sm:text-lg"
           >
             <Mail size={20} className="shrink-0" />
-            <span className="min-w-0 break-all leading-tight sm:break-normal">info@shanayasdrivingschool.com</span>
+            <span className="min-w-0 break-all leading-tight sm:break-normal">book@drivingschoolbc.ca</span>
           </a>
         </div>
 
         <div className="mt-6">
           <a
-            href="mailto:info@shanayasdrivingschool.com?subject=Career%20Application%20-%20Shanaya's%20Driving%20School"
+            href="mailto:book@drivingschoolbc.ca?subject=Career%20Application%20-%20Shanaya's%20Driving%20School"
             className="inline-flex rounded-full bg-[#E6242A] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
           >
             Apply Now
@@ -559,7 +559,7 @@ const Careers = () => {
             Contact Us
           </Link>
           <a
-            href="mailto:info@shanayasdrivingschool.com?subject=Question%20About%20Careers"
+            href="mailto:book@drivingschoolbc.ca?subject=Question%20About%20Careers"
             className={siteCtaSecondaryClassName}
           >
             Ask a Question

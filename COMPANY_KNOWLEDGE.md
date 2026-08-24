@@ -15,7 +15,7 @@ This document summarizes company data currently published or embedded in the web
 
 ## 2. Public Contact Information
 
-- Primary email: info@shanayasdrivingschool.com
+- Primary email: book@drivingschoolbc.ca
 - Primary phone: +1 (250) 542-3673
 - Public vanity phone label: 250-LICENSE
 - WhatsApp: https://wa.me/12505423673
@@ -26,6 +26,7 @@ This document summarizes company data currently published or embedded in the web
 - Primary domain: https://www.shanayasdrivingschool.com (canonical host; .htaccess 301s every other host to it)
 - Secondary/parked domain: drivingschoolbc.ca — redirects to the primary, must not be published as a site address or used in schema, canonicals or sitemaps
 - Domain change (owner direction, 2026-07-30): the primary domain moved to shanayasdrivingschool.com and the published contact mailbox moved to info@shanayasdrivingschool.com, replacing book@drivingschoolbc.ca
+- Mailbox reverted (owner direction, 2026-08-24): the published contact mailbox is book@drivingschoolbc.ca again, replacing info@shanayasdrivingschool.com everywhere it appeared. This reverses only the mailbox half of the 2026-07-30 change; the primary domain remains shanayasdrivingschool.com. Note the published mailbox is therefore on the parked domain while the website is on the primary one, so drivingschoolbc.ca MX records must stay live even though its web traffic 301s away
 
 ## 3. Service Areas
 
@@ -167,7 +168,7 @@ Open positions listed on the careers page:
 Shared careers details:
 
 - Location used for openings: Victoria, BC
-- Careers contact email: info@shanayasdrivingschool.com
+- Careers contact email: book@drivingschoolbc.ca
 - Hiring page emphasizes supportive team culture, flexible scheduling, modern training vehicles, and inclusive hiring
 
 ## 10. Data Quality Notes

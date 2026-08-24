@@ -268,7 +268,7 @@ const EmployeeApply = () => {
       setSubmitted(true);
     } catch (error) {
       console.error("Employee application submit failed:", error);
-      setSubmitError("Submission failed. Please retry after verification or email info@shanayasdrivingschool.com.");
+      setSubmitError("Submission failed. Please retry after verification or email book@drivingschoolbc.ca.");
     } finally {
       setIsSubmitting(false);
     }

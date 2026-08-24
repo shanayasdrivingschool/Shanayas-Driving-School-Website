@@ -224,10 +224,10 @@ const KnowledgeTestGuide = () => (
               linked ICBC pages as the source of truth and recheck them before you apply. To report a factual error,
               email{" "}
               <a
-                href="mailto:info@shanayasdrivingschool.com?subject=Correction%20to%20knowledge%20test%20guide"
+                href="mailto:book@drivingschoolbc.ca?subject=Correction%20to%20knowledge%20test%20guide"
                 className="font-semibold underline underline-offset-4"
               >
-                info@shanayasdrivingschool.com
+                book@drivingschoolbc.ca
               </a>
               .
             </p>

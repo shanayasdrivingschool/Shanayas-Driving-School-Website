@@ -243,8 +243,8 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
             ) : null}
             <p className="mt-5 text-xs leading-relaxed text-slate-500">
               To report a factual error, email{" "}
-              <a href="mailto:info@shanayasdrivingschool.com" className="underline underline-offset-2">
-                info@shanayasdrivingschool.com
+              <a href="mailto:book@drivingschoolbc.ca" className="underline underline-offset-2">
+                book@drivingschoolbc.ca
               </a>
               .
             </p>

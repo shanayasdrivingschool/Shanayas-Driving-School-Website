@@ -375,7 +375,7 @@ const Faq = () => {
                 Prices, service areas, vehicles and pickup come from our current catalogue. Think
                 we&apos;ve got something wrong?{" "}
                 <a
-                  href="mailto:info@shanayasdrivingschool.com"
+                  href="mailto:book@drivingschoolbc.ca"
                   className="text-slate-500 underline underline-offset-2 transition-colors duration-200 hover:text-[#1d52a1]"
                 >
                   Tell us

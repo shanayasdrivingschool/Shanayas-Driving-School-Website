@@ -189,8 +189,8 @@ const BlogPost = () => {
           <p className="mt-2 max-w-3xl text-xs leading-relaxed text-white/65">
             Shanaya&apos;s is an independent driving school, not ICBC. Licensing and road-safety claims link to the
             official sources used for the article. Confirm current requirements with ICBC; report a factual error to{" "}
-            <a href="mailto:info@shanayasdrivingschool.com" className="underline underline-offset-2">
-              info@shanayasdrivingschool.com
+            <a href="mailto:book@drivingschoolbc.ca" className="underline underline-offset-2">
+              book@drivingschoolbc.ca
             </a>
             .
           </p>

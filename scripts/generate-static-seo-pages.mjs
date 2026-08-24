@@ -46,7 +46,7 @@ const localBusinessSchema = {
   logo: `${siteOrigin}/logos/Driving%20School%20Logo%20Horizontal.png`,
   description: defaultDescription,
   telephone: "+1-250-542-3673",
-  email: "info@shanayasdrivingschool.com",
+  email: "book@drivingschoolbc.ca",
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
@@ -1432,7 +1432,7 @@ const buildKnowledgeTestGuideBody = (page) => {
     `<section><h2>Official sources</h2><ul>`,
     ...sources.map(([label, href]) => `<li><a href="${escapeHtml(href)}">${escapeHtml(label)}</a></li>`),
     `</ul></section>`,
-    para("For corrections, email info@shanayasdrivingschool.com."),
+    para("For corrections, email book@drivingschoolbc.ca."),
     `</article>`,
   ].join("\n        ");
 };
@@ -1503,7 +1503,7 @@ const buildNewcomersGuideBody = (page) => {
     `<section><h2>Official sources</h2><ul>`,
     ...sources.map(([label, href]) => `<li><a href="${escapeHtml(href)}">${escapeHtml(label)}</a></li>`),
     `</ul></section>`,
-    para("For corrections, email info@shanayasdrivingschool.com."),
+    para("For corrections, email book@drivingschoolbc.ca."),
     `</article>`,
   ].join("\n        ");
 };
@@ -1604,7 +1604,7 @@ const buildAuthorBody = (author, content) => {
 
   parts.push(
     para(
-      "Shanaya's Driving School is an independent driving school, not ICBC. Confirm current licensing requirements with ICBC. To report a factual error, email info@shanayasdrivingschool.com.",
+      "Shanaya's Driving School is an independent driving school, not ICBC. Confirm current licensing requirements with ICBC. To report a factual error, email book@drivingschoolbc.ca.",
     ),
   );
 

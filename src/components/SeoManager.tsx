@@ -252,7 +252,7 @@ const localBusinessJsonLd: JsonLdObject = {
   logo: `${SITE_ORIGIN}/logos/Driving%20School%20Logo%20Horizontal.png`,
   description: DEFAULT_DESCRIPTION,
   telephone: "+1-250-542-3673",
-  email: "info@shanayasdrivingschool.com",
+  email: "book@drivingschoolbc.ca",
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
