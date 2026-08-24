@@ -1,4 +1,4 @@
-import { CreditCard, FileText, Gavel, Percent, ShieldCheck, Users, type LucideIcon } from "lucide-react";
+import { CalendarClock, CreditCard, FileText, Gavel, Percent, ShieldCheck, Users, type LucideIcon } from "lucide-react";
 
 /**
  * Single source of truth for the icon shown against each policy. Shared by the
@@ -10,6 +10,7 @@ export const policyIcons: Record<string, LucideIcon> = {
   "installment-policy": CreditCard,
   "in-vehicle-passenger-policy": Users,
   "promotions-and-discounts": Percent,
+  "cancellation-and-rescheduling": CalendarClock,
   "terms-and-conditions": Gavel,
 };
 

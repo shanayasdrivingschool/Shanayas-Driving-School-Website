@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "postbuild": "node scripts/generate-static-seo-pages.mjs",
+    "deploy": "node scripts/deploy.mjs",
+    "deploy:check": "node scripts/deploy.mjs --dry-run",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

@@ -445,14 +445,112 @@ const allSitePolicies: SitePolicy[] = [
     ],
   },
   {
+    id: 'cancellation-and-rescheduling',
+    label: 'Cancellation & Rescheduling Policy',
+    href: '/policies/cancellation-and-rescheduling',
+    effectiveDate: 'August 24, 2026',
+    cardDescription: 'How much notice to give before a booked lesson, what is refunded or rescheduled at 24 hours and inside 2 hours, and how cancellations made by the school are handled.',
+    intro:
+      'Effective Date: August 24, 2026. This policy sets out what happens when a booked lesson is cancelled or rescheduled. It applies to every scheduled lesson, course session, and mock evaluation booked with Shanaya\'s Driving School. How much of the lesson fee is protected depends on one thing: how much notice the school receives before the scheduled start time.',
+    highlights: ['24 hours notice for a full refund', 'Half refunded, half credited inside 24 hours', 'No refund inside 2 hours'],
+    sections: [
+      {
+        title: 'How to give notice',
+        paragraphs: [
+          'Cancellation and rescheduling notice must be given to the school directly, using one of the contact channels below. Notice takes effect from the moment it is received by the school, not from the moment it is sent.',
+        ],
+        bullets: [
+          'Phone: +1 (250) 542-3673',
+          'WhatsApp: +1 (250) 542-3673',
+          'Email: info@shanayasdrivingschool.com',
+        ],
+      },
+      {
+        title: 'When notice is received',
+        paragraphs: [
+          'Notice is received, reviewed, and acted on only during office hours: Monday to Friday, 9:00 am to 5:00 pm Pacific time. The office is not staffed outside these hours.',
+          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 9:00 am on the next weekday. The notice period is then measured from that time to the scheduled start time of the lesson.',
+        ],
+        bullets: [
+          'A message sent Tuesday at 2:00 pm is received Tuesday at 2:00 pm.',
+          'A message sent Tuesday at 8:00 pm is received Wednesday at 9:00 am.',
+          'A message sent Saturday at any time is received the following Monday at 9:00 am.',
+        ],
+        note: 'Plan cancellations around office hours. Because notice cannot be received outside them, a message sent the evening before an early lesson does not count as notice given that evening. Keep a record of when you sent your notice; where there is a question about timing, the received timestamp on the call, message, or email is used.',
+        tone: 'warning',
+      },
+      {
+        title: 'Notice of at least 24 hours',
+        paragraphs: [
+          'If the school receives your notice at least 24 hours before the scheduled start time, you may choose either of the following. No fee is deducted and no penalty applies at this notice level.',
+        ],
+        bullets: [
+          'Reschedule the lesson to another available time at no additional charge.',
+          'Receive a full refund of the lesson fee.',
+        ],
+      },
+      {
+        title: 'Notice within 24 hours',
+        paragraphs: [
+          'If the school receives your notice less than 24 hours before the scheduled start time, but more than 2 hours before it, you may choose either of the following.',
+        ],
+        bullets: [
+          'Reschedule the lesson to another available time.',
+          'Receive a refund of half of the lesson fee. The remaining half is not refunded in cash. It is held as a credit and adjusted against a later lesson.',
+        ],
+        note: 'The credited half is not lost. It stays on your account and is applied to the cost of your next booked lesson or course with the school. Contact the office at any time to confirm your current credit balance.',
+        tone: 'warning',
+      },
+      {
+        title: 'Notice within the last 2 hours',
+        paragraphs: [
+          'If the school receives your notice less than 2 hours before the scheduled start time, the lesson is charged in full.',
+        ],
+        bullets: [
+          'No refund is issued.',
+          'The lesson is not rescheduled and no credit is carried forward.',
+          'A lesson missed without any notice at all is treated the same way as notice given inside the last 2 hours.',
+        ],
+        tone: 'warning',
+      },
+      {
+        title: 'Cancellations made by the school',
+        paragraphs: [
+          'Where the school cancels or cuts short a lesson, including for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, the lesson is rescheduled in full at no charge to you.',
+          'No part of the lesson fee is deducted in these circumstances, and no notice period applies to a cancellation made by the school.',
+        ],
+      },
+      {
+        title: 'How refunds and credits are issued',
+        paragraphs: [
+          'Refunds under this policy are returned to the original method of payment. Processing times depend on your payment provider and are outside the school\'s control.',
+          'Credits are recorded against your account rather than returned to your payment method. A credit is applied to the cost of your next booked lesson or course, reducing the amount payable at that time. Credits cannot be exchanged for cash.',
+          'Where the cancelled lesson forms part of a package or multi-lesson booking, any refund or credit is calculated on the value of the individual lesson cancelled, not on the package as a whole.',
+        ],
+      },
+      {
+        title: 'Questions about a cancellation',
+        paragraphs: [
+          'If you believe a cancellation has been recorded incorrectly, contact the school and we will review the record of when notice was received.',
+        ],
+        bullets: [
+          'Shanaya\'s Driving School',
+          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
+          'info@shanayasdrivingschool.com',
+          '+1 (250) 542-3673',
+        ],
+      },
+    ],
+  },
+  {
     id: 'terms-and-conditions',
     label: 'Terms & Conditions',
     href: '/policies/terms-and-conditions',
     effectiveDate: 'August 13, 2026',
-    cardDescription: 'The general terms that apply when using the website, booking services, or submitting forms, including how lesson cancellations are handled.',
+    cardDescription: 'The general terms that apply when using the website, booking services, or submitting forms.',
     intro:
       'These Terms & Conditions describe the general rules that apply when using the website, submitting leads, booking lessons, purchasing packages, or participating in referral-based programs connected to Shanaya\'s Driving School.',
-    highlights: ['Website use', 'Booking and payment terms', '24-hour cancellation rule'],
+    highlights: ['Website use', 'Booking and payment terms', 'Attendance and conduct'],
     sections: [
       {
         title: 'Website and service use',
@@ -471,15 +569,8 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: 'Lesson cancellations and rescheduling',
         paragraphs: [
-          'Cancellation notice must reach the school or your instructor before the instructor sets out for your lesson. Notice given after the instructor is already on the way is treated as a cancellation inside the one-hour window below.',
-          'How much of the lesson fee is protected depends on how much notice we receive:',
+          'Cancelling or rescheduling a booked lesson is governed by the separate Cancellation & Rescheduling Policy, which sets out the notice periods that apply and what is refunded or rescheduled at each one.',
         ],
-        bullets: [
-          'At least 24 hours before the lesson start time: the lesson fee is refunded in full, or the lesson is rescheduled at no charge, whichever you prefer.',
-          'Less than 24 hours before the lesson start time: half of the lesson fee is deducted and the remaining half is credited toward a rescheduled lesson.',
-          'Less than 1 hour before the lesson start time: the lesson is charged in full and is not rescheduled or credited.',
-        ],
-        note: 'Cancellations made by the school or the instructor, and lessons cut short for reasons outside your control, are always rescheduled or refunded in full.',
       },
       {
         title: 'Attendance and conduct',
