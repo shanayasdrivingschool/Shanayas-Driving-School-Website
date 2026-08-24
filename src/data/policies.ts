@@ -468,13 +468,13 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: 'When notice is received',
         paragraphs: [
-          'Notice is received, reviewed, and acted on only during office hours: Monday to Friday, 9:00 am to 5:00 pm Pacific time. The office is not staffed outside these hours.',
-          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 9:00 am on the next weekday. The notice period is then measured from that time to the scheduled start time of the lesson.',
+          'Notice is received, reviewed, and acted on only during office hours: Monday to Friday, 8:30 am to 4:30 pm Pacific time. The office is not staffed outside these hours.',
+          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 8:30 am on the next weekday. The notice period is then measured from that time to the scheduled start time of the lesson.',
         ],
         bullets: [
           'A message sent Tuesday at 2:00 pm is received Tuesday at 2:00 pm.',
-          'A message sent Tuesday at 8:00 pm is received Wednesday at 9:00 am.',
-          'A message sent Saturday at any time is received the following Monday at 9:00 am.',
+          'A message sent Tuesday at 8:00 pm is received Wednesday at 8:30 am.',
+          'A message sent Saturday at any time is received the following Monday at 8:30 am.',
         ],
         note: 'Plan cancellations around office hours. Because notice cannot be received outside them, a message sent the evening before an early lesson does not count as notice given that evening. Keep a record of when you sent your notice; where there is a question about timing, the received timestamp on the call, message, or email is used.',
         tone: 'warning',
