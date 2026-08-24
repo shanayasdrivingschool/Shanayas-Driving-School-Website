@@ -465,7 +465,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: '2. Rescheduling and credits',
         paragraphs: [
-          'Where a booked lesson/package is cancelled, it is settled by rescheduling and, where this policy provides for it, by credit held on your account.',
+          'Where a booked lesson/package is cancelled, it is settled by rescheduling and, where this policy provides for it, by credit held on your account. Section 7 sets out the one case in which a cancellation is not rescheduled at all.',
           'Amounts paid to the school stay with the school and are applied to your rescheduled booking. Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
         ],
         note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit only.',
