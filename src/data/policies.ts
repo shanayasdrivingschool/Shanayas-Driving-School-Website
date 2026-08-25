@@ -449,31 +449,48 @@ const allSitePolicies: SitePolicy[] = [
     label: 'Cancellation & Rescheduling Policy',
     href: '/policies/cancellation-and-rescheduling',
     effectiveDate: 'April 1, 2026',
-    cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, how the fee is credited at each notice level, and when a refund is available.',
+    cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, what happens to your fee at each notice level, when a refund is available, and how credits are applied.',
     intro:
-      'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled or rescheduled. It applies to every booking made with Shanaya\'s Driving School and should be read together with our Terms & Conditions.',
+      'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. Please read it before you book, and read it together with our Terms & Conditions, Installment Policy, and Promotions & Discounts Policy.',
     highlights: ['Cancellations are rescheduled or credited', '24 hours notice to reschedule free of charge', 'Refunds only for a valid reason'],
     sections: [
       {
-        title: '1. Scope and definitions',
+        title: '1. Scope',
         paragraphs: [
-          'In this policy, "lesson/package" means anything you have booked with the school. This includes a single driving lesson, any course, any package, the Road Test Package, a Mock Test Evaluation, an Enhanced Road Assessment, and any other lesson or program offered by the school.',
-          'A "package" means several lessons bought together as one booking. "Fee" means the amount payable for the lesson/package, and "credit" means an amount held on your account and put towards a future booking.',
-          'This policy governs the cancellation and rescheduling of a lesson/package by you. It does not govern the purchase, pricing, or payment of a lesson/package, which are dealt with in the Terms & Conditions and the Installment Policy.',
+          'This policy governs the cancellation and rescheduling of a lesson/package by you, and sets out what the school does when it cancels. It applies from the moment a booking is confirmed, whether or not payment has been completed.',
+          'It does not govern the purchase, pricing, or payment of a lesson/package. Those are dealt with in the Terms & Conditions, the Installment Policy, and the Promotions & Discounts Policy.',
+          'This policy is separate from ICBC\'s own rules. Cancelling, rescheduling, or missing a road test booked with ICBC is governed by ICBC, and any fee ICBC charges for that is separate from anything under this policy.',
         ],
       },
       {
-        title: '2. Rescheduling, credits, and refunds',
+        title: '2. Definitions',
         paragraphs: [
-          'Where you cancel a booked lesson/package, it is settled by rescheduling and, where this policy provides for it, by credit held on your account. Section 7 sets out the one case in which a cancellation is not rescheduled at all.',
-          'Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
-          'A refund is available only where you withdraw from a package for a valid reason. Section 9 sets out what counts as a valid reason and how a refund is worked out.',
+          'The following terms are used throughout this policy.',
         ],
-        note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit, except where section 9 applies.',
+        bullets: [
+          '"Lesson/package" means anything you have booked with the school: a single driving lesson, any course, any package, the Road Test Package, a Mock Test Evaluation, an Enhanced Road Assessment, or any other lesson or program we offer.',
+          '"Package" means several lessons bought together as one booking, usually at a lower total price than the same lessons bought separately.',
+          '"Fee" means the amount payable for the lesson/package.',
+          '"Standard published price" means the price shown on our website for that lesson or course on its own, before any discount, promotion, or coupon.',
+          '"Notice" means telling the school you wish to cancel or reschedule, given through one of the channels in section 6.',
+          '"Office hours" means Monday to Friday, 8:30 a.m. to 4:30 p.m. Pacific time, excluding statutory holidays.',
+          '"Credit" means an amount held on your account and put towards a future booking.',
+          '"Retained" means an amount kept by the school and not carried forward or returned.',
+          '"Withdrawing" means ending a package altogether, rather than moving or cancelling a single lesson within it.',
+        ],
+      },
+      {
+        title: '3. Rescheduling, credits, and refunds',
+        paragraphs: [
+          'Where you cancel a booked lesson/package, it is settled by rescheduling and, where this policy provides for it, by credit held on your account. Section 10 sets out the one case in which a cancellation is not rescheduled at all.',
+          'Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
+          'A refund is available only where you withdraw from a package for a valid reason. Section 16 sets out what counts as a valid reason and how a refund is worked out.',
+        ],
+        note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit, except where section 16 applies.',
         tone: 'warning',
       },
       {
-        title: '3. Notice levels at a glance',
+        title: '4. Notice levels at a glance',
         paragraphs: [
           'How much of your fee carries forward to the rescheduled lesson/package depends on one thing: how much notice the school receives before the scheduled start time.',
         ],
@@ -483,31 +500,51 @@ const allSitePolicies: SitePolicy[] = [
           'Less than 2 hours notice, or no notice at all: the full fee is retained and the lesson/package is not rescheduled.',
           'Cancelled by the school: the lesson/package is rescheduled at no charge and the full fee carries forward.',
         ],
-        note: 'Section 4 explains how the notice period is calculated. Sections 5 to 8 set out each level in full.',
+        note: 'Sections 6 and 7 explain how the notice period is calculated. Sections 8 to 14 set out each level in full. This summary is a guide only; where it differs from the detailed sections, the detailed sections apply.',
       },
       {
-        title: '4. Giving notice, and when it is received',
+        title: '5. Changing your mind about the time, rather than cancelling',
         paragraphs: [
-          'Notice of a cancellation must be given to the school directly, by telephone, WhatsApp, or email. Notice takes effect when it is received by the school, not when it is sent.',
-          'The office is staffed Monday to Friday, 8:30 a.m. to 4:30 p.m. Pacific time, and notice is received, reviewed, and acted on only during those hours.',
-          'Notice sent outside office hours, including on a weekend or a statutory holiday, is treated as received at 8:30 a.m. on the next weekday. Your notice period is measured from that time to the scheduled start time of the lesson/package.',
+          'Moving a booking to a different time is treated in exactly the same way as cancelling it. The notice levels in sections 8 to 10 apply whether you are cancelling outright or asking for a different time.',
+          'This is because the effect on the school is the same: a time slot that was reserved for you can no longer be offered to anyone else at short notice.',
+        ],
+      },
+      {
+        title: '6. How to give notice',
+        paragraphs: [
+          'Notice must be given to the school directly, through one of the channels below. Notice given any other way, including to any individual rather than to the school, does not count as notice under this policy.',
         ],
         bullets: [
           'Telephone: +1 (250) 542-3673',
           'WhatsApp: +1 (250) 542-3673',
           'Email: book@drivingschoolbc.ca',
         ],
-        note: 'Worked examples. A message sent Tuesday at 2:00 p.m. is received Tuesday at 2:00 p.m. A message sent Tuesday at 8:00 p.m. is received Wednesday at 8:30 a.m. A message sent at any time on Saturday is received the following Monday at 8:30 a.m. Keep a record of when you sent your notice; where timing is in question, the received timestamp on the call, message, or email applies.',
+        note: 'To help us act on your notice quickly, please include your full name, the date and time of the booking you are cancelling, and whether you would like to reschedule. Keep a record of when you sent your notice.',
       },
       {
-        title: '5. Notice of at least 24 hours',
+        title: '7. When notice is received',
+        paragraphs: [
+          'Notice takes effect when it is received by the school, not when it is sent. This is the single most important thing to understand about this policy, because your notice level is measured from that moment.',
+          'The office is staffed during office hours only, and notice is received, reviewed, and acted on only during those hours.',
+          'Notice sent outside office hours, including in the evening, on a weekend, or on a statutory holiday, is treated as received at 8:30 a.m. on the next weekday. Your notice period is then measured from that time to the scheduled start time of the lesson/package.',
+        ],
+        bullets: [
+          'A message sent Tuesday at 2:00 p.m. is received Tuesday at 2:00 p.m.',
+          'A message sent Tuesday at 8:00 p.m. is received Wednesday at 8:30 a.m.',
+          'A message sent at any time on Saturday is received the following Monday at 8:30 a.m.',
+        ],
+        note: 'Plan your cancellations around office hours. Where the timing of a notice is in question, the received timestamp on the call, message, or email is what applies.',
+        tone: 'warning',
+      },
+      {
+        title: '8. Notice of at least 24 hours',
         paragraphs: [
           'Where the school receives your notice at least 24 hours before the scheduled start time, the lesson/package is rescheduled to another available time at no additional charge.',
-          'No part of the fee is retained, and the full value carries forward to the rescheduled booking. Rescheduled times are subject to availability.',
+          'No part of the fee is retained, and the full value carries forward to the rescheduled booking.',
         ],
       },
       {
-        title: '6. Notice between 2 and 24 hours',
+        title: '9. Notice between 2 and 24 hours',
         paragraphs: [
           'Where the school receives your notice between 2 and 24 hours before the scheduled start time, the lesson/package is rescheduled to another available time on the following basis.',
         ],
@@ -519,7 +556,7 @@ const allSitePolicies: SitePolicy[] = [
         tone: 'warning',
       },
       {
-        title: '7. Notice within the last 2 hours, or no notice',
+        title: '10. Notice within the last 2 hours, or no notice',
         paragraphs: [
           'Where the school receives your notice less than 2 hours before the scheduled start time, the lesson/package is treated as delivered.',
         ],
@@ -528,44 +565,117 @@ const allSitePolicies: SitePolicy[] = [
           'The lesson/package is not rescheduled and no credit carries forward.',
           'A lesson/package missed without any notice is treated in the same way as notice given inside the last 2 hours.',
         ],
+        note: 'By this point the time has been reserved for you and can no longer be offered to another student.',
         tone: 'warning',
       },
       {
-        title: '8. Cancellations made by the school',
+        title: '11. Late arrival and shortened lessons',
+        paragraphs: [
+          'A lesson runs from its scheduled start time to its scheduled finish time. If you are not ready at the agreed meeting point at the scheduled start time, the lesson is treated as having started, and time lost at the beginning is not added to the end.',
+          'Where a lesson is shortened because you arrive late, are not ready, or ask to finish early, the full fee still applies and no part of it is retained, credited, or refunded on account of the shortened time.',
+          'If you know you will be late, contact the school as soon as possible. We will tell you whether the lesson can still go ahead in the time remaining.',
+        ],
+        tone: 'warning',
+      },
+      {
+        title: '12. Rescheduling, and availability',
+        paragraphs: [
+          'All rescheduled times are subject to availability. Rescheduling does not guarantee a particular day, time, or location, and the school cannot hold a slot open indefinitely while a new time is agreed.',
+          'A rescheduled lesson/package is itself a booking, and this policy applies to it again in full. Cancelling a rescheduled booking is treated the same way as cancelling the original.',
+          'Where a booking is rescheduled repeatedly, the school may ask you to confirm a firm date before further bookings are accepted.',
+        ],
+      },
+      {
+        title: '13. Repeated late cancellations and missed lessons',
+        paragraphs: [
+          'Occasional changes are understandable and this policy is designed to accommodate them. A pattern of late cancellations or missed lessons is different, because each one takes a slot that another student could have used.',
+          'Where late cancellations or missed lessons happen repeatedly, the school may decline to accept further bookings, may require payment in advance for future bookings, or may end a package. Any amount already retained under this policy is not returned.',
+        ],
+        tone: 'warning',
+      },
+      {
+        title: '14. Cancellations made by the school',
         paragraphs: [
           'Where the school cancels a lesson/package, including for reasons beyond our control such as unsafe road or weather conditions, vehicle availability, or an operational disruption, the lesson/package is rescheduled at no charge to you.',
           'No part of the fee is retained in these circumstances, and no notice period applies to a cancellation made by the school.',
+          'The school will give you as much notice as the circumstances allow, using the contact details you provided when booking. Please keep those details current, because a cancellation notice sent to an out-of-date number or address is still treated as given.',
         ],
       },
       {
-        title: '9. Withdrawing from a package, and refunds',
+        title: '15. Weather, road conditions, and safety',
+        paragraphs: [
+          'Driving conditions on Vancouver Island change quickly, and safety comes before schedule. The school may cancel or shorten a lesson where conditions make it unsafe to drive, and where we do, section 14 applies.',
+          'If you believe conditions are unsafe, contact the school rather than simply not attending. Where we agree conditions are unsafe, the booking is treated as cancelled by the school. Where a lesson could reasonably have gone ahead, the ordinary notice levels in sections 8 to 10 apply.',
+        ],
+      },
+      {
+        title: '16. Withdrawing from a package, and refunds',
         paragraphs: [
           'Withdrawing from a package altogether is different from cancelling a single lesson. A refund of what is left over is available only where you withdraw for a valid reason, and the school decides whether a reason is valid.',
-          'A valid reason is a genuine change in your circumstances that stops you continuing, such as moving away from our service area or a medical condition that prevents you driving. The school may ask you for evidence.',
-          'Wanting a different instructor without giving a specific reason, changing your mind, or a concern you have not first raised with the school, are not valid reasons and do not qualify for a refund.',
+          'A valid reason is a genuine change in your circumstances that stops you continuing, such as moving away from our service area or a medical condition that prevents you driving. The school may ask you for evidence, and may decline a refund where evidence is not provided.',
+          'Wanting a different instructor without giving a specific reason, changing your mind, deciding not to learn to drive for now, or a concern you have not first raised with the school, are not valid reasons and do not qualify for a refund.',
         ],
         bullets: [
-          'The lessons you have already taken are charged at our full published price, not at the discounted package rate.',
+          'The lessons you have already taken are charged at our standard published price, not at the discounted package rate.',
           'Whatever is left of what you paid is then refunded to your original method of payment.',
-          'The notice levels in sections 5 to 7 still apply to any lesson already booked at the time you withdraw.',
+          'The notice levels in sections 8 to 10 still apply to any lesson already booked at the time you withdraw.',
+          'Where the amount already used exceeds what you have paid, no refund is due and the balance remains payable.',
         ],
-        note: 'A package discount applies to a completed package. If you withdraw partway through, the discount is removed from the lessons you have already taken, those lessons are charged at full price, and the remainder is refunded.',
+        note: 'A package discount applies to a completed package. If you withdraw partway through, the discount is removed from the lessons you have already taken, those lessons are charged at the standard published price, and the remainder is refunded. Request a withdrawal in writing to book@drivingschoolbc.ca so the date is on record.',
         tone: 'warning',
       },
       {
-        title: '10. How credits and refunds are worked out',
+        title: '17. How credits and refunds are worked out',
         paragraphs: [
-          'A credit is held on your account. The next time you book, the credit is taken off the amount you owe.',
+          'A credit is held on your account. The next time you book, the credit is taken off the amount you owe. Credits are personal to you and cannot be given or sold to anyone else.',
           'Every amount under this policy is worked out from our standard published price, not from any discounted, promotional, or coupon price you paid.',
           'If you cancel one lesson out of a package, only that lesson is affected. The amount retained or credited is worked out from the price of that one lesson, not from the price of the whole package, and the rest of your lessons stay as they are.',
-          'If you cancel the Road Test Package, the road test vehicle booking is cancelled with it, and sections 5 to 7 then apply to the package.',
+          'Refunds are returned to the original method of payment. How long a refund takes to appear depends on your bank or payment provider and is outside the school\'s control.',
         ],
       },
       {
-        title: '11. Discretion and changes to this policy',
+        title: '18. Payment plans and instalments',
+        paragraphs: [
+          'Cancelling or rescheduling a lesson does not pause, reduce, or delay an instalment schedule. Instalments continue as agreed while the booking is rescheduled and the credit is held on your account.',
+          'Where you withdraw from a package under section 16, the amount owed is recalculated using the standard published price of the lessons already taken. Any instalments still outstanding are adjusted against that amount, and only the remainder is refunded.',
+          'Instalment terms themselves are set out in the Installment Policy.',
+        ],
+      },
+      {
+        title: '19. Road test bookings and the test-day vehicle',
+        paragraphs: [
+          'The Road Test Package includes the use of our vehicle on the day of your test. If you cancel the Road Test Package, the vehicle booking is cancelled with it, and the notice levels in sections 8 to 10 apply to the package as booked.',
+          'Your road test appointment with ICBC is a separate booking that you hold with ICBC. Cancelling with us does not cancel your ICBC appointment, and cancelling your ICBC appointment does not cancel your booking with us. You must do both.',
+          'Any fee ICBC charges for a late cancellation, a missed road test, or a rebooking is payable by you to ICBC and is not covered, credited, or refunded under this policy.',
+        ],
+        tone: 'warning',
+      },
+      {
+        title: '20. Discounts, promotions, and coupons',
+        paragraphs: [
+          'A discount, promotion, or coupon reduces what you pay at the time of booking. It does not reduce the standard published price used to work out any amount under this policy.',
+          'Where a booking made with a promotional code is cancelled, the school is not obliged to reinstate that code, and a promotion that has expired or been withdrawn cannot be reapplied to a rescheduled booking.',
+          'Eligibility for promotions is set out in the Promotions & Discounts Policy.',
+        ],
+      },
+      {
+        title: '21. Records and disputes',
+        paragraphs: [
+          'The school keeps a record of bookings, cancellations, notices received, amounts retained, credits held, and refunds issued. Where there is a question about what happened, that record is what the school relies on.',
+          'If you believe something has been recorded incorrectly, contact the school with the date and time of the booking and the details of the notice you gave, and we will review the record with you.',
+        ],
+      },
+      {
+        title: '22. Discretion and changes to this policy',
         paragraphs: [
           'The application of this policy, and of all school policies, is at the discretion of the school. The school may vary how this policy is applied in an individual case, and doing so does not set a precedent for any other booking or for any other student.',
           'The school may update this policy from time to time. The version published on this page at the time of your booking is the version that applies to that booking.',
+        ],
+      },
+      {
+        title: '23. Contact',
+        paragraphs: [
+          'For any question about a cancellation, a reschedule, a credit balance, or a withdrawal, contact the school directly.',
         ],
         bullets: [
           'book@drivingschoolbc.ca',
