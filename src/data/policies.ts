@@ -613,7 +613,8 @@ const allSitePolicies: SitePolicy[] = [
         paragraphs: [
           'Withdrawing from a package altogether is different from cancelling a single lesson. A refund of what is left over is available only where you withdraw for a valid reason, and the school decides whether a reason is valid.',
           'A valid reason is a genuine change in your circumstances that stops you continuing, such as moving away from our service area or a medical condition that prevents you driving. The school may ask you for evidence, and may decline a refund where evidence is not provided.',
-          'Wanting a different instructor without giving a specific reason, changing your mind, deciding not to learn to drive for now, or a concern you have not first raised with the school, are not valid reasons and do not qualify for a refund.',
+          'Wanting a different instructor without giving a valid reason is not enough on its own. Simply not liking an instructor, changing your mind, deciding not to learn to drive for now, or a concern you have not first raised with the school, are not valid reasons and do not qualify for a refund.',
+          'A genuine safety or security concern is different. Raise it with the school as soon as it arises so that it can be looked into and, where appropriate, a different arrangement made. Concerns of that kind are dealt with directly rather than through this policy.',
         ],
         bullets: [
           'The lessons you have already taken are charged at our standard published price, not at the discounted package rate.',
