@@ -449,10 +449,10 @@ const allSitePolicies: SitePolicy[] = [
     label: 'Cancellation & Rescheduling Policy',
     href: '/policies/cancellation-and-rescheduling',
     effectiveDate: 'April 1, 2026',
-    cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, and how the fee is credited at each notice level.',
+    cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, how the fee is credited at each notice level, and when a refund is available.',
     intro:
       'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled or rescheduled. It applies to every booking made with Shanaya\'s Driving School and should be read together with our Terms & Conditions.',
-    highlights: ['Rescheduling and credits only', '24 hours notice to reschedule free of charge', 'Notice received weekdays, 8:30 to 4:30'],
+    highlights: ['Cancellations are rescheduled or credited', '24 hours notice to reschedule free of charge', 'Refunds only for a valid reason'],
     sections: [
       {
         title: '1. Scope and definitions',
@@ -463,12 +463,13 @@ const allSitePolicies: SitePolicy[] = [
         ],
       },
       {
-        title: '2. Rescheduling and credits',
+        title: '2. Rescheduling, credits, and refunds',
         paragraphs: [
-          'Where a booked lesson/package is cancelled, it is settled by rescheduling and, where this policy provides for it, by credit held on your account. Section 7 sets out the one case in which a cancellation is not rescheduled at all.',
-          'Amounts paid to the school stay with the school and are applied to your rescheduled booking. Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
+          'Where you cancel a booked lesson/package, it is settled by rescheduling and, where this policy provides for it, by credit held on your account. Section 7 sets out the one case in which a cancellation is not rescheduled at all.',
+          'Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
+          'A refund is available only where you withdraw from a package for a valid reason. Section 9 sets out what counts as a valid reason and how a refund is worked out.',
         ],
-        note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit only.',
+        note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit, except where section 9 applies.',
         tone: 'warning',
       },
       {
@@ -537,7 +538,22 @@ const allSitePolicies: SitePolicy[] = [
         ],
       },
       {
-        title: '9. How credits are applied',
+        title: '9. Withdrawing from a package, and refunds',
+        paragraphs: [
+          'Withdrawing from a package altogether is different from cancelling a single lesson. A refund of what is left over is available only where you withdraw for a valid reason, and the school decides whether a reason is valid.',
+          'A valid reason is a genuine change in your circumstances that stops you continuing, such as moving away from our service area or a medical condition that prevents you driving. The school may ask you for evidence.',
+          'Wanting a different instructor without giving a specific reason, changing your mind, or a concern you have not first raised with the school, are not valid reasons and do not qualify for a refund.',
+        ],
+        bullets: [
+          'The lessons you have already taken are charged at our full published price, not at the discounted package rate.',
+          'Whatever is left of what you paid is then refunded to your original method of payment.',
+          'The notice levels in sections 5 to 7 still apply to any lesson already booked at the time you withdraw.',
+        ],
+        note: 'A package discount applies to a completed package. If you withdraw partway through, the discount is removed from the lessons you have already taken, those lessons are charged at full price, and the remainder is refunded.',
+        tone: 'warning',
+      },
+      {
+        title: '10. How credits and refunds are worked out',
         paragraphs: [
           'A credit is held on your account. The next time you book, the credit is taken off the amount you owe.',
           'Every amount under this policy is worked out from our standard published price, not from any discounted, promotional, or coupon price you paid.',
@@ -546,7 +562,7 @@ const allSitePolicies: SitePolicy[] = [
         ],
       },
       {
-        title: '10. Discretion and changes to this policy',
+        title: '11. Discretion and changes to this policy',
         paragraphs: [
           'The application of this policy, and of all school policies, is at the discretion of the school. The school may vary how this policy is applied in an individual case, and doing so does not set a precedent for any other booking or for any other student.',
           'The school may update this policy from time to time. The version published on this page at the time of your booking is the version that applies to that booking.',
