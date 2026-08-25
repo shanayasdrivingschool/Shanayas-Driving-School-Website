@@ -457,8 +457,8 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: '1. Scope and definitions',
         paragraphs: [
-          'In this policy, "lesson/package" means anything you have booked with the school. This includes a single driving lesson, any course, any lesson package, the Road Test Package, a Mock Test Evaluation, an Enhanced Road Assessment, and any other session or program offered by the school.',
-          '"Fee" means the amount payable for that lesson/package, and "credit" means an amount held on your account and applied to a future booking.',
+          'In this policy, "lesson/package" means anything you have booked with the school. This includes a single driving lesson, any course, any package, the Road Test Package, a Mock Test Evaluation, an Enhanced Road Assessment, and any other lesson or program offered by the school.',
+          'A "package" means several lessons bought together as one booking. "Fee" means the amount payable for the lesson/package, and "credit" means an amount held on your account and put towards a future booking.',
           'This policy governs the cancellation and rescheduling of a lesson/package by you. It does not govern the purchase, pricing, or payment of a lesson/package, which are dealt with in the Terms & Conditions and the Installment Policy.',
         ],
       },
@@ -478,7 +478,7 @@ const allSitePolicies: SitePolicy[] = [
         ],
         bullets: [
           'At least 24 hours notice: the lesson/package is rescheduled at no charge and the full fee carries forward.',
-          'Less than 24 hours but more than 2 hours notice: the lesson/package is rescheduled, half the fee is retained, and half carries forward as credit.',
+          'Between 2 and 24 hours notice: the lesson/package is rescheduled, half the fee is retained, and half carries forward as credit.',
           'Less than 2 hours notice, or no notice at all: the full fee is retained and the lesson/package is not rescheduled.',
           'Cancelled by the school: the lesson/package is rescheduled at no charge and the full fee carries forward.',
         ],
@@ -506,9 +506,9 @@ const allSitePolicies: SitePolicy[] = [
         ],
       },
       {
-        title: '6. Notice within 24 hours',
+        title: '6. Notice between 2 and 24 hours',
         paragraphs: [
-          'Where the school receives your notice less than 24 hours before the scheduled start time, but more than 2 hours before it, the lesson/package is rescheduled to another available time on the following basis.',
+          'Where the school receives your notice between 2 and 24 hours before the scheduled start time, the lesson/package is rescheduled to another available time on the following basis.',
         ],
         bullets: [
           'Half of the fee is retained by the school as a late-notice charge.',
@@ -539,17 +539,16 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: '9. How credits are applied',
         paragraphs: [
-          'A credit arising under this policy is recorded against your account and applied to the cost of your rescheduled lesson/package, reducing the amount payable at that time.',
-          'Any amount retained or credited under this policy is calculated on the standard published price of the lesson/package, not on any discounted, promotional, or coupon price that may have been paid for it.',
-          'Where a single session within a multi-session package is cancelled, any amount retained or credited is calculated on the value of that individual session, not on the value of the package as a whole. The remaining sessions in the package are unaffected.',
-          'Where the Road Test Package is cancelled, the road test vehicle booking is cancelled with it, and the notice levels in sections 5 to 7 apply to the package as booked.',
+          'A credit is held on your account. The next time you book, the credit is taken off the amount you owe.',
+          'Every amount under this policy is worked out from our standard published price, not from any discounted, promotional, or coupon price you paid.',
+          'If you cancel one lesson out of a package, only that lesson is affected. The amount retained or credited is worked out from the price of that one lesson, not from the price of the whole package, and the rest of your lessons stay as they are.',
+          'If you cancel the Road Test Package, the road test vehicle booking is cancelled with it, and sections 5 to 7 then apply to the package.',
         ],
       },
       {
-        title: '10. Discretion, questions, and changes',
+        title: '10. Discretion and changes to this policy',
         paragraphs: [
           'The application of this policy, and of all school policies, is at the discretion of the school. The school may vary how this policy is applied in an individual case, and doing so does not set a precedent for any other booking or for any other student.',
-          'If you believe a cancellation has been recorded incorrectly, contact the school and we will review the record of when your notice was received.',
           'The school may update this policy from time to time. The version published on this page at the time of your booking is the version that applies to that booking.',
         ],
         bullets: [
