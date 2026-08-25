@@ -484,7 +484,7 @@ const allSitePolicies: SitePolicy[] = [
         paragraphs: [
           'Where you cancel a booked lesson/package, it is settled by rescheduling and, where this policy provides for it, by credit held on your account. Section 10 sets out the one case in which a cancellation is not rescheduled at all.',
           'Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
-          'A refund is available only where you withdraw from a package for a valid reason. Section 16 sets out what counts as a valid reason and how a refund is worked out.',
+          'A refund is available only where you withdraw from a package for a valid reason, and only where that package was paid for in full. Amounts paid under an instalment plan are not refundable. Section 16 sets out what counts as a valid reason and how a refund is worked out.',
         ],
         note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit, except where section 16 applies.',
         tone: 'warning',
@@ -618,10 +618,11 @@ const allSitePolicies: SitePolicy[] = [
         bullets: [
           'The lessons you have already taken are charged at our standard published price, not at the discounted package rate.',
           'Whatever is left of what you paid is then refunded to your original method of payment.',
+          'Amounts paid under an instalment plan are not refundable. Where a package was bought on an instalment plan, no refund arises under this section, and section 18 applies instead.',
           'The notice levels in sections 8 to 10 still apply to any lesson already booked at the time you withdraw.',
           'Where the amount already used exceeds what you have paid, no refund is due and the balance remains payable.',
         ],
-        note: 'A package discount applies to a completed package. If you withdraw partway through, the discount is removed from the lessons you have already taken, those lessons are charged at the standard published price, and the remainder is refunded. Request a withdrawal in writing to book@drivingschoolbc.ca so the date is on record.',
+        note: 'A package discount applies to a completed package. If you withdraw partway through, the discount is removed from the lessons you have already taken, those lessons are charged at the standard published price, and the remainder is refunded where the package was paid for in full. Amounts paid under an instalment plan are not refundable. Request a withdrawal in writing to book@drivingschoolbc.ca so the date is on record.',
         tone: 'warning',
       },
       {
@@ -637,8 +638,9 @@ const allSitePolicies: SitePolicy[] = [
         title: '18. Payment plans and instalments',
         paragraphs: [
           'Cancelling or rescheduling a lesson does not pause, reduce, or delay an instalment schedule. Instalments continue as agreed while the booking is rescheduled and the credit is held on your account.',
-          'Where you withdraw from a package under section 16, the amount owed is recalculated using the standard published price of the lessons already taken. Any instalments still outstanding are adjusted against that amount, and only the remainder is refunded.',
-          'Instalment terms themselves are set out in the Installment Policy.',
+          'Amounts you have already paid under an instalment plan are not refundable. Withdrawing from a package does not return instalments already collected, and does not by itself end the plan.',
+          'Where you withdraw from a package under section 16, the amount owed is recalculated using the standard published price of the lessons already taken. Where that recalculated amount is more than you have paid so far, the difference remains payable.',
+          'Instalment terms themselves, including what happens to the outstanding balance on withdrawal, are set out in the Installment Policy.',
         ],
       },
       {
