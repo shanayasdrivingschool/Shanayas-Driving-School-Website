@@ -1,0 +1,1 @@
+import{u as n}from"./useQuery-CsO5Q0pe.js";import{a as o}from"./index-gEgQbL5o.js";import{getAdminSession as s}from"./affiliateApi-DuQWv_e0.js";const m=()=>{const{user:e}=o();return n({queryKey:["admin-session",e==null?void 0:e.id],queryFn:s,enabled:!!e,staleTime:5*6e4,refetchInterval:5*6e4,refetchOnWindowFocus:!0})};export{m as u};
