@@ -452,7 +452,7 @@ const allSitePolicies: SitePolicy[] = [
     cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, what happens to your fee at each notice level, when a refund is available, and how credits are applied.',
     intro:
       'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. Please read it before you book, and read it together with our Terms & Conditions, Installment Policy, and Promotions & Discounts Policy.',
-    highlights: ['Cancellations are rescheduled or credited', '24 hours notice to reschedule free of charge', 'Refunds only for a valid reason'],
+    highlights: ['Cancellations are rescheduled or credited', '24 hours notice to reschedule free of charge', 'Refunds only for a valid reason, less a $75 admin fee'],
     sections: [
       {
         title: '1. Scope',
@@ -484,7 +484,7 @@ const allSitePolicies: SitePolicy[] = [
         paragraphs: [
           'Where you cancel a booked lesson/package, it is settled by rescheduling and, where this policy provides for it, by credit held on your account. Section 10 sets out the one case in which a cancellation is not rescheduled at all.',
           'Credits are not paid out in cash, cannot be exchanged for cash, and cannot be transferred to another person.',
-          'A refund is available only where you withdraw from a package for a valid reason, and only where that package was paid for in full. Amounts paid under an instalment plan are not refundable. Section 16 sets out what counts as a valid reason and how a refund is worked out.',
+          'A refund is available only where you withdraw from a package for a valid reason, and only where that package was paid for in full. Amounts paid under an instalment plan are not refundable. Every refund is subject to a $75 CAD administration fee, which is deducted before the refund is issued. Section 16 sets out what counts as a valid reason and how a refund is worked out.',
         ],
         note: 'By booking a lesson/package you accept that a cancellation is settled by rescheduling and credit, except where section 16 applies.',
         tone: 'warning',
@@ -611,19 +611,20 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: '16. Withdrawing from a package, and refunds',
         paragraphs: [
-          'Withdrawing from a package altogether is different from cancelling a single lesson. A refund of what is left over is available only where you withdraw for a valid reason, and the school decides whether a reason is valid.',
+          'Withdrawing from a package altogether is different from cancelling a single lesson. A refund of what is left over is available only where you withdraw for a valid reason, and the school decides whether a reason is valid. The school\'s decision on whether a reason is valid, and on any refund under this policy, is final and binding.',
           'A valid reason is a genuine change in your circumstances that stops you continuing, such as moving away from our service area or a medical condition that prevents you driving. The school may ask you for evidence, and may decline a refund where evidence is not provided.',
           'Wanting a different instructor without giving a valid reason is not enough on its own. Simply not liking an instructor, changing your mind, deciding not to learn to drive for now, or a concern you have not first raised with the school, are not valid reasons and do not qualify for a refund.',
           'A genuine safety or security concern is different. Raise it with the school as soon as it arises so that it can be looked into and, where appropriate, a different arrangement made. Concerns of that kind are dealt with directly rather than through this policy.',
         ],
         bullets: [
-          'The lessons you have already taken are charged at our standard published price, not at the discounted package rate.',
-          'Whatever is left of what you paid is then refunded to your original method of payment.',
+          'The lessons you have already taken are charged at our standard published price, not at the discounted package rate. The standard published price is currently $89 for a 60-minute lesson and $133.50 for a 90-minute lesson in our standard service areas.',
+          'A $75 CAD administration fee applies to every refund and is deducted before the refund is issued.',
+          'Whatever is left of what you paid, after the lessons taken and the administration fee are deducted, is then refunded to your original method of payment.',
           'Amounts paid under an instalment plan are not refundable. Where a package was bought on an instalment plan, no refund arises under this section, and section 18 applies instead.',
           'The notice levels in sections 8 to 10 still apply to any lesson already booked at the time you withdraw.',
-          'Where the amount already used exceeds what you have paid, no refund is due and the balance remains payable.',
+          'Where the amount already used, together with the administration fee, exceeds what you have paid, no refund is due and the balance remains payable.',
         ],
-        note: 'A package discount applies to a completed package. If you withdraw partway through, the discount is removed from the lessons you have already taken, those lessons are charged at the standard published price, and the remainder is refunded where the package was paid for in full. Amounts paid under an instalment plan are not refundable. Request a withdrawal in writing to book@drivingschoolbc.ca so the date is on record.',
+        note: 'A package discount applies to a completed package. If you withdraw partway through, the discount is removed from the lessons you have already taken, those lessons are charged at the standard published price (currently $89 per 60 minutes and $133.50 per 90 minutes), a $75 CAD administration fee is deducted, and the remainder is refunded where the package was paid for in full. Amounts paid under an instalment plan are not refundable. Request a withdrawal in writing to book@drivingschoolbc.ca so the date is on record. The school\'s decision on any withdrawal or refund is final and binding.',
         tone: 'warning',
       },
       {
@@ -632,6 +633,7 @@ const allSitePolicies: SitePolicy[] = [
           'A credit is held on your account. The next time you book, the credit is taken off the amount you owe. Credits are personal to you and cannot be given or sold to anyone else.',
           'Every amount under this policy is worked out from our standard published price, not from any discounted, promotional, or coupon price you paid.',
           'If you cancel one lesson out of a package, only that lesson is affected. The amount retained or credited is worked out from the price of that one lesson, not from the price of the whole package, and the rest of your lessons stay as they are.',
+          'A $75 CAD administration fee is deducted from every refund before it is issued. The fee covers the administrative work of processing the withdrawal and the refund, and applies once per withdrawal.',
           'Refunds are returned to the original method of payment. How long a refund takes to appear depends on your bank or payment provider and is outside the school\'s control.',
         ],
       },
@@ -672,6 +674,7 @@ const allSitePolicies: SitePolicy[] = [
         title: '22. Discretion and changes to this policy',
         paragraphs: [
           'The application of this policy, and of all school policies, is at the discretion of the school. The school may vary how this policy is applied in an individual case, and doing so does not set a precedent for any other booking or for any other student.',
+          'Any decision the school makes under this policy, including whether a reason for withdrawal is valid and whether and how much of a refund is due, is final and binding.',
           'The school may update this policy from time to time. The version published on this page at the time of your booking is the version that applies to that booking.',
         ],
       },
