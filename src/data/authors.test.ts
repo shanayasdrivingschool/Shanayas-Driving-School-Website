@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { authors, publishedAuthors, resolveAuthor, type Author } from "./authors";
 import { creditedArticles } from "@/lib/authorCredits";
+import { blogPosts } from "./blogPosts";
 import {
   authorPersonId,
   authorProfileUrl,
@@ -87,9 +88,17 @@ describe("author registry", () => {
     }
   });
 
-  it("credits every article to a named author", () => {
-    const uncredited = creditedArticles.filter((article) => !article.authorId);
-    expect(uncredited.map((article) => article.path)).toEqual([]);
+  it("credits every article to a published person or the responsible school", () => {
+    for (const article of creditedArticles) {
+      if (article.authorId) {
+        expect(resolveAuthor(article.authorId), article.path).toBeDefined();
+      } else {
+        // The blog supports an organization byline. Do not invent a staff
+        // attribution merely to make a new school-authored article pass.
+        const post = blogPosts.find((entry) => `/blog/${entry.slug}` === article.path);
+        expect(post?.author, article.path).toBe("Shanaya's Driving School");
+      }
+    }
   });
 });
 

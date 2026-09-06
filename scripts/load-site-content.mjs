@@ -124,6 +124,7 @@ export const loadSiteContent = async () => {
             dateModified: post.dateModified,
             readTime: post.readTime,
             category: post.category,
+            faqs: post.faqs,
           },
         ]),
       ),

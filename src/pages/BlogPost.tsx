@@ -253,7 +253,7 @@ const BlogPost = () => {
           {/* Article. The author and reviewer bio cards that used to sit here were
               removed at the owner's request; the masthead byline still credits and
               links both people, and Article.author / reviewedBy schema is unchanged. */}
-          <div>
+          <div className="min-w-0">
             <article className={articleProseClasses}>{rendered}</article>
           </div>
 

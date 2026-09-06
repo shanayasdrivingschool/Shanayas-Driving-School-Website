@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { drivingLessonCostsPost } from "./drivingLessonCostsPost";
+import { drivingLessonCountPost } from "./drivingLessonCountPost";
 
 export type BlogPostData = {
   slug: string;
@@ -28,9 +30,13 @@ export type BlogPostData = {
   category: string;
   content: ReactNode;
   relatedSlugs?: string[];
+  /* Visible FAQ answers; shared with rendered and static structured data. */
+  faqs?: { question: string; answer: string }[];
 };
 
 export const blogPosts: BlogPostData[] = [
+  drivingLessonCountPost,
+  drivingLessonCostsPost,
   {
     slug: "icbc-road-test-victoria-mckenzie-office",
     title: "ICBC's Victoria Road Test Office on McKenzie Avenue: What the Area Asks of You",

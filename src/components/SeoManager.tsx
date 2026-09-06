@@ -527,6 +527,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
         title: post.seoTitle ?? withBrand(post.title),
         description: post.description,
         image: post.heroImage,
+        faqs: post.faqs,
         path,
         type: "article",
         /* Mirrors the visible Home / Blog / <category> trail rendered by

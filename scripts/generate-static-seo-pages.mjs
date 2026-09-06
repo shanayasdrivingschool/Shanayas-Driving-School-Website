@@ -711,6 +711,34 @@ const publicPages = [
     description: "Book an ICBC-approved training car for road test day when you want to test in a familiar vehicle.",
   },
   {
+    path: "/blog/how-many-driving-lessons-before-victoria-driving-test/",
+    title: "How Many Driving Lessons Before a Victoria Road Test?",
+    description:
+      "Plan driving lessons before your Victoria, BC road test. Understand ICBC’s practice guidance, lesson lengths and how to assess your readiness.",
+    type: "article",
+    image: `${siteOrigin}/landing/road-test-prep-victoria.webp`,
+    article: {
+      headline: "How Many Driving Lessons Do You Need Before a Victoria Driving Test?",
+      section: "Lesson Planning",
+      datePublished: "2026-09-06",
+      dateModified: "2026-09-06",
+    },
+  },
+  {
+    path: "/blog/driving-lessons-cost-victoria-bc-2026/",
+    title: "Driving Lesson Costs in Victoria, BC (2026)",
+    description:
+      "Explore supportive driving lessons in Victoria, BC, current savings, student experiences and practical ways to get more value from every lesson in 2026.",
+    type: "article",
+    image: `${siteOrigin}/landing/pricing.webp`,
+    article: {
+      headline: "How Much Do Driving Lessons Cost in Victoria, BC in 2026?",
+      section: "Lesson Costs",
+      datePublished: "2026-09-05",
+      dateModified: "2026-09-06",
+    },
+  },
+  {
     path: "/blog/icbc-road-test-victoria-mckenzie-office/",
     title: "ICBC Road Test Victoria: The McKenzie Ave Office",
     description:
@@ -1867,6 +1895,7 @@ for (const page of pages) {
     continue;
   }
 
+  page.faqs = post.faqs;
   page.article.author = content.resolveAuthor(post.authorId);
   page.article.reviewedBy = content.resolveAuthor(post.reviewedById);
 }
@@ -1896,6 +1925,7 @@ const assertMetadataInSync = () => {
         "blogPosts",
         {
           title: post.seoTitle ?? withBrand(post.title),
+          faqs: post.faqs ?? [],
           description: post.description,
           "article.headline": post.title,
           "article.datePublished": post.datePublished,
@@ -1905,6 +1935,7 @@ const assertMetadataInSync = () => {
         {
           title: page.title,
           description: page.description,
+          faqs: page.faqs ?? [],
           "article.headline": page.article?.headline,
           "article.datePublished": page.article?.datePublished,
           "article.dateModified": page.article?.dateModified,
