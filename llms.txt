@@ -16,7 +16,7 @@
 - [Home](https://www.shanayasdrivingschool.com/): Overview of the school, training approach, service area, packages, and booking paths.
 - [Driving Lessons](https://www.shanayasdrivingschool.com/driving-lessons/): Beginner driving lessons in Victoria, Langford, and Greater Victoria.
 - [Nervous Driver Lessons](https://www.shanayasdrivingschool.com/nervous-driver-lessons-victoria/): Calm, patient, judgment-free lessons for nervous, anxious, and returning drivers in Victoria.
-- [Defensive Driving](https://www.shanayasdrivingschool.com/defensive-driving/): Defensive driving course focused on hazard awareness, spacing, scanning, and traffic judgment.
+- [Defensive Driving Course](https://www.shanayasdrivingschool.com/courses/defensive-driving-course/): Defensive driving course focused on hazard awareness, spacing, scanning, and traffic judgment.
 - [Road Test Prep](https://www.shanayasdrivingschool.com/road-test-prep/): Private Class 5 and 7 skill practice and instructor feedback; not an official route, test, or score.
 - [Road Test Prep Victoria](https://www.shanayasdrivingschool.com/road-test-prep-victoria/): Private practice on transferable skills in varied Victoria-area road conditions.
 - [Mock Road Test Victoria](https://www.shanayasdrivingschool.com/mock-road-test-victoria/): A private practice drive with instructor feedback, not an ICBC test or result prediction.
@@ -40,7 +40,7 @@
 
 - [B.C. GLP Changes on October 19, 2026](https://www.shanayasdrivingschool.com/blog/bc-glp-changes-2026/): Source-backed explanation of the Driving Record Assessment, age paths, restriction 55, and transition rules.
 - [Class 7 Road Test Tips for Victoria Conditions](https://www.shanayasdrivingschool.com/blog/icbc-road-test-tips-victoria/): Transferable observation, space, speed, steering, and communication practice without route predictions.
-- [B.C. Class 7 Road Test: Victoria Preparation Guide](https://www.shanayasdrivingschool.com/blog/how-to-pass-driving-test-victoria-bc/): Eligibility, fees, appointment requirements, published skill groups, and retest waits.
+- [How to Pass Your Road Test](https://www.shanayasdrivingschool.com/blog/pass-road-test/): Practical preparation guidance for the B.C. road test, including skills, common mistakes, and test-day planning.
 - [ICBC's Victoria Road Test Office on McKenzie Avenue](https://www.shanayasdrivingschool.com/blog/icbc-road-test-victoria-mckenzie-office/): ICBC's four published failure reasons, District of Saanich traffic counts for the McKenzie corridor, school and playground zone hours, and hill-parking wheel positions, each cited to ICBC, B.C. law or municipal data.
 
 ## Services
