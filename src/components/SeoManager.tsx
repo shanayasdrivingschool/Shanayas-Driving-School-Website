@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { blogPosts } from "@/data/blogPosts";
+import { activeBlogPosts as blogPosts } from "@/data/blogPosts";
 import { resolveAuthor, type Author } from "@/data/authors";
 import {
   buildAuthorReference,
@@ -8,6 +8,7 @@ import {
 } from "@/lib/authorSchema";
 import {
   KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
+  KNOWLEDGE_TEST_GUIDE_MODIFIED_ISO,
   KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
   KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
   KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
@@ -39,6 +40,69 @@ const DEFAULT_TITLE = "Driving Lessons in Victoria & Langford, BC";
 const DEFAULT_DESCRIPTION =
   "Class 5 and 7 driving lessons, road-test preparation, knowledge-test support, and confidence-building training in Langford, Victoria, and listed B.C. service areas.";
 const DEFAULT_IMAGE_PATH = "/logos/For Social Media.jpg";
+
+const courseRouteSeo: Record<string, Pick<SeoDetails, "title" | "description">> = {
+  "advanced-driving-course": {
+    title: "Advanced Driving Course Victoria & Langford",
+    description:
+      "Refine vehicle control, precision driving, traffic strategy, and road safety with advanced driving lessons in Victoria, BC. Enrol today.",
+  },
+  "beginner-driving-course": {
+    title: "Beginner Driving Course Victoria & Langford",
+    description:
+      "Learn car control, traffic rules, road awareness, and safe driving habits with beginner lessons in Victoria, BC. Start driving with confidence.",
+  },
+  "confidence-booster-course": {
+    title: "Confidence Driving Course Victoria & Langford",
+    description:
+      "Build confidence behind the wheel with guided driving practice in Victoria and Langford. Improve road comfort and skills with structured lessons. Book today.",
+  },
+  "defensive-driving-course": {
+    title: "Defensive Driving Course Victoria & Langford",
+    description:
+      "Improve hazard awareness, risk management, and defensive driving skills in Victoria, BC. Build safer driving habits. Enrol in a course today.",
+  },
+  "knowledge-test-prep-course": {
+    title: "ICBC Knowledge Test Prep Victoria & Langford",
+    description:
+      "Prepare for your ICBC knowledge test with road signs, traffic rules, and practice questions in Victoria and Langford. Build confidence and enrol today.",
+  },
+  "make-your-own-class": {
+    title: "Custom Driving Lessons in Victoria & Langford",
+    description:
+      "Choose a custom driving lesson focused on your weak areas and goals in Victoria and Langford. Get personalised coaching. Book your lesson today.",
+  },
+  "mock-test-evaluation": {
+    title: "Mock Road Test Evaluation in Victoria & Langford BC",
+    description:
+      "Prepare for your road test in Victoria and Langford with a realistic mock test, instructor feedback, and an improvement plan. Book your evaluation today.",
+  },
+  "new-to-canada": {
+    title: "Driving Course for Newcomers to Canada",
+    description:
+      "New to Canada? Learn BC road rules, signs, and driving habits with practical lessons in Victoria and Langford. Book your course today.",
+  },
+  "parking-course": {
+    title: "Parking Lessons in Victoria & Langford, BC",
+    description:
+      "Master parallel parking, stall parking, and low-speed control with parking lessons in Victoria and Langford. Build confidence. Book your lessons today.",
+  },
+  "refresher-driving-course": {
+    title: "Refresher Driving Course Victoria & Langford",
+    description:
+      "Rebuild driving confidence and refresh core skills with refresher driving lessons in Victoria. Get back on the road safely. Book today.",
+  },
+  "seniors-driving-course": {
+    title: "Enhanced Senior Driver Road Assessment Victoria & Langford",
+    description:
+      "Refresh safe driving habits, road rules, awareness, and reaction skills with senior driving lessons in Victoria, BC. Book an assessment today.",
+  },
+  "winter-driving-course": {
+    title: "Winter Driving Course in Victoria & Langford",
+    description:
+      "Learn snow driving, ice control, and low-visibility skills with a winter driving course in Victoria and Langford. Build confidence. Enrol today.",
+  },
+};
 
 const optionalEnvUrl = (value: string | undefined) => {
   const trimmed = value?.trim();
@@ -75,6 +139,7 @@ type SeoDetails = {
   title: string;
   description: string;
   path: string;
+  canonicalPath?: string;
   image?: string;
   type?: "website" | "article";
   robots?: "index, follow" | "noindex, follow" | "noindex, nofollow";
@@ -95,7 +160,7 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
   "/courses": {
     title: "Driving Courses in Victoria & Langford, BC",
     description:
-      "Browse beginner lessons, ICBC road test prep, parking practice, defensive driving, refresher training, and newcomer driving support.",
+      "Explore driving courses in Victoria and Langford, BC, from beginner lessons to road test prep. View courses and book your lesson today.",
   },
   "/packages": {
     title: "Driving Lesson Packages in Greater Victoria",
@@ -136,16 +201,6 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
       { name: "Beginner driving lessons", path: "/beginner-driving-lessons-victoria/" },
     ],
   },
-  "/newcomers-guide": {
-    title: "Moving to B.C.: Exchange or Get a Licence",
-    description:
-      "Choose the correct ICBC path to exchange a valid licence or start B.C.'s Class 7 process, with document, experience, deadline, fee and source details.",
-  },
-  "/knowledge-test-practice": {
-    title: "B.C. Class 7 Knowledge Test Practice",
-    description:
-      "Use an independent 20-question Class 7 study bank, then verify every rule with ICBC's official guide and practice test.",
-  },
   "/knowledge-test-guide": {
     title: "B.C. Class 7 Knowledge Test Guide",
     description:
@@ -156,7 +211,7 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
       articleType: "Article",
       headline: "B.C. Class 7 Knowledge Test: Online and In-Person Guide",
       datePublished: KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
-      dateModified: KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
+      dateModified: KNOWLEDGE_TEST_GUIDE_MODIFIED_ISO,
       section: "Learner Licensing",
       author: resolveAuthor(KNOWLEDGE_TEST_GUIDE_AUTHOR_ID),
       reviewedBy: resolveAuthor(KNOWLEDGE_TEST_GUIDE_REVIEWER_ID),
@@ -327,6 +382,10 @@ const setMetaByProperty = (property: string, content: string) => {
   }
 };
 
+const removeMetaByProperty = (property: string) => {
+  findMetaByProperty(property)?.remove();
+};
+
 const setCanonical = (href: string) => {
   const element =
     document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]') ?? document.createElement("link");
@@ -409,6 +468,7 @@ const buildArticleJsonLd = (
     "@context": "https://schema.org",
     "@type": seo.article.articleType ?? "BlogPosting",
     "@id": `${canonicalUrl}#article`,
+    url: canonicalUrl,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     headline: seo.article.headline,
     description: seo.description,
@@ -469,10 +529,15 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
   if (courseSlug) {
     const course = courseCatalog.find((item) => item.id === decodePathSegment(courseSlug));
     if (course) {
+      const routeSeo = courseRouteSeo[course.id];
       return {
-        title: withBrand(`${course.title} in Victoria, BC`),
-        description: course.description,
+        title: routeSeo?.title ?? withBrand(`${course.title} in Victoria, BC`),
+        description: routeSeo?.description ?? course.description,
         path,
+        robots:
+          course.id === "road-test-prep-course" || course.id === "lesson-road-test-prep-course"
+            ? "noindex, follow"
+            : undefined,
       };
     }
   }
@@ -529,6 +594,7 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
         image: post.heroImage,
         faqs: post.faqs,
         path,
+        canonicalPath: post.canonicalPath,
         type: "article",
         /* Mirrors the visible Home / Blog / <category> trail rendered by
            src/pages/BlogPost.tsx, and the same trail the static generator emits. */
@@ -598,14 +664,15 @@ const SeoManager = () => {
   const seo = useMemo(() => getSeoForPath(location.pathname), [location.pathname]);
 
   useEffect(() => {
-    const canonicalUrl = toAbsoluteUrl(toCanonicalPath(seo.path));
+    const canonicalUrl = toAbsoluteUrl(toCanonicalPath(seo.canonicalPath ?? seo.path));
     const imageUrl = toAbsoluteUrl(seo.image ?? DEFAULT_IMAGE_PATH);
+    const isCanonicalPage = !seo.canonicalPath || toCanonicalPath(seo.canonicalPath) === toCanonicalPath(seo.path);
 
     document.title = seo.title;
     setCanonical(canonicalUrl);
     setHreflangLinks(canonicalUrl);
     setMetaByName("description", seo.description);
-    setMetaByName("robots", seo.robots ?? "index, follow");
+    setMetaByName("robots", seo.robots ?? "index, follow, max-image-preview:large");
     setMetaByName("author", SITE_NAME);
 
     setMetaByProperty("og:type", seo.type ?? "website");
@@ -617,6 +684,16 @@ const SeoManager = () => {
     setMetaByProperty("og:image", imageUrl);
     setMetaByProperty("og:image:alt", `${SITE_NAME} branded social preview`);
 
+    if (seo.article && isCanonicalPage) {
+      setMetaByProperty("article:published_time", seo.article.datePublished);
+      setMetaByProperty("article:modified_time", seo.article.dateModified);
+      setMetaByProperty("article:section", seo.article.section);
+    } else {
+      removeMetaByProperty("article:published_time");
+      removeMetaByProperty("article:modified_time");
+      removeMetaByProperty("article:section");
+    }
+
     setMetaByName("twitter:card", "summary_large_image");
     setMetaByName("twitter:title", seo.title);
     setMetaByName("twitter:description", seo.description);
@@ -624,15 +701,15 @@ const SeoManager = () => {
     setMetaByName("twitter:image:alt", `${SITE_NAME} branded social preview`);
 
     setJsonLd("local-business-schema", localBusinessJsonLd);
-    setJsonLd("faq-schema", buildFaqJsonLd(seo.faqs));
-    setJsonLd("article-schema", buildArticleJsonLd(seo, canonicalUrl, imageUrl));
+    setJsonLd("faq-schema", isCanonicalPage ? buildFaqJsonLd(seo.faqs) : null);
+    setJsonLd("article-schema", isCanonicalPage ? buildArticleJsonLd(seo, canonicalUrl, imageUrl) : null);
     setJsonLd(
       "profile-page-schema",
       seo.author
         ? buildProfilePageJsonLd(SITE_ORIGIN, seo.author, `${SITE_ORIGIN}/#localbusiness`)
         : null,
     );
-    setJsonLd("breadcrumb-schema", buildBreadcrumbJsonLd(seo.breadcrumbs));
+    setJsonLd("breadcrumb-schema", isCanonicalPage ? buildBreadcrumbJsonLd(seo.breadcrumbs) : null);
   }, [seo]);
 
   return null;

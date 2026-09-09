@@ -13,6 +13,7 @@ Search quality ratings evaluate search results and help improve search systems; 
 - For new content, use the brief in section 10 before drafting. For a focused edit, inspect the affected claims and nearby context; do not require a new full article brief for a spelling correction or similarly limited change.
 - Check the existing article inventory and relevant draft notes before choosing a new page. [The article status audit](ARTICLE_STATUS_AUDIT.md) is a dated snapshot, not a live inventory; inspect the current source and, when publication status matters, the live page. Prefer updating an existing article when it serves the same reader need; create a separate page when its purpose is meaningfully different.
 - Read [company knowledge](../COMPANY_KNOWLEDGE.md) for business context and follow its references to the relevant records. It summarizes website content and includes known conflicts; it is not independent verification of every statement it contains.
+- When using student feedback to plan content or support school claims, read [saved reviews](reviews.md) and apply section 7.1. Use the relevant learner concerns and concrete experiences; do not insert testimonials into every article.
 - Treat explicit user instructions as authoritative for task scope and requested changes. For factual claims, record the supporting evidence separately; a requested phrase does not by itself establish an external credential, legal rule, or third-party endorsement.
 - Keep briefs, claim logs, and unresolved questions in working notes beside the draft or in the task handoff. Do not expose internal scores, verification placeholders, or editorial instructions in public copy or metadata.
 - Continue all independent drafting and editing when evidence is missing. Ask only for information needed to resolve a material gap that available sources cannot answer. Do not invent a review or add an approval step for routine work.
@@ -118,6 +119,42 @@ Basis: [§3.1–3.2, pp. 20–21](../searchqualityevaluatorguidelines.md#pdf-pag
 
 Basis: [§3.3.2, p. 23](../searchqualityevaluatorguidelines.md#pdf-page-23), [§3.3.5, p. 25](../searchqualityevaluatorguidelines.md#pdf-page-25), [§3.4, p. 27](../searchqualityevaluatorguidelines.md#pdf-page-27), [§4.5.3–4.5.4, pp. 36–38](../searchqualityevaluatorguidelines.md#pdf-page-36), [§5.3, p. 62](../searchqualityevaluatorguidelines.md#pdf-page-62).
 
+### 7.1. Apply the findings in the supplied reviews
+
+Source: [reviews.md](reviews.md), inspected locally on **September 6, 2026**. This is a pasted Google Maps review snapshot containing customer text, owner replies, interface text, and some truncated entries. No capture date or direct review URLs are supplied. This inspection establishes what the saved file says; it does not verify the live listing, reviewer identity, or current business operations. The rules below are project editorial choices drawn from that file.
+
+**Use the recurring themes to make content specific and helpful:**
+
+| Theme and examples in the saved file | Content rule |
+| --- | --- |
+| Patient, calm, non-judgemental teaching: Emily Menary, Alexis Dumaresq, Yogita Bang | Use a reassuring, respectful voice for nervous learners. Explain what a learner can ask about pacing, explanations, and feedback. Attribute reported comfort to the learner; do not promise anxiety will disappear or describe lessons as treatment. |
+| Fundamentals and clear explanations: rebecca mushata, Amita, Aulakh | Explain beginner terms and the purpose of each step. When describing the school's lesson process, confirm what it currently includes rather than turning one review into a standard curriculum. |
+| Constructive feedback and identifying areas to improve: Alden Caldo, Tee, Harriet | In assessment and lesson-planning content, address how learners can understand their strengths, practice needs, and next steps. Verify any promised written report, checklist, or personalised plan before advertising it as an inclusion. |
+| Gradual progress and adapting to the learner: Isai Frenette, Vanessa Nicdao | Explain progress through specific skills and remaining practice needs. Keep each learner's starting point and limitations attached to their story; confidence alone does not establish independent driving ability or test readiness. |
+| Parent reassurance and safety: Tanya Frenette, Angela, Vanessa Nicdao | Address parents' questions about confidence, safe habits, and lesson expectations. Attribute a parent's account as a parent's observation, not the child's direct testimony or an instructor's assessment. |
+| Trial lessons before committing: Alden Caldo, Angela, Yogita Bang | Where relevant, answer what a first lesson or assessment involves and how a learner can judge instructor fit. Confirm current price, duration, eligibility, and booking conditions before promoting a free trial or a 30-minute offer. |
+| Scheduling flexibility with a reported communication problem: Divya Pandya, Siddharth Pandya, Zandra Tiemsim | Explain verified booking and lesson-confirmation arrangements. Acknowledge the mixed feedback when summarizing scheduling; do not promise seamless scheduling or claim the reported problem was resolved without evidence. |
+| Different views on value: Vanessa Nicdao, Divya Pandya, rebecca mushata, Jagdeep Kauur | Help readers compare verified duration, inclusions, and total cost. Do not turn positive value comments into a claim that prices are universally reasonable, the cheapest, or the best in Victoria. Preserve relevant price criticism in value summaries. |
+
+**Preserve the limits of each account:**
+
+- Isai Frenette describes progress across 14 lessons and still identifies skills to improve. Do not say he passed, completed training, or proves that beginners need 14 lessons. His highway experience at lesson 8 is not a recommended timetable for other learners.
+- Siddharth Pandya reports six classes taken and four remaining, with the possibility of more. This is not a completed ten-lesson outcome. Aulakh's comparison of one trial with four previous lessons is personal feedback, not proof of equivalent training hours or superior efficiency.
+- Umu mamad reports a first-attempt pass in an edited review. Attribute that individual report only; the older owner reply discusses a first lesson and cannot establish the later outcome's date. Angela's expectation of an N in the fall and Rolando Jr Godinez's hope of passing are future hopes, not completed results.
+- References to exam routes in Siddharth's review and the owner reply do not verify official routes. Apply section 5: describe verified practice and transferable driving skills without suggesting guaranteed test routes or insider access.
+- Don cottrell's ERA lesson account does not establish assessment authority, official endorsement, or current course availability. Verify service details separately before publishing an ERA offer.
+- Reviewer praise such as best, magician, knowledgeable, or professional is an opinion, not a ranking, qualification, or credential. Comments about previous instructors do not justify broad claims against competitors.
+- Preserve the instructor spelling used inside an exact quotation: the file includes Azhar, Azy, Azi, and Azzie. Use a confirmed business record for the public name and role outside quotations; do not invent a full name, assume all variants identify the same person, or infer multiple instructors from spelling differences.
+
+**Keep review extraction and reuse faithful:**
+
+- Preserve the raw saved file. In working notes, identify the reviewer display name and source location, exact excerpt, relevant surrounding qualifications, available direct URL, and whether only the saved copy was checked. Record the capture date as unknown unless supplied; the local inspection date is not the capture date.
+- Exclude navigation, recent places, topic chips, profile review/photo counts, likes, and owner replies from customer testimony and theme counts. The unrelated places in the Maps sidebar are not school service locations. The displayed 5.0 and 37 reviews are snapshot values, not verified current totals or evidence that every review is fully captured.
+- Keep customer prose, price/service labels, and owner replies distinguishable. A rating-only entry such as Chibuike Eze's supplies no testimonial text; Jake Pinote's price/service labels do not authorize an invented narrative. Treat entries with More or ellipses as potentially incomplete and use only the visible supported text.
+- Select an excerpt for its relevance to the reader's question. Keep exact quotations verbatim, mark cuts without changing meaning, and label paraphrases as summaries. Do not combine reviewers into a fictional student, infer nationality or age from names, or add personal details absent from the account.
+- Preserve material qualifications for the claim being made. Rebecca's praise for teaching does not erase her Overpriced label; Zandra's recommendation does not erase her scheduling criticism. A focused teaching excerpt can address teaching, but must not be presented as unqualified praise for pricing or scheduling.
+- Use these themes as qualitative planning inputs. Do not infer population percentages, typical outcomes, representative satisfaction, search demand, or a school-wide pass rate from the saved selection. Follow section 7's permission and attribution requirements when publishing testimonials.
+
 ## 8. Keep time-sensitive information current
 
 - Verify current policy and pricing at drafting and again before publication when they may have changed. Distinguish proposed, announced, and effective changes.
@@ -136,7 +173,7 @@ These notes identify verification needs, not confirmed current policy or promoti
 | --- | --- |
 | [Article status audit](ARTICLE_STATUS_AUDIT.md) and companion CSV | Use as the recorded audit's findings for its inspection date and scope. A missing exact title does not establish missing topic coverage. Preserve the historical snapshot; record later drafting or publication findings separately unless an audit update is requested. |
 | Article drafts and editorial `*_NOTES.md` files | Distinguish planned, drafted, implemented locally, and live content. Source logs and validation records describe the checks actually recorded; neither local implementation nor a successful build establishes deployment or completed instructor review. |
-| [Saved reviews](reviews.md) | Treat as supplied review text, not a freshly verified live listing. Relative dates such as "a month ago" cannot establish calendar dates without a capture date. Do not infer the current rating, review count, offer availability, or a universal learning timeline from this file. |
+| [Saved reviews](reviews.md) | Apply section 7.1 for themes, attribution, mixed feedback, and outcome limits. Treat as supplied review text, not a freshly verified live listing. Relative dates such as "a month ago" cannot establish calendar dates without a capture date. Do not infer the current rating, review count, offer availability, or a universal learning timeline from this file. |
 | Research “hotness” scores, FAQ counts, and topic rankings | Treat as internal prioritization estimates. Do not call them search volume, market share, or validated demand without a documented method and underlying evidence. |
 | Repeated FAQ table in the research CSV | Deduplicate when planning; do not double-count mentions or create duplicate articles. |
 | O1–O6, S1–S9, F1–F7 source labels | Resolve to actual supporting pages before using them as citations. Labels and descriptions alone are insufficient. |
@@ -175,6 +212,7 @@ Before calling content ready to publish, check:
 - [ ] Required subject review occurred and is accurately recorded.
 - [ ] Identity, credentials, experience, reviews, and commercial claims are truthful.
 - [ ] Quotations preserve their source meaning; numerical examples have correct arithmetic, stated assumptions, and no unsupported implication of typical or guaranteed results.
+- [ ] If reviews are used, customer text is separated from owner replies and interface labels; attribution, material criticism, incomplete text, and individual-outcome limits follow section 7.1. Current offers and aggregate ratings have separate verification.
 - [ ] The page adds useful original explanation or functionality and contains no substantial filler.
 - [ ] Local details and advertised services are verified.
 - [ ] Dates, sources, and maintenance needs are recorded accurately.

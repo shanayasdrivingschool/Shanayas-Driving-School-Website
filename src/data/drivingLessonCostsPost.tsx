@@ -44,7 +44,7 @@ export const drivingLessonCostsPost: BlogPostData = {
   category: "Lesson Costs",
   faqs: costFaqs,
   relatedSlugs: [
-    "how-to-pass-driving-test-victoria-bc",
+    "pass-road-test",
     "icbc-road-test-victoria-mckenzie-office",
     "newcomers-guide-bc",
   ],

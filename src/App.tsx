@@ -37,8 +37,6 @@ const PackageProductPage = lazy(() => import("./pages/PackageProductPage"));
 const PaymentPlanOptions = lazy(() => import("./pages/PaymentPlanOptions"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
-const NewcomersGuide = lazy(() => import("./pages/NewcomersGuide"));
-const KnowledgeTestPractice = lazy(() => import("./pages/KnowledgeTestPractice"));
 const KnowledgeTestGuide = lazy(() => import("./pages/KnowledgeTestGuide"));
 const Policies = lazy(() => import("./pages/Policies"));
 const PolicyDetail = lazy(() => import("./pages/PolicyDetail"));
@@ -106,7 +104,6 @@ const App = () => (
                 <Route path="/driving-lessons-view-royal" element={<SeoLandingPage pageId="driving-lessons-view-royal" />} />
                 <Route path="/beginner-driving-lessons-victoria" element={<BeginnerDrivingLessons />} />
                 <Route path="/nervous-driver-lessons-victoria" element={<SeoLandingPage pageId="nervous-driver-lessons-victoria" />} />
-                <Route path="/defensive-driving" element={<SeoLandingPage pageId="defensive-driving" />} />
                 <Route path="/road-test-prep" element={<SeoLandingPage pageId="road-test-prep" />} />
                 <Route path="/road-test-prep-victoria" element={<SeoLandingPage pageId="road-test-prep-victoria" />} />
                 <Route path="/mock-road-test-victoria" element={<SeoLandingPage pageId="mock-road-test-victoria" />} />
@@ -131,8 +128,8 @@ const App = () => (
                 <Route path="/packages/:slug" element={<PackageProductPage />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/newcomers-guide" element={<NewcomersGuide />} />
-                <Route path="/knowledge-test-practice" element={<KnowledgeTestPractice />} />
+                <Route path="/newcomers-guide" element={<Navigate to="/blog/newcomers-guide-bc/" replace />} />
+                <Route path="/knowledge-test-practice" element={<Navigate to="/knowledge-test-guide/" replace />} />
                 <Route path="/knowledge-test-guide" element={<KnowledgeTestGuide />} />
                 <Route path="/policies" element={<Policies />} />
                 <Route path="/policies/:policyId" element={<PolicyDetail />} />
@@ -142,6 +139,10 @@ const App = () => (
                 <Route path="/careers/apply" element={<EmployeeApply />} />
                 <Route path="/careers/dashboard" element={<HiringDashboard />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route
+                  path="/blog/how-to-pass-driving-test-victoria-bc"
+                  element={<Navigate to="/blog/pass-road-test/" replace />}
+                />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/authors/:slug" element={<AuthorProfile />} />
                 <Route path="/search" element={<SearchPage />} />
@@ -185,5 +186,4 @@ const App = () => (
 );
 
 export default App;
-
 

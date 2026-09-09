@@ -35,9 +35,8 @@ const navItems: NavItem[] = [
   {
     label: "Resources",
     children: [
-      { label: "Driver's Licence Guide", href: "/newcomers-guide", activePrefixes: ["/newcomers-guide"] },
+      { label: "Driver's Licence Guide", href: "/blog/newcomers-guide-bc", activePrefixes: ["/blog/newcomers-guide-bc"] },
       { label: "Knowledge Test Guide", href: "/knowledge-test-guide", activePrefixes: ["/knowledge-test-guide"] },
-      { label: "Knowledge Test Practice", href: "/knowledge-test-practice", activePrefixes: ["/knowledge-test-practice"] },
       { label: "Blog", href: "/blog", activePrefixes: ["/blog"] },
     ],
   },

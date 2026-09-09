@@ -145,7 +145,7 @@ const SiteFooter = () => (
               <Link to="/nervous-driver-lessons-victoria">Nervous Driver Lessons</Link>
             </li>
             <li>
-              <Link to="/defensive-driving">Defensive Driving</Link>
+              <Link to="/courses/defensive-driving-course">Defensive Driving</Link>
             </li>
             <li>
               <Link to="/road-test-prep">Road Test Prep</Link>
@@ -181,13 +181,10 @@ const SiteFooter = () => (
               <Link to="/about">About</Link>
             </li>
             <li>
-              <Link to="/newcomers-guide">Driver's Licence Guide</Link>
+              <Link to="/blog/newcomers-guide-bc">Driver's Licence Guide</Link>
             </li>
             <li>
               <Link to="/knowledge-test-guide">Knowledge Test Guide</Link>
-            </li>
-            <li>
-              <Link to="/knowledge-test-practice">Knowledge Test Practice</Link>
             </li>
             <li>
               <Link to="/blog">Blog</Link>

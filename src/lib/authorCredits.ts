@@ -6,10 +6,10 @@
  * and then omit the guide from that author's own page, so both the React profile
  * and the static generator read this list instead.
  */
-import { blogPosts } from "@/data/blogPosts";
+import { activeBlogPosts as blogPosts } from "@/data/blogPosts";
 import {
   KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
-  KNOWLEDGE_TEST_GUIDE_REVIEWED_LABEL,
+  KNOWLEDGE_TEST_GUIDE_MODIFIED_LABEL,
   KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
 } from "@/data/knowledgeTestGuide";
 
@@ -34,7 +34,7 @@ export const creditedArticles: CreditedArticle[] = [
   {
     path: "/knowledge-test-guide",
     title: "B.C. Class 7 Knowledge Test: Online and In-Person Guide",
-    meta: `Learner Licensing · Updated ${KNOWLEDGE_TEST_GUIDE_REVIEWED_LABEL}`,
+    meta: `Learner Licensing · Updated ${KNOWLEDGE_TEST_GUIDE_MODIFIED_LABEL}`,
     authorId: KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
     reviewedById: KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
   },

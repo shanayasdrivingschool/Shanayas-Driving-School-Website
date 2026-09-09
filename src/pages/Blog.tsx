@@ -5,7 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
-import { blogPosts, type BlogPostData } from "@/data/blogPosts";
+import { activeBlogPosts as blogPosts, type BlogPostData } from "@/data/blogPosts";
 import { resolveAuthor } from "@/data/authors";
 import { seoLandingPages } from "@/data/seoLandingPages";
 

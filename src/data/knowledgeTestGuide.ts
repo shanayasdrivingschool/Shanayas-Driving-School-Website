@@ -5,6 +5,7 @@ import type { SeoLandingPageFaq } from "@/data/seoLandingPages";
    re-check only has to be recorded once. */
 export const KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO = "2026-07-21";
 export const KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO = "2026-06-12";
+export const KNOWLEDGE_TEST_GUIDE_MODIFIED_ISO = "2026-09-07";
 
 /* Credited author and reviewer, the equivalent of authorId / reviewedById on a
    blog post. This guide is administrative process — registration, accepted ID,
@@ -19,6 +20,10 @@ export const KNOWLEDGE_TEST_GUIDE_REVIEWED_LABEL = new Date(
   `${KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO}T00:00:00Z`,
 ).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
 
+export const KNOWLEDGE_TEST_GUIDE_MODIFIED_LABEL = new Date(
+  `${KNOWLEDGE_TEST_GUIDE_MODIFIED_ISO}T00:00:00Z`,
+).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+
 export type KnowledgeTestGuideSection = {
   id: string;
   label: string;
@@ -29,6 +34,8 @@ export type KnowledgeTestGuideSection = {
 export const knowledgeTestGuideSections: KnowledgeTestGuideSection[] = [
   { id: "at-a-glance", label: "At a glance" },
   { id: "study-materials", label: "Study materials" },
+  { id: "practice-method", label: "How to practise" },
+  { id: "preparation-strategies", label: "Study strategies" },
   { id: "online-test", label: "Online test" },
   { id: "in-person-test", label: "In-person test" },
   { id: "after-you-pass", label: "After you pass" },

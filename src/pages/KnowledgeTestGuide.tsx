@@ -86,6 +86,33 @@ const onlineSteps = [
   },
 ];
 
+const practiceMethod = [
+  {
+    title: "Use multiple-choice questions",
+    description:
+      "Practise applying the rules after reading the official guide instead of relying on memorized wording alone.",
+  },
+  {
+    title: "Review every incorrect answer",
+    description:
+      "Return to the matching section of Learn to Drive Smart and confirm why the correct answer applies.",
+  },
+  {
+    title: "Practise with time awareness",
+    description:
+      "The official Class 7 test allows up to 45 minutes for 50 questions, so practise reading accurately without rushing.",
+  },
+];
+
+const knowledgeTestStrategies = [
+  ["Start with the official source", "Study ICBC's Learn to Drive Smart guide before using practice questions."],
+  ["Learn signs by shape and colour", "Understanding sign families helps when the exact example looks unfamiliar."],
+  ["Review missed rules", "Use each incorrect answer to identify the official section that needs another pass."],
+  ["Separate rules from guesses", "Check uncertain answers against current ICBC material instead of memorizing an unofficial explanation."],
+  ["Choose an available language carefully", `ICBC lists these 12 test languages: ${testLanguages}`],
+  ["Repeat official practice", "Use ICBC's official practice test after studying and revisit weak topics before another attempt."],
+] as const;
+
 const afterPassChecklist = [
   "Bring one primary and one secondary ID, including the same primary ID used for online registration.",
   "Bring the printed or digital email confirming your online pass.",
@@ -335,14 +362,67 @@ const KnowledgeTestGuide = () => (
               differs from ICBC&apos;s 50-question, 45-minute Class 7 test. A score here does not predict an official
               result. Verify every uncertain rule in the current official guide.
             </p>
-            <Link
-              to="/knowledge-test-practice"
+            <a
+              href={OFFICIAL_URLS.practiceTest}
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-3 inline-flex items-center gap-2 font-bold text-amber-950 underline underline-offset-4"
             >
-              Open the independent practice tool
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+              Open ICBC&apos;s official practice test
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
           </aside>
+        </div>
+      </section>
+    </AnimatedSection>
+
+    <AnimatedSection>
+      <section id="practice-method" className={sectionClass}>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className={eyebrowClass}>How this works</p>
+          <h2 className={headingClass}>Learn through practice</h2>
+          <p className={introClass}>
+            Practice questions are most useful after you have studied the official guide. Use them to identify gaps,
+            then verify every uncertain rule with ICBC before taking the real test.
+          </p>
+          <div className="mt-10 grid gap-x-12 sm:grid-cols-3">
+            {practiceMethod.map((item) => (
+              <div key={item.title} className="border-t border-slate-300 py-6">
+                <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.description}</p>
+              </div>
+            ))}
+          </div>
+          <a
+            href={OFFICIAL_URLS.practiceTest}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#E6242A] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#C41E23]"
+          >
+            Open ICBC&apos;s official practice test
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          </a>
+        </div>
+      </section>
+    </AnimatedSection>
+
+    <AnimatedSection>
+      <section id="preparation-strategies" className={`${sectionClass} bg-[#F8FAFC]`}>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className={eyebrowClass}>Study smarter</p>
+          <h2 className={headingClass}>ICBC knowledge test preparation strategies</h2>
+          <p className={introClass}>
+            These suggestions organize your study. They cannot guarantee a passing result or a particular number of
+            attempts.
+          </p>
+          <div className="mt-10 grid gap-x-12 sm:grid-cols-2">
+            {knowledgeTestStrategies.map(([title, description]) => (
+              <div key={title} className="border-t border-slate-300 py-6">
+                <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </AnimatedSection>

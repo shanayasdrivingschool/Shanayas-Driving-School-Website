@@ -1,7 +1,13 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { adultLearnersVictoriaPost } from "./adultLearnersVictoriaPost";
 import { drivingLessonCostsPost } from "./drivingLessonCostsPost";
 import { drivingLessonCountPost } from "./drivingLessonCountPost";
+import { choosingFirstDrivingSchoolPost } from "./choosingFirstDrivingSchoolPost";
+import { langfordNightDrivingPost } from "./langfordNightDrivingPost";
+import { mckenzieHighwayCollisionsPost } from "./mckenzieHighwayCollisionsPost";
+import { parentsTeenDriversVictoriaPost } from "./parentsTeenDriversVictoriaPost";
+import { sixMilePileupPost } from "./sixMilePileupPost";
 
 export type BlogPostData = {
   slug: string;
@@ -10,6 +16,7 @@ export type BlogPostData = {
      suffix would truncate in search results. Must match the matching entry in
      scripts/generate-static-seo-pages.mjs. */
   seoTitle?: string;
+  canonicalPath?: string;
   description: string;
   heroImage: string;
   /* Organization byline, used whenever the post has no published named author. */
@@ -35,6 +42,12 @@ export type BlogPostData = {
 };
 
 export const blogPosts: BlogPostData[] = [
+  adultLearnersVictoriaPost,
+  parentsTeenDriversVictoriaPost,
+  mckenzieHighwayCollisionsPost,
+  langfordNightDrivingPost,
+  choosingFirstDrivingSchoolPost,
+  sixMilePileupPost,
   drivingLessonCountPost,
   drivingLessonCostsPost,
   {
@@ -54,7 +67,6 @@ export const blogPosts: BlogPostData[] = [
     category: "Victoria Road Test",
     relatedSlugs: [
       "icbc-road-test-tips-victoria",
-      "how-to-pass-driving-test-victoria-bc",
       "pass-road-test",
     ],
     content: (
@@ -77,8 +89,7 @@ export const blogPosts: BlogPostData[] = [
           What you can prepare for is the area. The streets around that office have been counted and
           signed by public bodies, so what they demand is on record rather than rumour. For
           eligibility, booking, fees and what to bring, use our{" "}
-          <Link to="/blog/how-to-pass-driving-test-victoria-bc">Class 7 preparation guide</Link> and{" "}
-          <Link to="/blog/pass-road-test">test-day checklist</Link> instead. No article or lesson can
+          <Link to="/blog/pass-road-test">Class 7 preparation and test-day checklist</Link> instead. No article or lesson can
           guarantee a pass.
         </p>
 
@@ -500,7 +511,7 @@ export const blogPosts: BlogPostData[] = [
     dateModified: "2026-07-21",
     readTime: "8 min read",
     category: "ICBC Updates",
-    relatedSlugs: ["how-to-pass-driving-test-victoria-bc", "icbc-road-test-tips-victoria", "newcomers-guide-bc"],
+    relatedSlugs: ["pass-road-test", "icbc-road-test-tips-victoria", "newcomers-guide-bc"],
     content: (
       <>
         <p>
@@ -1210,6 +1221,7 @@ export const blogPosts: BlogPostData[] = [
   },
   {
     slug: "icbc-road-test-tips-victoria",
+    canonicalPath: "/road-test-prep-victoria/",
     title: "Class 7 Road Test Tips for Victoria Driving Conditions",
     seoTitle: "Class 7 Road Test Tips for Victoria, B.C.",
     description:
@@ -1227,7 +1239,6 @@ export const blogPosts: BlogPostData[] = [
     relatedSlugs: [
       "icbc-road-test-victoria-mckenzie-office",
       "bc-glp-changes-2026",
-      "how-to-pass-driving-test-victoria-bc",
       "pass-road-test",
     ],
     content: (
@@ -1900,6 +1911,7 @@ export const blogPosts: BlogPostData[] = [
   },
   {
     slug: "defensive-driving",
+    canonicalPath: "/courses/defensive-driving-course/",
     title: "Defensive Driving in B.C.: A Practical Risk-Management Guide",
     seoTitle: "Defensive Driving in B.C.: Practical Guide",
     description:
@@ -2183,7 +2195,7 @@ export const blogPosts: BlogPostData[] = [
           Drivers can study the official guide and practise these routines independently when they are
           legally qualified and, for learners, with the required supervisor. Someone who wants
           structured feedback can also review our optional{" "}
-          <Link to="/defensive-driving">defensive-driving lesson information</Link> or{" "}
+          <Link to="/courses/defensive-driving-course">defensive-driving lesson information</Link> or{" "}
           <Link to="/driving-lessons">driving lessons in Greater Victoria</Link>. Lessons cannot
           eliminate road risk or guarantee a particular driving, test or insurance outcome.
         </p>
@@ -2277,6 +2289,7 @@ export const blogPosts: BlogPostData[] = [
   },
   {
     slug: "newcomers-guide-bc",
+    canonicalPath: "/courses/new-to-canada/",
     title: "Moving to B.C.: Licence Deadlines and Five Road Rules to Check",
     seoTitle: "Moving to B.C.: Licence Deadlines & 5 Road Rules",
     description:
@@ -2376,7 +2389,7 @@ export const blogPosts: BlogPostData[] = [
             outside-Canada instructions
           </a>{" "}
           explain the exchange and testing routes. Our separate{" "}
-          <Link to="/newcomers-guide">B.C. driver's licence decision guide</Link> walks through these
+          <Link to="/blog/newcomers-guide-bc">B.C. driver's licence guide</Link> walks through these
           paths in more detail.
         </p>
 
@@ -2641,3 +2654,9 @@ export const blogPosts: BlogPostData[] = [
     ),
   },
 ];
+
+/* Retained above as redirect-source copy while links and historical references
+   are consolidated into the surviving checklist article. */
+export const activeBlogPosts = blogPosts.filter(
+  (post) => post.slug !== "how-to-pass-driving-test-victoria-bc",
+);

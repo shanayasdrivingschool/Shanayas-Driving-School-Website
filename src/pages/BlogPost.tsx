@@ -6,7 +6,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
-import { blogPosts } from "@/data/blogPosts";
+import { activeBlogPosts as blogPosts } from "@/data/blogPosts";
 import { authorProfilePath, resolveAuthor } from "@/data/authors";
 
 const SITE_ORIGIN = "https://www.shanayasdrivingschool.com";

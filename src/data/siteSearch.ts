@@ -57,13 +57,6 @@ const staticSearchItems: SiteSearchItem[] = [
     keywords: ["careers", "jobs", "hiring", "instructor"],
   },
   {
-    title: "Independent Class 7 Knowledge Test Practice",
-    description: "Use the site's independent study bank, then verify rules with ICBC's official resources.",
-    href: "/knowledge-test-practice",
-    type: "Resource",
-    keywords: ["knowledge test", "practice", "quiz", "learner", "icbc"],
-  },
-  {
     title: "B.C. Class 7 Knowledge Test Guide",
     description: "Compare ICBC's online and in-person Class 7 test workflows, fees, ID and licence steps.",
     href: "/knowledge-test-guide",
@@ -73,7 +66,7 @@ const staticSearchItems: SiteSearchItem[] = [
   {
     title: "Moving to B.C.: Driver's Licence Guide",
     description: "Choose the ICBC path to exchange a valid licence or start B.C.'s Class 7 process.",
-    href: "/newcomers-guide",
+    href: "/blog/newcomers-guide-bc",
     type: "Resource",
     keywords: ["newcomer", "moving to bc", "exchange licence", "bc licence", "driving experience", "class 7"],
   },

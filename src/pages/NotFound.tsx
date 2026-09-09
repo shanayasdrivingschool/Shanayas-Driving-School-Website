@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { BookOpenCheck, Car, Layers, PhoneCall } from "lucide-react";
+import { Car, Layers, PhoneCall } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
@@ -21,14 +21,6 @@ const popularDestinations = [
     href: "/packages",
     linkLabel: "Compare packages",
     icon: Layers,
-  },
-  {
-    title: "Knowledge test practice",
-    description:
-      "Practice ICBC-style learner licence questions before you sit the real knowledge test.",
-    href: "/knowledge-test-practice",
-    linkLabel: "Start practicing",
-    icon: BookOpenCheck,
   },
   {
     title: "Contact the school",

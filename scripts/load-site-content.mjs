@@ -34,7 +34,7 @@ export const loadSiteContent = async () => {
 
   try {
     const [
-      { blogPosts },
+      { activeBlogPosts },
       { seoLandingPages },
       { courseCatalog },
       { packageCatalog },
@@ -102,12 +102,13 @@ export const loadSiteContent = async () => {
       knowledgeTestGuide: {
         faqs: knowledgeTestGuide.knowledgeTestGuideFaqs,
         publishedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_PUBLISHED_ISO,
+        modifiedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_MODIFIED_ISO,
         reviewedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
         authorId: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
         reviewerId: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
       },
       blogPosts: new Map(
-        blogPosts.map((post) => [
+        activeBlogPosts.map((post) => [
           post.slug,
           {
             html: renderToStaticMarkup(
@@ -115,6 +116,7 @@ export const loadSiteContent = async () => {
             ),
             title: post.title,
             seoTitle: post.seoTitle,
+            canonicalPath: post.canonicalPath,
             description: post.description,
             author: post.author,
             authorId: post.authorId,

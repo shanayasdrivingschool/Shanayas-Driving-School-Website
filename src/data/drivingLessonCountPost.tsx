@@ -35,7 +35,7 @@ export const drivingLessonCountPost: BlogPostData = {
   relatedSlugs: [
     "driving-lessons-cost-victoria-bc-2026",
     "icbc-road-test-tips-victoria",
-    "how-to-pass-driving-test-victoria-bc",
+    "pass-road-test",
   ],
   content: (
     <>

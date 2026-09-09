@@ -5,7 +5,6 @@ export type SeoLandingPageId =
   | "driving-lessons-saanich"
   | "driving-lessons-view-royal"
   | "nervous-driver-lessons-victoria"
-  | "defensive-driving"
   | "road-test-prep"
   | "road-test-prep-victoria"
   | "mock-road-test-victoria"
@@ -76,21 +75,21 @@ export const seoLandingPages: SeoLandingPage[] = [
     path: "/driving-lessons",
     title: "ICBC Driving Lessons in Victoria & Langford, BC",
     metaDescription:
-      "Beginner driving lessons in Victoria, Langford, and Greater Victoria with road-test-focused coaching, dual-control vehicles, and calm instructor support.",
-    eyebrow: "Beginner driving lessons",
+      "Driving lessons in Victoria, Langford, and Greater Victoria with road-test-focused coaching, dual-control vehicles, and calm instructor support.",
+    eyebrow: "Driving lessons",
     h1: "ICBC driving lessons in Victoria, BC",
     heroDescription:
-      "Learn safe vehicle control, road awareness, and everyday driving habits with structured, structured beginner lessons across Victoria and Langford.",
+      "Learn safe vehicle control, road awareness, and everyday driving habits with structured lessons across Victoria and Langford.",
     heroImage: "/landing/driving-lessons.webp",
     targetKeyword: "driving lessons Victoria BC",
     intro: [
-      "Shanaya's Driving School helps new drivers build confidence from the first lesson. Our beginner driving lessons are designed for students who want a clear plan, patient coaching, and practical experience on real roads in Victoria, Langford, and nearby communities.",
-      "Each session focuses on the skills that matter for safe daily driving: smooth steering, braking, lane position, mirrors, shoulder checks, intersections, parking, speed control, and decision-making around other road users. Lessons are paced around the student, so nervous beginners can develop control before moving into busier routes.",
+      "Shanaya's Driving School helps new drivers build confidence from the first lesson. Our driving lessons are designed for students who want a clear plan, patient coaching, and practical experience on real roads in Victoria, Langford, and nearby communities.",
+      "Each session focuses on the skills that matter for safe daily driving: smooth steering, braking, lane position, mirrors, shoulder checks, intersections, parking, speed control, and decision-making around other road users. Lessons are paced around the student, so nervous learners can develop control before moving into busier routes.",
       "Training follows ICBC expectations while staying practical. The goal is not only to pass a road test, but to become a safer and more confident driver after the test is over.",
     ],
     sections: [
       {
-        title: "What beginner lessons cover",
+        title: "What driving lessons cover",
         body:
           "Students start with fundamentals and progress into real traffic as confidence improves. Instructors explain each skill clearly, demonstrate what to look for, and give direct feedback after each practice segment.",
         bullets: [
@@ -112,9 +111,9 @@ export const seoLandingPages: SeoLandingPage[] = [
     ],
     faqs: [
       {
-        question: "Do beginners need any experience before booking?",
+        question: "Do I need any driving experience before booking?",
         answer:
-          "No. Beginner lessons can start with basic vehicle control and progress at the student's pace.",
+          "No. Lessons can start with basic vehicle control and progress at the student's pace.",
       },
       {
         question: "Are lessons aligned with ICBC road test expectations?",
@@ -527,58 +526,6 @@ export const seoLandingPages: SeoLandingPage[] = [
     ],
   },
   {
-    id: "defensive-driving",
-    path: "/defensive-driving",
-    title: "Defensive Driving Course in Victoria, BC",
-    metaDescription:
-      "Defensive driving course in Victoria and Langford focused on hazard perception, safe spacing, traffic awareness, and confident decision-making.",
-    eyebrow: "Defensive driving",
-    h1: "Defensive driving course in Victoria",
-    heroDescription:
-      "Strengthen hazard awareness, following distance, scanning, and decision-making for safer everyday driving in BC traffic.",
-    heroImage: "/landing/defensive-driving.webp",
-    targetKeyword: "defensive driving course Victoria",
-    intro: [
-      "Defensive driving is the skill of seeing risk early and creating enough time to respond safely. Shanaya's Driving School teaches defensive driving to learners, returning drivers, and licensed drivers who want to feel more in control in busy Victoria and Langford traffic.",
-      "The course focuses on real road habits: scanning far enough ahead, managing space, identifying escape options, reading intersections, anticipating other drivers, and making smooth decisions under pressure. Students practice in conditions that match everyday driving rather than only quiet practice routes.",
-      "For many students, defensive driving also improves road test performance. Examiners look for safe observation, good judgment, and consistent control. Defensive habits support all three.",
-    ],
-    sections: [
-      {
-        title: "Skills taught in defensive driving",
-        body:
-          "The course builds proactive driving habits that reduce risk in traffic. Students learn how to spot hazards before they become urgent and how to maintain control when road conditions change.",
-        bullets: [
-          "Hazard scanning and 12 to 15 second visual lead time",
-          "Safe following distance, lane positioning, and speed choice",
-          "Intersection judgment, merging, lane changes, and space management",
-        ],
-      },
-      {
-        title: "Best fit",
-        body:
-          "Defensive driving is useful for learners who already know the basics, drivers who feel anxious in traffic, and anyone who wants safer habits before commuting, highway driving, or an ICBC road test.",
-      },
-      {
-        title: "Local driving conditions",
-        body:
-          "Lessons can include residential roads, multi-lane traffic, school zones, complex intersections, parking lots, and local routes around Victoria, Langford, and the Westshore.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Is defensive driving only for experienced drivers?",
-        answer:
-          "No. Learners can start defensive habits early once they understand basic vehicle control.",
-      },
-      {
-        question: "Can defensive driving help with road test readiness?",
-        answer:
-          "Yes. Strong observation, spacing, and judgment are important parts of a confident road test.",
-      },
-    ],
-  },
-  {
     id: "road-test-prep",
     path: "/road-test-prep",
     title: "ICBC Road Test Preparation in B.C.",
@@ -855,9 +802,9 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "intensive-driving-course",
     path: "/intensive-driving-course",
-    title: "Intensive Driving Course in Victoria, BC",
+    title: "Intensive Driving Course in Victoria & Langford, BC",
     metaDescription:
-      "Intensive driving course support in Victoria and Langford for learners who want focused lessons, faster progress, and structured road test preparation.",
+      "Build driving skills faster with an intensive driving course in Victoria and Langford. Get focused practice and road test preparation. Book today.",
     eyebrow: "Intensive training",
     h1: "Intensive driving course in Victoria",
     heroDescription:
@@ -1300,9 +1247,9 @@ export const seoLandingPages: SeoLandingPage[] = [
         description: "Read the dated update and transition examples behind the new model.",
       },
       {
-        label: "Independent knowledge test practice",
-        href: "/knowledge-test-practice",
-        description: "Use unofficial practice to supplement ICBC's official guide and practice test.",
+        label: "Knowledge test guide and practice strategy",
+        href: "/knowledge-test-guide",
+        description: "Review the test process, study strategy and links to ICBC's official practice test.",
       },
       {
         label: "Driving lessons in Victoria",
@@ -1532,9 +1479,9 @@ export const seoLandingPages: SeoLandingPage[] = [
     relatedLinksTitle: "Check the official path before choosing training",
     relatedLinks: [
       {
-        label: "Independent knowledge-test practice",
-        href: "/knowledge-test-practice",
-        description: "Use this unofficial study aid only as a supplement to ICBC's guide and practice test.",
+        label: "Knowledge test guide and practice strategy",
+        href: "/knowledge-test-guide",
+        description: "Review the test process, study strategy and links to ICBC's official practice test.",
       },
       {
         label: "Review ordinary lesson information",

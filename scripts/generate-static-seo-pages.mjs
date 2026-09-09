@@ -75,12 +75,12 @@ const landingPages = [
     path: "/driving-lessons/",
     title: "ICBC Driving Lessons in Victoria & Langford, BC",
     description:
-      "Beginner driving lessons in Victoria, Langford, and Greater Victoria with road-test-focused coaching, dual-control vehicles, and calm instructor support.",
+      "Driving lessons in Victoria, Langford, and Greater Victoria with road-test-focused coaching, dual-control vehicles, and calm instructor support.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons.webp",
     faqs: [
       {
-        question: "Do beginners need any experience before booking?",
-        answer: "No. Beginner lessons can start with basic vehicle control and progress at the student's pace.",
+        question: "Do I need any driving experience before booking?",
+        answer: "No. Lessons can start with basic vehicle control and progress at the student's pace.",
       },
       {
         question: "Are lessons aligned with ICBC road test expectations?",
@@ -209,23 +209,6 @@ const landingPages = [
     ],
   },
   {
-    path: "/defensive-driving/",
-    title: "Defensive Driving Course in Victoria, BC",
-    description:
-      "Defensive driving course in Victoria and Langford focused on hazard perception, safe spacing, traffic awareness, and confident decision-making.",
-    image: "https://www.shanayasdrivingschool.com/landing/defensive-driving.webp",
-    faqs: [
-      {
-        question: "Is defensive driving only for experienced drivers?",
-        answer: "No. Learners can start defensive habits early once they understand basic vehicle control.",
-      },
-      {
-        question: "Can defensive driving help with road test readiness?",
-        answer: "Yes. Strong observation, spacing, and judgment are important parts of a confident road test.",
-      },
-    ],
-  },
-  {
     path: "/road-test-prep/",
     title: "ICBC Road Test Preparation in B.C.",
     description:
@@ -319,9 +302,9 @@ const landingPages = [
   },
   {
     path: "/intensive-driving-course/",
-    title: "Intensive Driving Course in Victoria, BC",
+    title: "Intensive Driving Course in Victoria & Langford, BC",
     description:
-      "Intensive driving course support in Victoria and Langford for learners who want focused lessons, faster progress, and structured road test preparation.",
+      "Build driving skills faster with an intensive driving course in Victoria and Langford. Get focused practice and road test preparation. Book today.",
     image: "https://www.shanayasdrivingschool.com/landing/intensive-driving-course.webp",
     faqs: [
       {
@@ -543,7 +526,7 @@ const publicPages = [
     path: "/courses/",
     title: "Driving Courses in Victoria & Langford, BC",
     description:
-      "Browse beginner lessons, ICBC road test prep, parking practice, defensive driving, refresher training, and newcomer driving support.",
+      "Explore driving courses in Victoria and Langford, BC, from beginner lessons to road test prep. View courses and book your lesson today.",
   },
   {
     path: "/packages/",
@@ -583,18 +566,6 @@ const publicPages = [
     robots: "noindex, follow",
   },
   {
-    path: "/newcomers-guide/",
-    title: "Moving to B.C.: Exchange or Get a Licence",
-    description:
-      "Choose the correct ICBC path to exchange a valid licence or start B.C.'s Class 7 process, with document, experience, deadline, fee and source details.",
-  },
-  {
-    path: "/knowledge-test-practice/",
-    title: "B.C. Class 7 Knowledge Test Practice",
-    description:
-      "Use an independent 20-question Class 7 study bank, then verify every rule with ICBC's official guide and practice test.",
-  },
-  {
     path: "/knowledge-test-guide/",
     title: "B.C. Class 7 Knowledge Test Guide",
     description:
@@ -614,78 +585,88 @@ const publicPages = [
   },
   {
     path: "/courses/beginner-driving-course/",
-    title: "Beginner's Driving Course in Victoria, BC",
-    description: "Perfect for first-time drivers, covering essential car control, traffic rules, and safe driving habits.",
+    title: "Beginner Driving Course Victoria & Langford",
+    description:
+      "Learn car control, traffic rules, road awareness, and safe driving habits with beginner lessons in Victoria, BC. Start driving with confidence.",
   },
   {
     path: "/courses/knowledge-test-prep-course/",
-    title: "Knowledge Test Prep Course in Victoria",
-    description: "Build confidence for the knowledge test by learning road signs, traffic rules, and exam-style practice questions.",
+    title: "ICBC Knowledge Test Prep Victoria & Langford",
+    description:
+      "Prepare for your ICBC knowledge test with road signs, traffic rules, and practice questions in Victoria and Langford. Build confidence and enrol today.",
   },
   {
     path: "/courses/parking-course/",
-    title: "Parking Course | Shanaya's Driving School",
-    description: "Dedicated parking practice for parallel parking, stall parking, and low-speed vehicle control.",
+    title: "Parking Lessons in Victoria & Langford, BC",
+    description:
+      "Master parallel parking, stall parking, and low-speed control with parking lessons in Victoria and Langford. Build confidence. Book your lessons today.",
   },
   {
     path: "/courses/make-your-own-class/",
-    title: "Make Your Own Class | Shanaya's Driving School",
-    description: "Choose your own lesson focus based on the area where you want the most support.",
+    title: "Custom Driving Lessons in Victoria & Langford",
+    description:
+      "Choose a custom driving lesson focused on your weak areas and goals in Victoria and Langford. Get personalised coaching. Book your lesson today.",
   },
   {
     path: "/courses/lesson-road-test-prep-course/",
     title: "Road Test Package | Shanaya's Driving School",
     description:
       "Road test preparation and a rental car for your ICBC road test in Victoria BC. Add 60-minute lessons if you want extra practice before test day.",
+    robots: "noindex, follow",
   },
   {
     path: "/courses/road-test-prep-course/",
     title: "Road Test Prep Course | Shanaya's Driving School",
     description: "Get focused practice on test routes, key maneuvers, and ICBC road test standards to improve your chances of passing.",
+    robots: "noindex, follow",
   },
   {
     path: "/courses/defensive-driving-course/",
-    title: "Defensive Driving Course in Victoria",
+    title: "Defensive Driving Course Victoria & Langford",
     description:
-      "Focused on defensive driving techniques, hazard perception, and proactive strategies to reduce risk in complex traffic conditions.",
+      "Improve hazard awareness, risk management, and defensive driving skills in Victoria, BC. Build safer driving habits. Enrol in a course today.",
   },
   {
     path: "/courses/new-to-canada/",
-    title: "New to Canada Driving Course",
-    description: "Helpful for drivers adjusting to local road rules, driving culture, and test expectations in Canada.",
+    title: "Driving Course for Newcomers to Canada",
+    description:
+      "New to Canada? Learn BC road rules, signs, and driving habits with practical lessons in Victoria and Langford. Book your course today.",
   },
   {
     path: "/courses/refresher-driving-course/",
-    title: "Refresher Driving Course in Victoria",
+    title: "Refresher Driving Course Victoria & Langford",
     description:
-      "Ideal for licensed drivers returning after a break or preparing to re-test, focused on rebuilding confidence and refreshing core driving skills.",
+      "Rebuild driving confidence and refresh core skills with refresher driving lessons in Victoria. Get back on the road safely. Book today.",
   },
   {
     path: "/courses/mock-test-evaluation/",
-    title: "Mock Test Evaluation | Shanaya's Driving School",
-    description: "A realistic road test simulation with feedback on what to improve before test day.",
+    title: "Mock Road Test Evaluation in Victoria & Langford BC",
+    description:
+      "Prepare for your road test in Victoria and Langford with a realistic mock test, instructor feedback, and an improvement plan. Book your evaluation today.",
   },
   {
     path: "/courses/confidence-booster-course/",
-    title: "Confidence Booster Course in Victoria",
-    description: "Perfect for drivers with basic skills who need a confidence boost to feel comfortable and safe on the road.",
+    title: "Confidence Driving Course Victoria & Langford",
+    description:
+      "Build confidence behind the wheel with guided driving practice in Victoria and Langford. Improve road comfort and skills with structured lessons. Book today.",
   },
   {
     path: "/courses/advanced-driving-course/",
-    title: "Advanced Driving Course | Shanaya's Driving School",
+    title: "Advanced Driving Course Victoria & Langford",
     description:
-      "Designed for experienced drivers to refine skills and apply advanced driving techniques for safer, more controlled driving.",
+      "Refine vehicle control, precision driving, traffic strategy, and road safety with advanced driving lessons in Victoria, BC. Enrol today.",
   },
   {
     path: "/courses/winter-driving-course/",
-    title: "Winter Driving Course | Shanaya's Driving School",
-    description: "Learn essential winter driving skills for icy and low-visibility conditions.",
+    title: "Winter Driving Course in Victoria & Langford",
+    description:
+      "Learn snow driving, ice control, and low-visibility skills with a winter driving course in Victoria and Langford. Build confidence. Enrol today.",
   },
   {
     path: "/courses/seniors-driving-course/",
-    title: "Enhanced Road Assessment in Victoria",
+    title: "Enhanced Senior Driver Road Assessment Victoria & Langford",
     description:
-      "Tailored for senior drivers, focusing on safe habits, awareness, reaction time, and refreshing important road rules.",
+      "Refresh safe driving habits, road rules, awareness, and reaction skills with senior driving lessons in Victoria, BC. Book an assessment today.",
   },
   {
     path: "/packages/fresh-start/",
@@ -709,6 +690,90 @@ const publicPages = [
     path: "/extras/car-rental/",
     title: "Car Rental for Road Test Day",
     description: "Book an ICBC-approved training car for road test day when you want to test in a familiar vehicle.",
+  },
+  {
+    path: "/blog/parents-teen-drivers-victoria-bc-guide/",
+    title: "Parents of Teen Drivers in Victoria: A Practical Guide",
+    description:
+      "Help your teen learn to drive in Victoria with current B.C. learner rules, calmer coaching, a staged practice plan and signs that outside instruction may help.",
+    type: "article",
+    image: `${siteOrigin}/course-pictures/beginner-driving-course.jpg`,
+    article: {
+      headline: "For Parents of Teen Drivers in Victoria: A Practical Guide to Safer Practice",
+      section: "Teen Driver Guide",
+      datePublished: "2026-09-07",
+      dateModified: "2026-09-07",
+    },
+  },
+  {
+    path: "/blog/learning-to-drive-as-an-adult-victoria/",
+    title: "Adult Driving Lessons in Victoria, BC",
+    description:
+      "A practical guide for adult learners in Victoria, BC: choose the right licence path, prepare for a first lesson, manage nerves and plan practice without guessing.",
+    type: "article",
+    image: `${siteOrigin}/landing/nervous-driver-lessons-victoria.webp`,
+    article: {
+      headline: "Learning to Drive as an Adult in Victoria: A Practical Starting Guide",
+      section: "Adult Learners",
+      datePublished: "2026-09-07",
+      dateModified: "2026-09-07",
+    },
+  },
+  {
+    path: "/blog/mckenzie-avenue-highway-collisions-safety-lessons/",
+    title: "McKenzie Avenue Collisions: New Driver Lessons",
+    description:
+      "Learn what two McKenzie Avenue highway collisions can teach new drivers about following distance, merging and defensive driving in Victoria, BC.",
+    type: "article",
+    image: `${siteOrigin}/landing/defensive-driving.webp`,
+    article: {
+      headline: "Two McKenzie Avenue Highway Collisions: Essential Safety Lessons for New Drivers",
+      section: "Local Road Safety",
+      datePublished: "2026-09-06",
+      dateModified: "2026-09-06",
+    },
+  },
+  {
+    path: "/blog/late-night-crash-langford-night-driving-safety/",
+    title: "Late-Night Crash Near Langford: Safety Tips",
+    description:
+      "A late-night crash near Langford highlights night-driving safety for new drivers, including visibility, glare, fatigue and defensive highway habits.",
+    type: "article",
+    image: `${siteOrigin}/course-pictures/winter-driving-course.jpg`,
+    article: {
+      headline: "A Late-Night Crash Near Langford Is a Reminder Every Driver Needs",
+      section: "Night Driving",
+      datePublished: "2026-09-06",
+      dateModified: "2026-09-06",
+    },
+  },
+  {
+    path: "/blog/choosing-driving-school-first-time-victoria-langford/",
+    title: "Choosing a Driving School in Victoria or Langford",
+    description:
+      "Compare driving schools in Victoria and Langford by instructor licensing, lesson structure, vehicle safety, scheduling, reviews, pricing and road-test preparation.",
+    type: "article",
+    image: `${siteOrigin}/why-choose/licensed-instructors.webp`,
+    article: {
+      headline: "Choosing a Driving School for the First Time? Here's What Actually Matters",
+      section: "Choosing a School",
+      datePublished: "2026-09-06",
+      dateModified: "2026-09-06",
+    },
+  },
+  {
+    path: "/blog/six-mile-exit-pileup-lessons-student-drivers/",
+    title: "Six Mile Collision: Lessons for Student Drivers",
+    description:
+      "A four-vehicle collision near Six Mile exit offers practical lessons for student drivers about following distance, hazard awareness and highway practice.",
+    type: "article",
+    image: `${siteOrigin}/course-pictures/advanced-driving-course.jpg`,
+    article: {
+      headline: "What a Four-Vehicle Collision Near Six Mile Exit Can Teach Student Drivers",
+      section: "Highway Driving",
+      datePublished: "2026-09-06",
+      dateModified: "2026-09-06",
+    },
   },
   {
     path: "/blog/how-many-driving-lessons-before-victoria-driving-test/",
@@ -767,21 +832,8 @@ const publicPages = [
     },
   },
   {
-    path: "/blog/how-to-pass-driving-test-victoria-bc/",
-    title: "Class 7 Road Test Victoria: Preparation Guide",
-    description:
-      "Prepare for a B.C. Class 7 road test in Victoria with verified ICBC eligibility, practice, booking, fee, vehicle and test-day information.",
-    type: "article",
-    image: `${siteOrigin}/blog/how-to-pass-driving-test-victoria-bc.webp`,
-    article: {
-      headline: "B.C. Class 7 Road Test: Victoria Preparation Guide",
-      section: "Road Test Guide",
-      datePublished: "2026-07-05",
-      dateModified: "2026-07-21",
-    },
-  },
-  {
     path: "/blog/icbc-road-test-tips-victoria/",
+    canonicalPath: "/road-test-prep-victoria/",
     title: "Class 7 Road Test Tips for Victoria, B.C.",
     description:
       "Apply ICBC's Class 7 road-test skills across Greater Victoria hills, one-way streets, roundabouts and cyclist traffic without relying on route claims.",
@@ -810,6 +862,7 @@ const publicPages = [
   },
   {
     path: "/blog/defensive-driving/",
+    canonicalPath: "/courses/defensive-driving-course/",
     title: "Defensive Driving in B.C.: Practical Guide",
     description:
       "Use ICBC's See–Think–Do method to scan, manage space, choose a safe speed and respond calmly to common driving risks in B.C.",
@@ -824,6 +877,7 @@ const publicPages = [
   },
   {
     path: "/blog/newcomers-guide-bc/",
+    canonicalPath: "/courses/new-to-canada/",
     title: "Moving to B.C.: Licence Deadlines & 5 Road Rules",
     description:
       "A source-checked overview of B.C.'s 90-day licence deadline, newcomer licensing paths, vehicle deadline, and five road rules for passenger drivers.",
@@ -936,6 +990,7 @@ const buildArticleSchema = (page, canonical, image, content) => {
     "@context": "https://schema.org",
     "@type": page.article.articleType ?? "BlogPosting",
     "@id": `${canonical}#article`,
+    url: canonical,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     headline: page.article.headline,
     description: page.description,
@@ -1044,7 +1099,6 @@ const navGroups = [
       "/",
       "/driving-lessons/",
       "/road-test-prep/",
-      "/defensive-driving/",
       "/courses/",
       "/packages/",
       "/pricing/",
@@ -1065,8 +1119,6 @@ const navGroups = [
     label: "Guides and resources",
     paths: [
       "/knowledge-test-guide/",
-      "/knowledge-test-practice/",
-      "/newcomers-guide/",
       "/bc-graduated-licensing-program/",
       "/icbc-approved-driving-school/",
     ],
@@ -1079,10 +1131,20 @@ const navGroups = [
 /* Blog routes are linked by the "Driving tips and guides" nav instead. */
 const navPages = () => pages.filter((page) => !page.path.startsWith("/blog"));
 
-const navLabelFor = (page, content) =>
-  content.products.get(page.path)?.h1 ??
-  content.landingPages.get(page.path)?.h1 ??
-  page.title.split(" | ")[0];
+const navLabelFor = (page, content, currentPage) => {
+  if (currentPage.path === "/driving-lessons/") {
+    if (page.path === "/courses/beginner-driving-course/") return "Foundation Driving Course";
+    if (page.path === "/beginner-driving-lessons-victoria/") {
+      return "First-Time Driver Lessons in Victoria, BC";
+    }
+  }
+
+  return (
+    content.products.get(page.path)?.h1 ??
+    content.landingPages.get(page.path)?.h1 ??
+    page.title.split(" | ")[0]
+  );
+};
 
 /* This script reads and rewrites public_html/index.html, so running it twice
    without a `vite build` in between feeds its own output back in as the
@@ -1125,7 +1187,7 @@ const setSiteNav = (html, currentPage, content) => {
         remaining.delete(page.path);
         return page.path === currentPage.path
           ? null
-          : `<a href="${siteOrigin}${page.path}">${escapeHtml(navLabelFor(page, content))}</a>`;
+          : `<a href="${siteOrigin}${page.path}">${escapeHtml(navLabelFor(page, content, currentPage))}</a>`;
       })
       .filter(Boolean);
 
@@ -1395,11 +1457,12 @@ const buildBlogIndexBody = (page, blogContent) => {
        falls back to the organization when a post has none. */
     const namedAuthor = content.resolveAuthor(post.authorId);
     const byline = namedAuthor ? namedAuthor.name : post.author;
+    const dateLabel = post.datePublished === post.dateModified ? "Published" : "Updated";
 
     parts.push(
       `<li><article><h2><a href="${siteOrigin}/blog/${slug}/">${escapeHtml(post.title)}</a></h2>` +
         `${para(post.description)}` +
-        `${para(`${byline} · ${post.category} · Updated ${post.date} · ${post.readTime}`)}</article></li>`,
+        `${para(`${byline} · ${post.category} · ${dateLabel} ${post.date} · ${post.readTime}`)}</article></li>`,
     );
   });
 
@@ -1442,6 +1505,18 @@ const buildKnowledgeTestGuideBody = (page) => {
     `</section>`,
     `<section><h2>Study with official materials</h2>`,
     para("Read ICBC's Learn to Drive Smart guide first, then use ICBC's official practice knowledge test. Private practice questions should only supplement these sources."),
+    `</section>`,
+    `<section><h2>Learn through practice</h2>`,
+    para("Use multiple-choice practice after reading the official guide. Review every incorrect answer against Learn to Drive Smart, and practise reading accurately without rushing. The official Class 7 test allows up to 45 minutes for 50 questions."),
+    `</section>`,
+    `<section><h2>ICBC knowledge test preparation strategies</h2>`,
+    list([
+      "Start with ICBC's Learn to Drive Smart guide before using practice questions.",
+      "Learn road-sign families by shape and colour.",
+      "Return to the official guide for every missed or uncertain rule.",
+      "Choose one of ICBC's available test languages that you understand well.",
+      "Repeat ICBC's official practice test and revisit weak topics before another attempt.",
+    ]),
     `</section>`,
     `<section><h2>Online workflow</h2>`,
     list([
@@ -1645,7 +1720,11 @@ const buildBlogBody = (post, page) => [
   para(post.description),
   ...buildBylineParts(page, {
     fallback: `By ${post.author}`,
-    extra: [`Updated ${post.date}`, post.readTime, post.category],
+    extra: [
+      `${post.datePublished === post.dateModified ? "Published" : "Updated"} ${post.date}`,
+      post.readTime,
+      post.category,
+    ],
   }),
   post.html,
   `</article>`,
@@ -1654,16 +1733,17 @@ const buildBlogBody = (post, page) => [
   .join("\n        ");
 
 const renderPageHtml = (template, page, content) => {
-  const canonical = `${siteOrigin}${page.path}`;
+  const canonical = `${siteOrigin}${page.canonicalPath ?? page.path}`;
   const image = page.image ?? defaultImage;
   const type = page.type ?? "website";
+  const isCanonicalPage = !page.canonicalPath || page.canonicalPath === page.path;
   let html = template;
 
   html = setTitle(html, page.title);
   html = setCanonical(html, canonical);
   html = setHreflangLinks(html, canonical);
   html = setMetaName(html, "description", page.description);
-  html = setMetaName(html, "robots", page.robots ?? "index, follow");
+  html = setMetaName(html, "robots", page.robots ?? "index, follow, max-image-preview:large");
   html = setMetaName(html, "author", siteName);
   html = setMetaName(html, "twitter:card", "summary_large_image");
   html = setMetaName(html, "twitter:title", page.title);
@@ -1678,9 +1758,18 @@ const renderPageHtml = (template, page, content) => {
   html = setMetaProperty(html, "og:description", page.description);
   html = setMetaProperty(html, "og:image", image);
   html = setMetaProperty(html, "og:image:alt", `${siteName} branded social preview`);
+  if (page.article && isCanonicalPage) {
+    html = setMetaProperty(html, "article:published_time", page.article.datePublished);
+    html = setMetaProperty(html, "article:modified_time", page.article.dateModified);
+    html = setMetaProperty(html, "article:section", page.article.section);
+  }
   html = insertJsonLd(html, "local-business-schema", localBusinessSchema);
-  html = insertJsonLd(html, "faq-schema", buildFaqSchema(page.faqs));
-  html = insertJsonLd(html, "article-schema", buildArticleSchema(page, canonical, image, content));
+  html = insertJsonLd(html, "faq-schema", isCanonicalPage ? buildFaqSchema(page.faqs) : null);
+  html = insertJsonLd(
+    html,
+    "article-schema",
+    isCanonicalPage ? buildArticleSchema(page, canonical, image, content) : null,
+  );
   html = insertJsonLd(
     html,
     "profile-page-schema",
@@ -1688,7 +1777,7 @@ const renderPageHtml = (template, page, content) => {
       ? content.authorSchema.buildProfilePageJsonLd(siteOrigin, page.author, `${siteOrigin}/#localbusiness`)
       : null,
   );
-  html = insertJsonLd(html, "breadcrumb-schema", buildBreadcrumbSchema(page.breadcrumbs));
+  html = insertJsonLd(html, "breadcrumb-schema", isCanonicalPage ? buildBreadcrumbSchema(page.breadcrumbs) : null);
 
   const blogSlug = page.path.match(/^\/blog\/([^/]+)\/$/)?.[1];
   const post = blogSlug ? content.blogPosts.get(blogSlug) : undefined;
@@ -1776,7 +1865,7 @@ guidePage.article = {
   articleType: "Article",
   headline: "B.C. Class 7 Knowledge Test: Online and In-Person Guide",
   datePublished: content.knowledgeTestGuide.publishedIso,
-  dateModified: content.knowledgeTestGuide.reviewedIso,
+  dateModified: content.knowledgeTestGuide.modifiedIso,
   section: "Learner Licensing",
   author: content.resolveAuthor(content.knowledgeTestGuide.authorId),
   reviewedBy: content.resolveAuthor(content.knowledgeTestGuide.reviewerId),
@@ -1890,6 +1979,7 @@ for (const page of pages) {
     { name: "Blog", path: "/blog/" },
     { name: post.category, path: page.path },
   ];
+  page.canonicalPath = post.canonicalPath;
 
   if (!page.article) {
     continue;
@@ -1925,6 +2015,7 @@ const assertMetadataInSync = () => {
         "blogPosts",
         {
           title: post.seoTitle ?? withBrand(post.title),
+          canonicalPath: post.canonicalPath,
           faqs: post.faqs ?? [],
           description: post.description,
           "article.headline": post.title,
@@ -1934,6 +2025,7 @@ const assertMetadataInSync = () => {
         },
         {
           title: page.title,
+          canonicalPath: page.canonicalPath,
           description: page.description,
           faqs: page.faqs ?? [],
           "article.headline": page.article?.headline,
@@ -1973,16 +2065,22 @@ const assertSitemapCoverage = async () => {
   const listed = new Set(
     [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, loc]) => loc.replace(siteOrigin, "")),
   );
-  /* A noindex route must be absent from the sitemap: listing a page you have told
-     Google not to index is a contradiction, and Search Console reports it as one.
-     So those routes are held to the opposite rule from every other page. */
-  const indexable = pages.filter((page) => !String(page.robots ?? "").includes("noindex"));
+  /* Noindex routes and pages canonicalized elsewhere must be absent from the
+     sitemap, which should list only the preferred indexable URLs. */
+  const indexable = pages.filter(
+    (page) =>
+      !String(page.robots ?? "").includes("noindex") &&
+      (!page.canonicalPath || page.canonicalPath === page.path),
+  );
   const noIndexed = pages.filter((page) => String(page.robots ?? "").includes("noindex"));
+  const canonicalizedElsewhere = pages.filter(
+    (page) => page.canonicalPath && page.canonicalPath !== page.path,
+  );
 
   const generated = new Set(indexable.map((page) => page.path));
   const missing = [...generated].filter((page) => !listed.has(page));
   const stale = [...listed].filter((loc) => !generated.has(loc));
-  const wrongfullyListed = noIndexed.filter((page) => listed.has(page.path));
+  const wrongfullyListed = [...noIndexed, ...canonicalizedElsewhere].filter((page) => listed.has(page.path));
 
   if (missing.length || stale.length || wrongfullyListed.length) {
     throw new Error(
@@ -1990,7 +2088,7 @@ const assertSitemapCoverage = async () => {
         "public/sitemap.xml is out of sync with the pre-rendered routes:",
         ...missing.map((page) => `  missing from sitemap: ${page}`),
         ...stale.map((loc) => `  in sitemap but not generated: ${loc}`),
-        ...wrongfullyListed.map((page) => `  noindex route must not be in sitemap: ${page.path}`),
+        ...wrongfullyListed.map((page) => `  non-canonical route must not be in sitemap: ${page.path}`),
       ].join("\n"),
     );
   }

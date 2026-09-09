@@ -106,7 +106,7 @@ export const siteFaqs: SiteFaq[] = [
     category: "knowledge-test",
     question: "What is on the B.C. Class 7 knowledge test, and what does it cost?",
     answer:
-      "It's 50 multiple-choice questions. You need 40 right to pass, you get up to 45 minutes, and each attempt costs $15. That fee is set in law by B.C.'s [Motor Vehicle Fees Regulation](https://www.bclaws.gov.bc.ca/civix/document/id/loo61/loo61/334_91), so you can check it at the source instead of trusting somebody's summary. The format is the same whether you take [ICBC's test](https://www.icbc.com/driver-licensing/new-drivers/online-knowledge-test) online or at an office. Our [knowledge-test guide](/knowledge-test-guide) walks through both, and the [practice questions](/knowledge-test-practice) use the same style.",
+      "It's 50 multiple-choice questions. You need 40 right to pass, you get up to 45 minutes, and each attempt costs $15. That fee is set in law by B.C.'s [Motor Vehicle Fees Regulation](https://www.bclaws.gov.bc.ca/civix/document/id/loo61/loo61/334_91), so you can check it at the source instead of trusting somebody's summary. The format is the same whether you take [ICBC's test](https://www.icbc.com/driver-licensing/new-drivers/online-knowledge-test) online or at an office. Our [knowledge-test guide](/knowledge-test-guide) walks through both formats and links to ICBC's official practice test.",
     keywords: ["written test", "theory test", "50 questions", "pass mark", "$15", "learners test"],
   },
   {
@@ -256,7 +256,7 @@ export const siteFaqs: SiteFaq[] = [
     category: "lessons",
     question: "Do I need a learner's licence before my first in-car lesson?",
     answer:
-      "Yes. You need a valid licence for the class of vehicle to drive on a public road in B.C., so a Class 7 student needs the L in hand before any in-car lesson. We can't legally put an unlicensed driver behind the wheel on a road, so please don't book hoping we'll make an exception. Bring the physical licence to every lesson. If you don't have it yet, start with the [knowledge-test guide](/knowledge-test-guide) and [practice questions](/knowledge-test-practice), or the in-class [Knowledge Test Prep Course](/courses/knowledge-test-prep-course), then get your L through [ICBC](https://www.icbc.com/driver-licensing/new-drivers/Get-your-L).",
+      "Yes. You need a valid licence for the class of vehicle to drive on a public road in B.C., so a Class 7 student needs the L in hand before any in-car lesson. We can't legally put an unlicensed driver behind the wheel on a road, so please don't book hoping we'll make an exception. Bring the physical licence to every lesson. If you don't have it yet, start with the [knowledge-test guide](/knowledge-test-guide), use [ICBC's official practice test](https://www.icbc.com/driver-licensing/new-drivers/practice-knowledge-test), or consider the in-class [Knowledge Test Prep Course](/courses/knowledge-test-prep-course), then get your L through [ICBC](https://www.icbc.com/driver-licensing/new-drivers/Get-your-L).",
     keywords: ["before lesson", "no licence", "first lesson", "start lessons", "prerequisite", "unlicensed"],
   },
   {
@@ -304,7 +304,7 @@ export const siteFaqs: SiteFaq[] = [
     category: "lessons",
     question: "Do lessons include defensive driving and hazard perception?",
     answer:
-      "Hazard awareness runs through ordinary instruction, and there's also a dedicated [Defensive Driving Course](/courses/defensive-driving-course): five 90-minute in-car classes on hazard perception, risk reduction, defensive techniques and traffic awareness. Our [defensive driving page](/defensive-driving) explains the approach, and the [Advanced Driving Course](/courses/advanced-driving-course) and [Winter Driving Course](/courses/winter-driving-course) extend it into complex traffic and low-grip conditions. Worth knowing before you book: these are safety programs, not ICBC test requirements, and finishing one won't shorten a licensing stage. Only an [approved GLP course](#approved-glp-course-benefit) does that.",
+      "Hazard awareness runs through ordinary instruction, and there's also a dedicated [Defensive Driving Course](/courses/defensive-driving-course): five 90-minute in-car classes on hazard perception, risk reduction, defensive techniques and traffic awareness. The [Advanced Driving Course](/courses/advanced-driving-course) and [Winter Driving Course](/courses/winter-driving-course) extend that work into complex traffic and low-grip conditions. Worth knowing before you book: these are safety programs, not ICBC test requirements, and finishing one won't shorten a licensing stage. Only an [approved GLP course](#approved-glp-course-benefit) does that.",
     keywords: ["defensive", "hazard perception", "anticipation", "safety", "advanced", "winter", "risk"],
   },
   {
@@ -406,7 +406,7 @@ export const siteFaqs: SiteFaq[] = [
     category: "other-licences",
     question: "Can newcomers or foreign-licence holders exchange a licence or prepare for a B.C. road test?",
     answer:
-      "It depends where your licence is from. A valid licence from another Canadian province or territory is exchanged directly: see [ICBC on moving from within Canada](https://www.icbc.com/driver-licensing/moving-bc/Moving-from-within-canada). Some foreign licences can be exchanged without a knowledge or road test while others require testing, so check [ICBC's moving from another country page](https://www.icbc.com/driver-licensing/moving-bc/moving-from-another-country) for the current exchange list rather than an older country list you find elsewhere. Either way, bring accepted ID, your current licence, the fees, and any [driving-experience record](https://www.icbc.com/driver-licensing/moving-bc/Proving-your-driving-experience) ICBC asks for, because an incomplete record can change which licence stage ICBC issues you. Our [newcomers guide](/newcomers-guide) walks through both paths, and the [New to Canada course](/courses/new-to-canada) covers local road rules and test expectations if you do need to test.",
+      "It depends where your licence is from. A valid licence from another Canadian province or territory is exchanged directly: see [ICBC on moving from within Canada](https://www.icbc.com/driver-licensing/moving-bc/Moving-from-within-canada). Some foreign licences can be exchanged without a knowledge or road test while others require testing, so check [ICBC's moving from another country page](https://www.icbc.com/driver-licensing/moving-bc/moving-from-another-country) for the current exchange list rather than an older country list you find elsewhere. Either way, bring accepted ID, your current licence, the fees, and any [driving-experience record](https://www.icbc.com/driver-licensing/moving-bc/Proving-your-driving-experience) ICBC asks for, because an incomplete record can change which licence stage ICBC issues you. Our [newcomers guide](/blog/newcomers-guide-bc) walks through both paths, and the [New to Canada course](/courses/new-to-canada) covers local road rules and test expectations if you do need to test.",
     keywords: ["newcomer", "immigrant", "foreign licence", "international", "exchange", "transfer", "another country", "moved here", "expat"],
   },
   {
@@ -451,7 +451,7 @@ export const faqRelatedLinks: FaqRelatedLink[] = [
   },
   {
     label: "Newcomers' licensing guide",
-    href: "/newcomers-guide",
+    href: "/blog/newcomers-guide-bc",
     description: "Exchange a valid licence or start B.C.'s Class 7 process, with documents and deadlines.",
   },
   {
