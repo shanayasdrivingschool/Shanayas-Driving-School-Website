@@ -566,6 +566,12 @@ const publicPages = [
     robots: "noindex, follow",
   },
   {
+    path: "/knowledge-test-practice/",
+    title: "B.C. Class 7 Knowledge Test Practice",
+    description:
+      "Answer up to 20 independent Class 7 practice questions, then verify every rule with ICBC's official guide and practice test.",
+  },
+  {
     path: "/knowledge-test-guide/",
     title: "B.C. Class 7 Knowledge Test Guide",
     description:
@@ -1118,6 +1124,7 @@ const navGroups = [
   {
     label: "Guides and resources",
     paths: [
+      "/knowledge-test-practice/",
       "/knowledge-test-guide/",
       "/bc-graduated-licensing-program/",
       "/icbc-approved-driving-school/",
@@ -1508,6 +1515,7 @@ const buildKnowledgeTestGuideBody = (page) => {
     `</section>`,
     `<section><h2>Learn through practice</h2>`,
     para("Use multiple-choice practice after reading the official guide. Review every incorrect answer against Learn to Drive Smart, and practise reading accurately without rushing. The official Class 7 test allows up to 45 minutes for 50 questions."),
+    `<p><a href="${siteOrigin}/knowledge-test-practice/">Open this site's independent Class 7 practice tool</a>. It supplements, but does not replace, ICBC's official materials.</p>`,
     `</section>`,
     `<section><h2>ICBC knowledge test preparation strategies</h2>`,
     list([

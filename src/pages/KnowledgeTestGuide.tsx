@@ -362,15 +362,13 @@ const KnowledgeTestGuide = () => (
               differs from ICBC&apos;s 50-question, 45-minute Class 7 test. A score here does not predict an official
               result. Verify every uncertain rule in the current official guide.
             </p>
-            <a
-              href={OFFICIAL_URLS.practiceTest}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/knowledge-test-practice"
               className="mt-3 inline-flex items-center gap-2 font-bold text-amber-950 underline underline-offset-4"
             >
-              Open ICBC&apos;s official practice test
-              <ExternalLink className="h-4 w-4" aria-hidden="true" />
-            </a>
+              Open the independent practice tool
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </aside>
         </div>
       </section>

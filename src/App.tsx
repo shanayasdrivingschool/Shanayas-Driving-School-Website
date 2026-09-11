@@ -37,6 +37,7 @@ const PackageProductPage = lazy(() => import("./pages/PackageProductPage"));
 const PaymentPlanOptions = lazy(() => import("./pages/PaymentPlanOptions"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
+const KnowledgeTestPractice = lazy(() => import("./pages/KnowledgeTestPractice"));
 const KnowledgeTestGuide = lazy(() => import("./pages/KnowledgeTestGuide"));
 const Policies = lazy(() => import("./pages/Policies"));
 const PolicyDetail = lazy(() => import("./pages/PolicyDetail"));
@@ -129,7 +130,7 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/newcomers-guide" element={<Navigate to="/blog/newcomers-guide-bc/" replace />} />
-                <Route path="/knowledge-test-practice" element={<Navigate to="/knowledge-test-guide/" replace />} />
+                <Route path="/knowledge-test-practice" element={<KnowledgeTestPractice />} />
                 <Route path="/knowledge-test-guide" element={<KnowledgeTestGuide />} />
                 <Route path="/policies" element={<Policies />} />
                 <Route path="/policies/:policyId" element={<PolicyDetail />} />
@@ -186,4 +187,3 @@ const App = () => (
 );
 
 export default App;
-

@@ -222,6 +222,16 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
       { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide" },
     ],
   },
+  "/knowledge-test-practice": {
+    title: "B.C. Class 7 Knowledge Test Practice",
+    description:
+      "Answer up to 20 independent Class 7 practice questions, then verify every rule with ICBC's official guide and practice test.",
+    robots: "index, follow",
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "Class 7 Knowledge Test Practice", path: "/knowledge-test-practice" },
+    ],
+  },
   /* The FAQ hub is its own page rather than an SEO landing page, so its title,
      description and FAQPage schema come straight from src/data/siteFaqs.ts. The
      schema text needs the inline [label](href) citations stripped back out. */
