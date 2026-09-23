@@ -73,9 +73,9 @@ const localBusinessSchema = {
 const landingPages = [
   {
     path: "/driving-lessons/",
-    title: "ICBC Driving Lessons in Victoria & Langford, BC",
+    title: "ICBC Driving Lessons Victoria BC",
     description:
-      "Driving lessons in Victoria, Langford, and Greater Victoria with road-test-focused coaching, dual-control vehicles, and calm instructor support.",
+      "Learn safe, practical driving with professional driving lessons in Victoria, BC. Get personalized instruction for beginners and experienced drivers.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons.webp",
     faqs: [
       {
@@ -90,9 +90,9 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-langford/",
-    title: "Driving Lessons in Langford, BC",
+    title: "Driving Lessons Langford BC | Drive With Confidence",
     description:
-      "Langford driving school with road-test-focused coaching, dual-control cars, and lessons that start from our Leigh Rd office in the Westshore.",
+      "Build confidence with professional driving lessons in Langford, BC. Book now to learn road skills, traffic rules, and safe driving techniques.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-langford.webp",
     faqs: [
       {
@@ -114,9 +114,9 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-colwood/",
-    title: "Driving Lessons in Colwood, BC",
+    title: "Driving Lessons Colwood BC | Learn & Drive Confidently",
     description:
-      "Driving lessons in Colwood and the Westshore, BC with road-test-focused coaching, dual-control cars, and practice on Sooke Road and Royal Bay.",
+      "Improve your driving skills with professional driving lessons in Colwood, BC. Get practical, personalized instruction for safer and more confident driving.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-colwood.webp",
     faqs: [
       {
@@ -162,9 +162,9 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-view-royal/",
-    title: "Driving Lessons in View Royal, BC",
+    title: "Driving Lessons View Royal BC | Drive Smarter",
     description:
-      "Driving lessons in View Royal and the Westshore, BC with road-test-focused coaching, dual-control cars, and practice on Highway 1.",
+      "Learn safe and confident driving with professional driving lessons in View Royal, BC. Get practical instruction tailored to your driving needs.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-view-royal.webp",
     faqs: [
       {
@@ -186,9 +186,9 @@ const landingPages = [
   },
   {
     path: "/nervous-driver-lessons-victoria/",
-    title: "Nervous Driver Lessons in Victoria, BC",
+    title: "Nervous Driver Lessons Victoria | Build Confidence",
     description:
-      "Calm, patient driving lessons for nervous drivers in Victoria, BC. Judgment-free coaching, dual-control cars, and lessons paced to build confidence at your speed.",
+      "Feel more confident behind the wheel with supportive nervous driver lessons in Victoria. Build skills at a comfortable pace with practical guidance.",
     image: "https://www.shanayasdrivingschool.com/landing/nervous-driver-lessons-victoria.webp",
     faqs: [
       {
@@ -232,9 +232,9 @@ const landingPages = [
   },
   {
     path: "/road-test-prep-victoria/",
-    title: "Road Test Prep in Victoria, BC",
+    title: "Road Test Prep Victoria | Get Road-Ready",
     description:
-      "ICBC road test preparation in Victoria, BC. Practice the Saanich and Victoria test-centre routes with mock tests, parking drills, and examiner-style feedback before test day.",
+      "Get focused road test prep in Victoria with practical driving guidance, mock tests, and ICBC-focused techniques. Start your road test prep today!",
     image: "https://www.shanayasdrivingschool.com/landing/road-test-prep-victoria.webp",
     faqs: [
       {
@@ -256,9 +256,9 @@ const landingPages = [
   },
   {
     path: "/mock-road-test-victoria/",
-    title: "Mock Road Test in Victoria, BC",
+    title: "Mock Road Test Victoria | Practice With Confidence",
     description:
-      "Book a mock ICBC road test in Victoria, BC. A full practice run on the real Saanich and Victoria routes with examiner-style scoring and feedback before your test.",
+      "Prepare for your ICBC road test with a realistic mock road test in Victoria. Practice key skills and identify areas to improve. Book your mock test today!",
     image: "https://www.shanayasdrivingschool.com/landing/mock-road-test-victoria.webp",
     faqs: [
       {
@@ -285,9 +285,9 @@ const landingPages = [
   },
   {
     path: "/road-test-vehicle/",
-    title: "ICBC Road Test Car Rental in Victoria",
+    title: "Road Test Vehicle Victoria | Test-Day Ready",
     description:
-      "Book an ICBC-approved road test vehicle rental in Victoria or Langford and arrive at your ICBC road test in a familiar training car.",
+      "Need a reliable vehicle for your ICBC road test? Use a properly equipped road test vehicle and feel prepared on test day. Reserve your vehicle today!",
     image: "https://www.shanayasdrivingschool.com/landing/road-test-vehicle.webp",
     faqs: [
       {
