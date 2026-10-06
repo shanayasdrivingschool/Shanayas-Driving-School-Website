@@ -276,7 +276,7 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
   "/policies": {
     title: "Policies | Shanaya's Driving School",
     description:
-      "Review Shanaya's Driving School policies for privacy, payments, installments, cookies, and website terms.",
+      "Review Shanaya's Driving School policies for student services, road tests, cancellations, privacy, payments, and website terms.",
     breadcrumbs: [
       { name: "Home", path: "/" },
       { name: "Policies", path: "/policies" },
@@ -365,7 +365,16 @@ const localBusinessJsonLd: JsonLdObject = {
       itemOffered: {
         "@type": "Service",
         name: "Defensive driving course",
-        areaServed: "Victoria, BC",
+        areaServed: [
+          "Victoria, BC",
+          "Langford, BC",
+          "Colwood, BC",
+          "Sidney, BC",
+          "Metchosin, BC",
+          "Sooke, BC",
+          "Duncan, BC",
+          "Salt Spring Island, BC",
+        ],
       },
     },
   ],

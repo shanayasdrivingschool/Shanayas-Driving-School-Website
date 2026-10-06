@@ -30,6 +30,9 @@ export type SitePolicy = {
   installmentPlans?: PolicyInstallmentPlan[];
 };
 
+export const STUDENT_SERVICE_POLICY_VERSION = '2026-10-06';
+export const STUDENT_SERVICE_POLICY_PATH = '/policies/student-service-and-road-test-policy';
+
 const installmentPlans: PolicyInstallmentPlan[] = [
   { duration: '4-month plan', frequency: 'Monthly', requirement: 'Standard enrolment' },
   { duration: '6-month plan', frequency: 'Monthly', requirement: 'Standard enrolment' },
@@ -39,13 +42,91 @@ const installmentPlans: PolicyInstallmentPlan[] = [
 
 const allSitePolicies: SitePolicy[] = [
   {
+    id: 'student-service-and-road-test-policy',
+    label: 'Student Service & Road Test Policy',
+    href: STUDENT_SERVICE_POLICY_PATH,
+    effectiveDate: 'October 6, 2026',
+    cardDescription: 'The school identity, lesson fees and duration disclosures, licence requirements, vehicle occupants, payment and refund rules, and road-test responsibilities that apply before training.',
+    intro:
+      'This policy summarizes the service information each student needs before training and before paying Shanaya\'s Driving School. Read it with the itemized booking statement, Cancellation & Rescheduling Policy, and Terms & Conditions. The itemized statement for your purchase identifies the exact services, fees, lesson allocation, and applicable terms.',
+    highlights: ['Service and fee disclosure before payment', 'Valid driver licence required for in-car training', 'Clear school and ICBC road-test responsibilities'],
+    sections: [
+      {
+        title: '1. School identity and contact information',
+        paragraphs: [
+          'Shanaya\'s Driving School provides Class 5 and Class 7 driver training. The school\'s public office and contact information is listed below.',
+        ],
+        bullets: [
+          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
+          'Telephone and WhatsApp: +1 (250) 542-3673',
+          'Email: book@drivingschoolbc.ca',
+        ],
+      },
+      {
+        title: '2. Services, fees, and lesson lengths',
+        paragraphs: [
+          'Before payment, the student receives an itemized booking summary or written service statement identifying each lesson, course, package, equipment item, or vehicle rental being purchased, together with its quantity, scheduled duration, fee, discounts, estimated tax, and total in Canadian dollars.',
+          'Standard and regional in-car lesson rates are currently $89 CAD for 60 minutes and $133.50 CAD for 90 minutes before GST. Salt Spring Island rates are currently $109 CAD for 60 minutes and $163.50 CAD for 90 minutes before GST. Fixed-price courses, packages, vehicle rentals, optional lessons, and promotional prices are charged at the amount shown in the itemized statement accepted before payment.',
+          'A package price is not represented as the fee for one lesson. The written statement must identify the number and scheduled length of included lessons and the fee allocation that applies to the purchase.',
+        ],
+        note: 'Prices and availability can change before a booking is accepted. Once a booking is accepted, the itemized statement and receipt record the applicable purchased amount.',
+      },
+      {
+        title: '3. Practice-driving time',
+        paragraphs: [
+          'For every in-car lesson, the written service statement provided before payment must identify both the scheduled appointment length and the actual amount of practice-driving time the student will receive.',
+          'Pickup, a vehicle safety check, lesson briefing, breaks, and the end-of-lesson review are not described as practice-driving time unless the student is actually driving. Students should not complete payment if the practice-driving time for an in-car lesson is missing from their written statement; contact the school for a corrected statement first.',
+        ],
+      },
+      {
+        title: '4. Payment, receipts, and completed services',
+        paragraphs: [
+          'Payment is due according to the checkout total, invoice, or written installment schedule accepted by the student. The school provides an itemized record of the services or vehicle rental charged and a receipt for each payment.',
+          'A lesson, road-test preparation session, or vehicle rental that has already taken place is not refundable. Cancellation, late-notice, missed-booking, package-withdrawal, credit, and refund rules are set out in the Cancellation & Rescheduling Policy.',
+        ],
+      },
+      {
+        title: '5. Driver licence requirements',
+        paragraphs: [
+          'A student must hold a valid driver licence that permits the practical training being provided. This may be a valid B.C. learner or driver licence, or another valid licence that may lawfully be used for the student\'s circumstances.',
+          'The student must present the licence before the first in-car lesson and carry it during every practical lesson. Training cannot proceed if the student cannot produce a valid licence or if a restriction prevents the planned lesson.',
+          'The school may record the licence details needed for enrolment, training records, or an authorized road-test booking. Students must never give the school their ICBC security keyword.',
+        ],
+      },
+      {
+        title: '6. People in the training vehicle',
+        paragraphs: [
+          'A normal driving lesson has two people in the school vehicle: the enrolled student, who receives the training, and the licensed driving instructor, who teaches, observes, and intervenes when needed for safety.',
+          'Parents, guardians, friends, and other observers do not ride along during ordinary lessons. If an examiner or another person must be present for an authorized assessment, legal requirement, safety reason, or accommodation, the arrangement and that person\'s role must be explained to the student in advance.',
+          'During an ICBC road test, the vehicle occupants and their roles are determined by ICBC\'s test procedures. The school\'s instructor does not act as the examiner.',
+        ],
+      },
+      {
+        title: '7. Road-test appointments and school vehicle bookings',
+        paragraphs: [
+          'Students should book, reschedule, and cancel their road-test appointment directly through ICBC. A booking for the school\'s Road Test Package or test-day vehicle is separate from the ICBC appointment, so changing one does not automatically change the other.',
+          'If the school is ever authorized to use a student\'s driver-licence information to assist with a road-test booking, the student must first sign a consent and release form. The school will not ask for or use the student\'s ICBC security keyword.',
+          'As checked October 6, 2026, ICBC asks for at least 48 hours\' notice to cancel a road test and states that a $25 cancellation fee may apply without that notice. The student is responsible for confirming and following ICBC\'s current rule. School cancellation charges are governed separately by the Cancellation & Rescheduling Policy.',
+        ],
+      },
+      {
+        title: '8. Student acknowledgement and policy version',
+        paragraphs: [
+          'Before payment, the student must be able to review this policy, the itemized booking summary or service statement, the Cancellation & Rescheduling Policy, and the Terms & Conditions. Online acceptance records the policy version and acceptance time associated with the booking.',
+          'This page is the general school policy. It does not replace the purchase-specific written statement required to show the exact selected services, actual lesson fee, applicable extra charges, practice-driving time, and refund terms before payment.',
+        ],
+        note: `Policy version ${STUDENT_SERVICE_POLICY_VERSION}.`,
+      },
+    ],
+  },
+  {
     id: 'privacy-policy',
     label: 'Privacy Policy',
     href: '/policies/privacy-policy',
-    effectiveDate: 'April 1, 2026',
+    effectiveDate: 'October 6, 2026',
     cardDescription: 'How we collect, use, store, disclose, and protect personal information across the website, bookings, and Ruley Rewards referrals.',
     intro:
-      'Effective Date: April 1, 2026. Shanaya\'s Driving School ("Company", "we", "our", or "us") respects the privacy of individuals who interact with our website, services, and programs, including the Ruley Rewards Referral Program. By accessing our website, enrolling in driving services, participating in referral programs, or otherwise interacting with the Company, you consent to the practices described in this Privacy Policy.',
+      'Effective Date: October 6, 2026. Shanaya\'s Driving School ("Company", "we", "our", or "us") respects the privacy of individuals who interact with our website, services, and programs, including the Ruley Rewards Referral Program. By accessing our website, enrolling in driving services, participating in referral programs, or otherwise interacting with the Company, you consent to the practices described in this Privacy Policy.',
     highlights: ['PIPA and CASL compliance', 'Bookings, referral, and website data', 'Consent, access, and correction rights'],
     sections: [
       {
@@ -204,7 +285,7 @@ const allSitePolicies: SitePolicy[] = [
           'Questions or requests regarding this Privacy Policy may be directed to Shanaya\'s Driving School using the contact details below.',
         ],
         bullets: [
-          '2770 Leigh Rd, Victoria, BC V9B 4G1',
+          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
           'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],
@@ -216,11 +297,11 @@ const allSitePolicies: SitePolicy[] = [
     id: 'installment-policy',
     label: 'Installment Policy',
     href: '/policies/installment-policy',
-    effectiveDate: 'April 1, 2026',
-    cardDescription: 'Rules for approved installment plans, payment schedules, delinquency handling, and recovery terms.',
+    effectiveDate: 'October 6, 2026',
+    cardDescription: 'Rules for approved installment plans, written payment schedules, missed payments, withdrawals, and overdue balances.',
     intro:
       'This policy governs the installment facilities offered for professional driver training programs and sets out the payment, participation, delinquency, and recovery terms that apply once a student enrolls under an approved plan.',
-    highlights: ['4 approved installment options', 'Fixed monthly payment schedules', 'Binding payment obligations'],
+    highlights: ['4 approved installment options', 'Written amounts and due dates', 'Charges disclosed before enrolment'],
     installmentPlans,
     sections: [
       {
@@ -243,10 +324,11 @@ const allSitePolicies: SitePolicy[] = [
         tone: 'warning',
         paragraphs: [
           'Students remain responsible for paying every scheduled installment on time. Missing a payment may trigger operational and administrative consequences.',
+          'Any late-payment or administrative charge must be identified by amount, or by a clear method of calculation, in the written payment schedule accepted before enrolment. If no such charge is disclosed there, the school will not add it later.',
         ],
         bullets: [
           'Immediate pause on scheduled driving lessons or access to additional bookings.',
-          'Late payment surcharges or administrative follow-up on the unpaid balance.',
+          'Administrative follow-up on the unpaid balance.',
           'Restriction of access to the scheduling system until the account is brought current.',
           'Escalation to collections or formal recovery procedures if the balance remains unpaid.',
         ],
@@ -263,10 +345,10 @@ const allSitePolicies: SitePolicy[] = [
         tone: 'warning',
         paragraphs: [
           'The school reserves the right to pursue available legal and administrative remedies to recover overdue balances.',
+          'Collection, legal, or other recovery costs are not added to the student balance unless they were disclosed in the written agreement with the amount or calculation method and are recoverable under applicable law.',
         ],
         bullets: [
           'Engagement of collection support where necessary.',
-          'Recovery of additional administrative or legal costs connected to enforcement.',
           'Reporting or documentation required to support internal or external collection steps.',
         ],
       },
@@ -276,8 +358,8 @@ const allSitePolicies: SitePolicy[] = [
     id: 'in-vehicle-passenger-policy',
     label: 'In-Vehicle Passenger Policy',
     href: '/policies/in-vehicle-passenger-policy',
-    effectiveDate: 'April 1, 2026',
-    cardDescription: 'Why driving lessons are conducted one-on-one between the student and certified instructor, with no ride-along passengers, and how we keep parents informed.',
+    effectiveDate: 'October 6, 2026',
+    cardDescription: 'Why ordinary driving lessons normally include two people—the student and licensed instructor—with no ride-along passengers, and how exceptional occupants are disclosed.',
     intro:
       'At Shanaya\'s Driving School, every lesson is carefully designed to provide students with a safe, professional, and distraction-free learning environment. Our goal is not only to help students pass their road test, but also to develop the confidence, judgment, and defensive driving skills needed to become safe, responsible drivers for life.',
     highlights: ['One-on-one instruction only', 'Distraction-free vehicle environment', 'Parents updated before and after lessons'],
@@ -285,7 +367,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: 'Our In-Vehicle Passenger Policy',
         paragraphs: [
-          'To ensure the highest quality of instruction, all driving lessons are conducted exclusively between the student and the certified driving instructor. Parents, guardians, family members, friends, or other passengers are not permitted to ride along during scheduled driving lessons.',
+          'Ordinary driving lessons are conducted with two people in the school vehicle: the enrolled student and the licensed driving instructor. The student is present to receive practical training, and the instructor is present to teach, observe, and intervene when needed for safety. Parents, guardians, family members, friends, and other observers are not permitted to ride along during ordinary scheduled lessons.',
           'This policy is applied consistently to every student and is an important part of our teaching philosophy.',
         ],
       },
@@ -319,6 +401,13 @@ const allSitePolicies: SitePolicy[] = [
           'Focus entirely on the student\'s progress, safety, and specific learning needs.',
         ],
         note: 'Every student learns differently. By eliminating unnecessary distractions, we can better adapt each lesson to the student\'s pace, helping them develop safe driving habits that will benefit them well beyond their road test.',
+      },
+      {
+        title: 'Exceptional occupants and road tests',
+        paragraphs: [
+          'If an examiner or another person must be present for an authorized assessment, legal requirement, safety reason, or accommodation, the school will explain the arrangement and that person\'s role to the student in advance.',
+          'During an ICBC road test, vehicle occupants and their roles are determined by ICBC\'s procedures. The school\'s instructor does not act as the examiner.',
+        ],
       },
       {
         title: 'Parent & Guardian Communication',
@@ -382,10 +471,10 @@ const allSitePolicies: SitePolicy[] = [
     id: 'promotions-and-discounts',
     label: 'Promotions & Discounts Policy',
     href: '/policies/promotions-and-discounts',
-    effectiveDate: 'April 1, 2026',
+    effectiveDate: 'October 6, 2026',
     cardDescription: 'Who qualifies for discounts, coupon codes, and promotional offers — and why promotional pricing applies to self-funded students only, not to enrolments paid by a third-party organization.',
     intro:
-      'Effective Date: April 1, 2026. This Promotions & Discounts Policy governs all discounts, coupon codes, seasonal or promotional offers, bundle pricing, and referral credits offered by Shanaya\'s Driving School. It explains who qualifies for promotional pricing and the conditions that apply to every offer.',
+      'Effective Date: October 6, 2026. This Promotions & Discounts Policy governs all discounts, coupon codes, seasonal or promotional offers, bundle pricing, and referral credits offered by Shanaya\'s Driving School. It explains who qualifies for promotional pricing and the conditions that apply to every offer.',
     highlights: ['Self-funded students only', 'Excludes sponsored enrolments', 'No retroactive discounts'],
     sections: [
       {
@@ -437,7 +526,7 @@ const allSitePolicies: SitePolicy[] = [
           'Questions about promotional eligibility or this policy may be directed to Shanaya\'s Driving School using the details below.',
         ],
         bullets: [
-          '2770 Leigh Rd, Victoria, BC V9B 4G1',
+          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
           'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],
@@ -448,10 +537,10 @@ const allSitePolicies: SitePolicy[] = [
     id: 'cancellation-and-rescheduling',
     label: 'Cancellation & Rescheduling Policy',
     href: '/policies/cancellation-and-rescheduling',
-    effectiveDate: 'April 1, 2026',
+    effectiveDate: 'October 6, 2026',
     cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, what happens to your fee at each notice level, when a refund is available, and how credits are applied.',
     intro:
-      'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. Please read it before you book, and read it together with our Terms & Conditions, Installment Policy, and Promotions & Discounts Policy.',
+      'Effective Date: October 6, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. Please read it before you book, and read it together with our Student Service & Road Test Policy, Terms & Conditions, Installment Policy, and Promotions & Discounts Policy.',
     highlights: ['Cancellations are rescheduled or credited', '24 hours notice to reschedule free of charge', 'Refunds only for a valid reason, less a $75 admin fee'],
     sections: [
       {
@@ -558,7 +647,7 @@ const allSitePolicies: SitePolicy[] = [
       {
         title: '10. Notice within the last 2 hours, or no notice',
         paragraphs: [
-          'Where the school receives your notice less than 2 hours before the scheduled start time, the lesson/package is treated as delivered.',
+          'Where the school receives your notice less than 2 hours before the scheduled start time, the full booking fee is retained as a late-cancellation or reserved-time charge.',
         ],
         bullets: [
           'The full fee is retained.',
@@ -650,8 +739,9 @@ const allSitePolicies: SitePolicy[] = [
         title: '19. Road test bookings and the test-day vehicle',
         paragraphs: [
           'The Road Test Package includes the use of our vehicle on the day of your test. If you cancel the Road Test Package, the vehicle booking is cancelled with it, and the notice levels in sections 8 to 10 apply to the package as booked.',
-          'Your road test appointment with ICBC is a separate booking that you hold with ICBC. Cancelling with us does not cancel your ICBC appointment, and cancelling your ICBC appointment does not cancel your booking with us. You must do both.',
-          'Any fee ICBC charges for a late cancellation, a missed road test, or a rebooking is payable by you to ICBC and is not covered, credited, or refunded under this policy.',
+          'Your road test appointment with ICBC is a separate booking that you hold with ICBC. Students should book, reschedule, or cancel directly through ICBC. Cancelling with us does not cancel your ICBC appointment, and cancelling your ICBC appointment does not cancel your booking with us. You must do both.',
+          'As checked October 6, 2026, ICBC asks for at least 48 hours\' notice to cancel a road test and states that a $25 cancellation fee may apply without that notice. Confirm the current rule directly with ICBC. Any ICBC fee is payable to ICBC and is not covered, credited, or refunded under this policy.',
+          'If the school is ever authorized to use your driver-licence information to assist with a road-test booking, you must first sign a consent and release form. Do not give the school your ICBC security keyword.',
         ],
         tone: 'warning',
       },
@@ -694,7 +784,7 @@ const allSitePolicies: SitePolicy[] = [
     id: 'terms-and-conditions',
     label: 'Terms & Conditions',
     href: '/policies/terms-and-conditions',
-    effectiveDate: 'August 13, 2026',
+    effectiveDate: 'October 6, 2026',
     cardDescription: 'The general terms that apply when using the website, booking services, or submitting forms.',
     intro:
       'These Terms & Conditions describe the general rules that apply when using the website, submitting leads, booking lessons, purchasing packages, or participating in referral-based programs connected to Shanaya\'s Driving School.',
@@ -711,7 +801,15 @@ const allSitePolicies: SitePolicy[] = [
         title: 'Bookings, pricing, and payments',
         paragraphs: [
           'Lesson, package, and promotional pricing displayed on the site may change over time and remains subject to confirmation at the time of booking or approval.',
+          'Before payment, the student must receive the purchase-specific service and fee details described in the Student Service & Road Test Policy, including the selected services, lesson allocation, vehicle-rental charges, potential extra charges, applicable refund terms, and actual practice-driving time for each in-car lesson.',
           'Installment plans, discounts, and referral payouts are governed by the separate policy rules that apply to those services. Promotions and discounts apply to self-funded students only and do not apply to enrolments paid by a third-party organization, as set out in the Promotions & Discounts Policy.',
+        ],
+      },
+      {
+        title: 'Driver licence and road-test responsibilities',
+        paragraphs: [
+          'A student must present and carry a valid driver licence that permits the planned in-car training. The school cannot provide practical driver training when the student does not hold the required valid licence.',
+          'Students should book and manage their road-test appointments directly through ICBC. A school vehicle or Road Test Package booking is separate from the ICBC appointment and must be changed or cancelled separately.',
         ],
       },
       {
@@ -745,6 +843,3 @@ export const policyLinks = sitePolicies.map((policy) => ({
   label: policy.label,
   href: policy.href,
 }));
-
-
-

@@ -17,7 +17,7 @@ const normalizeProgramName = (text: string) =>
     .replaceAll("Participants in the referral program", "Participants in the Ruley Rewards Program")
     .replaceAll("services, or referral program", "services, or the Ruley Rewards Program");
 
-const publicPolicies = sitePolicies.filter((policy) => policy.id !== "installment-policy");
+const publicPolicies = sitePolicies;
 
 const sectionAnchorId = (index: number) => `policy-section-${index}`;
 

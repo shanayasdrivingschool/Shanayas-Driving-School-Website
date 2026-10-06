@@ -1978,7 +1978,7 @@ pages.push({
   path: "/policies/",
   title: withBrand("Policies"),
   description:
-    "Review Shanaya's Driving School policies for privacy, payments, installments, cookies, and website terms.",
+    "Review Shanaya's Driving School policies for student services, road tests, cancellations, privacy, payments, and website terms.",
   breadcrumbs: [
     { name: "Home", path: "/" },
     { name: "Policies", path: "/policies/" },

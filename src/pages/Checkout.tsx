@@ -7,6 +7,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { useCheckoutSelection } from "@/hooks/useCheckoutSelection";
 import { formatCoursePrice } from "@/data/coursePricing";
+import { STUDENT_SERVICE_POLICY_PATH, STUDENT_SERVICE_POLICY_VERSION } from "@/data/policies";
 import { getCaptchaVerification } from "@/lib/captcha";
 import { findPublicCouponByCode } from "@/lib/couponService";
 import {
@@ -254,6 +255,12 @@ const buildMinimalAssessment = (): CheckoutAssessmentInput => ({
   schedulingNotes: "",
   additionalNotes: "",
   consentAcceptedAt: new Date().toISOString(),
+  acceptedPolicyVersion: STUDENT_SERVICE_POLICY_VERSION,
+  acceptedPolicyPaths: [
+    STUDENT_SERVICE_POLICY_PATH,
+    "/policies/cancellation-and-rescheduling",
+    "/policies/terms-and-conditions",
+  ],
 });
 
 const PaymentFormPreview = ({
@@ -1147,7 +1154,34 @@ const Checkout = () => {
                             className="mt-1 h-4 w-4 rounded border-slate-300 text-[#1d52a1] focus:ring-[#1d52a1]"
                           />
                           <span className="text-sm leading-relaxed text-slate-700 sm:text-base">
-                            I agree to the payment and booking terms.
+                            I confirm that I reviewed and agree to the{" "}
+                            <Link
+                              to={STUDENT_SERVICE_POLICY_PATH}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold text-[#1d52a1] underline underline-offset-2"
+                            >
+                              Student Service &amp; Road Test Policy
+                            </Link>
+                            ,{" "}
+                            <Link
+                              to="/policies/cancellation-and-rescheduling"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold text-[#1d52a1] underline underline-offset-2"
+                            >
+                              Cancellation &amp; Rescheduling Policy
+                            </Link>
+                            , and{" "}
+                            <Link
+                              to="/policies/terms-and-conditions"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold text-[#1d52a1] underline underline-offset-2"
+                            >
+                              Terms &amp; Conditions
+                            </Link>
+                            . I understand that my order summary identifies the services and fees I am purchasing.
                           </span>
                         </label>
 

@@ -44,6 +44,8 @@ export type CheckoutAssessmentInput = {
   schedulingNotes: string;
   additionalNotes: string;
   consentAcceptedAt: string;
+  acceptedPolicyVersion: string;
+  acceptedPolicyPaths: string[];
 };
 
 export type CheckoutBillingAddressInput = {
@@ -321,6 +323,8 @@ export const submitCheckoutOrder = async (input: SubmitCheckoutInput): Promise<S
     scheduling_notes: normalizeSingle(input.assessment.schedulingNotes),
     additional_notes: normalizeSingle(input.assessment.additionalNotes),
     consent_accepted_at: normalizeSingle(input.assessment.consentAcceptedAt),
+    accepted_policy_version: normalizeSingle(input.assessment.acceptedPolicyVersion),
+    accepted_policy_paths: normalizeMulti(input.assessment.acceptedPolicyPaths),
     form_snapshot: {
       fullName: normalizeSingle(input.fullName),
       phone: normalizeSingle(input.phone),
@@ -346,6 +350,8 @@ export const submitCheckoutOrder = async (input: SubmitCheckoutInput): Promise<S
       preferredStartDate: normalizeSingle(input.assessment.preferredStartDate),
       schedulingNotes: normalizeSingle(input.assessment.schedulingNotes),
       additionalNotes: normalizeSingle(input.assessment.additionalNotes),
+      acceptedPolicyVersion: normalizeSingle(input.assessment.acceptedPolicyVersion),
+      acceptedPolicyPaths: normalizeMulti(input.assessment.acceptedPolicyPaths),
     },
   };
 

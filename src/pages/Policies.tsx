@@ -6,6 +6,9 @@ import { getPolicyIcon } from "@/data/policyIcons";
 
 // Lead with the policies people actually look for; anything unlisted falls to the end.
 const policyOrder = [
+  "student-service-and-road-test-policy",
+  "cancellation-and-rescheduling",
+  "installment-policy",
   "privacy-policy",
   "terms-and-conditions",
   "promotions-and-discounts",
@@ -18,7 +21,6 @@ const orderIndex = (id: string) => {
 };
 
 const publicPolicies = sitePolicies
-  .filter((policy) => policy.id !== "installment-policy")
   .slice()
   .sort((a, b) => orderIndex(a.id) - orderIndex(b.id));
 
@@ -42,7 +44,8 @@ const Policies = () => (
           Policies
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-white/80">
-          Browse each published policy on its own page, including privacy, payments, promotions, and website terms.
+          Review student services, lesson and road-test responsibilities, cancellations, privacy, payments, promotions,
+          and website terms.
         </p>
       </div>
     </section>
@@ -51,8 +54,8 @@ const Policies = () => (
       <div className="max-w-2xl">
         <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Read the policy that applies to you</h2>
         <p className="mt-3 text-base leading-relaxed text-slate-600">
-          These policies explain how we handle your privacy, payments, promotions, and lessons. Open the one relevant to
-          you — or contact us if anything's unclear.
+          Start with the Student Service &amp; Road Test Policy before booking, then review any detailed policy that applies
+          to your purchase. Contact us before payment if anything is unclear.
         </p>
       </div>
 
