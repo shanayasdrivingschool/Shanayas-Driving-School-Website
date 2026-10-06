@@ -112,7 +112,7 @@ const advantages: Advantage[] = [
   },
   {
     title: "Verified Langford Listing",
-    text: "ICBC's general directory lists the school at 124-2770 Leigh Rd in Langford for Class 5 and 7 driver training. A listing is not an endorsement.",
+    text: "ICBC's general directory lists the school at 124-2770 Leigh Rd, Langford, BC V9B 4G1 for Class 5 and 7 driver training. A listing is not an endorsement.",
     image: "/why-choose/modern-facility-v2.webp",
   },
   {
@@ -723,7 +723,7 @@ const Index = () => {
           <div className="mt-10 w-full">
               <iframe
                 title="Driving school service area map"
-                src="https://www.google.com/maps?q=124%202770%20Leigh%20Rd%20Langford%20BC%20V9B%204G1&output=embed"
+                src="https://www.google.com/maps?q=124-2770%20Leigh%20Rd%2C%20Langford%2C%20BC%20V9B%204G1&output=embed"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen
@@ -756,6 +756,5 @@ const Index = () => {
 };
 
 export default Index;
-
 
 

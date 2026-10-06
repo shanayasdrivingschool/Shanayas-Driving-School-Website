@@ -57,7 +57,7 @@ const allSitePolicies: SitePolicy[] = [
           'Shanaya\'s Driving School provides Class 5 and Class 7 driver training. The school\'s public office and contact information is listed below.',
         ],
         bullets: [
-          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
+          '124-2770 Leigh Rd, Langford, BC V9B 4G1',
           'Telephone and WhatsApp: +1 (250) 542-3673',
           'Email: book@drivingschoolbc.ca',
         ],
@@ -285,7 +285,7 @@ const allSitePolicies: SitePolicy[] = [
           'Questions or requests regarding this Privacy Policy may be directed to Shanaya\'s Driving School using the contact details below.',
         ],
         bullets: [
-          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
+          '124-2770 Leigh Rd, Langford, BC V9B 4G1',
           'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],
@@ -526,7 +526,7 @@ const allSitePolicies: SitePolicy[] = [
           'Questions about promotional eligibility or this policy may be directed to Shanaya\'s Driving School using the details below.',
         ],
         bullets: [
-          'Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1',
+          '124-2770 Leigh Rd, Langford, BC V9B 4G1',
           'book@drivingschoolbc.ca',
           '+1 (250) 542-3673',
         ],

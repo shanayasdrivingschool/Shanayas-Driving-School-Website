@@ -136,7 +136,7 @@ const Contact = () => {
               </a>
 
               <a
-                href="https://maps.google.com/?q=2770+Leigh+Rd,+Langford,+BC+V9B+4G1"
+                href="https://maps.google.com/?q=124-2770+Leigh+Rd,+Langford,+BC+V9B+4G1"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
@@ -147,7 +147,7 @@ const Contact = () => {
                 <span>
                   <span className="block text-xl font-black text-slate-900">Our Office</span>
                   <span className="mt-1 block text-sm font-semibold text-slate-700">
-                    2770 Leigh Rd, Victoria, British Columbia V9B 4G1
+                    124-2770 Leigh Rd, Langford, BC V9B 4G1
                   </span>
                   <span className="mt-2 block text-sm text-slate-500">By appointment - Free parking available</span>
                 </span>
@@ -325,7 +325,7 @@ const Contact = () => {
           <div className="mt-10 w-full">
             <iframe
               title="Our office location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2646.263636375451!2d-123.52076622307371!3d48.451470971279875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548f0d12a28feb31%3A0x7844eb9adc8db1de!2s2770%20Leigh%20Rd%20%23124%2C%20Victoria%2C%20BC%20V9B%204G2%2C%20Canada!5e0!3m2!1sen!2s!4v1772209932126!5m2!1sen!2s"
+              src="https://www.google.com/maps?q=124-2770%20Leigh%20Rd%2C%20Langford%2C%20BC%20V9B%204G1&output=embed"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen

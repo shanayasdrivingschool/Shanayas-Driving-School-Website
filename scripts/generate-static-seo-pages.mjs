@@ -51,7 +51,7 @@ const localBusinessSchema = {
   address: {
     "@type": "PostalAddress",
     // Keep in sync with localBusinessJsonLd in src/components/SeoManager.tsx.
-    streetAddress: "Unit 124, 2770 Leigh Rd",
+    streetAddress: "124-2770 Leigh Rd",
     addressLocality: "Langford",
     addressRegion: "BC",
     postalCode: "V9B 4G1",
@@ -98,7 +98,7 @@ const landingPages = [
       {
         question: "Do lessons start close to Langford?",
         answer:
-          "Yes. Our main training hub is at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar local roads.",
+          "Yes. Our main training hub is at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar local roads.",
       },
       {
         question: "Will I practise Langford's roundabouts?",
@@ -132,7 +132,7 @@ const landingPages = [
       {
         question: "Where do lessons start for Colwood learners?",
         answer:
-          "Our training hub is nearby at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
+          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
       },
     ],
   },
@@ -180,7 +180,7 @@ const landingPages = [
       {
         question: "Where do lessons start for View Royal learners?",
         answer:
-          "Our training hub is nearby at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
+          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
       },
     ],
   },
@@ -353,7 +353,7 @@ const landingPages = [
       {
         question: "Is Shanaya's Driving School ICBC-approved?",
         answer:
-          "That is not the claim made here. ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd in Langford for Class 5 and 7 driver training when checked July 21, 2026. The permitted description used here is \"licensed as a driver training school under the Motor Vehicle Act.\" ICBC says its list is not a recommendation or endorsement.",
+          "That is not the claim made here. ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, BC V9B 4G1 for Class 5 and 7 driver training when checked July 21, 2026. The permitted description used here is \"licensed as a driver training school under the Motor Vehicle Act.\" ICBC says its list is not a recommendation or endorsement.",
       },
       {
         question: "Does Shanaya's offer an ICBC-approved GLP course?",

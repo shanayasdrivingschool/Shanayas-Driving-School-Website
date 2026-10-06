@@ -31,7 +31,7 @@
 | Current lesson rates and service-area tiers | `src/data/coursePricing.ts` and `COMPANY_KNOWLEDGE.md` | Standard/regional: $89 per 60 minutes and $133.50 per 90 minutes; Salt Spring Island: $109 and $163.50 | October 6, 2026 | Confirm tax presentation and any later price changes |
 | School cancellation and refund rules | `src/data/policies.ts` | Existing 24-hour, 2-to-24-hour, under-2-hour, credit, withdrawal, and administration-fee terms retained | October 6, 2026 | Legal/consumer-contract review not established |
 | Installment charges and recovery costs | `src/data/policies.ts` | Undisclosed late-payment surcharges and unspecified recovery-cost language were removed; any such charge must be stated by amount or calculation method in the written agreement before enrolment | October 6, 2026 | Confirm the payment schedule shown to each student and obtain legal review of enforcement terms |
-| School identity and address | `COMPANY_KNOWLEDGE.md`, footer, and current schema | Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1 | October 6, 2026 | Confirm against current school licence and registered-office record |
+| School identity and address | Owner instruction, `COMPANY_KNOWLEDGE.md`, footer, and current schema | 124-2770 Leigh Rd, Langford, BC V9B 4G1 | October 6, 2026 | Owner-confirmed canonical website address |
 
 ## Readiness
 

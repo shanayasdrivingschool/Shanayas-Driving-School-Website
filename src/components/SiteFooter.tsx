@@ -222,7 +222,7 @@ const SiteFooter = () => (
       <div className="w-full max-w-[320px] text-left">
         <p className="mb-4 text-left text-lg font-bold uppercase text-black md:text-xl">Our Address</p>
         <p className="flex items-start gap-2 font-semibold text-white">
-          <MapPin size={16} className="mt-1" /> Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1
+          <MapPin size={16} className="mt-1" /> 124-2770 Leigh Rd, Langford, BC V9B 4G1
         </p>
       </div>
 

@@ -539,7 +539,7 @@ const NewcomersGuide = () => (
           </p>
           <p className="mt-4 text-base leading-relaxed text-slate-700">
             Shanaya's Driving School appears in the general ICBC directory for Class 5 and Class 7
-            driver training at 124–2770 Leigh Road, Langford. A directory listing is not an ICBC
+            driver training at 124-2770 Leigh Rd, Langford, BC V9B 4G1. A directory listing is not an ICBC
             endorsement and does not make ordinary lessons an approved GLP course.
           </p>
           <a href={schoolDirectoryUrl} target="_blank" rel="noopener noreferrer" className={`mt-6 inline-flex items-center gap-2 ${externalLinkClassName}`}>

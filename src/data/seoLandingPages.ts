@@ -143,7 +143,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     serviceAreaTitle: "Langford and the Westshore",
     serviceAreas: ["Langford", "Colwood", "View Royal", "Metchosin", "Sooke", "Victoria", "Sidney"],
     intro: [
-      "Shanaya's Driving School serves Langford and the Westshore. Our main office and training hub at 2770 Leigh Rd sits in the heart of Greater Victoria, so lessons for Langford learners can start close to home on the roads you already drive every day.",
+      "Shanaya's Driving School serves Langford and the Westshore. Our main office and training hub is at 124-2770 Leigh Rd, Langford, BC V9B 4G1, so lessons for Langford learners can start close to home on the roads you already drive every day.",
       "Langford driving has its own character: a growing number of roundabouts, busy stretches of Goldstream Avenue and Veterans Memorial Parkway, Trans-Canada Highway merges, and hilly routes around Bear Mountain. Our lessons build the skills these roads demand: smooth roundabout entries and exits, confident highway merging, hill starts, lane discipline, and calm decisions in Westshore traffic.",
       "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a newer driver who wants to feel in control around the Westshore, we pace the training around you in a patient, dual-control car.",
     ],
@@ -173,7 +173,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Do lessons start close to Langford?",
         answer:
-          "Yes. Our main training hub is at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar local roads.",
+          "Yes. Our main training hub is at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar local roads.",
       },
       {
         question: "Will I practise Langford's roundabouts?",
@@ -208,7 +208,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     serviceAreaTitle: "Colwood and the Westshore",
     serviceAreas: ["Colwood", "Langford", "View Royal", "Royal Bay", "Metchosin", "Esquimalt", "Victoria"],
     intro: [
-      "Shanaya's Driving School teaches new and returning drivers across Colwood and the Westshore. Our main training hub is just up the road at 2770 Leigh Rd in Greater Victoria, so Colwood learners can start close to home on the roads they drive every day.",
+      "Shanaya's Driving School teaches new and returning drivers across Colwood and the Westshore. Our main training hub is just up the road at 124-2770 Leigh Rd, Langford, BC V9B 4G1, so Colwood learners can start close to home on the roads they drive every day.",
       "Colwood driving has its own challenges: the busy Colwood interchange and the daily Colwood Crawl where the highways meet, Sooke Road and the Old Island Highway, Ocean Boulevard along Esquimalt Lagoon, the newer roundabouts and residential streets in Royal Bay, and the hills around Triangle Mountain. Our lessons build the skills these roads demand, from confident highway merging to smooth roundabout entries, hill starts, and calm decisions in commuter traffic.",
       "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a driver who wants to feel more in control around the Westshore, we pace the training around you in a patient, dual-control car.",
     ],
@@ -266,7 +266,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Where do lessons start for Colwood learners?",
         answer:
-          "Our training hub is nearby at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
+          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
       },
     ],
   },
@@ -374,7 +374,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     serviceAreaTitle: "View Royal and the Westshore",
     serviceAreas: ["View Royal", "Langford", "Colwood", "Esquimalt", "Victoria", "Saanich", "Metchosin"],
     intro: [
-      "Shanaya's Driving School teaches new and returning drivers across View Royal, the gateway between Victoria and the Westshore. Our main training hub is minutes away at 2770 Leigh Rd in Greater Victoria, so View Royal learners can start close to home on the roads they drive every day.",
+      "Shanaya's Driving School teaches new and returning drivers across View Royal, the gateway between Victoria and the Westshore. Our main training hub is minutes away at 124-2770 Leigh Rd, Langford, BC V9B 4G1, so View Royal learners can start close to home on the roads they drive every day.",
       "View Royal driving means confident work on the Trans-Canada Highway and the Old Island Highway, smooth merging at the Helmcken Road interchange, and steady awareness around the Victoria General Hospital area and the Galloping Goose Trail crossings. Our lessons build these exact skills, along with lane changes, roundabouts, hill starts, and calm decisions in connector traffic.",
       "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a driver who wants to feel more in control on View Royal's busier roads, we pace the training around you in a patient, dual-control car.",
     ],
@@ -432,7 +432,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Where do lessons start for View Royal learners?",
         answer:
-          "Our training hub is nearby at 2770 Leigh Rd, Victoria, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
+          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
       },
     ],
   },
@@ -931,7 +931,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     serviceAreas: ["Langford, BC"],
     intro: [
       "This page keeps its legacy web address because some people search for an \"ICBC-approved driving school.\" That phrase is not an accurate description of an ordinary licensed driving school. The wording permitted for the verified status here is \"licensed as a driver training school under the Motor Vehicle Act.\"",
-      "When checked on July 21, 2026, ICBC's general driving-school directory showed this exact record: SHANAYA'S DRIVING SCHOOL, 124-2770 LEIGH RD, LANGFORD BC V9B 4G1, telephone (250) 542-3673, with driver training classes 5 and 7. ICBC states that its school list is not intended as a recommendation or endorsement.",
+      "When checked on July 21, 2026, ICBC's general driving-school directory showed this record: SHANAYA'S DRIVING SCHOOL, 124-2770 Leigh Rd, Langford, BC V9B 4G1, telephone (250) 542-3673, with driver training classes 5 and 7. ICBC states that its school list is not intended as a recommendation or endorsement.",
       "The general directory and ICBC's separate list of schools offering an approved Graduated Licensing Program (GLP) course serve different purposes. An exact-name, address and telephone check did not find Shanaya's in the approved-GLP directory on July 21, 2026, so this page does not represent the school or its ordinary lessons as ICBC-approved.",
     ],
     sections: [
@@ -941,7 +941,7 @@ export const seoLandingPages: SeoLandingPage[] = [
           "The ICBC directory record identifies the school, its listed Langford address and telephone number, and Class 5 and 7 under the driver-training field. It supports the statement that Shanaya's is licensed as a driver training school under the Motor Vehicle Act; it does not establish ICBC endorsement or approval of every lesson, claim, instructor or vehicle.",
         bullets: [
           "Business name: SHANAYA'S DRIVING SCHOOL",
-          "Directory address: 124-2770 LEIGH RD, LANGFORD BC V9B 4G1",
+          "Directory address: 124-2770 Leigh Rd, Langford, BC V9B 4G1",
           "Telephone: (250) 542-3673; driver training: Classes 5 and 7",
         ],
       },
@@ -971,7 +971,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Is Shanaya's Driving School ICBC-approved?",
         answer:
-          "That is not the claim made here. ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd in Langford for Class 5 and 7 driver training when checked July 21, 2026. The permitted description used here is \"licensed as a driver training school under the Motor Vehicle Act.\" ICBC says its list is not a recommendation or endorsement.",
+          "That is not the claim made here. ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, BC V9B 4G1 for Class 5 and 7 driver training when checked July 21, 2026. The permitted description used here is \"licensed as a driver training school under the Motor Vehicle Act.\" ICBC says its list is not a recommendation or endorsement.",
       },
       {
         question: "Does Shanaya's offer an ICBC-approved GLP course?",
@@ -1004,7 +1004,7 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         label: "Langford lesson information",
         href: "/driving-lessons-langford",
-        description: "See the separate Langford service page; the verified directory address is 124-2770 Leigh Rd.",
+        description: "See the separate Langford service page; the verified directory address is 124-2770 Leigh Rd, Langford, BC V9B 4G1.",
       },
       {
         label: "B.C. graduated licensing guide",
@@ -1380,7 +1380,7 @@ export const seoLandingPages: SeoLandingPage[] = [
     intro: [
       "ICBC administers B.C. driver licensing, including the official knowledge and road tests. A private driving school can provide education or practice, but it cannot issue a licence, conduct an official ICBC road test or promise a licensing result.",
       "For a new Class 7 driver, four different activities are often called driver education: free study using ICBC materials, legal practice with a qualified supervisor, optional ordinary lessons from a licensed school, and a separately approved 32-hour GLP course. They are not interchangeable, and only the last option can carry the approved-course benefit when every condition is met.",
-      "When checked July 21, 2026, ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 LEIGH RD, LANGFORD BC V9B 4G1, telephone (250) 542-3673, for Class 5 and 7 driver training. The same identifiers did not match an entry in ICBC's separate approved-GLP school list, so this page does not state or imply that Shanaya's offers an ICBC-approved GLP course.",
+      "When checked July 21, 2026, ICBC's general directory listed SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, BC V9B 4G1, telephone (250) 542-3673, for Class 5 and 7 driver training. The same identifiers did not match an entry in ICBC's separate approved-GLP school list, so this page does not state or imply that Shanaya's offers an ICBC-approved GLP course.",
     ],
     sections: [
       {

@@ -326,7 +326,7 @@ const localBusinessJsonLd: JsonLdObject = {
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Unit 124, 2770 Leigh Rd",
+    streetAddress: "124-2770 Leigh Rd",
     addressLocality: "Langford",
     addressRegion: "BC",
     postalCode: "V9B 4G1",

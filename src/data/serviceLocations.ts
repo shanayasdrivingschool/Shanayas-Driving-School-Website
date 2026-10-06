@@ -33,7 +33,7 @@ export const serviceLocations: ServiceLocation[] = [
   {
     id: "langford",
     name: "Langford",
-    address: "2770 Leigh Rd, Victoria, BC V9B 4G1",
+    address: "124-2770 Leigh Rd, Langford, BC V9B 4G1",
     description: "Our main office and primary training hub, centrally located in the Westshore area.",
     pricingTier: "standard",
   },
@@ -77,4 +77,3 @@ export const serviceLocationsById = Object.fromEntries(serviceLocations.map((loc
 
 export const officeLocation = serviceLocations.find((location) => location.id === "langford") ?? serviceLocations[0];
 export const publicServiceLocations = serviceLocations.filter((location) => location.id !== officeLocation.id);
-

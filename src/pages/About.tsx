@@ -39,7 +39,7 @@ const About = () => (
           </p>
           <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-relaxed text-slate-600">
             <p>
-              ICBC&apos;s public directory lists Shanaya&apos;s Driving School at Unit 124, 2770 Leigh Rd, Langford for
+              ICBC&apos;s public directory lists Shanaya&apos;s Driving School at 124-2770 Leigh Rd, Langford, BC V9B 4G1 for
               Class 5 and Class 7 driver training. A directory listing confirms licensing; it is not an ICBC
               recommendation or endorsement.
             </p>

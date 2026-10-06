@@ -21,7 +21,7 @@ This document summarizes company data currently published or embedded in the web
 - WhatsApp: https://wa.me/12505423673
 - Facebook: https://www.facebook.com/drivingschoolvictoria
 - Instagram: https://www.instagram.com/drivingschoolvictoria
-- Main office address: Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1
+- Main office address: 124-2770 Leigh Rd, Langford, BC V9B 4G1
 - Office note on contact page: By appointment - Free parking available
 - Primary domain: https://www.shanayasdrivingschool.com (canonical host; .htaccess 301s every other host to it)
 - Secondary/parked domain: drivingschoolbc.ca — redirects to the primary, must not be published as a site address or used in schema, canonicals or sitemaps
@@ -175,7 +175,7 @@ Shared careers details:
 
 These are important if you plan to train another AI on this company:
 
-- The office address is mostly shown as Langford, BC V9B 4G1, but Google Maps embeds in the site use "Victoria, BC V9B 4G2". This should be manually reconciled before treating one version as final truth.
+- Owner-confirmed canonical address as of October 6, 2026: 124-2770 Leigh Rd, Langford, BC V9B 4G1. Website copy, structured data, and map embeds should use this version consistently.
 - The affiliate program minimum payout conflicts:
   - `src/lib/affiliateProgram.ts` says $100
   - `src/data/referralTerms.ts` says $50
@@ -193,7 +193,7 @@ These are important if you plan to train another AI on this company:
 
 Use this short summary if another AI needs a clean company introduction:
 
-"ICBC's general directory lists SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, telephone (250) 542-3673, for Class 5 and 7 driver training. The directory listing is not an ICBC recommendation or endorsement. The website catalogue describes lesson, knowledge-study, road-test preparation, newcomer, defensive-driving, refresher, and package options across listed B.C. locations; availability must be confirmed. As checked July 21, 2026, no matching Shanaya entry appeared in ICBC's separate approved-GLP-course directory."
+"ICBC's general directory lists SHANAYA'S DRIVING SCHOOL at 124-2770 Leigh Rd, Langford, BC V9B 4G1, telephone (250) 542-3673, for Class 5 and 7 driver training. The directory listing is not an ICBC recommendation or endorsement. The website catalogue describes lesson, knowledge-study, road-test preparation, newcomer, defensive-driving, refresher, and package options across listed B.C. locations; availability must be confirmed. As checked July 21, 2026, no matching Shanaya entry appeared in ICBC's separate approved-GLP-course directory."
 
 ## 12. Source Files
 
