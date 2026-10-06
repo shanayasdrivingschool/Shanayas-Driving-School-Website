@@ -344,43 +344,49 @@
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/policies/</loc>
-    <lastmod>2026-07-31</lastmod>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.shanayasdrivingschool.com/policies/student-service-and-road-test-policy/</loc>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/policies/terms-and-conditions/</loc>
-    <lastmod>2026-07-31</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/policies/privacy-policy/</loc>
-    <lastmod>2026-07-31</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/policies/installment-policy/</loc>
-    <lastmod>2026-07-31</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/policies/in-vehicle-passenger-policy/</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/policies/promotions-and-discounts/</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/policies/cancellation-and-rescheduling/</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
