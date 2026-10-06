@@ -5,7 +5,7 @@ import type {
 } from "@/lib/affiliateTypes";
 import { isSupabaseConfigured, supabase } from "@/lib/supabaseClient";
 
-export const KNOWLEDGE_TEST_QUESTION_COUNT = 20;
+export const KNOWLEDGE_TEST_QUESTION_COUNT = 35;
 export const KNOWLEDGE_TEST_PRACTICE_TIMER_SECONDS = 30 * 60;
 
 export const KNOWLEDGE_TEST_QUESTION_SELECT =

@@ -21,7 +21,7 @@
 ## Implementation decisions
 
 - Added 22 questions, bringing the fallback bank from 13 to 35 questions.
-- Kept each session at 20 random questions so repeat sessions draw different combinations.
+- Updated each session to include all 35 questions in a randomized order.
 - Replaced the supplied cyclist answer with the current minimum-distance rule: 1 m at 50 km/h or less and 1.5 m above 50 km/h, with the separate 0.5 m rule stated for protected lanes and sidewalks.
 - Excluded the taxi-front-seat item because the supplied wording and reported answer were ambiguous about whether the driver was included.
 - Excluded the general music/device item because the answer changes with licence class and device use. The existing L/N electronic-device question is clearer and remains in the bank.

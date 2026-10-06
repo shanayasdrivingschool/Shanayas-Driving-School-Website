@@ -32,11 +32,12 @@ describe("knowledge-test question bank", () => {
     }
   });
 
-  it("returns a unique 20-question practice session without changing the bank", () => {
+  it("returns all 35 questions in a shuffled session without changing the bank", () => {
     const originalOrder = fallbackKnowledgeTestQuestions.map((question) => question.id);
     const session = getRandomKnowledgeTestQuestions(fallbackKnowledgeTestQuestions);
 
     expect(session).toHaveLength(KNOWLEDGE_TEST_QUESTION_COUNT);
+    expect(session).toHaveLength(fallbackKnowledgeTestQuestions.length);
     expect(new Set(session.map((question) => question.id)).size).toBe(session.length);
     expect(fallbackKnowledgeTestQuestions.map((question) => question.id)).toEqual(originalOrder);
   });

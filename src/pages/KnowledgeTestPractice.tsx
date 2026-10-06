@@ -374,7 +374,7 @@ const KnowledgeTestPractice = () => {
                       Start Test
                     </button>
                     <p className="text-sm text-slate-500">
-                      Up to {KNOWLEDGE_TEST_QUESTION_COUNT} random questions from the current question bank.
+                      All {KNOWLEDGE_TEST_QUESTION_COUNT} questions from the current question bank, shown in random order.
                     </p>
                   </div>
                 </>
