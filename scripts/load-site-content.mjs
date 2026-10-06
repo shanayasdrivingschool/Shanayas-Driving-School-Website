@@ -48,6 +48,7 @@ export const loadSiteContent = async () => {
       { faqAnswerToPlainText, parseFaqAnswer },
       { sitePolicies },
       beginnerLanding,
+      knowledgeTestPractice,
     ] = await Promise.all([
       server.ssrLoadModule("/src/data/blogPosts.tsx"),
       server.ssrLoadModule("/src/data/seoLandingPages.ts"),
@@ -63,6 +64,7 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/lib/faqAnswer.ts"),
       server.ssrLoadModule("/src/data/policies.ts"),
       server.ssrLoadModule("/src/data/beginnerCourseLanding.ts"),
+      server.ssrLoadModule("/src/data/knowledgeTestPractice.ts"),
     ]);
 
     return {
@@ -106,6 +108,15 @@ export const loadSiteContent = async () => {
         reviewedIso: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_REVIEWED_ISO,
         authorId: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_AUTHOR_ID,
         reviewerId: knowledgeTestGuide.KNOWLEDGE_TEST_GUIDE_REVIEWER_ID,
+      },
+      knowledgeTestPractice: {
+        title: knowledgeTestPractice.KNOWLEDGE_TEST_PRACTICE_TITLE,
+        description: knowledgeTestPractice.KNOWLEDGE_TEST_PRACTICE_DESCRIPTION,
+        h1: knowledgeTestPractice.KNOWLEDGE_TEST_PRACTICE_H1,
+        hero: knowledgeTestPractice.KNOWLEDGE_TEST_PRACTICE_HERO,
+        reasons: knowledgeTestPractice.knowledgeTestPracticeReasons,
+        faqs: knowledgeTestPractice.knowledgeTestPracticeFaqs,
+        closing: knowledgeTestPractice.KNOWLEDGE_TEST_PRACTICE_CLOSING,
       },
       blogPosts: new Map(
         activeBlogPosts.map((post) => [

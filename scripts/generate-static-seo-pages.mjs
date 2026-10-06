@@ -567,9 +567,9 @@ const publicPages = [
   },
   {
     path: "/knowledge-test-practice/",
-    title: "B.C. Class 7 Knowledge Test Practice",
+    title: "ICBC Knowledge Test Practice Victoria & Langford",
     description:
-      "Answer up to 20 independent Class 7 practice questions, then verify every rule with ICBC's official guide and practice test.",
+      "Start free ICBC knowledge test practice online for Class 7 and Class 5 drivers in Victoria and Langford. Practice realistic questions and prepare with confidence!",
   },
   {
     path: "/knowledge-test-guide/",
@@ -1548,6 +1548,39 @@ const buildKnowledgeTestGuideBody = (page) => {
   ].join("\n        ");
 };
 
+/* /knowledge-test-practice is interactive in React, but its explanatory copy
+   and FAQs still need a complete no-JavaScript representation. The shared data
+   module keeps the visible page, metadata, FAQ schema and crawler HTML aligned. */
+const buildKnowledgeTestPracticeBody = (practice) => [
+  `<h1>${escapeHtml(practice.h1)}</h1>`,
+  para(practice.hero),
+  `<section><h2>Independent practice tool</h2>`,
+  para(
+    "This question bank is not supplied, reviewed, approved or endorsed by ICBC. It uses up to 20 questions and does not reproduce the official test format or predict an official result.",
+  ),
+  `<p>Study the <a href="https://www.icbc.com/driver-licensing/driving-guides/Learn-to-Drive-Smart">current Learn to Drive Smart guide</a> and use <a href="https://www.icbc.com/driver-licensing/new-drivers/practice-knowledge-test">ICBC's official practice test</a>.</p>`,
+  `</section>`,
+  `<section><h2>Why Practice With Us</h2>`,
+  ...practice.reasons.flatMap((reason) => [
+    `<h3>${escapeHtml(reason.title)}</h3>`,
+    para(reason.description),
+  ]),
+  `<p>If you are preparing for a Class 7 knowledge test in Victoria or Langford, start with our <a href="${siteOrigin}/knowledge-test-guide/">Knowledge Test Guide</a>, explore the <a href="${siteOrigin}/courses/knowledge-test-prep-course/">Knowledge Test Prep Course</a> if you want structured support, and use practice questions to check your progress.</p>`,
+  `</section>`,
+  `<section><h2>Frequently Asked Questions</h2>`,
+  ...practice.faqs.flatMap((faq) => [
+    `<h3>${escapeHtml(faq.question)}</h3>`,
+    para(faq.answer),
+  ]),
+  `</section>`,
+  `<section><h2>Understand the Rule Behind Each Answer</h2>`,
+  ...practice.closing.map((text) => para(text)),
+  `<p><a href="${siteOrigin}/courses/knowledge-test-prep-course/">View the Knowledge Test Prep Course</a> or <a href="${siteOrigin}/contact/">contact our team</a>.</p>`,
+  `</section>`,
+]
+  .filter(Boolean)
+  .join("\n        ");
+
 /* The newcomer guide is also a bespoke React resource. This fallback keeps its
    actual decision path and source links available without JavaScript. */
 const buildNewcomersGuideBody = (page) => {
@@ -1808,6 +1841,8 @@ const renderPageHtml = (template, page, content) => {
     html = replaceFallback(html, page, () => buildNewcomersGuideBody(page));
   } else if (page.path === "/knowledge-test-guide/") {
     html = replaceFallback(html, page, () => buildKnowledgeTestGuideBody(page));
+  } else if (page.path === "/knowledge-test-practice/") {
+    html = replaceFallback(html, page, () => buildKnowledgeTestPracticeBody(content.knowledgeTestPractice));
   } else if (page.path === "/faq/") {
     html = replaceFallback(html, page, () => buildFaqBody(content.siteFaqs));
   } else if (page.policy) {
@@ -1857,6 +1892,20 @@ if (!/<p>\s*Shanaya's Driving School provides/i.test(template)) {
 
 const content = await loadSiteContent();
 const { blogPosts: blogContent, landingPages: landingContent } = content;
+
+const practicePage = pages.find((page) => page.path === "/knowledge-test-practice/");
+
+if (!practicePage) {
+  throw new Error('Missing the "/knowledge-test-practice/" page entry.');
+}
+
+practicePage.title = content.knowledgeTestPractice.title;
+practicePage.description = content.knowledgeTestPractice.description;
+practicePage.faqs = content.knowledgeTestPractice.faqs;
+practicePage.breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Class 5 and 7 Knowledge Test Practice", path: "/knowledge-test-practice/" },
+];
 
 /* The guide's FAQs and review date are read straight out of src/data rather than
    copied here, so the crawler HTML physically cannot drift from what React

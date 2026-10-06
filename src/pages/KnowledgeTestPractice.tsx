@@ -39,6 +39,13 @@ import {
   knowledgeTestQuestionCategoryLabels,
   knowledgeTestQuestionOptionLabels,
 } from "@/lib/knowledgeTestService";
+import {
+  KNOWLEDGE_TEST_PRACTICE_CLOSING,
+  KNOWLEDGE_TEST_PRACTICE_H1,
+  KNOWLEDGE_TEST_PRACTICE_HERO,
+  knowledgeTestPracticeFaqs,
+  knowledgeTestPracticeReasons,
+} from "@/data/knowledgeTestPractice";
 
 type PracticePhase = "ready" | "active" | "results";
 type ResultsFilter = "all" | "review";
@@ -261,11 +268,39 @@ const KnowledgeTestPractice = () => {
             className="mx-auto mt-4 max-w-3xl text-center text-[clamp(1.75rem,4vw,2.75rem)] font-black leading-[1.1]"
             style={{ textWrap: "balance" }}
           >
-            B.C. Class 7 Knowledge Test Practice
+            {KNOWLEDGE_TEST_PRACTICE_H1}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-center text-base leading-relaxed text-white/80">
-            Use independent learner-licence practice questions, then verify the rules with ICBC&apos;s official
-            handbook and practice test.
+            {KNOWLEDGE_TEST_PRACTICE_HERO}
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className={eyebrowClass}>Why practise here</p>
+          <h2 className={`mt-3 ${headingClass}`}>Why Practice With Us</h2>
+          <div className="mt-10 grid gap-x-12 sm:grid-cols-2">
+            {knowledgeTestPracticeReasons.map((item) => (
+              <div key={item.title} className="border-t border-slate-300 py-6">
+                <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.description}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            If you are preparing for a Class 7 knowledge test in Victoria or Langford, start with our{" "}
+            <Link to="/knowledge-test-guide" className="font-semibold text-[#1d52a1] underline underline-offset-2">
+              Knowledge Test Guide
+            </Link>
+            , explore the{" "}
+            <Link
+              to="/courses/knowledge-test-prep-course"
+              className="font-semibold text-[#1d52a1] underline underline-offset-2"
+            >
+              Knowledge Test Prep Course
+            </Link>{" "}
+            if you want structured support, and use practice questions to check your progress.
           </p>
         </div>
       </section>
@@ -726,14 +761,35 @@ const KnowledgeTestPractice = () => {
       </section>
 
       <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <p className={eyebrowClass}>Common questions</p>
+          <h2 className={`mt-3 ${headingClass}`}>Frequently Asked Questions</h2>
+          <div className="mt-8 divide-y divide-slate-200 border-y border-slate-200">
+            {knowledgeTestPracticeFaqs.map((faq) => (
+              <details key={faq.question} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-semibold text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-4 [&::-webkit-details-marker]:hidden">
+                  <span>{faq.question}</span>
+                  <ChevronDown
+                    className="h-5 w-5 shrink-0 text-slate-500 transition-transform group-open:rotate-180 motion-reduce:transition-none"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <p className="mt-3 max-w-3xl pr-8 text-sm leading-relaxed text-slate-600 sm:text-base">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#F8FAFC] py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <p className={eyebrowClass}>Next step</p>
-          <h2 className={`mt-3 ${headingClass}`}>Turn practice into confidence</h2>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            Knowledge test practice is most effective when it is combined with steady study and clear feedback. If you
-            want extra support, structured instruction can help you review signs, rules, and safe-driving decisions in
-            a more focused way.
-          </p>
+          <h2 className={`mt-3 ${headingClass}`}>Understand the Rule Behind Each Answer</h2>
+          <div className="mt-4 max-w-3xl space-y-4 text-sm leading-relaxed text-slate-600 sm:text-base">
+            {KNOWLEDGE_TEST_PRACTICE_CLOSING.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               to="/courses/knowledge-test-prep-course"
@@ -777,4 +833,3 @@ const KnowledgeTestPractice = () => {
 };
 
 export default KnowledgeTestPractice;
-
