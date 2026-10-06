@@ -40,7 +40,7 @@ export const knowledgeTestPracticeFaqs = [
   {
     question: "How many questions are on the knowledge test in B.C.?",
     answer:
-      "The format depends on the licence class and testing method. Check ICBC's current information for your specific test before your appointment. This independent tool uses all 35 questions in its current question bank and does not reproduce the official test format.",
+      "The format depends on the licence class and testing method. Check ICBC's current information for your specific test before your appointment. This independent tool uses all 79 questions in its current question bank and does not reproduce the official test format.",
   },
   {
     question: "What is the Class 7 knowledge test?",

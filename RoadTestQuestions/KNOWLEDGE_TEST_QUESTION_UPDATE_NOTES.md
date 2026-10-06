@@ -9,8 +9,8 @@
 - **Question:** Can the supplied research topics be turned into accurate, useful practice questions?
 - **Location:** British Columbia.
 - **Outcome:** Expand the independent practice bank with original multiple-choice questions and explanations based on current official material.
-- **Scope:** Fallback question data and a Supabase migration; session length remains 20 randomly selected questions.
-- **Overlap:** Candidate topics were compared with the 13 existing fallback/database seed questions. Existing topics were not duplicated.
+- **Scope:** Fallback question data and Supabase migrations; each session includes the complete current bank in randomized order.
+- **Overlap:** Candidate topics were compared with the existing fallback/database questions. Existing topics were not duplicated.
 - **Evidence gaps:** The supplied reports did not contain usable source links and included ambiguous or outdated statements. Those reports were treated as planning inputs rather than publication evidence.
 - **Original contribution:** Questions, distractors, and explanations were rewritten for this project instead of copying reported live-test or third-party practice wording.
 - **Responsible organization:** Shanaya's Driving School.
@@ -20,8 +20,11 @@
 
 ## Implementation decisions
 
-- Added 22 questions, bringing the fallback bank from 13 to 35 questions.
-- Updated each session to include all 35 questions in a randomized order.
+- Added 66 questions across the four supplied reports, bringing the fallback bank from 13 to 79 questions.
+- Updated each session to include all 79 questions in a randomized order.
+- Corrected the third report's non-B.C. circular speed-sign description and used ICBC's B.C. maximum-speed-sign meaning instead.
+- Consolidated its overlapping STOP, pedestrian-crosswalk, roundabout, and school-zone items with existing coverage rather than duplicating them.
+- Corrected the fourth report's yellow-arrow, opposing four-way-stop, bicycle-lane, lane-control, and uphill-parking descriptions before adding supported questions.
 - Replaced the supplied cyclist answer with the current minimum-distance rule: 1 m at 50 km/h or less and 1.5 m above 50 km/h, with the separate 0.5 m rule stated for protected lanes and sidewalks.
 - Excluded the taxi-front-seat item because the supplied wording and reported answer were ambiguous about whether the driver was included.
 - Excluded the general music/device item because the answer changes with licence class and device use. The existing L/N electronic-device question is clearer and remains in the bank.
@@ -32,9 +35,10 @@
 
 | Topics | Source | Evidence used | Checked on | Gap or review |
 | --- | --- | --- | --- | --- |
-| Signs, flashing lights, road markings, school/playground zones | ICBC, *Learn to Drive Smart*, Chapter 3 | Stop signs, flashing green/yellow signals, double solid yellow lines, and zone timing | October 6, 2026 | Instructor review pending |
+| Signs, signals, road markings, school/playground zones | ICBC, *Learn to Drive Smart*, Chapter 3 | Regulatory, warning, parking, lane-control, railway, arrow-signal, road-marking, and zone meanings | October 6, 2026 | Instructor review pending |
 | Intersections, right turns on red, four-way stops, roundabouts, driveways and passing | ICBC, *Learn to Drive Smart*, Chapter 4; B.C. Motor Vehicle Act | Right-of-way, stopping, entry and passing rules | October 6, 2026 | Instructor review pending |
 | Shoulder checks, following distance and tailgaters | ICBC, *Learn to Drive Smart*, Chapter 5 | Shoulder checks before changing road position and increased forward space when tailgated | October 6, 2026 | Instructor review pending |
+| Two-way stops, traffic-circle direction and parking rules | ICBC, *Learn to Drive Smart*, Chapter 4 | Through-road priority, left-turn yielding, counter-clockwise travel, wheel direction and legal parking distances | October 6, 2026 | Instructor review pending |
 | School buses | ICBC, *Learn to Drive Smart*, Chapter 6; Motor Vehicle Act s. 149 | Stop for the bus and remain stopped until it moves or the driver signals that it is safe | October 6, 2026 | None for legal rule; instructor review pending |
 | Night driving, skids, crashes and poor visibility | ICBC, *Learn to Drive Smart*, Chapter 8 | Night-risk reduction, skid recovery, crash-scene guidance and visibility limits | October 6, 2026 | Instructor review pending |
 | Vulnerable-road-user passing distance | Province of B.C., Sharing the road safely | 1 m at 50 km/h or less; 1.5 m above 50 km/h; 0.5 m for a separated and protected lane or sidewalk | October 6, 2026 | Time-sensitive legal rule |
@@ -44,5 +48,5 @@
 ## Readiness
 
 - **Page quality:** Draft awaiting instructor review. The legal and ICBC-source checks are complete for the added questions, but practical-driving explanations have not been reviewed by a qualified instructor.
-- **Intent satisfaction:** The bank now covers the supported, distinct topics from both supplied research files while avoiding ambiguous, duplicated, and imminently outdated items.
+- **Intent satisfaction:** The bank now covers the supported, distinct topics from all three supplied research files while avoiding inaccurate, ambiguous, duplicated, and imminently outdated items.
 - **Publication state:** Implemented locally. The migration must be applied to the production Supabase database and the built site deployed before the questions are live.

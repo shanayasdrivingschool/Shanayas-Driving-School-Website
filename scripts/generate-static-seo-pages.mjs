@@ -1556,7 +1556,7 @@ const buildKnowledgeTestPracticeBody = (practice) => [
   para(practice.hero),
   `<section><h2>Independent practice tool</h2>`,
   para(
-    "This question bank is not supplied, reviewed, approved or endorsed by ICBC. Each session uses all 35 questions in the current bank and does not reproduce the official test format or predict an official result.",
+    "This question bank is not supplied, reviewed, approved or endorsed by ICBC. Each session uses all 79 questions in the current bank and does not reproduce the official test format or predict an official result.",
   ),
   `<p>Study the <a href="https://www.icbc.com/driver-licensing/driving-guides/Learn-to-Drive-Smart">current Learn to Drive Smart guide</a> and use <a href="https://www.icbc.com/driver-licensing/new-drivers/practice-knowledge-test">ICBC's official practice test</a>.</p>`,
   `</section>`,

@@ -9,13 +9,13 @@ import {
 } from "@/lib/knowledgeTestService";
 
 describe("knowledge-test question bank", () => {
-  it("contains 35 unique fallback questions", () => {
+  it("contains 79 unique fallback questions", () => {
     const ids = fallbackKnowledgeTestQuestions.map((question) => question.id);
     const normalizedQuestions = fallbackKnowledgeTestQuestions.map((question) =>
       question.questionText.trim().toLocaleLowerCase("en-CA"),
     );
 
-    expect(fallbackKnowledgeTestQuestions).toHaveLength(35);
+    expect(fallbackKnowledgeTestQuestions).toHaveLength(79);
     expect(new Set(ids).size).toBe(ids.length);
     expect(new Set(normalizedQuestions).size).toBe(normalizedQuestions.length);
   });
@@ -32,7 +32,7 @@ describe("knowledge-test question bank", () => {
     }
   });
 
-  it("returns all 35 questions in a shuffled session without changing the bank", () => {
+  it("returns all 79 questions in a shuffled session without changing the bank", () => {
     const originalOrder = fallbackKnowledgeTestQuestions.map((question) => question.id);
     const session = getRandomKnowledgeTestQuestions(fallbackKnowledgeTestQuestions);
 
@@ -43,10 +43,13 @@ describe("knowledge-test question bank", () => {
   });
 
   it("includes every newly added fallback question in the production database migration", () => {
-    const migration = readFileSync(
-      resolve(process.cwd(), "supabase/migrations/20261006030000_add_researched_knowledge_test_questions.sql"),
-      "utf8",
-    );
+    const migration = [
+      "supabase/migrations/20261006030000_add_researched_knowledge_test_questions.sql",
+      "supabase/migrations/20261006040000_add_road_sign_knowledge_test_questions.sql",
+      "supabase/migrations/20261006050000_add_rules_markings_knowledge_test_questions.sql",
+    ]
+      .map((path) => readFileSync(resolve(process.cwd(), path), "utf8"))
+      .join("\n");
 
     for (const question of fallbackKnowledgeTestQuestions.slice(13)) {
       expect(migration).toContain(question.questionText);
