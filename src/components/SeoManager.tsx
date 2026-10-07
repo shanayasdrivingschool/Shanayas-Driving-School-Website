@@ -336,6 +336,8 @@ const localBusinessJsonLd: JsonLdObject = {
     "Victoria, BC",
     "Langford, BC",
     "Colwood, BC",
+    "Saanich, BC",
+    "View Royal, BC",
     "Sidney, BC",
     "Metchosin, BC",
     "Sooke, BC",

@@ -35,6 +35,8 @@ The site defines these service locations:
 - Langford, BC
 - Victoria, BC
 - Colwood, BC
+- Saanich, BC
+- View Royal, BC
 - Sidney, BC
 - Metchosin, BC
 - Sooke, BC
