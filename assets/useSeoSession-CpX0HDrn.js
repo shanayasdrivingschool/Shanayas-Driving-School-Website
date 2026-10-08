@@ -1,1 +1,0 @@
-import{b as o,P as s}from"./index-Czm7Q0zb.js";import{g as r}from"./seoApi-pDYLPywI.js";const u=()=>{const{user:e}=o();return s({queryKey:["seo-session",e==null?void 0:e.id],queryFn:r,enabled:!!e,staleTime:5*6e4,refetchInterval:5*6e4,refetchOnWindowFocus:!0})};export{u};

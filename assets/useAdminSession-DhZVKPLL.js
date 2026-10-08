@@ -1,0 +1,1 @@
+import{a as n,P as s}from"./index-DXdxkp7s.js";import{getAdminSession as o}from"./affiliateApi-BAvehlIq.js";const i=()=>{const{user:e}=n();return s({queryKey:["admin-session",e==null?void 0:e.id],queryFn:o,enabled:!!e,staleTime:5*6e4,refetchInterval:5*6e4,refetchOnWindowFocus:!0})};export{i as u};
