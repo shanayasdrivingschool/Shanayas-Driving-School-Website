@@ -1,0 +1,1 @@
+import{u as o}from"./useQuery-Ds1VArsl.js";import{b as s}from"./index-Cz-R5jx-.js";import{g as r}from"./seoApi-pDYLPywI.js";const i=()=>{const{user:e}=s();return o({queryKey:["seo-session",e==null?void 0:e.id],queryFn:r,enabled:!!e,staleTime:5*6e4,refetchInterval:5*6e4,refetchOnWindowFocus:!0})};export{i as u};
