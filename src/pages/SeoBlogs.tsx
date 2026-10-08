@@ -60,7 +60,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { deleteSeoBlogPost, publishSeoBlogPost, saveSeoBlogPost, uploadSeoBlogImage } from "@/lib/seoCrudApi";
-import { getSeoBlogPosts } from "@/lib/seoApi";
+import { getSeoBlogPost, getSeoBlogPosts } from "@/lib/seoApi";
 import {
   buildBlogSchemaPreview,
   createBlogAnnotation,
@@ -73,6 +73,7 @@ import {
   type AdminBlogPostUpsertInput,
   type BlogBlockType,
   type BlogContentBlock,
+  type BlogPostListItem,
   type BlogPostRecord,
   type BlogPostStatus,
 } from "@/lib/blogAdmin";
@@ -1113,8 +1114,9 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
   const [viewMode, setViewMode] = useState<"write" | "preview">("write");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<BlogPostRecord | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<BlogPostListItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [openingPostId, setOpeningPostId] = useState<string | null>(null);
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishOpen, setPublishOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -1152,10 +1154,23 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
     setViewMode("write");
   };
 
-  const openEdit = (post: BlogPostRecord) => {
-    const draft = clonePost(post);
-    setEditor(post.publishedSnapshot ? { ...draft, status: "draft" } : draft);
-    setViewMode("write");
+  const openEdit = async (post: BlogPostListItem) => {
+    if (openingPostId) return;
+    setOpeningPostId(post.id);
+    try {
+      const fullPost = await queryClient.fetchQuery({
+        queryKey: ["seo-blog-post", post.id],
+        queryFn: () => getSeoBlogPost(post.id),
+        staleTime: 120_000,
+      });
+      const draft = clonePost(fullPost);
+      setEditor(fullPost.publishedSnapshot ? { ...draft, status: "draft" } : draft);
+      setViewMode("write");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to open the blog article.");
+    } finally {
+      setOpeningPostId(null);
+    }
   };
 
   const handleSave = async (nextStatus?: BlogPostStatus) => {
@@ -1405,7 +1420,7 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
             <div className="mt-5 overflow-x-auto">
               <Table>
                 <TableHeader><TableRow><TableHead>Article</TableHead><TableHead>Status</TableHead><TableHead>Readiness</TableHead><TableHead>Updated</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
-                <TableBody>{filteredPosts.length ? filteredPosts.map((post) => <TableRow key={post.id}><TableCell><div className="flex flex-wrap items-center gap-2"><p className="font-bold text-slate-900">{post.title}</p>{post.publishedSnapshot ? <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-[#1d52a1]">Current website article</span> : null}</div><p className="mt-1 text-xs text-slate-500">/blog/{post.slug}/ · {post.category || "No category"}</p></TableCell><TableCell><AdminStatusBadge label={statusLabels[post.status]} toneClassName={statusTones[post.status]} /></TableCell><TableCell className="text-sm text-slate-600">{readinessLabels[post.readiness]}</TableCell><TableCell className="whitespace-nowrap text-sm text-slate-500">{new Date(post.updatedAt).toLocaleDateString("en-CA")}</TableCell><TableCell><div className="flex justify-end gap-2"><button type="button" className={adminRowButtonClassName} onClick={() => openEdit(post)}><FilePenLine className="h-3.5 w-3.5" /> {post.publishedSnapshot ? "Edit draft" : "Edit"}</button>{!post.publishedSnapshot && post.status !== "published" ? <button type="button" className={adminDangerOutlineButtonClassName} onClick={() => setDeleteTarget(post)}><Trash2 className="h-3.5 w-3.5" /> Delete</button> : null}</div></TableCell></TableRow>) : <TableRow><TableCell colSpan={5} className="py-12 text-center text-sm text-slate-500">No blog drafts match these filters.</TableCell></TableRow>}</TableBody>
+                <TableBody>{filteredPosts.length ? filteredPosts.map((post) => <TableRow key={post.id}><TableCell><div className="flex flex-wrap items-center gap-2"><p className="font-bold text-slate-900">{post.title}</p>{post.hasPublishedSnapshot ? <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-[#1d52a1]">Current website article</span> : null}</div><p className="mt-1 text-xs text-slate-500">/blog/{post.slug}/ · {post.category || "No category"}</p></TableCell><TableCell><AdminStatusBadge label={statusLabels[post.status]} toneClassName={statusTones[post.status]} /></TableCell><TableCell className="text-sm text-slate-600">{readinessLabels[post.readiness]}</TableCell><TableCell className="whitespace-nowrap text-sm text-slate-500">{new Date(post.updatedAt).toLocaleDateString("en-CA")}</TableCell><TableCell><div className="flex justify-end gap-2"><button type="button" className={adminRowButtonClassName} onClick={() => void openEdit(post)} disabled={Boolean(openingPostId)}><FilePenLine className="h-3.5 w-3.5" /> {openingPostId === post.id ? "Opening…" : post.hasPublishedSnapshot ? "Edit draft" : "Edit"}</button>{!post.hasPublishedSnapshot && post.status !== "published" ? <button type="button" className={adminDangerOutlineButtonClassName} onClick={() => setDeleteTarget(post)} disabled={Boolean(openingPostId)}><Trash2 className="h-3.5 w-3.5" /> Delete</button> : null}</div></TableCell></TableRow>) : <TableRow><TableCell colSpan={5} className="py-12 text-center text-sm text-slate-500">No blog drafts match these filters.</TableCell></TableRow>}</TableBody>
               </Table>
             </div>
           </div>

@@ -88,8 +88,15 @@ export type BlogPostRecord = {
   publishedRevisionAt: string;
 };
 
+export type BlogPostListItem = Pick<
+  BlogPostRecord,
+  "id" | "slug" | "title" | "status" | "readiness" | "publicationState" | "category" | "updatedAt"
+> & {
+  hasPublishedSnapshot: boolean;
+};
+
 export type AdminBlogPostsResponse = {
-  posts: BlogPostRecord[];
+  posts: BlogPostListItem[];
   totals: {
     total: number;
     drafts: number;

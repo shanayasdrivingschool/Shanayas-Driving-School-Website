@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 type GtagCommand = (...args: unknown[]) => void;
 type FacebookPixelCommand = ((...args: unknown[]) => void) & {
@@ -75,10 +76,14 @@ const installMetaPixel = () => {
 };
 
 const MarketingScripts = () => {
+  const location = useLocation();
+  const isPrivateWorkspace = /^\/(?:admin|seo)(?:\/|$)/.test(location.pathname);
+
   useEffect(() => {
+    if (isPrivateWorkspace) return;
     installGoogleAnalytics();
     installMetaPixel();
-  }, []);
+  }, [isPrivateWorkspace]);
 
   return null;
 };

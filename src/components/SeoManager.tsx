@@ -736,7 +736,8 @@ const getSeoForPath = (rawPathname: string, blogPosts: BlogPostData[]): SeoDetai
 
 const SeoManager = () => {
   const location = useLocation();
-  const { posts: blogPosts } = usePublicBlogPosts();
+  const isPrivateWorkspace = /^\/(?:admin|seo)(?:\/|$)/.test(location.pathname);
+  const { posts: blogPosts } = usePublicBlogPosts(!isPrivateWorkspace);
   const seo = useMemo(() => getSeoForPath(location.pathname, blogPosts), [blogPosts, location.pathname]);
 
   useEffect(() => {

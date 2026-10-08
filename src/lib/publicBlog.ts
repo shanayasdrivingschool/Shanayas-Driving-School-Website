@@ -84,10 +84,11 @@ export const getPublishedBlogPosts = async () => {
   return data.map(mapPublicBlogRow).filter((post): post is BlogPostData => Boolean(post));
 };
 
-export const usePublicBlogPosts = () => {
+export const usePublicBlogPosts = (enabled = true) => {
   const query = useQuery({
     queryKey: ["public-blog-posts"],
     queryFn: getPublishedBlogPosts,
+    enabled,
     staleTime: 60_000,
     retry: 1,
   });

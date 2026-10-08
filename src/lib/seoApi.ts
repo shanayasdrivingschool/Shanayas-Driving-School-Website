@@ -1,8 +1,9 @@
 import { clearAdminAccessCache, ensureSupabaseClient } from "@/lib/adminAccess";
-import type { AdminBlogPostsResponse, BlogPostRecord } from "@/lib/blogAdmin";
+import type { AdminBlogPostsResponse, BlogPostListItem, BlogPostRecord } from "@/lib/blogAdmin";
 import { clearSeoAccessCache, hasSeoPortalAccess, requireBlogEditorUser } from "@/lib/seoAccess";
 
 const BLOG_FETCH_BATCH_SIZE = 500;
+const BLOG_LIST_COLUMNS = "id,slug,title,status,readiness,publication_state,category,updated_at,published_revision_at";
 
 const asRecord = (value: unknown): Record<string, unknown> =>
   value && typeof value === "object" && !Array.isArray(value)
@@ -54,6 +55,18 @@ const mapBlogPost = (row: Record<string, unknown>): BlogPostRecord => ({
   publishedRevisionAt: typeof row.published_revision_at === "string" ? row.published_revision_at : "",
 });
 
+const mapBlogPostListItem = (row: Record<string, unknown>): BlogPostListItem => ({
+  id: String(row.id),
+  slug: String(row.slug),
+  title: String(row.title),
+  status: String(row.status) as BlogPostListItem["status"],
+  readiness: String(row.readiness) as BlogPostListItem["readiness"],
+  publicationState: String(row.publication_state) as BlogPostListItem["publicationState"],
+  category: String(row.category ?? ""),
+  updatedAt: String(row.updated_at),
+  hasPublishedSnapshot: Boolean(row.published_revision_at),
+});
+
 export const getSeoSession = async () => {
   try {
     await requireBlogEditorUser();
@@ -74,6 +87,7 @@ export const signInSeo = async (email: string, password: string) => {
     await client.auth.signOut().catch(() => undefined);
     throw new Error("This account does not have SEO portal access.");
   }
+  return data.user;
 };
 
 export const signOutSeo = async () => {
@@ -93,7 +107,7 @@ export const getSeoBlogPosts = async (): Promise<AdminBlogPostsResponse> => {
     const to = from + BLOG_FETCH_BATCH_SIZE - 1;
     const { data, error } = await client
       .from("blog_posts")
-      .select("*")
+      .select(BLOG_LIST_COLUMNS)
       .order("updated_at", { ascending: false })
       .range(from, to);
 
@@ -104,7 +118,7 @@ export const getSeoBlogPosts = async (): Promise<AdminBlogPostsResponse> => {
     from += BLOG_FETCH_BATCH_SIZE;
   }
 
-  const posts = rows.map(mapBlogPost);
+  const posts = rows.map(mapBlogPostListItem);
   return {
     posts,
     totals: {
@@ -116,4 +130,16 @@ export const getSeoBlogPosts = async (): Promise<AdminBlogPostsResponse> => {
       published: posts.filter((post) => post.status === "published").length,
     },
   };
+};
+
+export const getSeoBlogPost = async (id: string): Promise<BlogPostRecord> => {
+  const { client } = await requireBlogEditorUser();
+  const { data, error } = await client
+    .from("blog_posts")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) throw error;
+  return mapBlogPost(data as Record<string, unknown>);
 };

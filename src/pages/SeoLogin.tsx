@@ -1,14 +1,17 @@
 import { useState, type FormEvent } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, FilePenLine, SearchCheck, ShieldCheck } from "lucide-react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useSeoAuth } from "@/components/seo/seoAuthContext";
 import { useSeoSession } from "@/hooks/useSeoSession";
-import { signInSeo } from "@/lib/seoApi";
+import { getSeoBlogPosts, signInSeo } from "@/lib/seoApi";
+import { adminQueryOptions } from "@/lib/adminQueries";
 
 const SeoLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const { loading, user } = useSeoAuth();
   const seoSession = useSeoSession();
   const [email, setEmail] = useState("");
@@ -35,7 +38,13 @@ const SeoLogin = () => {
     setError("");
     setIsSubmitting(true);
     try {
-      await signInSeo(email, password);
+      const signedInUser = await signInSeo(email, password);
+      queryClient.setQueryData(["seo-session", signedInUser.id], { isSeoUser: true });
+      void queryClient.prefetchQuery({
+        queryKey: ["seo-blog-posts"],
+        queryFn: getSeoBlogPosts,
+        ...adminQueryOptions,
+      }).catch(() => undefined);
       toast.success("SEO workspace access granted.");
       navigate(redirectTarget, { replace: true });
     } catch (submitError) {

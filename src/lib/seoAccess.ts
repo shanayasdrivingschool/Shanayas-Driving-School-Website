@@ -33,8 +33,11 @@ export const clearSeoAccessCache = () => {
 };
 
 export const hasSeoPortalAccess = async (client: SupabaseClient, userId: string) => {
-  if (await isAdminUser(client, userId)) return true;
-  return isSeoUser(client, userId);
+  const [adminAccess, seoAccess] = await Promise.all([
+    isAdminUser(client, userId),
+    isSeoUser(client, userId),
+  ]);
+  return adminAccess || seoAccess;
 };
 
 export const requireBlogEditorUser = async () => {
@@ -45,4 +48,3 @@ export const requireBlogEditorUser = async () => {
   }
   return { client, user };
 };
-
