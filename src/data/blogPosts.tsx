@@ -41,6 +41,15 @@ export type BlogPostData = {
   readTime: string;
   category: string;
   content: ReactNode;
+  /* CMS publications arrive as sanitized HTML. Code-authored articles continue
+     to use `content`, while the public renderer supports either representation. */
+  contentHtml?: string;
+  authorName?: string;
+  reviewerName?: string;
+  robots?: "index, follow" | "noindex, follow" | "noindex, nofollow";
+  schemaType?: "BlogPosting" | "Article";
+  faqSchemaEnabled?: boolean;
+  breadcrumbSchemaEnabled?: boolean;
   relatedSlugs?: string[];
   /* Visible FAQ answers; shared with rendered and static structured data. */
   faqs?: { question: string; answer: string }[];

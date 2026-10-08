@@ -5,9 +5,10 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
-import { activeBlogPosts as blogPosts, type BlogPostData } from "@/data/blogPosts";
+import type { BlogPostData } from "@/data/blogPosts";
 import { resolveAuthor } from "@/data/authors";
 import { seoLandingPages } from "@/data/seoLandingPages";
+import { usePublicBlogPosts } from "@/lib/publicBlog";
 
 const cleanTitle = (title: string) => title.split(" | ")[0];
 
@@ -40,7 +41,7 @@ const PostMeta = ({ post }: { post: BlogPostData }) => {
   return (
     <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
       <span className="font-semibold text-slate-600 underline underline-offset-2">
-        {namedAuthor ? namedAuthor.name : post.author}
+        {namedAuthor ? namedAuthor.name : post.authorName || post.author}
       </span>
       <span aria-hidden="true">·</span>
       <span>{post.date}</span>
@@ -51,6 +52,7 @@ const PostMeta = ({ post }: { post: BlogPostData }) => {
 };
 
 const Blog = () => {
+  const { posts: blogPosts } = usePublicBlogPosts();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortOption>("newest");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -59,7 +61,7 @@ const Blog = () => {
   const categories = useMemo(() => {
     const cats = Array.from(new Set(blogPosts.map((p) => p.category)));
     return ["All", ...cats];
-  }, []);
+  }, [blogPosts]);
 
   const isFiltering = search.trim() !== "" || selectedCategory !== "All";
 
@@ -67,7 +69,7 @@ const Blog = () => {
      the list — otherwise it would push their actual results below the fold. */
   const featured = useMemo(
     () => (isFiltering ? [] : [...blogPosts].sort(byNewest).slice(0, FEATURED_COUNT)),
-    [isFiltering],
+    [blogPosts, isFiltering],
   );
 
   const filteredPosts = useMemo(() => {
@@ -103,7 +105,7 @@ const Blog = () => {
     }
 
     return posts;
-  }, [search, sort, selectedCategory]);
+  }, [blogPosts, search, sort, selectedCategory]);
 
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / POSTS_PER_PAGE));
 

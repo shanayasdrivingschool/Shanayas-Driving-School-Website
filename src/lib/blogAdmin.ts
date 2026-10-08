@@ -193,11 +193,15 @@ export const slugifyBlogTitle = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
+const getHeadingLevels = (blocks: BlogContentBlock[]) => blocks.flatMap((block) => {
+  if (block.type === "heading") return [block.level ?? 2];
+  if (block.type !== "rich_html") return [];
+  return Array.from((block.html ?? "").matchAll(/<h([1-6])\b/gi), (match) => Number(match[1]));
+});
+
 const hasHeadingJump = (blocks: BlogContentBlock[]) => {
   let previousLevel = 1;
-  for (const block of blocks) {
-    if (block.type !== "heading") continue;
-    const level = block.level ?? 2;
+  for (const level of getHeadingLevels(blocks)) {
     if (level > previousLevel + 1) return true;
     previousLevel = level;
   }
@@ -227,7 +231,7 @@ export const validateBlogPost = (post: AdminBlogPostUpsertInput): BlogValidation
   if (hasHeadingJump(post.contentBlocks)) {
     add("error", "Headings", "Heading levels cannot skip a level (for example, H2 directly to H4).");
   }
-  if (post.contentBlocks.some((block) => block.type === "heading" && block.level === 1)) {
+  if (getHeadingLevels(post.contentBlocks).includes(1)) {
     add("warning", "Headings", "The article title already renders as H1. Use another H1 only when intentionally restructuring the page hierarchy.");
   }
   for (const [index, block] of post.contentBlocks.entries()) {
@@ -282,6 +286,26 @@ export const validateBlogPost = (post: AdminBlogPostUpsertInput): BlogValidation
   }
   if (post.status === "published" && !post.publishedAt) {
     add("error", "Publication date", "A published article needs its actual publication date.");
+  }
+
+  return issues;
+};
+
+export const validateBlogPublication = (post: AdminBlogPostUpsertInput): BlogValidationIssue[] => {
+  const issues = validateBlogPost(post);
+  const add = (field: string, message: string) => issues.push({ level: "error" as const, field, message });
+
+  if (post.status !== "approved" && post.status !== "published") {
+    add("Workflow", "Move the article to Approved before publishing.");
+  }
+  if (post.readiness !== "ready") {
+    add("Readiness", "Mark the article Ready after completing the editorial checklist.");
+  }
+  if (!post.coverImageUrl.trim()) {
+    add("Cover image", "Add a cover image before publishing.");
+  }
+  if (post.annotations.some((annotation) => !annotation.resolved)) {
+    add("Annotations", "Resolve every editorial annotation before publishing.");
   }
 
   return issues;

@@ -3,6 +3,7 @@ import {
   createBlogContentBlock,
   createEmptyBlogPost,
   slugifyBlogTitle,
+  validateBlogPublication,
   validateBlogPost,
 } from "@/lib/blogAdmin";
 
@@ -43,6 +44,19 @@ describe("blog admin validation", () => {
     expect(validateBlogPost(draft).some((issue) => issue.level === "warning" && issue.message.includes("already renders as H1"))).toBe(true);
   });
 
+  it("checks heading levels inside imported rich content", () => {
+    const draft = createEmptyBlogPost();
+    draft.contentBlocks = [{
+      ...createBlogContentBlock("rich_html"),
+      text: "Opening answer First section Skipped section",
+      html: "<p>Opening answer</p><h2>First section</h2><h4>Skipped section</h4><h1>Extra page heading</h1>",
+    }];
+
+    const issues = validateBlogPost(draft);
+    expect(issues.some((issue) => issue.level === "error" && issue.message.includes("cannot skip"))).toBe(true);
+    expect(issues.some((issue) => issue.level === "warning" && issue.message.includes("already renders as H1"))).toBe(true);
+  });
+
   it("validates internal and external link destinations", () => {
     const draft = createEmptyBlogPost();
     draft.contentBlocks = [
@@ -53,5 +67,16 @@ describe("blog admin validation", () => {
     const issues = validateBlogPost(draft);
     expect(issues.some((issue) => issue.message.includes("complete HTTPS URL"))).toBe(true);
     expect(issues.some((issue) => issue.message.includes("one slash"))).toBe(true);
+  });
+
+  it("blocks publication until approval, readiness, cover image, and annotations are complete", () => {
+    const draft = createEmptyBlogPost();
+    draft.annotations = [{ id: "note", field: "Sources", note: "Verify this", resolved: false }];
+
+    const issues = validateBlogPublication(draft);
+    expect(issues.some((issue) => issue.field === "Workflow")).toBe(true);
+    expect(issues.some((issue) => issue.field === "Readiness")).toBe(true);
+    expect(issues.some((issue) => issue.field === "Cover image" && issue.level === "error")).toBe(true);
+    expect(issues.some((issue) => issue.field === "Annotations")).toBe(true);
   });
 });

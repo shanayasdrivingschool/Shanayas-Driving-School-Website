@@ -57,6 +57,13 @@ export const deleteSeoBlogPost = async (id: string) => {
   return { success: true };
 };
 
+export const publishSeoBlogPost = async (id: string) => {
+  const { client } = await requireBlogEditorUser();
+  const { data, error } = await client.rpc("publish_blog_post", { target_post_id: id });
+  if (error) throw error;
+  return data as Record<string, unknown>;
+};
+
 export const uploadSeoBlogImage = async (file: File, slug: string) => {
   if (!file.type.startsWith("image/")) throw new Error("Choose an image file.");
   if (file.size > 5 * 1024 * 1024) throw new Error("Cover images must be 5 MB or smaller.");

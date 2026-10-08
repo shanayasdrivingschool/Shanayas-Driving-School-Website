@@ -13,10 +13,12 @@ import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server.js";
-import { createServer } from "vite";
+import { createServer, loadEnv } from "vite";
+import { loadPublishedBlogs } from "./load-published-blogs.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..");
+const buildEnv = { ...process.env, ...loadEnv(process.env.NODE_ENV ?? "production", projectRoot, "") };
 
 export const loadSiteContent = async () => {
   /* configFile: false skips vite.config.ts on purpose — the app config pulls in
@@ -66,6 +68,35 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/data/beginnerCourseLanding.ts"),
       server.ssrLoadModule("/src/data/knowledgeTestPractice.ts"),
     ]);
+
+    const renderedCodePosts = activeBlogPosts.map((post) => [
+      post.slug,
+      {
+        html: renderToStaticMarkup(
+          createElement(StaticRouter, { location: `/blog/${post.slug}` }, post.content),
+        ),
+        title: post.title,
+        seoTitle: post.seoTitle,
+        canonicalPath: post.canonicalPath,
+        description: post.description,
+        author: post.author,
+        authorId: post.authorId,
+        reviewedById: post.reviewedById,
+        date: post.date,
+        datePublished: post.datePublished,
+        dateModified: post.dateModified,
+        readTime: post.readTime,
+        category: post.category,
+        faqs: post.faqs,
+        heroImage: post.heroImage,
+        relatedSlugs: post.relatedSlugs ?? [],
+        robots: post.robots ?? "index, follow",
+        schemaType: post.schemaType ?? "BlogPosting",
+      },
+    ]);
+    const publishedCmsPosts = await loadPublishedBlogs(buildEnv);
+    const mergedBlogPosts = new Map(renderedCodePosts);
+    publishedCmsPosts.forEach((post) => mergedBlogPosts.set(post.slug, post));
 
     return {
       /* Named content authors, plus the schema builders src/ uses for them, so
@@ -118,31 +149,7 @@ export const loadSiteContent = async () => {
         faqs: knowledgeTestPractice.knowledgeTestPracticeFaqs,
         closing: knowledgeTestPractice.KNOWLEDGE_TEST_PRACTICE_CLOSING,
       },
-      blogPosts: new Map(
-        activeBlogPosts.map((post) => [
-          post.slug,
-          {
-            html: renderToStaticMarkup(
-              createElement(StaticRouter, { location: `/blog/${post.slug}` }, post.content),
-            ),
-            title: post.title,
-            seoTitle: post.seoTitle,
-            canonicalPath: post.canonicalPath,
-            description: post.description,
-            author: post.author,
-            authorId: post.authorId,
-            reviewedById: post.reviewedById,
-            date: post.date,
-            datePublished: post.datePublished,
-            dateModified: post.dateModified,
-            readTime: post.readTime,
-            category: post.category,
-            faqs: post.faqs,
-            heroImage: post.heroImage,
-            relatedSlugs: post.relatedSlugs ?? [],
-          },
-        ]),
-      ),
+      blogPosts: mergedBlogPosts,
       landingPages: new Map(
         seoLandingPages.map((page) => [
           `${page.path}/`,

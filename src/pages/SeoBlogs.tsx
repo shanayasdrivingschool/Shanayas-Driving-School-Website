@@ -1,18 +1,21 @@
-import { useMemo, useState, type ChangeEvent, type DragEvent } from "react";
+import { useMemo, useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
   ArrowDown,
   ArrowLeft,
   ArrowUp,
+  Bold,
   BookOpen,
   CheckCircle2,
   Eye,
   ExternalLink,
   FilePenLine,
+  Globe2,
   GripVertical,
   Heading2,
   ImagePlus,
+  Italic,
   List,
   ListOrdered,
   Link2,
@@ -25,6 +28,7 @@ import {
   Save,
   Search,
   Trash2,
+  Unlink,
 } from "lucide-react";
 import { toast } from "sonner";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
@@ -40,12 +44,22 @@ import {
 } from "@/components/admin/styles";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { deleteSeoBlogPost, saveSeoBlogPost, uploadSeoBlogImage } from "@/lib/seoCrudApi";
+import { deleteSeoBlogPost, publishSeoBlogPost, saveSeoBlogPost, uploadSeoBlogImage } from "@/lib/seoCrudApi";
 import { getSeoBlogPosts } from "@/lib/seoApi";
 import {
   buildBlogSchemaPreview,
@@ -54,6 +68,7 @@ import {
   createBlogFaq,
   createEmptyBlogPost,
   slugifyBlogTitle,
+  validateBlogPublication,
   validateBlogPost,
   type AdminBlogPostUpsertInput,
   type BlogBlockType,
@@ -143,7 +158,7 @@ const getSafeBlockHref = (block: BlogContentBlock) => {
 
 const fieldClassName = "h-11 rounded-xl border-slate-200";
 const textareaClassName = "rounded-xl border-slate-200 leading-relaxed";
-const richContentClassName = "space-y-5 text-[17px] leading-8 text-slate-700 [&_a]:font-semibold [&_a]:text-[#1d52a1] [&_a]:underline [&_a]:underline-offset-2 [&_blockquote]:border-l-4 [&_blockquote]:border-[#1d52a1] [&_blockquote]:bg-blue-50 [&_blockquote]:px-5 [&_blockquote]:py-4 [&_h2]:pt-5 [&_h2]:text-3xl [&_h2]:font-black [&_h2]:leading-tight [&_h2]:text-slate-900 [&_h3]:pt-4 [&_h3]:text-2xl [&_h3]:font-black [&_h3]:text-slate-900 [&_h4]:pt-3 [&_h4]:text-xl [&_h4]:font-black [&_li]:ml-6 [&_ol]:list-decimal [&_table]:w-full [&_table]:min-w-[40rem] [&_table]:border-collapse [&_table]:text-sm [&_td]:border [&_td]:border-slate-200 [&_td]:p-3 [&_th]:border [&_th]:border-slate-200 [&_th]:bg-slate-100 [&_th]:p-3 [&_th]:text-left [&_ul]:list-disc";
+const richContentClassName = "space-y-5 text-[17px] leading-8 text-slate-700 [&_a]:font-semibold [&_a]:text-[#1d52a1] [&_a]:underline [&_a]:underline-offset-2 [&_blockquote]:border-l-4 [&_blockquote]:border-[#1d52a1] [&_blockquote]:bg-blue-50 [&_blockquote]:px-5 [&_blockquote]:py-4 [&_h1]:pt-5 [&_h1]:text-4xl [&_h1]:font-black [&_h1]:leading-tight [&_h1]:text-slate-900 [&_h2]:pt-5 [&_h2]:text-3xl [&_h2]:font-black [&_h2]:leading-tight [&_h2]:text-slate-900 [&_h3]:pt-4 [&_h3]:text-2xl [&_h3]:font-black [&_h3]:text-slate-900 [&_h4]:pt-3 [&_h4]:text-xl [&_h4]:font-black [&_h5]:pt-2 [&_h5]:text-lg [&_h5]:font-black [&_h6]:pt-2 [&_h6]:text-base [&_h6]:font-black [&_li]:ml-6 [&_ol]:list-decimal [&_table]:w-full [&_table]:min-w-[40rem] [&_table]:border-collapse [&_table]:text-sm [&_td]:border [&_td]:border-slate-200 [&_td]:p-3 [&_th]:border [&_th]:border-slate-200 [&_th]:bg-slate-100 [&_th]:p-3 [&_th]:text-left [&_ul]:list-disc";
 
 const toLocalDateTime = (value: string) => {
   if (!value) return "";
@@ -406,6 +421,235 @@ const BlockLibrary = ({ blocks, onChange, onInsert }: BlockLibraryProps) => {
   );
 };
 
+type RichHtmlBlockEditorProps = {
+  block: BlogContentBlock;
+  onChange: (patch: Partial<BlogContentBlock>) => void;
+};
+
+const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const savedRangeRef = useRef<Range | null>(null);
+  const [linkPanelOpen, setLinkPanelOpen] = useState(false);
+  const [linkKind, setLinkKind] = useState<"internal" | "external">("internal");
+  const [linkText, setLinkText] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
+  const [openInNewTab, setOpenInNewTab] = useState(false);
+
+  const captureSelection = () => {
+    const selection = window.getSelection();
+    const editor = editorRef.current;
+    if (!selection || !selection.rangeCount || !editor) return;
+    const range = selection.getRangeAt(0);
+    if (editor.contains(range.commonAncestorContainer)) savedRangeRef.current = range.cloneRange();
+  };
+
+  const restoreSelection = () => {
+    const range = savedRangeRef.current;
+    if (!range) return null;
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+    return range;
+  };
+
+  const syncContent = () => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const html = sanitizeBlogHtml(editor.innerHTML);
+    if (editor.innerHTML !== html) editor.innerHTML = html;
+    onChange({ html, text: editor.textContent?.trim() ?? "" });
+  };
+
+  const runEditorCommand = (command: string, value?: string) => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    editor.focus();
+    restoreSelection();
+    document.execCommand(command, false, value);
+    captureSelection();
+    syncContent();
+  };
+
+  const changeBlockTag = (tagName: string) => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    captureSelection();
+    editor.focus();
+    const range = restoreSelection();
+    if (!range) {
+      toast.error("Place the cursor in a paragraph or heading first.");
+      return;
+    }
+
+    const selectedText = range.toString().trim();
+    const getEditableBlock = (node: Node | null) => {
+      const element = node instanceof Element ? node : node?.parentElement;
+      const candidate = element?.closest("p, h1, h2, h3, h4, h5, h6");
+      return candidate && editor.contains(candidate) ? candidate : null;
+    };
+    const startBlock = getEditableBlock(range.startContainer);
+    const endBlock = getEditableBlock(range.endContainer);
+    let target = startBlock;
+    if (selectedText && target && !target.textContent?.includes(selectedText) && endBlock?.textContent?.includes(selectedText)) {
+      target = endBlock;
+    }
+    if (selectedText) {
+      const exactMatch = Array.from(editor.querySelectorAll("p, h1, h2, h3, h4, h5, h6")).find(
+        (element) => element.textContent?.trim() === selectedText,
+      );
+      if (exactMatch) target = exactMatch;
+    }
+    if (!target) {
+      toast.error("Heading levels can be applied to paragraphs and headings.");
+      return;
+    }
+
+    const replacement = document.createElement(tagName);
+    while (target.firstChild) replacement.appendChild(target.firstChild);
+    target.replaceWith(replacement);
+    const nextRange = document.createRange();
+    nextRange.selectNodeContents(replacement);
+    nextRange.collapse(false);
+    savedRangeRef.current = nextRange;
+    restoreSelection();
+    syncContent();
+  };
+
+  const closestLink = (node: Node | null) => {
+    const element = node instanceof Element ? node : node?.parentElement;
+    const link = element?.closest("a");
+    return link && editorRef.current?.contains(link) ? link : null;
+  };
+
+  const openLinkEditor = () => {
+    captureSelection();
+    const range = savedRangeRef.current;
+    const link = closestLink(range?.startContainer ?? null);
+    const href = link?.getAttribute("href") ?? "";
+    const external = /^https:\/\//i.test(href);
+    setLinkKind(external ? "external" : "internal");
+    setLinkText(link?.textContent ?? range?.toString() ?? "");
+    setLinkUrl(href);
+    setOpenInNewTab(link?.getAttribute("target") === "_blank");
+    setLinkPanelOpen(true);
+  };
+
+  const applyLink = () => {
+    const editor = editorRef.current;
+    const href = linkUrl.trim();
+    const safeInternal = href.startsWith("/") && !href.startsWith("//");
+    const safeExternal = /^https:\/\//i.test(href);
+    if ((linkKind === "internal" && !safeInternal) || (linkKind === "external" && !safeExternal)) {
+      toast.error(linkKind === "internal" ? "Internal links must begin with one slash (/)." : "External links must use a complete HTTPS URL.");
+      return;
+    }
+    if (!editor) return;
+
+    editor.focus();
+    const range = restoreSelection();
+    const existingLink = closestLink(range?.startContainer ?? null);
+    const link = existingLink ?? document.createElement("a");
+    link.setAttribute("href", href);
+    if (linkKind === "external" && openInNewTab) {
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener noreferrer");
+    } else {
+      link.removeAttribute("target");
+      link.removeAttribute("rel");
+    }
+
+    if (existingLink) {
+      if (linkText.trim()) existingLink.textContent = linkText.trim();
+    } else if (range) {
+      if (!range.collapsed && !linkText.trim()) {
+        try {
+          range.surroundContents(link);
+        } catch {
+          link.appendChild(range.extractContents());
+          range.insertNode(link);
+        }
+      } else {
+        link.textContent = linkText.trim() || href;
+        range.deleteContents();
+        range.insertNode(link);
+      }
+      const nextRange = document.createRange();
+      nextRange.setStartAfter(link);
+      nextRange.collapse(true);
+      savedRangeRef.current = nextRange;
+      restoreSelection();
+    } else {
+      link.textContent = linkText.trim() || href;
+      editor.append(link);
+    }
+
+    setLinkPanelOpen(false);
+    syncContent();
+  };
+
+  const toolbarButtonClassName = "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:bg-blue-50 hover:text-[#1d52a1]";
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-blue-100 bg-blue-50/30">
+      <div className="border-b border-blue-100 bg-white p-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            aria-label="Change paragraph or heading level"
+            defaultValue=""
+            className="h-9 rounded-lg border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 outline-none focus:border-[#1d52a1]"
+            onMouseDown={captureSelection}
+            onChange={(event) => {
+              if (event.target.value) changeBlockTag(event.target.value);
+              event.currentTarget.value = "";
+            }}
+          >
+            <option value="" disabled>Paragraph / heading</option>
+            <option value="p">Paragraph</option>
+            {[1, 2, 3, 4, 5, 6].map((level) => <option key={level} value={`h${level}`}>Heading {level} (H{level})</option>)}
+          </select>
+          <button type="button" className={toolbarButtonClassName} aria-label="Bold" title="Bold" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("bold"); }}><Bold className="h-4 w-4" /></button>
+          <button type="button" className={toolbarButtonClassName} aria-label="Italic" title="Italic" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("italic"); }}><Italic className="h-4 w-4" /></button>
+          <button type="button" className={toolbarButtonClassName} aria-label="Bulleted list" title="Bulleted list" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("insertUnorderedList"); }}><List className="h-4 w-4" /></button>
+          <button type="button" className={toolbarButtonClassName} aria-label="Numbered list" title="Numbered list" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("insertOrderedList"); }}><ListOrdered className="h-4 w-4" /></button>
+          <button type="button" className={cn(toolbarButtonClassName, linkPanelOpen && "border-[#1d52a1] bg-blue-50 text-[#1d52a1]")} aria-label="Add or edit link" title="Add or edit link" onMouseDown={captureSelection} onClick={openLinkEditor}><Link2 className="h-4 w-4" /></button>
+          <button type="button" className={toolbarButtonClassName} aria-label="Remove link" title="Remove link" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("unlink"); }}><Unlink className="h-4 w-4" /></button>
+        </div>
+        <p className="mt-2 text-[11px] leading-relaxed text-slate-500">Place the cursor in a paragraph or heading to change H1–H6. Select text to format it or add a link.</p>
+        {linkPanelOpen ? (
+          <div className="mt-3 rounded-xl border border-blue-100 bg-blue-50/60 p-3">
+            <div className="grid gap-2 sm:grid-cols-[9rem_minmax(0,1fr)]">
+              <select value={linkKind} onChange={(event) => { const value = event.target.value as "internal" | "external"; setLinkKind(value); if (value === "internal") setOpenInNewTab(false); }} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700">
+                <option value="internal">Internal link</option>
+                <option value="external">External link</option>
+              </select>
+              <Input aria-label="Visible link text" value={linkText} onChange={(event) => setLinkText(event.target.value)} className="h-10 rounded-lg border-slate-200 bg-white shadow-none" placeholder="Visible link text" />
+            </div>
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
+              <Input aria-label="Link destination" value={linkUrl} onChange={(event) => setLinkUrl(event.target.value)} className="h-10 min-w-0 flex-1 rounded-lg border-slate-200 bg-white shadow-none" placeholder={linkKind === "external" ? "https://example.com/page" : "/blog/article-slug/"} />
+              {linkKind === "external" ? <label className="flex items-center gap-2 whitespace-nowrap text-xs font-semibold text-slate-600"><Switch checked={openInNewTab} onCheckedChange={setOpenInNewTab} /> Open in new tab</label> : null}
+              <button type="button" className="h-10 rounded-lg bg-[#1d52a1] px-4 text-xs font-black text-white hover:bg-[#163f7d]" onClick={applyLink}>Apply link</button>
+              <button type="button" className="h-10 rounded-lg px-3 text-xs font-bold text-slate-500 hover:bg-white" onClick={() => setLinkPanelOpen(false)}>Cancel</button>
+            </div>
+          </div>
+        ) : null}
+      </div>
+      <div
+        ref={editorRef}
+        role="textbox"
+        aria-label="Editable imported article body"
+        aria-multiline="true"
+        contentEditable
+        suppressContentEditableWarning
+        className={cn(richContentClassName, "min-h-[12rem] bg-white p-5 outline-none ring-inset ring-[#1d52a1]/20 focus:ring-4")}
+        dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(block.html ?? "") }}
+        onMouseUp={captureSelection}
+        onKeyUp={captureSelection}
+        onBlur={syncContent}
+      />
+    </div>
+  );
+};
+
 const ContentBlocksEditor = ({ blocks, onChange }: ContentBlocksEditorProps) => {
   const [insertChoice, setInsertChoice] = useState("");
   const [dropIndex, setDropIndex] = useState<number | null>(null);
@@ -600,24 +844,7 @@ const ContentBlocksEditor = ({ blocks, onChange }: ContentBlocksEditorProps) => 
           </div>
 
           {block.type === "rich_html" ? (
-            <div className="overflow-x-auto rounded-xl border border-blue-100 bg-blue-50/30 p-5">
-              <p className="mb-4 text-xs font-semibold leading-relaxed text-slate-500">
-                This is the preserved body of an existing article. Edit the text directly; links, emphasis, lists and tables are retained.
-              </p>
-              <div
-                role="textbox"
-                aria-label="Editable imported article body"
-                aria-multiline="true"
-                contentEditable
-                suppressContentEditableWarning
-                className={cn(richContentClassName, "min-h-[12rem] rounded-lg bg-white p-5 outline-none ring-[#1d52a1]/20 focus:ring-4")}
-                dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(block.html ?? "") }}
-                onBlur={(event) => updateBlock(index, {
-                  html: sanitizeBlogHtml(event.currentTarget.innerHTML),
-                  text: event.currentTarget.textContent?.trim() ?? "",
-                })}
-              />
-            </div>
+            <RichHtmlBlockEditor block={block} onChange={(patch) => updateBlock(index, patch)} />
           ) : block.type === "bulleted_list" || block.type === "numbered_list" ? (
             <div className="space-y-1.5">
               {(block.items ?? [""]).map((item, itemIndex) => (
@@ -779,6 +1006,8 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<BlogPostRecord | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const posts = useMemo(() => blogsQuery.data?.posts ?? [], [blogsQuery.data?.posts]);
@@ -790,6 +1019,10 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
 
   const issues = useMemo(() => editor ? validateBlogPost(editor) : [], [editor]);
   const errors = issues.filter((issue) => issue.level === "error");
+  const publicationErrors = useMemo(
+    () => editor ? validateBlogPublication(editor).filter((issue) => issue.level === "error") : [],
+    [editor],
+  );
 
   const setValue = <K extends keyof AdminBlogPostUpsertInput>(key: K, value: AdminBlogPostUpsertInput[K]) => {
     setEditor((current) => current ? { ...current, [key]: value } : current);
@@ -865,6 +1098,40 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
     }
   };
 
+  const handlePublish = async () => {
+    if (!editor || previewMode) return;
+    const blocking = validateBlogPublication(editor).filter((issue) => issue.level === "error");
+    if (blocking.length) {
+      toast.error(`Resolve ${blocking.length} publication ${blocking.length === 1 ? "requirement" : "requirements"} first.`);
+      return;
+    }
+
+    setIsPublishing(true);
+    try {
+      const wasRepublish = Boolean(editor.publishedSnapshot);
+      const saved = await saveSeoBlogPost(editor);
+      const snapshot = await publishSeoBlogPost(saved.id);
+      const now = new Date().toISOString();
+      setEditor({
+        ...editor,
+        id: saved.id,
+        status: "published",
+        publicationState: "live_confirmed",
+        publishedAt: editor.publishedAt || now,
+        publishedRevisionAt: now,
+        publishedSnapshot: snapshot,
+      });
+      refreshAdminQueries(queryClient, ["seo-blog-posts"]);
+      void queryClient.invalidateQueries({ queryKey: ["public-blog-posts"] });
+      setPublishOpen(false);
+      toast.success(wasRepublish ? "Article changes republished." : "Article published to the public blog.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to publish the article.");
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
   const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !editor) return;
@@ -892,7 +1159,7 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
   if (editor) {
     const schemaPreview = buildBlogSchemaPreview(editor);
     return (
-      <SeoPortalShell pageTitle={editor.id ? "Edit blog article" : "Create blog article"} pageDescription="Build the article, SEO metadata, schema and editorial record together. Saving does not publish it.">
+      <SeoPortalShell pageTitle={editor.id ? "Edit blog article" : "Create blog article"} pageDescription="Build, preview, review and publish the article with its SEO metadata and schema.">
         <div className="sticky top-[3.8rem] z-20 -mx-4 border-y border-slate-200 bg-white/95 px-4 py-3 backdrop-blur sm:-mx-5 sm:px-5">
           <div className="flex flex-wrap items-center gap-2">
             <button type="button" className={adminSecondaryButtonClassName} onClick={() => setEditor(null)}><ArrowLeft className="h-4 w-4" /> All blogs</button>
@@ -900,17 +1167,18 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
               <button type="button" className={adminSecondaryButtonClassName} onClick={() => setViewMode((current) => current === "write" ? "preview" : "write")}><Eye className="h-4 w-4" /> {viewMode === "write" ? "Preview" : "Continue writing"}</button>
               <button type="button" className={adminSecondaryButtonClassName} onClick={() => void handleSave()} disabled={isSaving}><Save className="h-4 w-4" /> {isSaving ? "Saving…" : "Save draft"}</button>
               <button type="button" className={adminPrimaryButtonClassName} onClick={() => void handleSave("in_review")} disabled={isSaving || errors.length > 0}><CheckCircle2 className="h-4 w-4" /> Send for review</button>
+              {!previewMode ? <button type="button" className={adminPrimaryButtonClassName} onClick={() => publicationErrors.length ? toast.error(publicationErrors[0].message) : setPublishOpen(true)} disabled={isSaving || isPublishing} title={publicationErrors.length ? `${publicationErrors.length} publication requirements remain.` : undefined}><Globe2 className="h-4 w-4" /> {editor.publishedSnapshot ? "Republish" : "Publish"}</button> : null}
             </div>
           </div>
         </div>
 
         <div className={cn("rounded-xl border px-4 py-3 text-sm leading-relaxed", editor.publishedSnapshot ? "border-blue-200 bg-blue-50 text-blue-900" : "border-amber-200 bg-amber-50 text-amber-900")}>
-          <strong>{editor.publishedSnapshot ? "Published version protected." : previewMode ? "Development preview only." : "Publication is intentionally disabled."}</strong>{" "}
+          <strong>{editor.publishedSnapshot ? "Published version protected." : previewMode ? "Development preview only." : "Draft not public yet."}</strong>{" "}
           {editor.publishedSnapshot
             ? "You are editing a separate draft. Saving or sending it for review will not change the current public article."
             : previewMode
               ? "Changes stay in this browser session and are not saved or uploaded."
-              : "This phase stores drafts and review data only; it does not add articles to the public blog, sitemap or live deployment."}
+              : "Preview the article, move it to Approved, mark it Ready, then use Publish to make a reviewed snapshot public."}
         </div>
 
         <div className={cn("grid items-start transition-[grid-template-columns] duration-300", isSidebarCollapsed ? "xl:grid-cols-[14rem_minmax(0,1fr)_3rem]" : "xl:grid-cols-[14rem_minmax(0,1fr)_3rem_20rem]")}>
@@ -974,7 +1242,7 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
               <div className="mt-4 max-h-52 space-y-3 overflow-y-auto">{!issues.length ? <p className="flex gap-2 text-sm text-emerald-700"><CheckCircle2 className="h-4 w-4 shrink-0" /> No automated issues found.</p> : issues.map((issue, index) => <div key={`${issue.field}-${index}`} className="flex gap-2 text-xs leading-relaxed"><AlertTriangle className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", issue.level === "error" ? "text-red-600" : "text-amber-600")} /><span><strong className="text-slate-800">{issue.field}:</strong> <span className="text-slate-600">{issue.message}</span></span></div>)}</div>
             </div>
 
-            <details open className="rounded-xl border border-slate-200 bg-white p-4"><summary className="cursor-pointer font-black text-slate-900">Post settings</summary><div className="mt-4 space-y-4"><Field label="Category"><Input value={editor.category} onChange={(event) => setValue("category", event.target.value)} className={fieldClassName} /></Field><Field label="URL slug" help={editor.publishedSnapshot ? "Locked to preserve the current article URL, backlinks and search history." : undefined}><Input value={editor.slug} disabled={Boolean(editor.publishedSnapshot)} onChange={(event) => setValue("slug", slugifyBlogTitle(event.target.value))} className={fieldClassName} /></Field><Field label="Workflow"><Select value={editor.status} onValueChange={(value) => setValue("status", value as BlogPostStatus)}><SelectTrigger className={fieldClassName}><SelectValue /></SelectTrigger><SelectContent><SelectItem value="draft">Draft</SelectItem><SelectItem value="in_review">In review</SelectItem><SelectItem value="approved">Approved</SelectItem><SelectItem value="scheduled">Scheduled</SelectItem><SelectItem value="archived">Archived</SelectItem></SelectContent></Select></Field><Field label="Readiness"><Select value={editor.readiness} onValueChange={(value) => setValue("readiness", value as typeof editor.readiness)}><SelectTrigger className={fieldClassName}><SelectValue /></SelectTrigger><SelectContent>{Object.entries(readinessLabels).map(([value, label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select></Field><Field label="Publication record"><Select value={editor.publicationState} onValueChange={(value) => setValue("publicationState", value as typeof editor.publicationState)}><SelectTrigger className={fieldClassName}><SelectValue /></SelectTrigger><SelectContent>{Object.entries(publicationLabels).map(([value, label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select></Field><Field label="Scheduled time"><Input type="datetime-local" value={toLocalDateTime(editor.scheduledFor)} onChange={(event) => setValue("scheduledFor", toIsoDateTime(event.target.value))} className={fieldClassName} /></Field></div></details>
+            <details open className="rounded-xl border border-slate-200 bg-white p-4"><summary className="cursor-pointer font-black text-slate-900">Post settings</summary><div className="mt-4 space-y-4"><Field label="Category"><Input value={editor.category} onChange={(event) => setValue("category", event.target.value)} className={fieldClassName} /></Field><Field label="URL slug" help={editor.publishedSnapshot ? "Locked to preserve the current article URL, backlinks and search history." : undefined}><Input value={editor.slug} disabled={Boolean(editor.publishedSnapshot)} onChange={(event) => setValue("slug", slugifyBlogTitle(event.target.value))} className={fieldClassName} /></Field><Field label="Workflow"><Select value={editor.status} onValueChange={(value) => setValue("status", value as BlogPostStatus)}><SelectTrigger className={fieldClassName}><SelectValue /></SelectTrigger><SelectContent><SelectItem value="draft">Draft</SelectItem><SelectItem value="in_review">In review</SelectItem><SelectItem value="approved">Approved</SelectItem><SelectItem value="scheduled">Scheduled</SelectItem><SelectItem value="archived">Archived</SelectItem></SelectContent></Select></Field><Field label="Readiness"><Select value={editor.readiness} onValueChange={(value) => setValue("readiness", value as typeof editor.readiness)}><SelectTrigger className={fieldClassName}><SelectValue /></SelectTrigger><SelectContent>{Object.entries(readinessLabels).map(([value, label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select></Field><Field label="Publication record" help="Updated automatically by the Publish action."><div className="flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-600">{publicationLabels[editor.publicationState]}</div></Field><Field label="Scheduled time"><Input type="datetime-local" value={toLocalDateTime(editor.scheduledFor)} onChange={(event) => setValue("scheduledFor", toIsoDateTime(event.target.value))} className={fieldClassName} /></Field></div></details>
 
             <details className="rounded-xl border border-slate-200 bg-white p-4"><summary className="cursor-pointer font-black text-slate-900">Cover image details</summary><div className="mt-4 space-y-4"><label className={cn(adminSecondaryButtonClassName, "cursor-pointer")}><ImagePlus className="h-4 w-4" /> {isUploading ? "Uploading…" : "Choose image"}<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" className="sr-only" onChange={(event) => void handleImageUpload(event)} disabled={isUploading} /></label><Field label="Image URL"><Input value={editor.coverImageUrl} onChange={(event) => setValue("coverImageUrl", event.target.value)} className={fieldClassName} /></Field><Field label="Alternative text"><Input value={editor.coverImageAlt} onChange={(event) => setValue("coverImageAlt", event.target.value)} className={fieldClassName} /></Field><Field label="Caption"><Input value={editor.coverImageCaption} onChange={(event) => setValue("coverImageCaption", event.target.value)} className={fieldClassName} /></Field><Field label="Credit"><Input value={editor.coverImageCredit} onChange={(event) => setValue("coverImageCredit", event.target.value)} className={fieldClassName} /></Field></div></details>
 
@@ -987,13 +1255,29 @@ const SeoBlogs = ({ previewMode = false }: { previewMode?: boolean }) => {
             <details className="rounded-xl border border-slate-200 bg-white p-4"><summary className="cursor-pointer font-black text-slate-900">Review and annotations</summary><div className="mt-4 space-y-4"><Field label="Public author"><Input value={editor.authorName} onChange={(event) => setValue("authorName", event.target.value)} className={fieldClassName} /></Field><ToggleField label="Subject review required" help="Use for practical instruction or consequential claims." checked={editor.reviewRequired} onChange={(checked) => setValue("reviewRequired", checked)} /><Field label="Actual reviewer"><Input value={editor.reviewerName} onChange={(event) => setValue("reviewerName", event.target.value)} className={fieldClassName} /></Field><Field label="Review date"><Input type="datetime-local" value={toLocalDateTime(editor.reviewedAt)} onChange={(event) => setValue("reviewedAt", toIsoDateTime(event.target.value))} className={fieldClassName} /></Field><Field label="Review scope"><Textarea value={editor.reviewScope} onChange={(event) => setValue("reviewScope", event.target.value)} className={textareaClassName} rows={3} /></Field><div className="border-t border-slate-200 pt-4"><button type="button" className={adminSecondaryButtonClassName} onClick={() => setValue("annotations", [...editor.annotations, createBlogAnnotation()])}><Plus className="h-4 w-4" /> Add private note</button><div className="mt-3 space-y-3">{editor.annotations.map((annotation) => <div key={annotation.id} className="rounded-lg border border-slate-200 p-3"><Input value={annotation.field} onChange={(event) => setValue("annotations", editor.annotations.map((item) => item.id === annotation.id ? { ...item, field: event.target.value } : item))} className={fieldClassName} placeholder="Claim or section" /><Textarea value={annotation.note} onChange={(event) => setValue("annotations", editor.annotations.map((item) => item.id === annotation.id ? { ...item, note: event.target.value } : item))} className={cn(textareaClassName, "mt-2")} rows={3} placeholder="Source, condition or note" /><div className="mt-2 flex items-center justify-between"><label className="flex items-center gap-2 text-xs font-semibold text-slate-600"><Switch checked={annotation.resolved} onCheckedChange={(checked) => setValue("annotations", editor.annotations.map((item) => item.id === annotation.id ? { ...item, resolved: checked } : item))} /> Resolved</label><button type="button" className="rounded p-2 text-slate-400 hover:bg-red-50 hover:text-red-600" onClick={() => setValue("annotations", editor.annotations.filter((item) => item.id !== annotation.id))}><Trash2 className="h-4 w-4" /></button></div></div>)}</div></div></div></details>
           </aside>
         </div>
+        <AlertDialog open={publishOpen} onOpenChange={setPublishOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{editor.publishedSnapshot ? "Republish this article?" : "Publish this article?"}</AlertDialogTitle>
+              <AlertDialogDescription>
+                This saves the current editor content as the public version at /blog/{editor.slug}/. The previous published snapshot remains in revision history, and later draft edits will stay private until you republish.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isPublishing}>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={(event) => { event.preventDefault(); void handlePublish(); }} disabled={isPublishing} className="bg-[#1d52a1] hover:bg-[#17488d]">
+                {isPublishing ? "Publishing…" : editor.publishedSnapshot ? "Republish article" : "Publish article"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </SeoPortalShell>
     );
   }
 
   return (
     <SeoPortalShell pageTitle="Blog manager" pageDescription="Create structured blog drafts with content, media, SEO, schema and editorial checks in one place.">
-      <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm leading-relaxed text-blue-900"><strong>Phase 1:</strong> drafts are stored in the CMS workspace. Public rendering and one-click deployment are not connected yet.</div>
+      <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm leading-relaxed text-blue-900"><strong>Publishing workflow:</strong> preview drafts privately, complete review, mark them Approved and Ready, then publish a protected public snapshot. Later edits remain private until republished.</div>
       {blogsQuery.isLoading ? <div className={adminSurfaceClassName}>Loading blog drafts…</div> : blogsQuery.isError ? <div className={adminSurfaceClassName}>{blogsQuery.error instanceof Error ? blogsQuery.error.message : "Unable to load blog drafts."}</div> : (
         <>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">

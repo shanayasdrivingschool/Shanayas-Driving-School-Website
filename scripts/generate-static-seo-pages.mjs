@@ -19,6 +19,9 @@ const withBrand = (core) => {
   const branded = `${core} | ${siteName}`;
   return branded.length <= MAX_TITLE_LENGTH ? branded : core;
 };
+const absoluteUrl = (value) => /^https:\/\//i.test(value ?? "")
+  ? value
+  : `${siteOrigin}${String(value ?? "").startsWith("/") ? value : `/${value ?? ""}`}`;
 const defaultImage = `${siteOrigin}/logos/For%20Social%20Media.jpg`;
 const defaultDescription =
   "Class 5 and 7 driving lessons, road-test preparation, knowledge-test support, and confidence-building training in Langford, Victoria, and listed B.C. service areas.";
@@ -1081,6 +1084,8 @@ const buildArticleSchema = (page, canonical, image, content) => {
        otherwise the organization stays the accountable author. */
     author: page.article.author
       ? buildAuthorReference(siteOrigin, page.article.author)
+      : page.article.authorName && page.article.authorName !== siteName
+        ? { "@type": "Person", name: page.article.authorName }
       : {
           "@type": "Organization",
           name: siteName,
@@ -1088,6 +1093,8 @@ const buildArticleSchema = (page, canonical, image, content) => {
         },
     ...(page.article.reviewedBy
       ? { reviewedBy: buildAuthorReference(siteOrigin, page.article.reviewedBy) }
+      : page.article.reviewerName
+        ? { reviewedBy: { "@type": "Person", name: page.article.reviewerName } }
       : {}),
     publisher: { "@id": `${siteOrigin}/#localbusiness` },
   };
@@ -1296,11 +1303,11 @@ const list = (items) =>
    entity behind the byline. Shared by the blog posts and the knowledge-test
    guide, which credit authors the same way. */
 const buildBylineParts = (page, { fallback, extra = [] } = {}) => {
-  const { author, reviewedBy } = page.article ?? {};
+  const { author, reviewedBy, authorName, reviewerName } = page.article ?? {};
 
   const credits = [
-    author ? `Written by ${author.name}, ${author.jobTitle}` : fallback,
-    reviewedBy ? `Reviewed by ${reviewedBy.name}, ${reviewedBy.jobTitle}` : null,
+    author ? `Written by ${author.name}, ${author.jobTitle}` : authorName ? `Written by ${authorName}` : fallback,
+    reviewedBy ? `Reviewed by ${reviewedBy.name}, ${reviewedBy.jobTitle}` : reviewerName ? `Reviewed by ${reviewerName}` : null,
     ...extra,
   ].filter(Boolean);
 
@@ -1840,16 +1847,19 @@ const buildBlogBody = (post, page) => [
     ],
   }),
   post.html,
+  post.sourceOrigin === "cms_publication" && post.faqs?.length
+    ? `<section><h2>Frequently asked questions</h2>${post.faqs.map((faq) => `<h3>${escapeHtml(faq.question)}</h3>${para(faq.answer)}`).join("")}</section>`
+    : null,
   `</article>`,
 ]
   .filter(Boolean)
   .join("\n        ");
 
 const renderPageHtml = (template, page, content) => {
-  const canonical = `${siteOrigin}${page.canonicalPath ?? page.path}`;
+  const canonical = absoluteUrl(page.canonicalPath ?? page.path);
   const image = page.image ?? defaultImage;
   const type = page.type ?? "website";
-  const isCanonicalPage = !page.canonicalPath || page.canonicalPath === page.path;
+  const isCanonicalPage = !page.canonicalPath || absoluteUrl(page.canonicalPath) === absoluteUrl(page.path);
   let html = template;
 
   html = setTitle(html, page.title);
@@ -2089,6 +2099,35 @@ for (const author of content.authors) {
   });
 }
 
+/* CMS publications join the same route registry as code-authored posts. An
+   existing slug replaces its static metadata; a new slug creates a new
+   pre-rendered route without requiring a source-code entry. */
+for (const [slug, post] of blogContent) {
+  const path = `/blog/${slug}/`;
+  let page = pages.find((candidate) => candidate.path === path);
+  if (!page) {
+    page = { path };
+    pages.push(page);
+  }
+
+  page.title = post.seoTitle ?? withBrand(post.title);
+  page.description = post.description;
+  page.type = "article";
+  page.image = post.heroImage ? absoluteUrl(post.heroImage) : defaultImage;
+  page.robots = post.robots ?? "index, follow";
+  page.canonicalPath = post.canonicalPath;
+  page.faqs = post.faqSchemaEnabled === false ? [] : post.faqs ?? [];
+  page.article = {
+    articleType: post.schemaType ?? "BlogPosting",
+    headline: post.title,
+    section: post.category,
+    datePublished: post.datePublished,
+    dateModified: post.dateModified,
+    authorName: post.authorName,
+    reviewerName: post.reviewerName,
+  };
+}
+
 /* Give every post its breadcrumb trail and resolve its named author the same way
    src/ does, so neither Article.author nor BreadcrumbList in the crawler HTML can
    disagree with what React renders for the same URL. */
@@ -2103,7 +2142,7 @@ for (const page of pages) {
   /* Mirrors the visible Home / Blog / <category> trail in src/pages/BlogPost.tsx.
      Google only renders breadcrumb rich results when the markup matches what the
      reader sees, so the last crumb is the category shown there, not the headline. */
-  page.breadcrumbs = [
+  page.breadcrumbs = post.breadcrumbSchemaEnabled === false ? [] : [
     { name: "Home", path: "/" },
     { name: "Blog", path: "/blog/" },
     { name: post.category, path: page.path },
@@ -2117,6 +2156,8 @@ for (const page of pages) {
   page.faqs = post.faqs;
   page.article.author = content.resolveAuthor(post.authorId);
   page.article.reviewedBy = content.resolveAuthor(post.reviewedById);
+  page.article.authorName = post.authorName;
+  page.article.reviewerName = post.reviewerName;
 }
 
 /* The page entries above duplicate metadata that already lives in src/, and the
@@ -2184,12 +2225,56 @@ const assertMetadataInSync = () => {
 
 assertMetadataInSync();
 
-/* sitemap.xml is hand-maintained, so it has drifted from the routes this script
-   pre-renders before: /courses/make-your-own-class/ and the Road Test Package
-   page shipped without a sitemap entry. Both directions matter — a missing entry
-   hides a live page, and a stale entry points crawlers at a 404. */
+/* The base sitemap remains hand-maintained for non-blog pages. Blog entries are
+   reconciled from the published inventory so a CMS publish can add a new route,
+   update lastmod, or omit a noindex/canonicalized article during deployment. */
+const reconcilePublishedBlogSitemap = async () => {
+  const sitemapPath = path.join(distDir, "sitemap.xml");
+  let sitemap = await readFile(sitemapPath, "utf8");
+  const blogPages = new Map(
+    pages
+      .filter((page) => /^\/blog\/[^/]+\/$/.test(page.path))
+      .map((page) => [page.path, page]),
+  );
+
+  sitemap = sitemap.replace(/\s*<url>[\s\S]*?<loc>([^<]+)<\/loc>[\s\S]*?<\/url>/g, (block, loc) => {
+    const pathname = String(loc).replace(siteOrigin, "");
+    const page = blogPages.get(pathname);
+    if (!page) return block;
+    const indexable = !String(page.robots ?? "").includes("noindex")
+      && (!page.canonicalPath || absoluteUrl(page.canonicalPath) === absoluteUrl(page.path));
+    if (!indexable) return "";
+    blogPages.delete(pathname);
+    const lastmod = page.article?.dateModified;
+    return lastmod
+      ? block.replace(/<lastmod>[^<]*<\/lastmod>/, `<lastmod>${escapeHtml(lastmod)}</lastmod>`)
+      : block;
+  });
+
+  const additions = [...blogPages.values()].flatMap((page) => {
+    const indexable = !String(page.robots ?? "").includes("noindex")
+      && (!page.canonicalPath || absoluteUrl(page.canonicalPath) === absoluteUrl(page.path));
+    if (!indexable) return [];
+    return [
+      "  <url>",
+      `    <loc>${siteOrigin}${page.path}</loc>`,
+      `    <lastmod>${page.article?.dateModified ?? new Date().toISOString().slice(0, 10)}</lastmod>`,
+      "    <changefreq>monthly</changefreq>",
+      "    <priority>0.7</priority>",
+      "  </url>",
+    ].join("\n");
+  });
+
+  if (additions.length) sitemap = sitemap.replace(/\s*<\/urlset>\s*$/, `\n${additions.join("\n")}\n</urlset>\n`);
+  await writeFile(sitemapPath, sitemap);
+};
+
+await reconcilePublishedBlogSitemap();
+
+/* Both directions still matter for every route: a missing entry hides a live
+   page, and a stale entry points crawlers at a 404. */
 const assertSitemapCoverage = async () => {
-  const sitemapPath = path.resolve(__dirname, "../public/sitemap.xml");
+  const sitemapPath = path.join(distDir, "sitemap.xml");
   const sitemap = await readFile(sitemapPath, "utf8");
   const listed = new Set(
     [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, loc]) => loc.replace(siteOrigin, "")),
@@ -2199,11 +2284,11 @@ const assertSitemapCoverage = async () => {
   const indexable = pages.filter(
     (page) =>
       !String(page.robots ?? "").includes("noindex") &&
-      (!page.canonicalPath || page.canonicalPath === page.path),
+      (!page.canonicalPath || absoluteUrl(page.canonicalPath) === absoluteUrl(page.path)),
   );
   const noIndexed = pages.filter((page) => String(page.robots ?? "").includes("noindex"));
   const canonicalizedElsewhere = pages.filter(
-    (page) => page.canonicalPath && page.canonicalPath !== page.path,
+    (page) => page.canonicalPath && absoluteUrl(page.canonicalPath) !== absoluteUrl(page.path),
   );
 
   const generated = new Set(indexable.map((page) => page.path));

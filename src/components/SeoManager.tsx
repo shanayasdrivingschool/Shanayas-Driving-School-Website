@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { activeBlogPosts as blogPosts } from "@/data/blogPosts";
+import type { BlogPostData } from "@/data/blogPosts";
 import { resolveAuthor, type Author } from "@/data/authors";
 import {
   buildAuthorReference,
@@ -27,6 +27,7 @@ import {
   knowledgeTestPracticeFaqs,
 } from "@/data/knowledgeTestPractice";
 import { faqAnswerToPlainText } from "@/lib/faqAnswer";
+import { usePublicBlogPosts } from "@/lib/publicBlog";
 
 const SITE_ORIGIN = "https://www.shanayasdrivingschool.com";
 const SITE_NAME = "Shanaya's Driving School";
@@ -133,6 +134,8 @@ type SeoArticleDetails = {
      author, which leaves the organization as the author exactly as before. */
   author?: Author;
   reviewedBy?: Author;
+  authorName?: string;
+  reviewerName?: string;
 };
 
 type SeoBreadcrumb = {
@@ -311,7 +314,7 @@ const decodePathSegment = (value: string) => {
 
 const toAbsoluteUrl = (value: string) => new URL(value, SITE_ORIGIN).toString();
 
-const toCanonicalPath = (path: string) => (path === "/" ? "/" : `${path}/`);
+const toCanonicalPath = (path: string) => /^https:\/\//i.test(path) || path === "/" || path.endsWith("/") ? path : `${path}/`;
 
 const localBusinessJsonLd: JsonLdObject = {
   "@context": "https://schema.org",
@@ -509,6 +512,8 @@ const buildArticleJsonLd = (
        accountable author rather than the article claiming a person wrote it. */
     author: seo.article.author
       ? buildAuthorReference(SITE_ORIGIN, seo.article.author)
+      : seo.article.authorName && seo.article.authorName !== SITE_NAME
+        ? { "@type": "Person", name: seo.article.authorName }
       : {
           "@type": "Organization",
           name: SITE_NAME,
@@ -516,6 +521,8 @@ const buildArticleJsonLd = (
         },
     ...(seo.article.reviewedBy
       ? { reviewedBy: buildAuthorReference(SITE_ORIGIN, seo.article.reviewedBy) }
+      : seo.article.reviewerName
+        ? { reviewedBy: { "@type": "Person", name: seo.article.reviewerName } }
       : {}),
     publisher: { "@id": `${SITE_ORIGIN}/#localbusiness` },
   };
@@ -540,7 +547,7 @@ const buildBreadcrumbJsonLd = (breadcrumbs?: SeoBreadcrumb[]): JsonLdObject | nu
   };
 };
 
-const getSeoForPath = (rawPathname: string): SeoDetails => {
+const getSeoForPath = (rawPathname: string, blogPosts: BlogPostData[]): SeoDetails => {
   const path = normalizePath(rawPathname);
 
   if (noIndexPrefixes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))) {
@@ -619,25 +626,29 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
         title: post.seoTitle ?? withBrand(post.title),
         description: post.description,
         image: post.heroImage,
-        faqs: post.faqs,
+        faqs: post.faqSchemaEnabled === false ? undefined : post.faqs,
         path,
         canonicalPath: post.canonicalPath,
         type: "article",
         /* Mirrors the visible Home / Blog / <category> trail rendered by
            src/pages/BlogPost.tsx, and the same trail the static generator emits. */
-        breadcrumbs: [
+        breadcrumbs: post.breadcrumbSchemaEnabled === false ? undefined : [
           { name: "Home", path: "/" },
           { name: "Blog", path: "/blog/" },
           { name: post.category, path: `${path}/` },
         ],
         article: {
+          articleType: post.schemaType,
           headline: post.title,
           datePublished: post.datePublished,
           dateModified: post.dateModified,
           section: post.category,
           author: resolveAuthor(post.authorId),
           reviewedBy: resolveAuthor(post.reviewedById),
+          authorName: post.authorName,
+          reviewerName: post.reviewerName,
         },
+        robots: post.robots,
       };
     }
   }
@@ -688,7 +699,8 @@ const getSeoForPath = (rawPathname: string): SeoDetails => {
 
 const SeoManager = () => {
   const location = useLocation();
-  const seo = useMemo(() => getSeoForPath(location.pathname), [location.pathname]);
+  const { posts: blogPosts } = usePublicBlogPosts();
+  const seo = useMemo(() => getSeoForPath(location.pathname, blogPosts), [blogPosts, location.pathname]);
 
   useEffect(() => {
     const canonicalUrl = toAbsoluteUrl(toCanonicalPath(seo.canonicalPath ?? seo.path));

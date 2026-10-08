@@ -1,5 +1,5 @@
 const ALLOWED_TAGS = new Set([
-  "a", "blockquote", "br", "caption", "code", "div", "em", "h2", "h3", "h4", "h5", "h6",
+  "a", "blockquote", "br", "caption", "code", "div", "em", "h1", "h2", "h3", "h4", "h5", "h6",
   "hr", "li", "ol", "p", "pre", "span", "strong", "sub", "sup", "table", "tbody", "td", "th", "thead", "tr", "ul",
 ]);
 
@@ -47,3 +47,58 @@ export const sanitizeBlogHtml = (value: string) => {
 
   return root.innerHTML;
 };
+
+const escapeHtml = (value: string) =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
+const safeBlockHref = (block: BlogContentBlock) => {
+  const url = block.url?.trim() ?? "";
+  if (block.linkKind === "internal") {
+    return url.startsWith("/") && !url.startsWith("//") ? url : "#";
+  }
+  return /^https:\/\//i.test(url) ? url : "#";
+};
+
+/** Converts the editor's structured blocks into the public article body. Rich
+ * HTML is sanitized in the browser before rendering and is also sanitized on
+ * every editor save; the remaining block types are escaped here. */
+export const renderBlogBlocksToHtml = (blocks: BlogContentBlock[]) =>
+  blocks.map((block) => {
+    if (block.type === "rich_html") return sanitizeBlogHtml(block.html ?? "");
+
+    if (block.type === "heading") {
+      const level = Math.min(6, Math.max(1, block.level ?? 2));
+      return `<h${level}>${escapeHtml(block.text)}</h${level}>`;
+    }
+
+    if (block.type === "bulleted_list" || block.type === "numbered_list") {
+      const tag = block.type === "bulleted_list" ? "ul" : "ol";
+      const items = (block.items ?? []).filter((item) => item.trim()).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      return items ? `<${tag}>${items}</${tag}>` : "";
+    }
+
+    if (block.type === "quote") return `<blockquote>${escapeHtml(block.text)}</blockquote>`;
+    if (block.type === "callout") return `<aside>${escapeHtml(block.text)}</aside>`;
+
+    if (block.type === "link") {
+      const href = escapeHtml(safeBlockHref(block));
+      const externalAttributes = block.linkKind === "external" && block.openInNewTab
+        ? ' target="_blank" rel="noopener noreferrer"'
+        : "";
+      return `<p><a href="${href}"${externalAttributes}>${escapeHtml(block.text || block.url || "Link")}</a></p>`;
+    }
+
+    return `<p>${escapeHtml(block.text)}</p>`;
+  }).join("");
+
+export const blogBlocksPlainText = (blocks: BlogContentBlock[]) => {
+  const html = renderBlogBlocksToHtml(blocks);
+  if (typeof DOMParser === "undefined") return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  return new DOMParser().parseFromString(html, "text/html").body.textContent?.replace(/\s+/g, " ").trim() ?? "";
+};
+import type { BlogContentBlock } from "@/lib/blogAdmin";

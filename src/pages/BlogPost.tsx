@@ -6,8 +6,8 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AnimatedSection from "@/components/AnimatedSection";
 import SiteCtaSection, { siteCtaPrimaryClassName, siteCtaSecondaryClassName } from "@/components/SiteCtaSection";
-import { activeBlogPosts as blogPosts } from "@/data/blogPosts";
 import { authorProfilePath, resolveAuthor } from "@/data/authors";
+import { usePublicBlogPosts } from "@/lib/publicBlog";
 
 const SITE_ORIGIN = "https://www.shanayasdrivingschool.com";
 type TocItem = { id: string; text: string };
@@ -47,6 +47,27 @@ const buildToc = (content: ReactNode): { toc: TocItem[]; rendered: ReactNode } =
   return { toc, rendered: <>{rendered}</> };
 };
 
+const buildHtmlToc = (html: string): { toc: TocItem[]; html: string } => {
+  if (!html || typeof DOMParser === "undefined") return { toc: [], html };
+  const document = new DOMParser().parseFromString(`<div>${html}</div>`, "text/html");
+  const root = document.body.firstElementChild;
+  if (!root) return { toc: [], html: "" };
+
+  const usedIds = new Set<string>();
+  const toc = Array.from(root.querySelectorAll("h2")).map((heading, index) => {
+    const text = heading.textContent?.trim() || `Section ${index + 1}`;
+    const baseId = slugify(text) || `section-${index}`;
+    let id = baseId;
+    let suffix = 2;
+    while (usedIds.has(id)) id = `${baseId}-${suffix++}`;
+    usedIds.add(id);
+    heading.id = id;
+    return { id, text };
+  });
+
+  return { toc, html: root.innerHTML };
+};
+
 const articleProseClasses = [
   "text-[17px] leading-relaxed text-slate-600",
   "[&_p]:mb-5",
@@ -77,13 +98,24 @@ const articleProseClasses = [
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { posts: blogPosts, isLoading } = usePublicBlogPosts();
   const post = blogPosts.find((p) => p.slug === slug);
   const namedAuthor = resolveAuthor(post?.authorId);
   const reviewer = resolveAuthor(post?.reviewedById);
 
   const [activeId, setActiveId] = useState("");
 
-  const { toc, rendered } = useMemo(() => buildToc(post?.content), [post]);
+  const renderedContent = useMemo(() => {
+    if (post?.contentHtml) {
+      const result = buildHtmlToc(post.contentHtml);
+      return {
+        toc: result.toc,
+        rendered: <div dangerouslySetInnerHTML={{ __html: result.html }} />,
+      };
+    }
+    return buildToc(post?.content);
+  }, [post]);
+  const { toc, rendered } = renderedContent;
 
   useEffect(() => {
     if (!toc.length) return;
@@ -105,6 +137,10 @@ const BlogPost = () => {
     headings.forEach((heading) => observer.observe(heading));
     return () => observer.disconnect();
   }, [toc]);
+
+  if (!post && isLoading) {
+    return <main className="flex min-h-screen items-center justify-center bg-white text-slate-500">Loading article…</main>;
+  }
 
   if (!post) {
     return (
@@ -165,13 +201,15 @@ const BlogPost = () => {
           </h1>
 
           <p className="mt-5 text-sm text-white/80">
-            {namedAuthor ? "Written by " : "Prepared by "}
-            <Link
-              to={namedAuthor ? authorProfilePath(namedAuthor) : "/about"}
-              className="font-semibold text-white underline underline-offset-2"
-            >
-              {namedAuthor ? namedAuthor.name : post.author}
-            </Link>
+            {namedAuthor || (post.authorName && post.authorName !== "Shanaya's Driving School") ? "Written by " : "Prepared by "}
+            {namedAuthor || !post.authorName || post.authorName === "Shanaya's Driving School" ? (
+              <Link
+                to={namedAuthor ? authorProfilePath(namedAuthor) : "/about"}
+                className="font-semibold text-white underline underline-offset-2"
+              >
+                {namedAuthor ? namedAuthor.name : post.authorName || post.author}
+              </Link>
+            ) : <span className="font-semibold text-white">{post.authorName}</span>}
             {namedAuthor ? `, ${namedAuthor.jobTitle}` : null}
             {reviewer ? (
               <>
@@ -184,7 +222,7 @@ const BlogPost = () => {
                 </Link>
                 {`, ${reviewer.jobTitle}`}
               </>
-            ) : null}
+            ) : post.reviewerName ? ` · Reviewed by ${post.reviewerName}` : null}
           </p>
           <p className="mt-2 max-w-3xl text-xs leading-relaxed text-white/65">
             Shanaya&apos;s is an independent driving school, not ICBC. Licensing and road-safety claims link to the
@@ -254,7 +292,20 @@ const BlogPost = () => {
               removed at the owner's request; the masthead byline still credits and
               links both people, and Article.author / reviewedBy schema is unchanged. */}
           <div className="min-w-0">
-            <article className={articleProseClasses}>{rendered}</article>
+            <article className={articleProseClasses}>
+              {rendered}
+              {post.contentHtml && post.faqs?.length ? (
+                <section className="mt-12 border-t border-slate-200 pt-8">
+                  <h2>Frequently asked questions</h2>
+                  {post.faqs.map((faq) => (
+                    <div key={faq.question}>
+                      <h3>{faq.question}</h3>
+                      <p>{faq.answer}</p>
+                    </div>
+                  ))}
+                </section>
+              ) : null}
+            </article>
           </div>
 
           {/* Sidebar */}
