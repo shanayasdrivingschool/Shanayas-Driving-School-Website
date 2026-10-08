@@ -13,6 +13,7 @@ import SeoManager from "./components/SeoManager";
 import { CartProvider } from "./components/cart/CartProvider";
 import { AffiliateAuthProvider } from "./components/affiliate/AffiliateAuthProvider";
 import { AdminAuthProvider } from "./components/admin/AdminAuthProvider";
+import { SeoAuthProvider } from "./components/seo/SeoAuthProvider";
 import ReferralTracker from "./components/affiliate/ReferralTracker";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Index from "./pages/Index";
@@ -24,6 +25,7 @@ import ServerError from "./pages/ServerError";
 import { ADMIN_ROUTE_MODULES } from "@/lib/adminRouteModules";
 
 const AdminRouteGuard = lazy(() => import("./components/admin/AdminRouteGuard"));
+const SeoRouteGuard = lazy(() => import("./components/seo/SeoRouteGuard"));
 
 const Courses = lazy(() => import("./pages/Courses"));
 const CourseQuiz = lazy(() => import("./pages/CourseQuiz"));
@@ -59,6 +61,8 @@ const AffiliateLogin = lazy(() => import("./pages/AffiliateLogin"));
 const AffiliateDashboard = lazy(() => import("./pages/AffiliateDashboard"));
 const ReferralTerms = lazy(() => import("./pages/ReferralTerms"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const SeoLogin = lazy(() => import("./pages/SeoLogin"));
+const SeoBlogs = lazy(() => import("./pages/SeoBlogs"));
 const AdminDashboard = lazy(ADMIN_ROUTE_MODULES["/admin/dashboard"]);
 const AdminInvoices = lazy(ADMIN_ROUTE_MODULES["/admin/invoices"]);
 const AdminCourses = lazy(ADMIN_ROUTE_MODULES["/admin/courses"]);
@@ -152,6 +156,10 @@ const App = () => (
                 <Route path="/affiliate/login" element={<AffiliateLogin />} />
                 <Route path="/affiliate/dashboard" element={<AffiliateAuthProvider><AffiliateDashboard /></AffiliateAuthProvider>} />
                 <Route path="/admin/login" element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
+                <Route path="/seo/login" element={<SeoAuthProvider><SeoLogin /></SeoAuthProvider>} />
+                {import.meta.env.DEV ? (
+                  <Route path="/seo/blogs-preview" element={<SeoAuthProvider><SeoBlogs previewMode /></SeoAuthProvider>} />
+                ) : null}
                 <Route element={<AdminAuthProvider><AdminRouteGuard /></AdminAuthProvider>}>
                   <Route path="/admin/dashboard" element={<AdminDashboard />} />
                   <Route path="/admin/invoices" element={<AdminInvoices />} />
@@ -165,6 +173,10 @@ const App = () => (
                   <Route path="/admin/commissions" element={<AdminCommissions />} />
                   <Route path="/admin/payouts" element={<AdminPayouts />} />
                   <Route path="/admin/rate-limits" element={<AdminRateLimits />} />
+                </Route>
+                <Route element={<SeoAuthProvider><SeoRouteGuard /></SeoAuthProvider>}>
+                  <Route path="/seo/dashboard" element={<Navigate to="/seo/blogs" replace />} />
+                  <Route path="/seo/blogs" element={<SeoBlogs />} />
                 </Route>
                 <Route path="/ref/:affiliateCode" element={<ReferralRedirect />} />
                 <Route path="/400" element={<BadRequest />} />

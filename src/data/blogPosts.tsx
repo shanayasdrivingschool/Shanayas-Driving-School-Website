@@ -8,6 +8,11 @@ import { langfordNightDrivingPost } from "./langfordNightDrivingPost";
 import { mckenzieHighwayCollisionsPost } from "./mckenzieHighwayCollisionsPost";
 import { parentsTeenDriversVictoriaPost } from "./parentsTeenDriversVictoriaPost";
 import { sixMilePileupPost } from "./sixMilePileupPost";
+import { knowledgeTestStudyVictoriaPost } from "./knowledgeTestStudyVictoriaPost";
+import { knowledgeTestQuestionsVictoriaPost } from "./knowledgeTestQuestionsVictoriaPost";
+import { knowledgeTestPlanLangfordPost } from "./knowledgeTestPlanLangfordPost";
+import { knowledgeTestRoadSignsLangfordPost } from "./knowledgeTestRoadSignsLangfordPost";
+import { knowledgeTestConfidenceLangfordPost } from "./knowledgeTestConfidenceLangfordPost";
 
 export type BlogPostData = {
   slug: string;
@@ -42,6 +47,11 @@ export type BlogPostData = {
 };
 
 export const blogPosts: BlogPostData[] = [
+  knowledgeTestStudyVictoriaPost,
+  knowledgeTestQuestionsVictoriaPost,
+  knowledgeTestPlanLangfordPost,
+  knowledgeTestRoadSignsLangfordPost,
+  knowledgeTestConfidenceLangfordPost,
   adultLearnersVictoriaPost,
   parentsTeenDriversVictoriaPost,
   mckenzieHighwayCollisionsPost,

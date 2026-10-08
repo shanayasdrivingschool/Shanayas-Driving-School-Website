@@ -700,6 +700,76 @@ const publicPages = [
     description: "Book an ICBC-approved training car for road test day when you want to test in a familiar vehicle.",
   },
   {
+    path: "/blog/knowledge-test-practice-victoria-what-to-study/",
+    title: "ICBC Knowledge Test: What to Study in Victoria",
+    description:
+      "Use this focused B.C. knowledge-test study map to cover road signs, rules, hazards and practice questions without relying on memorization.",
+    type: "article",
+    image: `${siteOrigin}/why-choose/knowledge-test-prep.webp`,
+    article: {
+      headline: "Knowledge Test Practice Victoria: What to Study Before Your ICBC Test",
+      section: "Knowledge Test",
+      datePublished: "2026-10-08",
+      dateModified: "2026-10-08",
+    },
+  },
+  {
+    path: "/blog/knowledge-test-practice-victoria-common-questions/",
+    title: "How to Answer ICBC Knowledge Test Questions",
+    description:
+      "Learn a repeatable method for B.C. knowledge-test scenarios, road-sign questions and mistake review without memorizing answer patterns.",
+    type: "article",
+    image: `${siteOrigin}/course-pictures/knowledge-test-prep-course.jpg`,
+    article: {
+      headline: "Knowledge Test Practice Victoria: How to Prepare for Common ICBC Test Questions",
+      section: "Knowledge Test",
+      datePublished: "2026-10-08",
+      dateModified: "2026-10-08",
+    },
+  },
+  {
+    path: "/blog/knowledge-test-practice-langford-step-by-step/",
+    title: "ICBC Knowledge Test Study Plan for Langford Learners",
+    description:
+      "Follow a practical four-stage plan for studying B.C. road rules, using practice questions and preparing for an ICBC knowledge test.",
+    type: "article",
+    image: `${siteOrigin}/Course-pictures-updated/Knowledge%20test%20prep%20course%20whatsapp%20catalogue_.webp`,
+    article: {
+      headline: "Knowledge Test Practice Langford: A Step-by-Step Guide for New Drivers",
+      section: "Knowledge Test",
+      datePublished: "2026-10-08",
+      dateModified: "2026-10-08",
+    },
+  },
+  {
+    path: "/blog/knowledge-test-practice-langford-road-signs/",
+    title: "ICBC Road Signs and Rules Study Guide",
+    description:
+      "Study B.C. road signs by purpose, meaning and driver response, then connect signs with markings, intersections and right-of-way scenarios.",
+    type: "article",
+    image: `${siteOrigin}/why-choose/knowledge-test-prep.webp`,
+    article: {
+      headline: "Knowledge Test Practice Langford: Road Signs and Rules You Need to Know",
+      section: "Road Signs",
+      datePublished: "2026-10-08",
+      dateModified: "2026-10-08",
+    },
+  },
+  {
+    path: "/blog/knowledge-test-practice-langford-confidence/",
+    title: "Build Confidence for the ICBC Knowledge Test",
+    description:
+      "Build knowledge-test confidence with short study sessions, a mistake log, realistic mixed practice and a calm final-day routine.",
+    type: "article",
+    image: `${siteOrigin}/course-pictures/knowledge-test-prep-course.jpg`,
+    article: {
+      headline: "Knowledge Test Practice Langford: How to Build Confidence Before Your ICBC Knowledge Test",
+      section: "Knowledge Test",
+      datePublished: "2026-10-08",
+      dateModified: "2026-10-08",
+    },
+  },
+  {
     path: "/blog/parents-teen-drivers-victoria-bc-guide/",
     title: "Parents of Teen Drivers in Victoria: A Practical Guide",
     description:

@@ -286,6 +286,7 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
 
 const noIndexPrefixes = [
   "/admin",
+  "/seo",
   "/affiliate/dashboard",
   "/affiliate/login",
   "/careers/dashboard",

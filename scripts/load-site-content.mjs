@@ -138,6 +138,8 @@ export const loadSiteContent = async () => {
             readTime: post.readTime,
             category: post.category,
             faqs: post.faqs,
+            heroImage: post.heroImage,
+            relatedSlugs: post.relatedSlugs ?? [],
           },
         ]),
       ),

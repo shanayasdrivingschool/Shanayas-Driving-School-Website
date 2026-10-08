@@ -85,13 +85,13 @@ const AdminPortalShell = ({ pageTitle, pageDescription, children }: AdminPortalS
         <div className="grid gap-6 lg:grid-cols-[13rem_1fr] lg:items-start">
           {/* The navigation no longer sits inside a card. A list of links does not need a
               bordered, shadowed container to be understood as a list of links. */}
-          <aside className="lg:sticky lg:top-[4.25rem]">
+          <aside className="-mx-4 overflow-x-auto px-4 sm:-mx-6 sm:px-6 lg:sticky lg:top-[4.25rem] lg:mx-0 lg:overflow-visible lg:px-0">
             <div>
               {/* Every item used to carry a filled grey background, so twelve solid blocks
                   competed with the one that mattered and the current page barely stood out.
                   Resting state is now plain; the fill is reserved for where you actually
                   are, which is the only item that needs to be found at a glance. */}
-              <nav aria-label="Admin sections" className="mt-6 space-y-1">
+              <nav aria-label="Admin sections" className="flex gap-2 pb-2 lg:mt-6 lg:block lg:space-y-1 lg:pb-0">
                 {ADMIN_NAV_LINKS.map((link) => (
                   <NavLink
                     key={link.to}
@@ -101,7 +101,7 @@ const AdminPortalShell = ({ pageTitle, pageDescription, children }: AdminPortalS
                     onPointerDown={() => warmRoute(link.to)}
                     className={({ isActive }) =>
                       cn(
-                        "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-colors",
+                        "flex shrink-0 items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold transition-colors lg:gap-3",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-2",
                         isActive
                           ? "bg-[#1d52a1] text-white"
@@ -117,7 +117,7 @@ const AdminPortalShell = ({ pageTitle, pageDescription, children }: AdminPortalS
                         <span
                           aria-hidden="true"
                           className={cn(
-                            "h-5 w-1 shrink-0 rounded-full transition-colors",
+                            "hidden h-5 w-1 shrink-0 rounded-full transition-colors lg:block",
                             isActive ? "bg-[#F5B13A]" : "bg-transparent",
                           )}
                         />
