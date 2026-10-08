@@ -1,0 +1,1 @@
+import{a as n,P as s}from"./index-Dpg_-8r6.js";import{getAdminSession as o}from"./affiliateApi-CFGPD3MU.js";const i=()=>{const{user:e}=n();return s({queryKey:["admin-session",e==null?void 0:e.id],queryFn:o,enabled:!!e,staleTime:5*6e4,refetchInterval:5*6e4,refetchOnWindowFocus:!0})};export{i as u};

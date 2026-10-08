@@ -44,3 +44,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.shanayasdrivingschool.com/sitemap.xml
+Sitemap: https://czygbsdelictijcmkucx.supabase.co/functions/v1/blog-sitemap
