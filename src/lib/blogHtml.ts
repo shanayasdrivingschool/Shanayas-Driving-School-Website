@@ -69,7 +69,9 @@ const safeBlockHref = (block: BlogContentBlock) => {
  * every editor save; the remaining block types are escaped here. */
 export const renderBlogBlocksToHtml = (blocks: BlogContentBlock[]) =>
   blocks.map((block) => {
-    if (block.type === "rich_html") return sanitizeBlogHtml(block.html ?? "");
+    if (block.type === "rich_html" || (block.type === "paragraph" && block.html?.trim())) {
+      return sanitizeBlogHtml(block.html ?? "");
+    }
 
     if (block.type === "heading") {
       const level = Math.min(6, Math.max(1, block.level ?? 2));

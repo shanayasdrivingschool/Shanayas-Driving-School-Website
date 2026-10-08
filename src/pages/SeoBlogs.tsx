@@ -160,6 +160,17 @@ const fieldClassName = "h-11 rounded-xl border-slate-200";
 const textareaClassName = "rounded-xl border-slate-200 leading-relaxed";
 const richContentClassName = "space-y-5 text-[17px] leading-8 text-slate-700 [&_a]:font-semibold [&_a]:text-[#1d52a1] [&_a]:underline [&_a]:underline-offset-2 [&_blockquote]:border-l-4 [&_blockquote]:border-[#1d52a1] [&_blockquote]:bg-blue-50 [&_blockquote]:px-5 [&_blockquote]:py-4 [&_h1]:pt-5 [&_h1]:text-4xl [&_h1]:font-black [&_h1]:leading-tight [&_h1]:text-slate-900 [&_h2]:pt-5 [&_h2]:text-3xl [&_h2]:font-black [&_h2]:leading-tight [&_h2]:text-slate-900 [&_h3]:pt-4 [&_h3]:text-2xl [&_h3]:font-black [&_h3]:text-slate-900 [&_h4]:pt-3 [&_h4]:text-xl [&_h4]:font-black [&_h5]:pt-2 [&_h5]:text-lg [&_h5]:font-black [&_h6]:pt-2 [&_h6]:text-base [&_h6]:font-black [&_li]:ml-6 [&_ol]:list-decimal [&_table]:w-full [&_table]:min-w-[40rem] [&_table]:border-collapse [&_table]:text-sm [&_td]:border [&_td]:border-slate-200 [&_td]:p-3 [&_th]:border [&_th]:border-slate-200 [&_th]:bg-slate-100 [&_th]:p-3 [&_th]:text-left [&_ul]:list-disc";
 
+const escapeEditorText = (value: string) => value
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;")
+  .replaceAll("'", "&#39;")
+  .replaceAll("\n", "<br>");
+
+const getEditorHtml = (block: BlogContentBlock) =>
+  block.html?.trim() ? block.html : `<p>${escapeEditorText(block.text)}</p>`;
+
 const toLocalDateTime = (value: string) => {
   if (!value) return "";
   const date = new Date(value);
@@ -740,12 +751,13 @@ const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
       <div
         ref={editorRef}
         role="textbox"
-        aria-label="Editable imported article body"
+        aria-label="Editable article content"
         aria-multiline="true"
         contentEditable
         suppressContentEditableWarning
         className={cn(richContentClassName, "min-h-[12rem] bg-white p-5 outline-none ring-inset ring-[#1d52a1]/20 focus:ring-4")}
-        dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(block.html ?? "") }}
+        dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(getEditorHtml(block)) }}
+        onSelect={captureSelection}
         onMouseUp={captureSelection}
         onKeyUp={captureSelection}
         onTouchEnd={captureSelection}
@@ -948,7 +960,7 @@ const ContentBlocksEditor = ({ blocks, onChange }: ContentBlocksEditorProps) => 
             </div>
           </div>
 
-          {block.type === "rich_html" ? (
+          {block.type === "rich_html" || block.type === "paragraph" ? (
             <RichHtmlBlockEditor block={block} onChange={(patch) => updateBlock(index, patch)} />
           ) : block.type === "bulleted_list" || block.type === "numbered_list" ? (
             <div className="space-y-1.5">
@@ -1022,15 +1034,7 @@ const ContentBlocksEditor = ({ blocks, onChange }: ContentBlocksEditorProps) => 
             <Textarea value={block.text} onChange={(event) => updateBlock(index, { text: event.target.value })} className="min-h-[96px] resize-none rounded-none border-0 border-l-4 border-[#1d52a1] bg-blue-50/60 px-5 py-4 text-lg font-semibold italic leading-relaxed shadow-none focus-visible:ring-0" rows={3} placeholder="Add a quotation…" />
           ) : block.type === "callout" ? (
             <Textarea value={block.text} onChange={(event) => updateBlock(index, { text: event.target.value })} className="min-h-[96px] resize-none rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-[17px] leading-relaxed shadow-none focus-visible:ring-1 focus-visible:ring-amber-300" rows={3} placeholder="Add a helpful note…" />
-          ) : (
-            <Textarea
-              value={block.text}
-              onChange={(event) => updateBlock(index, { text: event.target.value })}
-              className="min-h-[110px] resize-none border-0 bg-transparent px-0 py-1 text-[17px] leading-8 text-slate-700 shadow-none focus-visible:ring-0"
-              rows={4}
-              placeholder="Start writing…"
-            />
-          )}
+          ) : null}
           </div>
           <DropTarget index={index + 1} />
         </div>
@@ -1070,7 +1074,7 @@ const ArticlePreview = ({ post }: { post: AdminBlogPostUpsertInput }) => (
       <p className="mt-4 text-base leading-relaxed text-slate-500">{post.excerpt || "The article excerpt will appear here."}</p>
       <div className="mt-8 space-y-5 text-[17px] leading-relaxed text-slate-700">
         {post.contentBlocks.map((block) => {
-          if (block.type === "rich_html") {
+          if (block.type === "rich_html" || (block.type === "paragraph" && block.html?.trim())) {
             return <div key={block.id} className={cn(richContentClassName, "overflow-x-auto")} dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(block.html ?? "") }} />;
           }
           if (block.type === "heading") {

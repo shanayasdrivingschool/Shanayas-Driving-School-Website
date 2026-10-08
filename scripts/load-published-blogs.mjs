@@ -55,7 +55,9 @@ export const sanitizePublishedHtml = (value) => {
 
 export const blocksToHtml = (blocks) => blocks.map((block) => {
   if (!block || typeof block !== "object") return "";
-  if (block.type === "rich_html") return sanitizePublishedHtml(block.html);
+  if (block.type === "rich_html" || (block.type === "paragraph" && asString(block.html).trim())) {
+    return sanitizePublishedHtml(block.html);
+  }
   if (block.type === "heading") {
     const level = Math.min(6, Math.max(1, Number(block.level) || 2));
     return `<h${level}>${escapeHtml(asString(block.text))}</h${level}>`;

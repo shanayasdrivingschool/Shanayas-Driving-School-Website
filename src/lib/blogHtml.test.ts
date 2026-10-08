@@ -39,4 +39,17 @@ describe("sanitizeBlogHtml", () => {
     expect(html).toContain('href="https://www.icbc.com/"');
     expect(html).toContain('rel="noopener noreferrer"');
   });
+
+  it("preserves safe inline formatting and links saved in paragraph blocks", () => {
+    const paragraph = {
+      ...createBlogContentBlock("paragraph"),
+      text: "Read the official ICBC guide.",
+      html: '<p>Read the <strong>official</strong> <a href="https://www.icbc.com/" target="_blank">ICBC guide</a>.</p>',
+    };
+
+    const html = renderBlogBlocksToHtml([paragraph]);
+    expect(html).toContain("<strong>official</strong>");
+    expect(html).toContain('href="https://www.icbc.com/"');
+    expect(html).toContain('rel="noopener noreferrer"');
+  });
 });

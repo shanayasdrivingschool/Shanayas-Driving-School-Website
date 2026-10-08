@@ -195,7 +195,7 @@ export const slugifyBlogTitle = (value: string) =>
 
 const getHeadingLevels = (blocks: BlogContentBlock[]) => blocks.flatMap((block) => {
   if (block.type === "heading") return [block.level ?? 2];
-  if (block.type !== "rich_html") return [];
+  if (!block.html) return [];
   return Array.from((block.html ?? "").matchAll(/<h([1-6])\b/gi), (match) => Number(match[1]));
 });
 
