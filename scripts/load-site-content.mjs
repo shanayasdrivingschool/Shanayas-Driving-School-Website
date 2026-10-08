@@ -169,6 +169,7 @@ export const loadSiteContent = async () => {
             lastReviewed: page.lastReviewed,
             editorialNote: page.editorialNote,
             officialSources: page.officialSources ?? [],
+            pricingOffer: page.pricingOffer,
           },
         ]),
       ),

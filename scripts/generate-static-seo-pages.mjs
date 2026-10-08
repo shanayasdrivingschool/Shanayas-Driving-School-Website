@@ -324,18 +324,29 @@ const landingPages = [
   },
   {
     path: "/pricing/",
-    title: "Driving Lesson Prices in Victoria, BC",
+    title: "Pricing & Packages | Shanaya's Driving School",
     description:
-      "Driving lesson pricing for Victoria and Langford: $89 for 60 minutes, $133.50 for 90. Compare courses, packages, road test prep, and payment plans.",
+      "Standard 60-minute driving lessons are $89 CAD plus GST. An eligible 30% promotion reduces the rate to $62.30. Compare packages and conditions.",
     image: "https://www.shanayasdrivingschool.com/landing/pricing.webp",
     faqs: [
+      {
+        question: "What is the promotional driving lesson rate?",
+        answer:
+          "The standard 60-minute rate is $89 CAD plus GST. When the 30% promotion is active and applies to an eligible self-funded booking, the price is $62.30 CAD plus GST for 60 minutes. Confirm eligibility and the final itemised amount before payment.",
+      },
+      {
+        question: "Does every lesson or package cost $62.30 per hour?",
+        answer:
+          "No. The $62.30 amount is the eligible promotional price for a standard 60-minute lesson after a 30% reduction from $89. Packages, fixed-price courses, sponsored enrolments, road-test vehicle services and other service areas may use different prices.",
+      },
       {
         question: "Where can I see current package options?",
         answer: "The packages page lists structured lesson bundles, and the courses page lists individual training options.",
       },
       {
         question: "Do prices vary by location?",
-        answer: "Some service areas may have different pricing tiers or availability. Confirm the final amount during booking.",
+        answer:
+          "Yes. Standard and regional rates are $89 for 60 minutes and $133.50 for 90 minutes before GST. Salt Spring Island rates are $109 and $163.50 respectively. Confirm promotional eligibility, pickup availability and the final amount during booking.",
       },
     ],
   },
@@ -1118,6 +1129,36 @@ const buildBreadcrumbSchema = (breadcrumbs) => {
   };
 };
 
+/* Mirrors buildPricingServiceJsonLd in src/components/SeoManager.tsx so the
+   crawlable HTML and hydrated page expose the same qualified prices. */
+const buildPricingServiceSchema = (offer, canonical) => {
+  if (!offer) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${canonical}#driving-lessons`,
+    name: "Driving lessons at Shanaya's Driving School",
+    description:
+      `A standard ${offer.lessonDurationMinutes}-minute lesson is $${offer.standardHourlyRate.toFixed(2)} ${offer.currency} plus GST. ` +
+      `When the ${offer.discountPercent}% promotion is active and applies to an eligible booking, the rate is $${offer.promotionalHourlyRate.toFixed(2)} ${offer.currency} plus GST.`,
+    url: canonical,
+    serviceType: "Driving instruction",
+    provider: { "@id": `${siteOrigin}/#localbusiness` },
+    areaServed: ["Victoria, BC", "Langford, BC", "Colwood, BC", "Sidney, BC"],
+    termsOfService: absoluteUrl(offer.policyHref),
+    offers: {
+      "@type": "AggregateOffer",
+      url: canonical,
+      priceCurrency: offer.currency,
+      lowPrice: offer.promotionalHourlyRate.toFixed(2),
+      highPrice: offer.standardHourlyRate.toFixed(2),
+      offerCount: 2,
+      description: `${offer.eligibilityNote} ${offer.taxTreatment}`,
+    },
+  };
+};
+
 const insertJsonLd = (html, id, data) => {
   if (!data) {
     return removeJsonLd(html, id);
@@ -1345,6 +1386,18 @@ const buildLandingBody = (landing) => {
   const parts = [`<h1>${escapeHtml(landing.h1)}</h1>`, para(landing.heroDescription)];
 
   landing.intro.forEach((text) => parts.push(para(text)));
+
+  if (landing.pricingOffer) {
+    const offer = landing.pricingOffer;
+    parts.push(
+      `<aside aria-label="Current promotional lesson pricing"><h2>Special promotional pricing</h2>` +
+        `<p>Our standard ${offer.lessonDurationMinutes}-minute lesson is <strong>$${offer.standardHourlyRate.toFixed(2)} ${escapeHtml(offer.currency)} plus GST</strong>. ` +
+        `When the ${offer.discountPercent}% promotion is active and applies to your booking, the rate is ` +
+        `<strong>$${offer.promotionalHourlyRate.toFixed(2)} per hour plus GST</strong>.</p>` +
+        `<p>${escapeHtml(offer.eligibilityNote)} ${escapeHtml(offer.pickupNote)} ` +
+        `<a href="${escapeHtml(absoluteUrl(offer.policyHref))}">Read the Promotions &amp; Discounts Policy.</a></p></aside>`,
+    );
+  }
 
   landing.sections.forEach((section) => {
     parts.push(`<section><h2>${escapeHtml(section.title)}</h2>`);
@@ -1890,6 +1943,11 @@ const renderPageHtml = (template, page, content) => {
   html = insertJsonLd(html, "faq-schema", isCanonicalPage ? buildFaqSchema(page.faqs) : null);
   html = insertJsonLd(
     html,
+    "pricing-service-schema",
+    isCanonicalPage ? buildPricingServiceSchema(page.pricingOffer, canonical) : null,
+  );
+  html = insertJsonLd(
+    html,
     "article-schema",
     isCanonicalPage ? buildArticleSchema(page, canonical, image, content) : null,
   );
@@ -1974,6 +2032,11 @@ if (!/<p>\s*Shanaya's Driving School provides/i.test(template)) {
 
 const content = await loadSiteContent();
 const { blogPosts: blogContent, landingPages: landingContent } = content;
+
+for (const page of pages) {
+  const landing = landingContent.get(page.path);
+  if (landing?.pricingOffer) page.pricingOffer = landing.pricingOffer;
+}
 
 const practicePage = pages.find((page) => page.path === "/knowledge-test-practice/");
 

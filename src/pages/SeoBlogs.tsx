@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type ChangeEvent, type DragEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
@@ -427,6 +427,7 @@ type RichHtmlBlockEditorProps = {
 };
 
 const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const savedRangeRef = useRef<Range | null>(null);
   const [linkPanelOpen, setLinkPanelOpen] = useState(false);
@@ -434,13 +435,87 @@ const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
   const [linkText, setLinkText] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
   const [openInNewTab, setOpenInNewTab] = useState(false);
+  const [selectionToolbar, setSelectionToolbar] = useState<{
+    top: number;
+    left: number;
+    blockTag: string;
+    bold: boolean;
+    italic: boolean;
+    linked: boolean;
+  } | null>(null);
+
+  useEffect(() => {
+    const closeWhenLeavingEditor = (event: PointerEvent) => {
+      const container = containerRef.current;
+      if (container && event.target instanceof Node && !container.contains(event.target)) {
+        setSelectionToolbar(null);
+        setLinkPanelOpen(false);
+      }
+    };
+    const closeWithEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectionToolbar(null);
+        setLinkPanelOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", closeWhenLeavingEditor);
+    document.addEventListener("keydown", closeWithEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeWhenLeavingEditor);
+      document.removeEventListener("keydown", closeWithEscape);
+    };
+  }, []);
+
+  const closestEditableBlock = (node: Node | null) => {
+    const editor = editorRef.current;
+    const element = node instanceof Element ? node : node?.parentElement;
+    const candidate = element?.closest("p, h1, h2, h3, h4, h5, h6");
+    return candidate && editor?.contains(candidate) ? candidate : null;
+  };
+
+  const closestLink = (node: Node | null) => {
+    const element = node instanceof Element ? node : node?.parentElement;
+    const link = element?.closest("a");
+    return link && editorRef.current?.contains(link) ? link : null;
+  };
 
   const captureSelection = () => {
     const selection = window.getSelection();
     const editor = editorRef.current;
-    if (!selection || !selection.rangeCount || !editor) return;
+    const container = containerRef.current;
+    if (!selection || !selection.rangeCount || !editor || !container) return;
     const range = selection.getRangeAt(0);
-    if (editor.contains(range.commonAncestorContainer)) savedRangeRef.current = range.cloneRange();
+    if (!editor.contains(range.commonAncestorContainer)) return;
+
+    savedRangeRef.current = range.cloneRange();
+    if (range.collapsed || !range.toString().trim()) {
+      setSelectionToolbar(null);
+      return;
+    }
+
+    const rangeBounds = range.getBoundingClientRect();
+    const containerBounds = container.getBoundingClientRect();
+    const toolbarHalfWidth = 154;
+    const naturalLeft = rangeBounds.left - containerBounds.left + rangeBounds.width / 2;
+    const left = Math.min(
+      Math.max(naturalLeft, toolbarHalfWidth),
+      Math.max(toolbarHalfWidth, containerBounds.width - toolbarHalfWidth),
+    );
+    const roomAbove = rangeBounds.top - containerBounds.top;
+    const top = roomAbove > 58
+      ? roomAbove - 50
+      : rangeBounds.bottom - containerBounds.top + 10;
+    const blockTag = closestEditableBlock(range.startContainer)?.tagName.toLowerCase() ?? "p";
+
+    setSelectionToolbar({
+      top,
+      left,
+      blockTag,
+      bold: document.queryCommandState("bold"),
+      italic: document.queryCommandState("italic"),
+      linked: Boolean(closestLink(range.startContainer)),
+    });
   };
 
   const restoreSelection = () => {
@@ -482,13 +557,8 @@ const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
     }
 
     const selectedText = range.toString().trim();
-    const getEditableBlock = (node: Node | null) => {
-      const element = node instanceof Element ? node : node?.parentElement;
-      const candidate = element?.closest("p, h1, h2, h3, h4, h5, h6");
-      return candidate && editor.contains(candidate) ? candidate : null;
-    };
-    const startBlock = getEditableBlock(range.startContainer);
-    const endBlock = getEditableBlock(range.endContainer);
+    const startBlock = closestEditableBlock(range.startContainer);
+    const endBlock = closestEditableBlock(range.endContainer);
     let target = startBlock;
     if (selectedText && target && !target.textContent?.includes(selectedText) && endBlock?.textContent?.includes(selectedText)) {
       target = endBlock;
@@ -512,13 +582,8 @@ const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
     nextRange.collapse(false);
     savedRangeRef.current = nextRange;
     restoreSelection();
+    setSelectionToolbar(null);
     syncContent();
-  };
-
-  const closestLink = (node: Node | null) => {
-    const element = node instanceof Element ? node : node?.parentElement;
-    const link = element?.closest("a");
-    return link && editorRef.current?.contains(link) ? link : null;
   };
 
   const openLinkEditor = () => {
@@ -584,13 +649,38 @@ const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
     }
 
     setLinkPanelOpen(false);
+    setSelectionToolbar(null);
     syncContent();
   };
 
   const toolbarButtonClassName = "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:bg-blue-50 hover:text-[#1d52a1]";
+  const selectionButtonClassName = "inline-flex h-8 w-8 items-center justify-center rounded-md text-white/80 transition-colors hover:bg-white/15 hover:text-white";
+
+  const linkEditorPanel = (contextual = false) => (
+    <div className={cn(
+      "rounded-xl border border-blue-100 bg-blue-50/95 p-3 shadow-lg backdrop-blur-sm",
+      contextual ? "absolute left-1/2 top-full mt-2 w-[min(24rem,calc(100vw-3rem))] -translate-x-1/2 text-slate-800" : "mt-3",
+    )}>
+      <div className={cn("grid gap-2", !contextual && "sm:grid-cols-[9rem_minmax(0,1fr)]")}>
+        <select value={linkKind} onChange={(event) => { const value = event.target.value as "internal" | "external"; setLinkKind(value); if (value === "internal") setOpenInNewTab(false); }} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700">
+          <option value="internal">Internal link</option>
+          <option value="external">External link</option>
+        </select>
+        <Input aria-label="Visible link text" value={linkText} onChange={(event) => setLinkText(event.target.value)} className="h-10 rounded-lg border-slate-200 bg-white shadow-none" placeholder="Visible link text" />
+      </div>
+      <div className={cn("mt-2 flex gap-2", contextual ? "flex-col" : "flex-col sm:flex-row sm:items-center")}>
+        <Input aria-label="Link destination" value={linkUrl} onChange={(event) => setLinkUrl(event.target.value)} className="h-10 min-w-0 flex-1 rounded-lg border-slate-200 bg-white shadow-none" placeholder={linkKind === "external" ? "https://example.com/page" : "/blog/article-slug/"} />
+        {linkKind === "external" ? <label className="flex items-center gap-2 whitespace-nowrap text-xs font-semibold text-slate-600"><Switch checked={openInNewTab} onCheckedChange={setOpenInNewTab} /> Open in new tab</label> : null}
+        <div className="flex gap-2">
+          <button type="button" className="h-10 flex-1 rounded-lg bg-[#1d52a1] px-4 text-xs font-black text-white hover:bg-[#163f7d]" onClick={applyLink}>Apply link</button>
+          <button type="button" className="h-10 rounded-lg px-3 text-xs font-bold text-slate-500 hover:bg-white" onClick={() => setLinkPanelOpen(false)}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="overflow-hidden rounded-xl border border-blue-100 bg-blue-50/30">
+    <div ref={containerRef} className="relative rounded-xl border border-blue-100 bg-blue-50/30">
       <div className="border-b border-blue-100 bg-white p-3">
         <div className="flex flex-wrap items-center gap-2">
           <select
@@ -614,25 +704,39 @@ const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
           <button type="button" className={cn(toolbarButtonClassName, linkPanelOpen && "border-[#1d52a1] bg-blue-50 text-[#1d52a1]")} aria-label="Add or edit link" title="Add or edit link" onMouseDown={captureSelection} onClick={openLinkEditor}><Link2 className="h-4 w-4" /></button>
           <button type="button" className={toolbarButtonClassName} aria-label="Remove link" title="Remove link" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("unlink"); }}><Unlink className="h-4 w-4" /></button>
         </div>
-        <p className="mt-2 text-[11px] leading-relaxed text-slate-500">Place the cursor in a paragraph or heading to change H1–H6. Select text to format it or add a link.</p>
-        {linkPanelOpen ? (
-          <div className="mt-3 rounded-xl border border-blue-100 bg-blue-50/60 p-3">
-            <div className="grid gap-2 sm:grid-cols-[9rem_minmax(0,1fr)]">
-              <select value={linkKind} onChange={(event) => { const value = event.target.value as "internal" | "external"; setLinkKind(value); if (value === "internal") setOpenInNewTab(false); }} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700">
-                <option value="internal">Internal link</option>
-                <option value="external">External link</option>
-              </select>
-              <Input aria-label="Visible link text" value={linkText} onChange={(event) => setLinkText(event.target.value)} className="h-10 rounded-lg border-slate-200 bg-white shadow-none" placeholder="Visible link text" />
-            </div>
-            <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
-              <Input aria-label="Link destination" value={linkUrl} onChange={(event) => setLinkUrl(event.target.value)} className="h-10 min-w-0 flex-1 rounded-lg border-slate-200 bg-white shadow-none" placeholder={linkKind === "external" ? "https://example.com/page" : "/blog/article-slug/"} />
-              {linkKind === "external" ? <label className="flex items-center gap-2 whitespace-nowrap text-xs font-semibold text-slate-600"><Switch checked={openInNewTab} onCheckedChange={setOpenInNewTab} /> Open in new tab</label> : null}
-              <button type="button" className="h-10 rounded-lg bg-[#1d52a1] px-4 text-xs font-black text-white hover:bg-[#163f7d]" onClick={applyLink}>Apply link</button>
-              <button type="button" className="h-10 rounded-lg px-3 text-xs font-bold text-slate-500 hover:bg-white" onClick={() => setLinkPanelOpen(false)}>Cancel</button>
-            </div>
-          </div>
-        ) : null}
+        <p className="mt-2 text-[11px] leading-relaxed text-slate-500">Select text to open quick formatting and link controls beside it. The toolbar above remains available for keyboard-only editing.</p>
+        {linkPanelOpen && !selectionToolbar ? linkEditorPanel() : null}
       </div>
+      {selectionToolbar ? (
+        <div
+          role="toolbar"
+          aria-label="Selected text formatting"
+          className="absolute z-30 -translate-x-1/2"
+          style={{ left: selectionToolbar.left, top: selectionToolbar.top }}
+          onMouseDown={(event) => {
+            if (!(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLSelectElement)) event.preventDefault();
+          }}
+        >
+          <div className="flex items-center gap-0.5 rounded-xl bg-slate-900 p-1.5 shadow-xl ring-1 ring-white/15">
+            <select
+              aria-label="Format selected text block"
+              value={selectionToolbar.blockTag}
+              className="h-8 rounded-md border-0 bg-white/10 px-2 text-xs font-black text-white outline-none hover:bg-white/15"
+              onMouseDown={captureSelection}
+              onChange={(event) => changeBlockTag(event.target.value)}
+            >
+              <option className="text-slate-900" value="p">P</option>
+              {[1, 2, 3, 4, 5, 6].map((level) => <option className="text-slate-900" key={level} value={`h${level}`}>H{level}</option>)}
+            </select>
+            <button type="button" className={cn(selectionButtonClassName, selectionToolbar.bold && "bg-white/20 text-white")} aria-label="Bold selected text" title="Bold" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("bold"); }}><Bold className="h-4 w-4" /></button>
+            <button type="button" className={cn(selectionButtonClassName, selectionToolbar.italic && "bg-white/20 text-white")} aria-label="Italicize selected text" title="Italic" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("italic"); }}><Italic className="h-4 w-4" /></button>
+            <span className="mx-1 h-5 w-px bg-white/20" aria-hidden="true" />
+            <button type="button" className={cn(selectionButtonClassName, selectionToolbar.linked && "bg-white/20 text-white")} aria-label="Add or edit link for selected text" title="Add or edit link" onMouseDown={(event) => { event.preventDefault(); openLinkEditor(); }}><Link2 className="h-4 w-4" /></button>
+            {selectionToolbar.linked ? <button type="button" className={selectionButtonClassName} aria-label="Remove link from selected text" title="Remove link" onMouseDown={(event) => { event.preventDefault(); runEditorCommand("unlink"); }}><Unlink className="h-4 w-4" /></button> : null}
+          </div>
+          {linkPanelOpen ? linkEditorPanel(true) : null}
+        </div>
+      ) : null}
       <div
         ref={editorRef}
         role="textbox"
@@ -644,6 +748,7 @@ const RichHtmlBlockEditor = ({ block, onChange }: RichHtmlBlockEditorProps) => {
         dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(block.html ?? "") }}
         onMouseUp={captureSelection}
         onKeyUp={captureSelection}
+        onTouchEnd={captureSelection}
         onBlur={syncContent}
       />
     </div>

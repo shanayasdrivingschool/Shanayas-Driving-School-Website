@@ -19,7 +19,11 @@ import { optionalExtras } from "@/data/optionalExtras";
 import { packageCatalog } from "@/data/packageCatalog";
 import { sitePolicies } from "@/data/policies";
 import { faqs as beginnerLandingFaqs } from "@/data/beginnerCourseLanding";
-import { seoLandingPagesByPath, type SeoLandingPageFaq } from "@/data/seoLandingPages";
+import {
+  seoLandingPagesByPath,
+  type SeoLandingPageFaq,
+  type SeoLandingPagePricingOffer,
+} from "@/data/seoLandingPages";
 import { faqPageSeo, siteFaqs } from "@/data/siteFaqs";
 import {
   KNOWLEDGE_TEST_PRACTICE_DESCRIPTION,
@@ -156,6 +160,7 @@ type SeoDetails = {
   breadcrumbs?: SeoBreadcrumb[];
   /* Set on an author profile page, which is the ProfilePage for that Person. */
   author?: Author;
+  pricingOffer?: SeoLandingPagePricingOffer;
 };
 
 type JsonLdObject = Record<string, unknown>;
@@ -483,6 +488,37 @@ const buildFaqJsonLd = (faqs?: SeoLandingPageFaq[]): JsonLdObject | null => {
   };
 };
 
+const buildPricingServiceJsonLd = (
+  offer: SeoLandingPagePricingOffer | undefined,
+  canonicalUrl: string,
+): JsonLdObject | null => {
+  if (!offer) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${canonicalUrl}#driving-lessons`,
+    name: "Driving lessons at Shanaya's Driving School",
+    description:
+      `A standard ${offer.lessonDurationMinutes}-minute lesson is $${offer.standardHourlyRate.toFixed(2)} ${offer.currency} plus GST. ` +
+      `When the ${offer.discountPercent}% promotion is active and applies to an eligible booking, the rate is $${offer.promotionalHourlyRate.toFixed(2)} ${offer.currency} plus GST.`,
+    url: canonicalUrl,
+    serviceType: "Driving instruction",
+    provider: { "@id": `${SITE_ORIGIN}/#localbusiness` },
+    areaServed: ["Victoria, BC", "Langford, BC", "Colwood, BC", "Sidney, BC"],
+    termsOfService: toAbsoluteUrl(offer.policyHref),
+    offers: {
+      "@type": "AggregateOffer",
+      url: canonicalUrl,
+      priceCurrency: offer.currency,
+      lowPrice: offer.promotionalHourlyRate.toFixed(2),
+      highPrice: offer.standardHourlyRate.toFixed(2),
+      offerCount: 2,
+      description: `${offer.eligibilityNote} ${offer.taxTreatment}`,
+    },
+  };
+};
+
 /* BlogPosting schema for article routes. `publisher` points at the LocalBusiness
    node by @id, which is emitted on every page, so the two graphs stay linked. */
 const buildArticleJsonLd = (
@@ -678,6 +714,7 @@ const getSeoForPath = (rawPathname: string, blogPosts: BlogPostData[]): SeoDetai
         image: landingPage.heroImage,
         path: landingPage.path,
         faqs: landingPage.faqs,
+        pricingOffer: landingPage.pricingOffer,
       };
   }
 
@@ -741,6 +778,10 @@ const SeoManager = () => {
 
     setJsonLd("local-business-schema", localBusinessJsonLd);
     setJsonLd("faq-schema", isCanonicalPage ? buildFaqJsonLd(seo.faqs) : null);
+    setJsonLd(
+      "pricing-service-schema",
+      isCanonicalPage ? buildPricingServiceJsonLd(seo.pricingOffer, canonicalUrl) : null,
+    );
     setJsonLd("article-schema", isCanonicalPage ? buildArticleJsonLd(seo, canonicalUrl, imageUrl) : null);
     setJsonLd(
       "profile-page-schema",

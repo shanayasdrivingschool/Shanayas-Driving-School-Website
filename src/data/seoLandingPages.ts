@@ -44,6 +44,18 @@ export type SeoLandingPageSource = {
   href: string;
 };
 
+export type SeoLandingPagePricingOffer = {
+  currency: "CAD";
+  lessonDurationMinutes: 60;
+  standardHourlyRate: number;
+  promotionalHourlyRate: number;
+  discountPercent: number;
+  taxTreatment: string;
+  eligibilityNote: string;
+  pickupNote: string;
+  policyHref: string;
+};
+
 export type SeoLandingPage = {
   id: SeoLandingPageId;
   path: string;
@@ -67,6 +79,7 @@ export type SeoLandingPage = {
   lastReviewed?: string;
   editorialNote?: string;
   officialSources?: SeoLandingPageSource[];
+  pricingOffer?: SeoLandingPagePricingOffer;
 };
 
 export const seoLandingPages: SeoLandingPage[] = [
@@ -854,55 +867,78 @@ export const seoLandingPages: SeoLandingPage[] = [
   {
     id: "pricing",
     path: "/pricing",
-    title: "Driving Lesson Prices in Victoria, BC",
+    title: "Pricing & Packages | Shanaya's Driving School",
     metaDescription:
-      "Driving lesson pricing for Victoria and Langford: $89 for 60 minutes, $133.50 for 90. Compare courses, packages, road test prep, and payment plans.",
-    eyebrow: "Pricing",
-    h1: "Driving lesson prices in Victoria, BC",
+      "Standard 60-minute driving lessons are $89 CAD plus GST. An eligible 30% promotion reduces the rate to $62.30. Compare packages and conditions.",
+    eyebrow: "Pricing & packages",
+    h1: "Driving lesson pricing and packages",
     heroDescription:
-      "Compare lesson, package, road test prep, and payment plan options before choosing your training path.",
+      "Compare standard lesson rates, eligible promotional pricing, packages and payment options before booking.",
     heroImage: "/landing/pricing.webp",
     targetKeyword: "driving lesson prices Victoria BC",
     intro: [
-      "Individual driving lessons in Victoria and Langford start at $89 for 60 minutes and $133.50 for 90 minutes, with packages bundling several courses at a combined rate. Driving lesson pricing depends on your goals, service area, course type, and whether you choose single lessons or a structured package, and Shanaya's Driving School keeps every option clear so you can compare lessons, road test prep, parking practice, and bundled plans.",
-      "Many students start with a package because it creates a complete training path. Others book a specific course when they only need a focused skill, such as road test prep, defensive driving, parking, or a refresher session. Payment plan options may also be available for eligible students and approved programs.",
-      "The best value is usually the plan that matches the student's actual stage. A beginner needs enough repetition to build safe habits, while a near-ready student may only need targeted feedback before an ICBC appointment.",
+      "Our standard baseline rate is $89 CAD plus GST for one 60-minute driving lesson in our standard service areas. When the current 30% promotion applies to an eligible booking, the same 60 minutes costs $62.30 CAD plus GST.",
+      "The promotional rate is conditional rather than automatic. It is available to eligible self-funded students during applicable promotional periods, cannot normally be combined with another offer and must be confirmed before payment.",
+      "Packages, fixed-price courses, road-test vehicle services and Salt Spring Island lessons use their own listed prices. Compare the total instruction time, inclusions, service area and final itemised amount instead of assuming every product uses the promotional hourly rate.",
     ],
+    pricingOffer: {
+      currency: "CAD",
+      lessonDurationMinutes: 60,
+      standardHourlyRate: 89,
+      promotionalHourlyRate: 62.3,
+      discountPercent: 30,
+      taxTreatment: "Prices are before GST.",
+      eligibilityNote:
+        "The 30% promotional rate applies only to eligible self-funded student bookings during applicable promotional periods. Confirm the offer and final itemised total before payment.",
+      pickupNote:
+        "Pickup and drop-off may be available within our listed service areas depending on the location, instructor, lesson and schedule. Confirm the arrangement before paying.",
+      policyHref: "/policies/promotions-and-discounts/",
+    },
     sections: [
       {
-        title: "What driving lessons cost",
+        title: "Our driving lesson rates",
         body:
-          "Individual lessons in our standard service areas start at $89 for 60 minutes and $133.50 for 90 minutes. Island bookings on Salt Spring are $109 and $163.50. Packages combine several courses at one rate, so the per-lesson cost works out lower than booking sessions individually.",
+          "A standard 60-minute lesson is $89 CAD plus GST. For an eligible booking during an applicable 30% promotional period, that rate is reduced by $26.70 to $62.30 CAD plus GST for 60 minutes.",
         bullets: [
-          "60-minute lesson: $89 in Victoria, Langford, Colwood, and Sidney",
-          "90-minute lesson: $133.50 in Victoria, Langford, Colwood, and Sidney",
-          "Salt Spring Island: $109 for 60 minutes and $163.50 for 90 minutes",
+          "Standard 60-minute lesson: $89 CAD plus GST",
+          "Eligible 30% promotional rate: $62.30 CAD plus GST for 60 minutes",
+          "Standard 90-minute lesson: $133.50 CAD plus GST",
         ],
       },
       {
-        title: "Pricing factors",
+        title: "Promotion eligibility",
         body:
-          "Lesson prices can vary by package, duration, service area, and training type. Students should confirm current rates at booking because availability and promotions may change.",
+          "Promotional pricing is for eligible self-funded students and is subject to the terms of the applicable offer. Sponsored or third-party-funded enrolments use the standard published rate. Unless the school confirms otherwise in writing, only one promotion applies to a booking.",
         bullets: [
-          "Single courses for focused skill development",
-          "Packages for structured beginner-to-test preparation",
-          "Road test vehicle support and optional extras where available",
+          "Confirm that the promotion is active for the lesson or course selected",
+          "Confirm eligibility and the final itemised amount before payment",
+          "Review the Promotions & Discounts Policy for the full conditions",
         ],
       },
       {
-        title: "Payment flexibility",
+        title: "Other prices and service areas",
         body:
-          "Eligible students can review payment plan options before enrolling. Installment availability depends on the selected program and approval requirements.",
+          "Standard and regional lesson rates are $89 for 60 minutes and $133.50 for 90 minutes before GST. Salt Spring Island rates are $109 for 60 minutes and $163.50 for 90 minutes before GST. Pickup availability depends on location, instructor, lesson and schedule.",
       },
       {
-        title: "Choosing the right plan",
+        title: "Packages and payment flexibility",
         body:
-          "If you are unsure which option fits, contact the school with your current licence stage, driving experience, test timeline, and preferred location.",
+          "Packages and fixed-price courses combine different services and do not automatically use the promotional hourly rate. Review the listed inclusions and total, or contact the school with your licence stage, experience, test timeline and location. Payment plans may be available for eligible programs.",
       },
     ],
     primaryCtaLabel: "View packages",
     secondaryCtaLabel: "Ask about pricing",
     faqs: [
+      {
+        question: "What is the promotional driving lesson rate?",
+        answer:
+          "The standard 60-minute rate is $89 CAD plus GST. When the 30% promotion is active and applies to an eligible self-funded booking, the price is $62.30 CAD plus GST for 60 minutes. Confirm eligibility and the final itemised amount before payment.",
+      },
+      {
+        question: "Does every lesson or package cost $62.30 per hour?",
+        answer:
+          "No. The $62.30 amount is the eligible promotional price for a standard 60-minute lesson after a 30% reduction from $89. Packages, fixed-price courses, sponsored enrolments, road-test vehicle services and other service areas may use different prices.",
+      },
       {
         question: "Where can I see current package options?",
         answer:
@@ -911,9 +947,12 @@ export const seoLandingPages: SeoLandingPage[] = [
       {
         question: "Do prices vary by location?",
         answer:
-          "Some service areas may have different pricing tiers or availability. Confirm the final amount during booking.",
+          "Yes. Standard and regional rates are $89 for 60 minutes and $133.50 for 90 minutes before GST. Salt Spring Island rates are $109 and $163.50 respectively. Confirm promotional eligibility, pickup availability and the final amount during booking.",
       },
     ],
+    lastReviewed: "October 8, 2026",
+    editorialNote:
+      "Standard catalogue rates and the promotional calculation were checked on October 8, 2026. Promotional eligibility and pickup arrangements remain subject to confirmation for the selected booking.",
   },
   {
     id: "icbc-approved-driving-school",

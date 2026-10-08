@@ -55,6 +55,25 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
+            {page.pricingOffer ? (
+              <aside className="mt-8 rounded-2xl border-l-4 border-[#1d52a1] bg-blue-50 p-5 sm:p-6" aria-label="Current promotional lesson pricing">
+                <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1d52a1]">
+                  Special promotional pricing
+                </p>
+                <p className="mt-2 text-lg leading-relaxed text-slate-800 sm:text-xl">
+                  Our standard {page.pricingOffer.lessonDurationMinutes}-minute lesson is{" "}
+                  <strong>${page.pricingOffer.standardHourlyRate.toFixed(2)} {page.pricingOffer.currency} plus GST</strong>.
+                  When the {page.pricingOffer.discountPercent}% promotion is active and applies to your booking,
+                  the rate is <strong>${page.pricingOffer.promotionalHourlyRate.toFixed(2)} per hour plus GST</strong>.
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {page.pricingOffer.eligibilityNote} {page.pricingOffer.pickupNote}{" "}
+                  <Link to={page.pricingOffer.policyHref} className="font-bold text-[#1d52a1] underline underline-offset-2 hover:text-[#17488d]">
+                    Read the Promotions &amp; Discounts Policy.
+                  </Link>
+                </p>
+              </aside>
+            ) : null}
             {!isInformationGuide ? (
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link to={primaryHref} className={siteCtaPrimaryClassName}>
