@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Plus, SquarePen, Trash2 } from "lucide-react";
+import { Plus, RefreshCw, SquarePen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import AdminMetricCard from "@/components/admin/AdminMetricCard";
 import AdminDeleteDialog from "@/components/admin/AdminDeleteDialog";
@@ -111,6 +111,7 @@ const AdminOrders = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [reconcilingOrderId, setReconcilingOrderId] = useState<string | null>(null);
+  const [isReconcilingAll, setIsReconcilingAll] = useState(false);
 
   const affiliateOptions = [
     { value: NONE_VALUE, label: "No affiliate" },
@@ -274,6 +275,52 @@ const AdminOrders = () => {
     }
   };
 
+  const handleReconcileAll = async () => {
+    const eligibleOrders = (ordersQuery.data?.orders ?? []).filter(
+      (order) => order.paymentStatus !== "paid" && getOrderPaymentIntentId(order),
+    );
+
+    if (eligibleOrders.length === 0) {
+      toast.success("All orders with Stripe references are already paid or have nothing to check.");
+      return;
+    }
+
+    setIsReconcilingAll(true);
+    let paid = 0;
+    let checked = 0;
+    let failed = 0;
+
+    try {
+      // Keep a small concurrency limit so a bulk check does not overwhelm the
+      // browser, Supabase edge function, or Stripe API.
+      for (let index = 0; index < eligibleOrders.length; index += 5) {
+        const batch = eligibleOrders.slice(index, index + 5);
+        const results = await Promise.allSettled(
+          batch.map(async (order) => {
+            const paymentIntentId = getOrderPaymentIntentId(order);
+            if (!paymentIntentId) return null;
+            return reconcilePaymentIntent({ orderId: order.id, paymentIntentId });
+          }),
+        );
+
+        results.forEach((result) => {
+          if (result.status === "rejected") {
+            failed += 1;
+            return;
+          }
+          if (!result.value) return;
+          checked += 1;
+          if (result.value.payment_status === "paid") paid += 1;
+        });
+      }
+
+      refreshAdminQueries(queryClient, ["admin-orders", "admin-dashboard", "admin-commissions"]);
+      toast.success(`Checked ${checked} orders: ${paid} confirmed paid${failed ? `, ${failed} failed` : ""}.`);
+    } finally {
+      setIsReconcilingAll(false);
+    }
+  };
+
   return (
     <AdminPortalShell
       eyebrow="Order Monitoring"
@@ -340,14 +387,26 @@ const AdminOrders = () => {
                 <Input type="date" value={dateTo} onChange={(event) => { setDateTo(event.target.value); setPage(1); }} className="h-12 rounded-xl border-slate-200" />
               </div>
 
-              <button
-                type="button"
-                onClick={openCreate}
-                className={adminPrimaryButtonClassName}
-              >
-                <Plus className="h-4 w-4" aria-hidden="true" />
-                Add order
-              </button>
+              <div className="flex flex-wrap justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => void handleReconcileAll()}
+                  disabled={isReconcilingAll || reconcilingOrderId !== null}
+                  className={adminRowButtonClassName}
+                  title="Check every non-paid order that has a Stripe PaymentIntent reference"
+                >
+                  <RefreshCw className={`h-4 w-4 ${isReconcilingAll ? "animate-spin" : ""}`} aria-hidden="true" />
+                  {isReconcilingAll ? "Syncing all..." : "Sync all payments"}
+                </button>
+                <button
+                  type="button"
+                  onClick={openCreate}
+                  className={adminPrimaryButtonClassName}
+                >
+                  <Plus className="h-4 w-4" aria-hidden="true" />
+                  Add order
+                </button>
+              </div>
             </div>
 
             <div className="mt-6 overflow-x-auto">
@@ -411,7 +470,7 @@ const AdminOrders = () => {
                             <button
                               type="button"
                               onClick={() => void handleReconcile(order)}
-                              disabled={reconcilingOrderId === order.id}
+                              disabled={isReconcilingAll || reconcilingOrderId === order.id}
                               className={adminRowButtonClassName}
                             >
                               {reconcilingOrderId === order.id ? "Checking..." : "Sync payment"}
