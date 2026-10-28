@@ -18,7 +18,7 @@ import { courseCatalog } from "@/data/courseCatalog";
 import { optionalExtras } from "@/data/optionalExtras";
 import { packageCatalog } from "@/data/packageCatalog";
 import { sitePolicies } from "@/data/policies";
-import { faqs as beginnerLandingFaqs } from "@/data/beginnerCourseLanding";
+import { paidLandingPagesByPath } from "@/data/paidLandingPages";
 import {
   seoLandingPagesByPath,
   type SeoLandingPageFaq,
@@ -200,20 +200,6 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
     description:
       "Explore installment options for eligible driving lesson packages with clear monthly payment choices and predictable scheduling.",
   },
-  "/beginner-driving-lessons-victoria": {
-    title: "Beginner Driving Lessons in Victoria, BC",
-    description:
-      "Learn to drive in Victoria and Langford with a free assessment drive, dual-control cars and a structured plan built around the ICBC road test.",
-    image: "/landing/driving-lessons-saanich.webp",
-    /* Paid-traffic landing page — see the matching note in
-       scripts/generate-static-seo-pages.mjs. */
-    robots: "noindex, follow",
-    faqs: beginnerLandingFaqs,
-    breadcrumbs: [
-      { name: "Home", path: "/" },
-      { name: "Beginner driving lessons", path: "/beginner-driving-lessons-victoria/" },
-    ],
-  },
   "/knowledge-test-guide": {
     title: "B.C. Class 7 Knowledge Test Guide",
     description:
@@ -285,6 +271,7 @@ const staticRouteSeo: Record<string, Omit<SeoDetails, "path">> = {
     title: "Policies | Shanaya's Driving School",
     description:
       "Review Shanaya's Driving School policies for student services, road tests, cancellations, privacy, payments, and website terms.",
+    robots: "noindex, follow",
     breadcrumbs: [
       { name: "Home", path: "/" },
       { name: "Policies", path: "/policies" },
@@ -704,6 +691,19 @@ const getSeoForPath = (rawPathname: string, blogPosts: BlogPostData[]): SeoDetai
         ],
       };
     }
+  }
+
+  const paidLandingPage = paidLandingPagesByPath[path];
+  if (paidLandingPage) {
+    return {
+      title: paidLandingPage.seo.title,
+      description: paidLandingPage.seo.description,
+      image: paidLandingPage.hero.imageAsset,
+      path,
+      canonicalPath: paidLandingPage.seo.canonicalPath,
+      robots: paidLandingPage.seo.noindex ? "noindex, follow" : undefined,
+      faqs: paidLandingPage.faqs,
+    };
   }
 
   const landingPage = seoLandingPagesByPath[path];

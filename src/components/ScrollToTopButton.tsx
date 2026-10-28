@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const ScrollToTopButton = () => {
   const [visible, setVisible] = useState(false);
+  const { pathname } = useLocation();
+  const hasMobileLandingBar = pathname.startsWith("/lp/") || pathname === "/beginner-driving-lessons-victoria";
 
   useEffect(() => {
     let frameId = 0;
@@ -39,7 +42,9 @@ const ScrollToTopButton = () => {
       type="button"
       onClick={scrollToTop}
       aria-label="Scroll to top"
-      className={`fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#1d52a1] text-white shadow-lg transition-all duration-300 hover:bg-[#17408a] hover:shadow-xl ${
+      className={`fixed right-6 z-50 h-12 w-12 items-center justify-center rounded-full bg-[#1d52a1] text-white shadow-lg transition-all duration-300 hover:bg-[#17408a] hover:shadow-xl ${
+        hasMobileLandingBar ? "bottom-24 hidden lg:inline-flex lg:bottom-6" : "bottom-6 inline-flex"
+      } ${
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
     >

@@ -40,6 +40,18 @@ type ContactLeadInput = {
   captchaAction?: string;
 };
 
+export type PaidLeadAttribution = {
+  landingPageId?: string;
+  campaign?: string;
+  adGroup?: string;
+  gclid?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
+};
+
 type FreeTrialLeadInput = {
   fullName: string;
   phone: string;
@@ -49,8 +61,17 @@ type FreeTrialLeadInput = {
   note?: string;
   /* Which button the visitor pressed. Kept in the payload so the two intents can
      be told apart in admin without a second lead_type (and therefore no migration). */
-  intent: "free_assessment_drive" | "lesson_booking";
+  intent: "free_assessment_drive" | "lesson_booking" | "lesson_plan_request";
   sourcePage: string;
+  goal?: string;
+  startTiming?: string;
+  licenceClass?: string;
+  testDate?: string;
+  serviceArea?: string;
+  marketingConsent?: boolean;
+  consentTimestamp?: string;
+  leadId?: string;
+  attribution?: PaidLeadAttribution;
   captchaProvider?: CaptchaProvider;
   captchaToken?: string;
   captchaAction?: string;
@@ -327,6 +348,27 @@ export const submitFreeTrialLead = async (input: FreeTrialLeadInput) => {
       request_type: input.intent,
       email_provided: Boolean(email),
       note: note || undefined,
+      goal: normalizeSingle(input.goal ?? "") || undefined,
+      start_timing: normalizeSingle(input.startTiming ?? "") || undefined,
+      licence_class: normalizeSingle(input.licenceClass ?? "") || undefined,
+      test_date: normalizeSingle(input.testDate ?? "") || undefined,
+      service_area: normalizeSingle(input.serviceArea ?? "") || undefined,
+      marketing_consent: Boolean(input.marketingConsent),
+      consent_timestamp: normalizeSingle(input.consentTimestamp ?? "") || undefined,
+      client_lead_id: normalizeSingle(input.leadId ?? "") || undefined,
+      attribution: input.attribution
+        ? {
+            landing_page_id: normalizeSingle(input.attribution.landingPageId ?? "") || undefined,
+            campaign: normalizeSingle(input.attribution.campaign ?? "") || undefined,
+            ad_group: normalizeSingle(input.attribution.adGroup ?? "") || undefined,
+            gclid: normalizeSingle(input.attribution.gclid ?? "") || undefined,
+            utm_source: normalizeSingle(input.attribution.utmSource ?? "") || undefined,
+            utm_medium: normalizeSingle(input.attribution.utmMedium ?? "") || undefined,
+            utm_campaign: normalizeSingle(input.attribution.utmCampaign ?? "") || undefined,
+            utm_content: normalizeSingle(input.attribution.utmContent ?? "") || undefined,
+            utm_term: normalizeSingle(input.attribution.utmTerm ?? "") || undefined,
+          }
+        : undefined,
     },
     captcha_provider: input.captchaProvider,
     captcha_token: input.captchaToken,

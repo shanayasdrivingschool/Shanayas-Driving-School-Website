@@ -30,6 +30,7 @@ import { ADMIN_ROWS_PER_PAGE, isWithinDateRange, matchesSearch, paginateItems, p
 import { formatAffiliateCurrency } from "@/lib/affiliateProgram";
 import type { PaymentStatus } from "@/lib/affiliateTypes";
 import { adminQueryOptions, refreshAdminQueries } from "@/lib/adminQueries";
+import { reconcilePaymentIntent } from "@/lib/stripeCheckoutService";
 import {
   adminDangerButtonClassName,
   adminPrimaryButtonClassName,
@@ -46,6 +47,20 @@ const paymentStatusOptions: PaymentStatus[] = [
   "failed",
 ];
 const NONE_VALUE = "__none";
+
+const getOrderPaymentIntentId = (order: { externalOrderId: string | null; metadata: Record<string, unknown> }) => {
+  if (order.externalOrderId?.startsWith("pi_")) {
+    return order.externalOrderId;
+  }
+
+  const stripeMetadata = order.metadata.stripe;
+  if (stripeMetadata && typeof stripeMetadata === "object" && !Array.isArray(stripeMetadata)) {
+    const paymentIntentId = (stripeMetadata as Record<string, unknown>).payment_intent_id;
+    return typeof paymentIntentId === "string" && paymentIntentId.startsWith("pi_") ? paymentIntentId : null;
+  }
+
+  return null;
+};
 
 type OrderEditorState = {
   id?: string;
@@ -95,6 +110,7 @@ const AdminOrders = () => {
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; label: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [reconcilingOrderId, setReconcilingOrderId] = useState<string | null>(null);
 
   const affiliateOptions = [
     { value: NONE_VALUE, label: "No affiliate" },
@@ -235,6 +251,29 @@ const AdminOrders = () => {
     }
   };
 
+  const handleReconcile = async (order: NonNullable<typeof ordersQuery.data>["orders"][number]) => {
+    const paymentIntentId = getOrderPaymentIntentId(order);
+    if (!paymentIntentId) {
+      toast.error("This order has no Stripe PaymentIntent reference.");
+      return;
+    }
+
+    setReconcilingOrderId(order.id);
+    try {
+      const result = await reconcilePaymentIntent({ orderId: order.id, paymentIntentId });
+      if (result.payment_status === "paid") {
+        toast.success("Stripe confirmed the payment and the order is now marked paid.");
+      } else {
+        toast.success(`Stripe status checked: ${result.payment_status ?? "no change"}.`);
+      }
+      refreshAdminQueries(queryClient, ["admin-orders", "admin-dashboard", "admin-commissions"]);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to reconcile this payment.");
+    } finally {
+      setReconcilingOrderId(null);
+    }
+  };
+
   return (
     <AdminPortalShell
       eyebrow="Order Monitoring"
@@ -243,7 +282,7 @@ const AdminOrders = () => {
           Inspect every <span className="text-[#F5B13A]">purchase and fraud signal</span>
         </>
       }
-      description="Monitor all persisted orders, filter by payment state, inspect metadata JSON, and isolate suspicious or self-referred purchases quickly."
+      description="Monitor all persisted orders, filter by payment state, inspect metadata JSON, reconcile a delayed Stripe webhook, and isolate suspicious or self-referred purchases quickly."
       pageTitle="Orders"
       pageDescription="This view reads directly from public.orders and surfaces customer, affiliate, metadata, and risk information without changing the schema."
     >
@@ -368,6 +407,16 @@ const AdminOrders = () => {
                             payload={order.metadata}
                             triggerLabel="View metadata"
                           />
+                          {order.paymentStatus !== "paid" && getOrderPaymentIntentId(order) ? (
+                            <button
+                              type="button"
+                              onClick={() => void handleReconcile(order)}
+                              disabled={reconcilingOrderId === order.id}
+                              className={adminRowButtonClassName}
+                            >
+                              {reconcilingOrderId === order.id ? "Checking..." : "Sync payment"}
+                            </button>
+                          ) : null}
                           <button
                             type="button"
                             onClick={() => openEdit(order)}

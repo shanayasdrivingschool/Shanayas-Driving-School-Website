@@ -65,16 +65,16 @@ export const beginnerLandingWhatsApp = {
    names are exactly as they appear publicly on the profile. Do not edit the wording
    of a quote: a tidied-up review is no longer the reviewer's words.
 
-   rating/reviewCount reflect the 27 five-star reviews supplied. Re-check them against
-   the live profile before each campaign, since ratings move. */
+   rating/reviewCount were re-checked against the live Google listing on 2026-10-14.
+   Re-check them before each campaign, since ratings move. */
 /* Reviews tab of the Google Business Profile. The !9m1!1b1 segment is what opens
    straight onto reviews; the ?entry= and g_ep= params were session tracking and
    are deliberately stripped. */
 export const googleReviewsUrl =
   "https://www.google.com/maps/place/Shanaya's+Driving+School/@48.4514745,-123.5207662,17z/data=!4m8!3m7!1s0x548f0dbc0a227e83:0xf890ce589bc36216!8m2!3d48.451471!4d-123.5181913!9m1!1b1!16s%2Fg%2F11nk25xtf2";
-export const rating: number | null = 5.0;
-export const reviewCount: number | null = 27;
-export const ratingCheckedOn = "August 2, 2026";
+export const rating: number | null = 4.9;
+export const reviewCount: number | null = 40;
+export const ratingCheckedOn = "October 14, 2026";
 
 export const reviews: BeginnerLandingReview[] = [
   {

@@ -1281,7 +1281,7 @@ const Checkout = () => {
                     </div>
                     {!isInvoiceCheckout && summaryValues.bundleDiscountAmount > 0 ? (
                       <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
-                        <span>{summaryValues.bundleDiscountPercent}% course bundle savings</span>
+                        <span>{summaryValues.bundleDiscountPercent}% lesson savings</span>
                         <span className="font-bold text-[#1d52a1]">
                           -{formatCoursePrice(summaryValues.bundleDiscountAmount)}
                         </span>

@@ -7,6 +7,7 @@ import { useCart } from "@/components/cart/CartProvider";
 import { CHECKOUT_FORM_STORAGE_KEY, readStoredCheckoutFormValues } from "@/lib/checkoutForm";
 import { getCheckoutInstallmentLabel } from "@/lib/checkoutPaymentPlan";
 import { CHECKOUT_PAYMENT_SESSION_STORAGE_KEY } from "@/lib/checkoutPaymentSession";
+import { reconcileCheckoutPayment, reconcilePaymentIntent } from "@/lib/stripeCheckoutService";
 import { stripePromise } from "@/lib/stripeClient";
 
 type PaymentState = "loading" | "succeeded" | "processing" | "failed";
@@ -26,13 +27,13 @@ const formatBookingReference = (orderId: string | null) => {
 
 const animationDelayStyle = (delay: string): CSSProperties =>
   ({
-    ["--payment-delay" as "--payment-delay"]: delay,
+    ["--payment-delay" as const]: delay,
   }) as CSSProperties;
 
 const confettiStyle = (x: string, y: string): CSSProperties =>
   ({
-    ["--confetti-x" as "--confetti-x"]: x,
-    ["--confetti-y" as "--confetti-y"]: y,
+    ["--confetti-x" as const]: x,
+    ["--confetti-y" as const]: y,
   }) as CSSProperties;
 
 const confettiDots = [
@@ -83,6 +84,7 @@ const CheckoutSuccess = () => {
   const installmentLabel =
     paymentMode === "installment" && installmentCount ? getCheckoutInstallmentLabel(installmentCount) : null;
   const paymentIntentClientSecret = searchParams.get("payment_intent_client_secret");
+  const paymentIntentId = searchParams.get("payment_intent");
   const retrySearchParams = new URLSearchParams(searchParams);
 
   retrySearchParams.delete("payment_intent");
@@ -155,6 +157,23 @@ const CheckoutSuccess = () => {
       window.sessionStorage.removeItem(CHECKOUT_PAYMENT_SESSION_STORAGE_KEY);
     }
   }, [clearCart, paymentState]);
+
+  useEffect(() => {
+    if (paymentState !== "succeeded" || !orderId || (!paymentIntentClientSecret && !paymentIntentId)) {
+      return;
+    }
+
+    const reconciliation = paymentIntentClientSecret
+      ? reconcileCheckoutPayment({ orderId, paymentIntentClientSecret })
+      : reconcilePaymentIntent({ orderId, paymentIntentId: paymentIntentId! });
+
+    void reconciliation.catch((error) => {
+      // Stripe's signed webhook remains the source of truth. This request is a
+      // recovery attempt for a delayed webhook, so a transient failure should
+      // not replace the successful customer-facing confirmation.
+      console.error("Payment status reconciliation failed:", error);
+    });
+  }, [orderId, paymentIntentId, paymentIntentClientSecret, paymentState]);
 
   useEffect(() => {
     if (!isCopied) {

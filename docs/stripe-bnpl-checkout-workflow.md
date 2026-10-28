@@ -16,7 +16,9 @@ The customer stays in the same checkout UI. Stripe shows only the methods that a
 4. The customer chooses `card`, `affirm`, or `afterpay_clearpay`.
 5. If the customer chooses a BNPL option, Stripe opens the provider approval step and redirects back to the configured `return_url`.
 6. The success page reads the Stripe result for customer-facing confirmation.
-7. The webhook remains the source of truth for the final database update.
+7. The success page also calls `sync-payment-status`, which verifies the PaymentIntent with Stripe and repairs the order if the webhook is delayed. The signed webhook remains the normal source of truth.
+
+If an older order is still awaiting payment, an administrator can use **Sync payment** on the order row. The same endpoint retrieves the PaymentIntent from Stripe and only applies a paid state when Stripe reports `succeeded`.
 
 ## Best practices in this implementation
 
@@ -97,7 +99,7 @@ If you later enable more Stripe methods, update the constraint again or remove t
 
 1. Enable `affirm` and `afterpay_clearpay` in Stripe dashboard for the current mode.
 2. Apply the latest Supabase migrations.
-3. Deploy the updated webhook and payment-intent edge functions.
+3. Deploy the updated webhook, payment-intent, and `sync-payment-status` edge functions.
 4. Open checkout with an order that is eligible for BNPL.
 5. Confirm the checkout UI shows the BNPL guidance block and the Stripe messaging element.
 6. Confirm both BNPL methods appear when the order is eligible.

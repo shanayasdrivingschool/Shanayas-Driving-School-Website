@@ -220,6 +220,26 @@ Deno.serve(async (request) => {
   const currentPaymentPlan = asRecord(currentMetadata.payment_plan);
   const currentStripe = asRecord(currentMetadata.stripe);
   const currentInvoice = asRecord(currentMetadata.invoice);
+
+  /* Stripe can deliver related PaymentIntent events out of order. Once a full
+     payment has succeeded (or an installment's initial payment has succeeded),
+     an older processing/cancelled/failed delivery must never move the order
+     back into an awaiting state. The event timestamp check handles genuinely
+     stale deliveries; the final-state check also covers providers that emit a
+     later processing event while a successful payment is still settling. */
+  const lastEventCreated = asNumber(currentStripe.last_event_created);
+  if (lastEventCreated !== null && event.created < lastEventCreated) {
+    return jsonResponse(200, { received: true, ignored: true, reason: "stale_event" });
+  }
+
+  const isFinalPaymentState =
+    order.payment_status === "paid" ||
+    currentPaymentPlan.status === "initial_payment_succeeded" ||
+    currentPaymentPlan.status === "paid";
+  if (isFinalPaymentState && event.type !== "payment_intent.succeeded") {
+    return jsonResponse(200, { received: true, ignored: true, reason: "order_already_paid" });
+  }
+
   const paymentMode =
     paymentIntent.metadata?.payment_mode === "installment" || currentPaymentPlan.payment_mode === "installment"
       ? "installment"

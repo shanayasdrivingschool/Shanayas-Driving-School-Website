@@ -50,6 +50,7 @@ export const loadSiteContent = async () => {
       { faqAnswerToPlainText, parseFaqAnswer },
       { sitePolicies },
       beginnerLanding,
+      { paidLandingPages },
       knowledgeTestPractice,
     ] = await Promise.all([
       server.ssrLoadModule("/src/data/blogPosts.tsx"),
@@ -66,6 +67,7 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/lib/faqAnswer.ts"),
       server.ssrLoadModule("/src/data/policies.ts"),
       server.ssrLoadModule("/src/data/beginnerCourseLanding.ts"),
+      server.ssrLoadModule("/src/data/paidLandingPages.ts"),
       server.ssrLoadModule("/src/data/knowledgeTestPractice.ts"),
     ]);
 
@@ -131,6 +133,15 @@ export const loadSiteContent = async () => {
         courseFacts: beginnerLanding.courseFacts,
         reviews: beginnerLanding.reviews,
       },
+      paidLandingPages: new Map(
+        paidLandingPages.map((page) => [
+          page.path,
+          {
+            ...page,
+            aliases: page.aliases ?? [],
+          },
+        ]),
+      ),
       policies: sitePolicies,
       knowledgeTestGuide: {
         faqs: knowledgeTestGuide.knowledgeTestGuideFaqs,

@@ -180,17 +180,6 @@ const getCombinedCourseBasePriceForTier = (
       .toFixed(2),
   );
 
-const getCombinedCoursePriceForTier = (
-  courses: CourseCatalogItem[],
-  tier: ProductPricingTier,
-  lessonDurationMinutes?: LessonDurationMinutes,
-) =>
-  Number(
-    courses
-      .reduce((total, course) => total + getCoursePriceForTier(course, tier, lessonDurationMinutes), 0)
-      .toFixed(2),
-  );
-
 const createLocationPricingEntry = (
   productLabel: string,
   tier: ProductPricingTier,
@@ -251,29 +240,14 @@ export const createPackageLocationPricing = (
   packageTitle: string,
   courses: CourseCatalogItem[],
   lessonDurationMinutes?: LessonDurationMinutes,
-): ProductLocationPricingMap => ({
-  standard: createLocationPricingEntry(
-    packageTitle,
-    "standard",
-    getCombinedCourseBasePriceForTier(courses, "standard", lessonDurationMinutes),
-    getCombinedCoursePriceForTier(courses, "standard", lessonDurationMinutes),
-    0,
-    "package",
-  ),
-  regional: createLocationPricingEntry(
-    packageTitle,
-    "regional",
-    getCombinedCourseBasePriceForTier(courses, "regional", lessonDurationMinutes),
-    getCombinedCoursePriceForTier(courses, "regional", lessonDurationMinutes),
-    0,
-    "package",
-  ),
-  island: createLocationPricingEntry(
-    packageTitle,
-    "island",
-    getCombinedCourseBasePriceForTier(courses, "island", lessonDurationMinutes),
-    getCombinedCoursePriceForTier(courses, "island", lessonDurationMinutes),
-    0,
-    "package",
-  ),
-});
+): ProductLocationPricingMap => {
+  const standardPrice = getCombinedCourseBasePriceForTier(courses, "standard", lessonDurationMinutes);
+  const regionalPrice = getCombinedCourseBasePriceForTier(courses, "regional", lessonDurationMinutes);
+  const islandPrice = getCombinedCourseBasePriceForTier(courses, "island", lessonDurationMinutes);
+
+  return {
+    standard: createLocationPricingEntry(packageTitle, "standard", standardPrice, standardPrice, 0, "package"),
+    regional: createLocationPricingEntry(packageTitle, "regional", regionalPrice, regionalPrice, 0, "package"),
+    island: createLocationPricingEntry(packageTitle, "island", islandPrice, islandPrice, 0, "package"),
+  };
+};

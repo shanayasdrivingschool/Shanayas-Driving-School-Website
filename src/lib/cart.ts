@@ -17,6 +17,8 @@ export const CART_STORAGE_KEY = "driving-school-cart.v1";
 export const ESTIMATED_GST_RATE = 0.05;
 export const COURSE_BUNDLE_DISCOUNT_THRESHOLD = 3;
 export const COURSE_BUNDLE_DISCOUNT_PERCENT = 5;
+export const CUSTOM_CLASS_DISCOUNT_THRESHOLD = 5;
+export const CUSTOM_CLASS_DISCOUNT_PERCENT = 30;
 export const MAX_ADD_ON_LESSON_COUNT = 10;
 const CUSTOM_CLASS_COURSE_ID = "make-your-own-class";
 
@@ -457,7 +459,8 @@ export const getCartPricingSummary = (items: CartItem[]): CartPricingSummary => 
     (item) =>
       item.itemType === "course" &&
       item.productId !== CUSTOM_CLASS_COURSE_ID &&
-      item.pricingTier !== "island",
+      item.pricingTier !== "island" &&
+      (courseCatalogById[item.productId]?.pricing.discountPercent ?? 0) === 0,
   );
   const bundleDiscountEligibleInCarCourseCount = bundleEligibleItems.reduce((total, item) => {
     if (item.deliveryFormat === "In-class") {
@@ -466,15 +469,31 @@ export const getCartPricingSummary = (items: CartItem[]): CartPricingSummary => 
 
     return total + item.quantity;
   }, 0);
-  const bundleDiscountUnlocked =
+  const courseBundleDiscountUnlocked =
     bundleEligibleItems.length > 0 &&
     bundleDiscountEligibleInCarCourseCount >= COURSE_BUNDLE_DISCOUNT_THRESHOLD;
   const bundleDiscountBase = roundMoney(
     bundleEligibleItems.reduce((total, item) => total + item.price * item.quantity, 0),
   );
-  const bundleDiscountAmount = bundleDiscountUnlocked
+  const courseBundleDiscountAmount = courseBundleDiscountUnlocked
     ? roundMoney(bundleDiscountBase * (COURSE_BUNDLE_DISCOUNT_PERCENT / 100))
     : 0;
+  const customClassItems = items.filter(
+    (item) =>
+      item.itemType === "course" &&
+      item.productId === CUSTOM_CLASS_COURSE_ID &&
+      item.pricingTier !== "island",
+  );
+  const customClassCount = customClassItems.reduce((total, item) => total + item.quantity, 0);
+  const customClassDiscountUnlocked = customClassCount >= CUSTOM_CLASS_DISCOUNT_THRESHOLD;
+  const customClassDiscountBase = roundMoney(
+    customClassItems.reduce((total, item) => total + item.price * item.quantity, 0),
+  );
+  const customClassDiscountAmount = customClassDiscountUnlocked
+    ? roundMoney(customClassDiscountBase * (CUSTOM_CLASS_DISCOUNT_PERCENT / 100))
+    : 0;
+  const bundleDiscountAmount = roundMoney(courseBundleDiscountAmount + customClassDiscountAmount);
+  const bundleDiscountUnlocked = courseBundleDiscountUnlocked || customClassDiscountUnlocked;
   const subtotal = roundMoney(Math.max(subtotalBeforeDiscount - bundleDiscountAmount, 0));
   const estimatedTaxes = roundMoney(subtotal * ESTIMATED_GST_RATE);
   const total = roundMoney(subtotal + estimatedTaxes);
@@ -482,7 +501,11 @@ export const getCartPricingSummary = (items: CartItem[]): CartPricingSummary => 
   return {
     bundleDiscountAmount,
     bundleDiscountEligibleInCarCourseCount,
-    bundleDiscountPercent: bundleDiscountUnlocked ? COURSE_BUNDLE_DISCOUNT_PERCENT : 0,
+    bundleDiscountPercent: customClassDiscountUnlocked
+      ? CUSTOM_CLASS_DISCOUNT_PERCENT
+      : courseBundleDiscountUnlocked
+        ? COURSE_BUNDLE_DISCOUNT_PERCENT
+        : 0,
     bundleDiscountRemaining: Math.max(
       COURSE_BUNDLE_DISCOUNT_THRESHOLD - bundleDiscountEligibleInCarCourseCount,
       0,

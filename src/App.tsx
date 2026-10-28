@@ -54,6 +54,7 @@ const SearchPage = lazy(() => import("./pages/Search"));
 const Faq = lazy(() => import("./pages/Faq"));
 const SeoLandingPage = lazy(() => import("./pages/SeoLandingPage"));
 const BeginnerDrivingLessons = lazy(() => import("./pages/BeginnerDrivingLessons"));
+const PaidLandingPage = lazy(() => import("./pages/PaidLandingPage"));
 const CourseProductPage = lazy(() => import("./pages/CourseProductPage"));
 const ExtraProductPage = lazy(() => import("./pages/ExtraProductPage"));
 const AffiliateSignup = lazy(() => import("./pages/AffiliateSignup"));
@@ -108,6 +109,13 @@ const App = () => (
                 <Route path="/driving-lessons-saanich" element={<SeoLandingPage pageId="driving-lessons-saanich" />} />
                 <Route path="/driving-lessons-view-royal" element={<SeoLandingPage pageId="driving-lessons-view-royal" />} />
                 <Route path="/beginner-driving-lessons-victoria" element={<BeginnerDrivingLessons />} />
+                <Route path="/lp/driving-lessons-victoria" element={<PaidLandingPage pageId="victoria" />} />
+                <Route path="/lp/driving-school-near-me" element={<PaidLandingPage pageId="near-me" />} />
+                <Route path="/lp/driving-lesson-prices" element={<PaidLandingPage pageId="pricing" />} />
+                <Route path="/lp/icbc-road-test-preparation" element={<PaidLandingPage pageId="road-test" />} />
+                <Route path="/lp/beginner-driving-lessons" element={<PaidLandingPage pageId="beginner" />} />
+                <Route path="/lp/nervous-driver-lessons" element={<PaidLandingPage pageId="confidence" />} />
+                <Route path="/lp/icbc-driving-lessons" element={<PaidLandingPage pageId="icbc" />} />
                 <Route path="/nervous-driver-lessons-victoria" element={<SeoLandingPage pageId="nervous-driver-lessons-victoria" />} />
                 <Route path="/road-test-prep" element={<SeoLandingPage pageId="road-test-prep" />} />
                 <Route path="/road-test-prep-victoria" element={<SeoLandingPage pageId="road-test-prep-victoria" />} />

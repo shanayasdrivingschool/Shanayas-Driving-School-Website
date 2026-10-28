@@ -21,6 +21,8 @@ type PricingTier = "standard" | "regional" | "island";
 const ESTIMATED_GST_RATE = 0.05;
 const COURSE_BUNDLE_DISCOUNT_THRESHOLD = 3;
 const COURSE_BUNDLE_DISCOUNT_PERCENT = 5;
+const CUSTOM_CLASS_DISCOUNT_THRESHOLD = 5;
+const CUSTOM_CLASS_DISCOUNT_PERCENT = 30;
 const CUSTOM_CLASS_COURSE_ID = "make-your-own-class";
 const STANDARD_SIXTY_MINUTE_RATE = 89;
 const STANDARD_NINETY_MINUTE_RATE = 133.5;
@@ -39,7 +41,7 @@ const pricingTierByLocationId: Record<string, PricingTier> = {
 };
 
 const coursePricingById = {
-  "beginner-driving-course": { ninetyMinuteClasses: 10 },
+  "beginner-driving-course": { ninetyMinuteClasses: 10, discountPercent: 30 },
   "knowledge-test-prep-course": { fixedPrice: 300 },
   "parking-course": { ninetyMinuteClasses: 3 },
   "make-your-own-class": { ninetyMinuteClasses: 1 },
@@ -208,9 +210,12 @@ const getCourseUnitPrice = (
     throw new Error("invalid_product_id");
   }
 
-  return roundMoney(
+  const basePrice = roundMoney(
     getCourseBasePrice(pricing, tier, lessonDurationMinutes) + getCourseAddOnLessonTotal(courseId, addOnLessonCount),
   );
+  const discountPercent = "discountPercent" in pricing ? Math.max(0, Math.min(pricing.discountPercent, 100)) : 0;
+
+  return roundMoney(basePrice * (1 - discountPercent / 100));
 };
 
 const getPackageUnitPrice = (packageId: string, tier: PricingTier, lessonDurationMinutes?: 60 | 90) => {
@@ -226,7 +231,10 @@ const getPackageUnitPrice = (packageId: string, tier: PricingTier, lessonDuratio
 
   return roundMoney(
     courseIds.reduce(
-      (total, courseId) => total + getCourseUnitPrice(courseId, tier, lessonDurationMinutes),
+      (total, courseId) => {
+        const pricing = coursePricingById[courseId as keyof typeof coursePricingById];
+        return total + getCourseBasePrice(pricing, tier, lessonDurationMinutes);
+      },
       0,
     ),
   );
@@ -383,7 +391,8 @@ export const calculateCheckoutTotals = (items: CheckoutPricingItem[]) => {
     (item) =>
       item.itemType === "course" &&
       item.productId !== CUSTOM_CLASS_COURSE_ID &&
-      item.pricingTier !== "island",
+      item.pricingTier !== "island" &&
+      !("discountPercent" in coursePricingById[item.productId as keyof typeof coursePricingById]),
   );
   const bundleDiscountEligibleInCarCourseCount = bundleEligibleLineItems.reduce((total, item) => {
     if (item.deliveryFormat === "In-class") {
@@ -392,15 +401,30 @@ export const calculateCheckoutTotals = (items: CheckoutPricingItem[]) => {
 
     return total + item.quantity;
   }, 0);
-  const bundleDiscountUnlocked =
+  const courseBundleDiscountUnlocked =
     bundleEligibleLineItems.length > 0 &&
     bundleDiscountEligibleInCarCourseCount >= COURSE_BUNDLE_DISCOUNT_THRESHOLD;
   const bundleDiscountBase = roundMoney(
     bundleEligibleLineItems.reduce((total, item) => total + item.lineTotal, 0),
   );
-  const bundleDiscountAmount = bundleDiscountUnlocked
+  const courseBundleDiscountAmount = courseBundleDiscountUnlocked
     ? roundMoney(bundleDiscountBase * (COURSE_BUNDLE_DISCOUNT_PERCENT / 100))
     : 0;
+  const customClassLineItems = lineItems.filter(
+    (item) =>
+      item.itemType === "course" &&
+      item.productId === CUSTOM_CLASS_COURSE_ID &&
+      item.pricingTier !== "island",
+  );
+  const customClassCount = customClassLineItems.reduce((total, item) => total + item.quantity, 0);
+  const customClassDiscountUnlocked = customClassCount >= CUSTOM_CLASS_DISCOUNT_THRESHOLD;
+  const customClassDiscountBase = roundMoney(
+    customClassLineItems.reduce((total, item) => total + item.lineTotal, 0),
+  );
+  const customClassDiscountAmount = customClassDiscountUnlocked
+    ? roundMoney(customClassDiscountBase * (CUSTOM_CLASS_DISCOUNT_PERCENT / 100))
+    : 0;
+  const bundleDiscountAmount = roundMoney(courseBundleDiscountAmount + customClassDiscountAmount);
   const subtotal = roundMoney(Math.max(subtotalBeforeDiscount - bundleDiscountAmount, 0));
 
   const estimatedTaxes = roundMoney(subtotal * ESTIMATED_GST_RATE);
@@ -411,7 +435,11 @@ export const calculateCheckoutTotals = (items: CheckoutPricingItem[]) => {
     lineItems,
     bundleDiscountAmount,
     bundleDiscountEligibleInCarCourseCount,
-    bundleDiscountPercent: bundleDiscountUnlocked ? COURSE_BUNDLE_DISCOUNT_PERCENT : 0,
+    bundleDiscountPercent: customClassDiscountUnlocked
+      ? CUSTOM_CLASS_DISCOUNT_PERCENT
+      : courseBundleDiscountUnlocked
+        ? COURSE_BUNDLE_DISCOUNT_PERCENT
+        : 0,
     subtotal,
     subtotalBeforeDiscount,
     estimatedTaxes,

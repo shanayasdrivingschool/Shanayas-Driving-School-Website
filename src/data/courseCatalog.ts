@@ -38,7 +38,7 @@ const courseCatalogSeed: CourseCatalogItem[] = [
     tone: "bg-white text-black border border-gray-200",
     image: "https://private-us-east-1.manuscdn.com/sessionFile/YcTfnhvF4PHLy9OpoFm3lC/sandbox/nAmH4CdRAUGAW8wWxfAg5z_1773905025864_na1fn_L2hvbWUvdWJ1bnR1L3VwbG9hZC9zZWFyY2hfaW1hZ2VzL3lwbkFjZ2JQVlNMQQ.jpg?x-oss-process=image/resize,w_4096,h_4096/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvWWNUZm5odkY0UEhMeTlPcG9GbTNsQy9zYW5kYm94L25BbUg0Q2RSQVVHQVc4d1d4ZkFnNXpfMTc3MzkwNTAyNTg2NF9uYTFmbl9MMmh2YldVdmRXSjFiblIxTDNWd2JHOWhaQzl6WldGeVkyaGZhVzFoWjJWekwzbHdia0ZqWjJKUVZsTk1RUS5qcGc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd180MDk2LGhfNDA5Ni9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=OqNlugdj0ErAMkTPDWZBRLQVa3sdwoDMfDhqlk48uFIXhm9CGmoulPuEgJzkT1t-6tI6FNR1goTpbnnUlC8h1WpDE6ah68cC-0LuI1aDlSZiEAWt9O5KPPy85gvSsltNkqPdzoBpSfdR8JNY8JB3-xt49MX1lzbCA5RtwStsNvs1noG7kl75YhbDun5h1QjrNsgTiOYEipyJApJl36W95G9mO5OtpePqE~CM7MI3YDbZtaSLXZ6boE0Cce7R2aM6AhEJVLrk70fJnA6p~2e7xEBDOhH6O0y-EqC424z6dJkafrj1bvNt4Gnyw2w2iPb70qS2TUER0o9crT~KrmLJ~Q__",
     quizTags: ["beginner", "foundation", "confidence", "road-awareness"],
-    pricing: { ninetyMinuteClasses: 10 },
+    pricing: { ninetyMinuteClasses: 10, discountPercent: 30 },
   },
   {
     id: "knowledge-test-prep-course",

@@ -572,8 +572,9 @@ const publicPages = [
     path: "/beginner-driving-lessons-victoria/",
     title: "Beginner Driving Lessons in Victoria, BC",
     description:
-      "Learn to drive in Victoria and Langford with a free assessment drive, dual-control cars and a structured plan built around the ICBC road test.",
+      "Start beginner driving lessons in Victoria with a free assessment, dual-control training vehicle and clear lesson options.",
     image: `${siteOrigin}/landing/driving-lessons-saanich.webp`,
+    canonicalPath: "/lp/beginner-driving-lessons/",
     /* Paid-traffic landing page. It sells the same course as
        /courses/beginner-driving-course and overlaps /driving-lessons, so leaving it
        indexable would put three of our own pages in the same auction. noindex keeps
@@ -2077,21 +2078,18 @@ guidePage.breadcrumbs = [
   { name: "Class 7 Knowledge Test Guide", path: "/knowledge-test-guide/" },
 ];
 
-/* The beginner landing page is a bespoke React route, so its questions only exist
-   in src/data/beginnerCourseLanding.ts. Pull them through the loader rather than
-   keeping a second copy here, so the crawler HTML and FAQPage schema cannot drift
-   from what the page renders. */
+/* The legacy beginner route renders the paid beginner-page configuration. Pull
+   its visible copy through the loader so the crawler fallback cannot drift. */
 const beginnerPage = pages.find((page) => page.path === "/beginner-driving-lessons-victoria/");
+const paidBeginnerPage = content.paidLandingPages.get("/lp/beginner-driving-lessons");
 
-if (!beginnerPage) {
-  throw new Error('Missing the "/beginner-driving-lessons-victoria/" page entry.');
+if (!beginnerPage || !paidBeginnerPage) {
+  throw new Error("Missing the legacy or paid beginner landing-page entry.");
 }
 
-beginnerPage.faqs = content.beginnerLanding.faqs;
-beginnerPage.breadcrumbs = [
-  { name: "Home", path: "/" },
-  { name: "Beginner driving lessons", path: "/beginner-driving-lessons-victoria/" },
-];
+beginnerPage.title = paidBeginnerPage.seo.title;
+beginnerPage.description = paidBeginnerPage.seo.description;
+beginnerPage.faqs = paidBeginnerPage.faqs;
 
 /* Same rule for the FAQ hub: title, description and every question come out of
    src/data/siteFaqs.ts, so the crawler HTML and FAQPage schema physically cannot
@@ -2124,6 +2122,7 @@ pages.push({
   title: withBrand("Policies"),
   description:
     "Review Shanaya's Driving School policies for student services, road tests, cancellations, privacy, payments, and website terms.",
+  robots: "noindex, follow",
   breadcrumbs: [
     { name: "Home", path: "/" },
     { name: "Policies", path: "/policies/" },

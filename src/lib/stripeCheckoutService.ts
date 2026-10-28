@@ -47,6 +47,7 @@ type CreateCheckoutPaymentIntentResult = {
 };
 
 const CREATE_PAYMENT_INTENT_FUNCTION = "create-payment-intent";
+const SYNC_PAYMENT_STATUS_FUNCTION = "sync-payment-status";
 
 const ensureSupabase = () => {
   if (!supabase) {
@@ -233,4 +234,50 @@ export const createCheckoutPaymentIntent = async (
     installmentCount: payload.installment_count === 2 || payload.installment_count === 3 ? payload.installment_count : null,
     remainingBalance,
   };
+};
+
+const paymentIntentIdFromClientSecret = (clientSecret: string) => {
+  const paymentIntentId = clientSecret.split("_secret_", 1)[0]?.trim() ?? "";
+  return /^pi_[A-Za-z0-9]+$/.test(paymentIntentId) ? paymentIntentId : null;
+};
+
+/**
+ * Reconcile the order after Stripe has confirmed the PaymentIntent in the
+ * browser. The webhook remains the authoritative path; this retry closes the
+ * gap when Stripe's webhook is delayed or unavailable while the customer is
+ * already looking at a successful confirmation page.
+ */
+export const reconcileCheckoutPayment = async (input: {
+  orderId: string;
+  paymentIntentClientSecret: string;
+}) => {
+  const paymentIntentId = paymentIntentIdFromClientSecret(input.paymentIntentClientSecret);
+  if (!paymentIntentId) {
+    throw new Error("invalid_payment_intent_reference");
+  }
+
+  return reconcilePaymentIntent({ orderId: input.orderId, paymentIntentId });
+};
+
+export const reconcilePaymentIntent = async (input: {
+  orderId: string;
+  paymentIntentId: string;
+}) => {
+  const client = ensureSupabase();
+  if (!/^pi_[A-Za-z0-9]+$/.test(input.paymentIntentId.trim())) {
+    throw new Error("invalid_payment_intent_reference");
+  }
+
+  const { data, error: functionError, response } = await client.functions.invoke(SYNC_PAYMENT_STATUS_FUNCTION, {
+    body: {
+      order_id: input.orderId,
+      payment_intent_id: input.paymentIntentId.trim(),
+    },
+  });
+
+  if (functionError) {
+    throw new Error(await getFunctionErrorMessage(functionError, response));
+  }
+
+  return data as { ok: boolean; synced: boolean; payment_status?: string; order_id?: string };
 };
