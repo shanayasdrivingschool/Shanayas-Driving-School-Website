@@ -7,6 +7,7 @@ import { getPolicyIcon } from "@/data/policyIcons";
 // Lead with the policies people actually look for; anything unlisted falls to the end.
 const policyOrder = [
   "student-service-and-road-test-policy",
+  "student-safety-policy",
   "cancellation-and-rescheduling",
   "installment-policy",
   "privacy-policy",
@@ -44,7 +45,7 @@ const Policies = () => (
           Policies
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-white/80">
-          Review student services, lesson and road-test responsibilities, cancellations, privacy, payments, promotions,
+          Review student safety, student services, lesson and road-test responsibilities, cancellations, privacy, payments, promotions,
           and website terms.
         </p>
       </div>

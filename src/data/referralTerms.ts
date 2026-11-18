@@ -12,7 +12,7 @@ export type ReferralTermsSection = {
 };
 
 export const REFERRAL_TERMS_PATH = "/affiliate/terms-and-conditions";
-export const REFERRAL_TERMS_EFFECTIVE_DATE_LABEL = "March 16, 2026";
+export const REFERRAL_TERMS_EFFECTIVE_DATE_LABEL = "April 1, 2026";
 export const REFERRAL_TERMS_VERSION = "2026-03-16";
 
 export const referralTermsIntro = [

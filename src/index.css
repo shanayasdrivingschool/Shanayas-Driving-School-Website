@@ -131,6 +131,12 @@
     overflow-x: clip;
   }
 
+  /* Keep long policy contents reachable while scrolling the document. */
+  body:has(.policy-detail-page),
+  #root:has(.policy-detail-page) {
+    overflow-x: clip;
+  }
+
   img,
   picture,
   video,

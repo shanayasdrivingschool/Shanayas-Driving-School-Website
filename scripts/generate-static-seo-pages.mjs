@@ -1476,7 +1476,8 @@ const buildPolicyBody = (policy) => {
   const parts = [
     `<h1>${escapeHtml(policy.label)}</h1>`,
     para(policy.cardDescription),
-    para(`Effective ${policy.effectiveDate}`),
+    para(policy.status === "proposed" ? "Proposed policy" : "Published policy"),
+    para(`Effective: ${policy.effectiveDate}`),
     para(policy.intro),
     list(policy.highlights ?? []),
   ];
@@ -1487,6 +1488,9 @@ const buildPolicyBody = (policy) => {
     parts.push(list(section.bullets ?? []));
     if (section.note) {
       parts.push(para(section.note));
+    }
+    if (section.links?.length) {
+      parts.push(`<ul>${section.links.map((link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></li>`).join("")}</ul>`);
     }
     parts.push(`</section>`);
   });
@@ -2121,7 +2125,7 @@ pages.push({
   path: "/policies/",
   title: withBrand("Policies"),
   description:
-    "Review Shanaya's Driving School policies for student services, road tests, cancellations, privacy, payments, and website terms.",
+    "Review Shanaya's Driving School policies for student safety, student services, road tests, cancellations, privacy, payments, and website terms.",
   robots: "noindex, follow",
   breadcrumbs: [
     { name: "Home", path: "/" },
@@ -2134,6 +2138,7 @@ for (const policy of content.policies) {
     path: `${policy.href.replace(/\/?$/, "/")}`,
     title: withBrand(policy.label),
     description: policy.cardDescription,
+    robots: policy.status === "proposed" ? "noindex, follow" : undefined,
     policy,
     breadcrumbs: [
       { name: "Home", path: "/" },

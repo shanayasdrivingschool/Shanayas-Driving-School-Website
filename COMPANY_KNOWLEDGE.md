@@ -135,7 +135,8 @@ Public policy links exposed in the footer:
 
 Key policy details currently in code:
 
-- Privacy Policy effective date: March 16, 2026
+- All school policies and Ruley Rewards terms are effective April 1, 2026 (owner confirmation, November 19, 2026). This supersedes older effective-date labels in the site and source drafts.
+- Student Safety Policy SDS-SAF-001 v1.0: adoption confirmed by owner on November 19, 2026, effective April 1, 2026. This confirmation does not establish a legal or instructor review.
 - Installment plans listed: 4-month, 6-month, 8-month, 12-month
 - Privacy policy references PIPA and CASL compliance
 - Referral terms reference British Columbia and Canadian law, including BPCPA, PIPA, CASL, and the Competition Act

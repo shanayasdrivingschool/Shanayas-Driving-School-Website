@@ -6,6 +6,7 @@ import { CalendarClock, CreditCard, FileText, Gavel, Percent, ShieldCheck, Users
  * so a newly added policy id can never crash a render (see `getPolicyIcon`).
  */
 export const policyIcons: Record<string, LucideIcon> = {
+  "student-safety-policy": ShieldCheck,
   "privacy-policy": ShieldCheck,
   "installment-policy": CreditCard,
   "in-vehicle-passenger-policy": Users,

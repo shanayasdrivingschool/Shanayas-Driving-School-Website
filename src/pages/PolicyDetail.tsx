@@ -44,11 +44,12 @@ const PolicyDetail = () => {
   };
 
   const Icon = getPolicyIcon(policy.id);
+  const statusLabel = policy.status === "proposed" ? "Proposed policy" : "Published policy";
 
   return (
-    <main className="bg-white text-[#202121]">
+    <main className="policy-detail-page bg-white text-[#202121]">
       <PageNameSection
-        eyebrow="Published policy"
+        eyebrow={statusLabel}
         title={<span className="text-white">{normalizedPolicy.label}</span>}
         description={normalizedPolicy.cardDescription}
         backgroundImage="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=2200&q=80"
@@ -65,9 +66,9 @@ const PolicyDetail = () => {
 
         <div className="mt-8 flex items-center gap-2 text-[#E6242A]">
           <Icon className="h-4 w-4" aria-hidden="true" />
-          <p className="text-xs font-bold uppercase tracking-[0.2em]">Published policy</p>
+          <p className="text-xs font-bold uppercase tracking-[0.2em]">{statusLabel}</p>
         </div>
-        <p className="mt-3 text-sm text-slate-500">Effective {normalizedPolicy.effectiveDate}</p>
+        <p className="mt-3 text-sm text-slate-500">Effective: {normalizedPolicy.effectiveDate}</p>
         <p className="mt-5 max-w-[68ch] text-lg leading-relaxed text-slate-600">{normalizedPolicy.intro}</p>
 
         <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
@@ -81,7 +82,7 @@ const PolicyDetail = () => {
 
         <div className="mt-12 lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-12">
           <aside className="hidden lg:block">
-            <nav aria-label="On this page" className="sticky top-24">
+            <nav aria-label="On this page" className="sticky top-24 max-h-[75dvh] overflow-y-auto">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">On this page</p>
               <ul className="mt-4 space-y-1 border-l border-slate-200">
                 {normalizedPolicy.sections.map((section, index) => (
@@ -148,6 +149,18 @@ const PolicyDetail = () => {
                     <p className="mt-5 max-w-[68ch] border-l-2 border-[#1d52a1]/40 pl-4 leading-relaxed text-slate-600">
                       {section.note}
                     </p>
+                  ) : null}
+
+                  {section.links ? (
+                    <ul className="mt-5 max-w-[68ch] space-y-3">
+                      {section.links.map((link) => (
+                        <li key={link.href}>
+                          <a href={link.href} className="break-words font-medium text-[#1d52a1] underline underline-offset-4 hover:text-[#17417f]">
+                            {link.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
                   ) : null}
                 </section>
               ))}

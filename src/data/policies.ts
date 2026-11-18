@@ -1,3 +1,5 @@
+import { studentSafetyPolicy } from './studentSafetyPolicy';
+
 export type PolicyInstallmentPlan = {
   duration: string;
   frequency: string;
@@ -9,6 +11,7 @@ export type PolicyContentSection = {
   paragraphs: string[];
   bullets?: string[];
   note?: string;
+  links?: { label: string; href: string }[];
   /**
    * Visual tone for the section's bullet list. `warning` renders cautionary
    * (red / alert) markers; anything else renders neutral markers. Defaults to
@@ -23,6 +26,7 @@ export type SitePolicy = {
   label: string;
   href: string;
   effectiveDate: string;
+  status?: 'proposed';
   cardDescription: string;
   intro: string;
   highlights: string[];
@@ -41,11 +45,12 @@ const installmentPlans: PolicyInstallmentPlan[] = [
 ];
 
 const allSitePolicies: SitePolicy[] = [
+  studentSafetyPolicy,
   {
     id: 'student-service-and-road-test-policy',
     label: 'Student Service & Road Test Policy',
     href: STUDENT_SERVICE_POLICY_PATH,
-    effectiveDate: 'October 6, 2026',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'The school identity, lesson fees and duration disclosures, licence requirements, vehicle occupants, payment and refund rules, and road-test responsibilities that apply before training.',
     intro:
       'This policy summarizes the service information each student needs before training and before paying Shanaya\'s Driving School. Read it with the itemized booking statement, Cancellation & Rescheduling Policy, and Terms & Conditions. The itemized statement for your purchase identifies the exact services, fees, lesson allocation, and applicable terms.',
@@ -123,10 +128,10 @@ const allSitePolicies: SitePolicy[] = [
     id: 'privacy-policy',
     label: 'Privacy Policy',
     href: '/policies/privacy-policy',
-    effectiveDate: 'October 6, 2026',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'How we collect, use, store, disclose, and protect personal information across the website, bookings, and Ruley Rewards referrals.',
     intro:
-      'Effective Date: October 6, 2026. Shanaya\'s Driving School ("Company", "we", "our", or "us") respects the privacy of individuals who interact with our website, services, and programs, including the Ruley Rewards Referral Program. By accessing our website, enrolling in driving services, participating in referral programs, or otherwise interacting with the Company, you consent to the practices described in this Privacy Policy.',
+      'Effective Date: April 1, 2026. Shanaya\'s Driving School ("Company", "we", "our", or "us") respects the privacy of individuals who interact with our website, services, and programs, including the Ruley Rewards Referral Program. By accessing our website, enrolling in driving services, participating in referral programs, or otherwise interacting with the Company, you consent to the practices described in this Privacy Policy.',
     highlights: ['PIPA and CASL compliance', 'Bookings, referral, and website data', 'Consent, access, and correction rights'],
     sections: [
       {
@@ -297,7 +302,7 @@ const allSitePolicies: SitePolicy[] = [
     id: 'installment-policy',
     label: 'Installment Policy',
     href: '/policies/installment-policy',
-    effectiveDate: 'October 6, 2026',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'Rules for approved installment plans, written payment schedules, missed payments, withdrawals, and overdue balances.',
     intro:
       'This policy governs the installment facilities offered for professional driver training programs and sets out the payment, participation, delinquency, and recovery terms that apply once a student enrolls under an approved plan.',
@@ -358,7 +363,7 @@ const allSitePolicies: SitePolicy[] = [
     id: 'in-vehicle-passenger-policy',
     label: 'In-Vehicle Passenger Policy',
     href: '/policies/in-vehicle-passenger-policy',
-    effectiveDate: 'October 6, 2026',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'Why ordinary driving lessons normally include two people—the student and licensed instructor—with no ride-along passengers, and how exceptional occupants are disclosed.',
     intro:
       'At Shanaya\'s Driving School, every lesson is carefully designed to provide students with a safe, professional, and distraction-free learning environment. Our goal is not only to help students pass their road test, but also to develop the confidence, judgment, and defensive driving skills needed to become safe, responsible drivers for life.',
@@ -471,10 +476,10 @@ const allSitePolicies: SitePolicy[] = [
     id: 'promotions-and-discounts',
     label: 'Promotions & Discounts Policy',
     href: '/policies/promotions-and-discounts',
-    effectiveDate: 'October 6, 2026',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'Who qualifies for discounts, coupon codes, and promotional offers — and why promotional pricing applies to self-funded students only, not to enrolments paid by a third-party organization.',
     intro:
-      'Effective Date: October 6, 2026. This Promotions & Discounts Policy governs all discounts, coupon codes, seasonal or promotional offers, bundle pricing, and referral credits offered by Shanaya\'s Driving School. It explains who qualifies for promotional pricing and the conditions that apply to every offer.',
+      'Effective Date: April 1, 2026. This Promotions & Discounts Policy governs all discounts, coupon codes, seasonal or promotional offers, bundle pricing, and referral credits offered by Shanaya\'s Driving School. It explains who qualifies for promotional pricing and the conditions that apply to every offer.',
     highlights: ['Self-funded students only', 'Excludes sponsored enrolments', 'No retroactive discounts'],
     sections: [
       {
@@ -537,10 +542,10 @@ const allSitePolicies: SitePolicy[] = [
     id: 'cancellation-and-rescheduling',
     label: 'Cancellation & Rescheduling Policy',
     href: '/policies/cancellation-and-rescheduling',
-    effectiveDate: 'October 6, 2026',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, what happens to your fee at each notice level, when a refund is available, and how credits are applied.',
     intro:
-      'Effective Date: October 6, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. Please read it before you book, and read it together with our Student Service & Road Test Policy, Terms & Conditions, Installment Policy, and Promotions & Discounts Policy.',
+      'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. Please read it before you book, and read it together with our Student Service & Road Test Policy, Terms & Conditions, Installment Policy, and Promotions & Discounts Policy.',
     highlights: ['Cancellations are rescheduled or credited', '24 hours notice to reschedule free of charge', 'Refunds only for a valid reason, less a $75 admin fee'],
     sections: [
       {
@@ -784,7 +789,7 @@ const allSitePolicies: SitePolicy[] = [
     id: 'terms-and-conditions',
     label: 'Terms & Conditions',
     href: '/policies/terms-and-conditions',
-    effectiveDate: 'October 6, 2026',
+    effectiveDate: 'April 1, 2026',
     cardDescription: 'The general terms that apply when using the website, booking services, or submitting forms.',
     intro:
       'These Terms & Conditions describe the general rules that apply when using the website, submitting leads, booking lessons, purchasing packages, or participating in referral-based programs connected to Shanaya\'s Driving School.',
