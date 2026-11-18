@@ -2,6 +2,8 @@
 
 Prepared and inspected: November 19, 2026.
 
+**Latest publication state: live confirmed**, November 19, 2026, at https://www.shanayasdrivingschool.com/policies/student-safety-policy/. Owner-confirmed effective date: **April 1, 2026**. Earlier proposed/local statuses below are historical.
+
 ## Original implementation brief (before owner confirmation)
 
 - Reader: students, guardians and instructors in Victoria, British Columbia.
@@ -70,3 +72,14 @@ Focused-change verification on November 19, 2026:
 - Browser checked all eight public policies plus Ruley Rewards terms for the exact April 1, 2026 effective date, the safety page's adopted title and indexable metadata, and absence of browser errors. Captured mobile/desktop safety page views and visually checked the mobile heading/date.
 - Generated HTML checked for all eight dates, absence of proposed/noindex status on the safety page and inclusion in the sitemap. Actual update dates remain distinct from effective dates.
 - Intent satisfaction: **Ready** for this focused adoption/date correction. Full-policy evidence/review limitations above are unchanged. Publication state: **implemented locally**; build output restored after verification, no deployment.
+
+
+## Production publication (November 19, 2026)
+
+- User explicitly requested making the policy live. Released only the policy work from source commit `0ec822d2` in an isolated checkout; unrelated local edits were excluded.
+- Release test suite: 44 tests passed across 10 files. Production build passed and generated 77 routes. Release contained 306 files; no existing content pages were removed, only obsolete hashed assets rotated.
+- Source/build branch pushed through `6b5e90f6`; production branch `public_html` pushed through `d6597596`.
+- **Publication state: live confirmed** at https://www.shanayasdrivingschool.com/policies/student-safety-policy/ on November 19, 2026. HTTP 200, adopted title, April 1, 2026 effective date, all numbered policy clauses and acknowledgements verified against deployed HTML.
+- Live browser checks passed for all eight public policies and Ruley Rewards terms, including exact effective dates, adopted safety title, indexable metadata and absence of browser runtime errors. Mobile and desktop captures taken; mobile heading/date visually inspected.
+- Live policy-library entry and sitemap inclusion verified. Public availability does not establish search indexing or ranking.
+- Intent satisfaction: **Ready** for the requested live policy and date. Full-page editorial review evidence remains limited as documented above; deployment does not establish legal or instructor review.
