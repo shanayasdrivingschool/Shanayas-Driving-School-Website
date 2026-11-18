@@ -27,3 +27,12 @@ Prepared: November 19, 2026. Responsible organization: Shanaya's Driving School.
 - Page quality: **Draft awaiting evidence/review** for legal and operational review and qualified instructor review of fitness/safe-stop instructions; none was claimed.
 - Intent satisfaction: **Ready** for reading the owner-adopted illness policy and its cancellation exception, subject to final rendered/link checks.
 - Publication state: **implemented locally** as of November 19, 2026, pending deployment and live verification.
+
+## Release verification, November 19, 2026
+
+- Isolated release from source commit `f93ef998` kept unrelated workspace edits out of the build.
+- Ten test files passed (44 tests). Production build generated 78 routes and 307 files, added only the health-policy page, and removed no existing content pages. Targeted lint and diff checks passed.
+- Production preview passed mobile (390 × 844) and desktop (1440 × 1000) browser checks: 22 sections, readable title/date, reachable contents, no horizontal overflow, cancellation exception and no runtime errors. Mobile rendering was visually inspected.
+- Published source/build commit `1f1c8a53` and deployment branch commit `675b5166` to origin.
+- **Publication state: live confirmed** at https://www.shanayasdrivingschool.com/policies/health-and-illness-policy/ on November 19, 2026. Checked the live HTML for April 1, 2026, all 70 numbered clauses and the acknowledgements; the live policy index links it and the cancellation page shows the illness exception. The newly created directory URL briefly served the site's fallback page during propagation, then returned the correct page on repeated direct retrieval.
+- Intent satisfaction: **Ready** for the reader seeking the live school policy and exception. Page-quality status remains **Draft awaiting evidence/review** for legal, instructor and operational review that was not evidenced; deployment does not establish those reviews.
