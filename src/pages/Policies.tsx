@@ -8,6 +8,7 @@ import { getPolicyIcon } from "@/data/policyIcons";
 const policyOrder = [
   "student-service-and-road-test-policy",
   "student-safety-policy",
+  "health-and-illness-policy",
   "cancellation-and-rescheduling",
   "installment-policy",
   "privacy-policy",
@@ -45,7 +46,7 @@ const Policies = () => (
           Policies
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-white/80">
-          Review student safety, student services, lesson and road-test responsibilities, cancellations, privacy, payments, promotions,
+          Review student safety, health and illness, student services, lesson and road-test responsibilities, cancellations, privacy, payments, promotions,
           and website terms.
         </p>
       </div>

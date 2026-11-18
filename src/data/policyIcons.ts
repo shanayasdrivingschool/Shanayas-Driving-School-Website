@@ -7,6 +7,7 @@ import { CalendarClock, CreditCard, FileText, Gavel, Percent, ShieldCheck, Users
  */
 export const policyIcons: Record<string, LucideIcon> = {
   "student-safety-policy": ShieldCheck,
+  "health-and-illness-policy": ShieldCheck,
   "privacy-policy": ShieldCheck,
   "installment-policy": CreditCard,
   "in-vehicle-passenger-policy": Users,

@@ -1,4 +1,5 @@
 import { studentSafetyPolicy } from './studentSafetyPolicy';
+import { healthIllnessPolicy } from './healthIllnessPolicy';
 
 export type PolicyInstallmentPlan = {
   duration: string;
@@ -46,6 +47,7 @@ const installmentPlans: PolicyInstallmentPlan[] = [
 
 const allSitePolicies: SitePolicy[] = [
   studentSafetyPolicy,
+  healthIllnessPolicy,
   {
     id: 'student-service-and-road-test-policy',
     label: 'Student Service & Road Test Policy',
@@ -545,7 +547,7 @@ const allSitePolicies: SitePolicy[] = [
     effectiveDate: 'April 1, 2026',
     cardDescription: 'How to cancel or reschedule a booked lesson/package, how much notice is required, what happens to your fee at each notice level, when a refund is available, and how credits are applied.',
     intro:
-      'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. Please read it before you book, and read it together with our Student Service & Road Test Policy, Terms & Conditions, Installment Policy, and Promotions & Discounts Policy.',
+      'Effective Date: April 1, 2026. This policy explains what happens when a booked lesson/package is cancelled, rescheduled, missed, or withdrawn from. It applies to every booking made with Shanaya\'s Driving School, however it was booked and however it was paid for. The Health, Illness Prevention & Fitness-to-Drive Policy provides an exception for one genuinely sudden, short-notice illness-related rescheduling without an additional cancellation charge, with later requests reviewed individually. Please read both policies before booking.',
     highlights: ['Cancellations are rescheduled or credited', '24 hours notice to reschedule free of charge', 'Refunds only for a valid reason, less a $75 admin fee'],
     sections: [
       {
@@ -594,7 +596,7 @@ const allSitePolicies: SitePolicy[] = [
           'Less than 2 hours notice, or no notice at all: the full fee is retained and the lesson/package is not rescheduled.',
           'Cancelled by the school: the lesson/package is rescheduled at no charge and the full fee carries forward.',
         ],
-        note: 'Sections 6 and 7 explain how the notice period is calculated. Sections 8 to 14 set out each level in full. This summary is a guide only; where it differs from the detailed sections, the detailed sections apply.',
+        note: 'Sections 6 and 7 explain how the notice period is calculated. Sections 8 to 14 set out each level in full. For a genuinely sudden illness, see the Health, Illness Prevention & Fitness-to-Drive Policy for the short-notice rescheduling exception. This summary is a guide only; where it differs from the detailed sections, the detailed sections apply.',
       },
       {
         title: '5. Changing your mind about the time, rather than cancelling',
@@ -646,7 +648,7 @@ const allSitePolicies: SitePolicy[] = [
           'Half of the fee is retained by the school as a late-notice charge.',
           'The remaining half is held as a credit and applied to the cost of your rescheduled lesson/package.',
         ],
-        note: 'The credited half is not lost. It remains on your account and reduces the amount payable for the rescheduled lesson/package. Contact the office at any time to confirm your current credit balance.',
+        note: 'The credited half is not lost. It remains on your account and reduces the amount payable for the rescheduled lesson/package. The Health, Illness Prevention & Fitness-to-Drive Policy provides a short-notice illness exception. Contact the office at any time to confirm your current credit balance.',
         tone: 'warning',
       },
       {
@@ -659,7 +661,7 @@ const allSitePolicies: SitePolicy[] = [
           'The lesson/package is not rescheduled and no credit carries forward.',
           'A lesson/package missed without any notice is treated in the same way as notice given inside the last 2 hours.',
         ],
-        note: 'By this point the time has been reserved for you and can no longer be offered to another student.',
+        note: 'The Health, Illness Prevention & Fitness-to-Drive Policy provides an exception for one genuinely sudden, short-notice illness-related rescheduling without an additional cancellation charge. By this point the time has been reserved for you and can no longer be offered to another student.',
         tone: 'warning',
       },
       {

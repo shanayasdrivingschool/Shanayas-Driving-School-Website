@@ -2125,7 +2125,7 @@ pages.push({
   path: "/policies/",
   title: withBrand("Policies"),
   description:
-    "Review Shanaya's Driving School policies for student safety, student services, road tests, cancellations, privacy, payments, and website terms.",
+    "Review Shanaya's Driving School policies for student safety, health and illness, student services, road tests, cancellations, privacy, payments, and website terms.",
   robots: "noindex, follow",
   breadcrumbs: [
     { name: "Home", path: "/" },
