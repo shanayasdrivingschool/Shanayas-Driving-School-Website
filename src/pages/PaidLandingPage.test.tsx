@@ -60,6 +60,23 @@ describe("paid landing callbacks", () => {
     expect(screen.queryByLabelText(/Preferred callback time/)).not.toBeInTheDocument();
   });
 
+  it("carries the selected confidence package into the callback and stored enquiry", async () => {
+    render(<MemoryRouter initialEntries={["/lp/road-test-confidence"]}><PaidLandingPage pageId="road-test-confidence" /></MemoryRouter>);
+    expect(screen.getByText(/Packages from/)).toHaveTextContent("$1,999");
+    fireEvent.click(screen.getByRole("button", { name: "Request a Callback about Road Test Confidence Plus" }));
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText("Package interest: Road Test Confidence Plus")).toBeInTheDocument();
+    fillForm();
+    fireEvent.submit(within(dialog).getByRole("form"));
+    await waitFor(() => expect(submitFreeTrialLead).toHaveBeenCalledTimes(1));
+    expect(submitFreeTrialLead).toHaveBeenCalledWith(expect.objectContaining({
+      goal: "road-test",
+      note: "Free callback requested. Programme: Road Test Confidence. Package interest: Road Test Confidence Plus. Notes: My test is next month.",
+      attribution: expect.objectContaining({ landingPageId: "road-test-confidence" }),
+    }));
+    await waitFor(() => expect(within(dialog).getByRole("status")).toHaveTextContent("You’ll receive a call shortly"));
+  });
+
   it("stores email, optional notes and attribution, and counts only a stored lead", async () => {
     let resolveLead!: () => void;
     vi.mocked(submitFreeTrialLead).mockReturnValue(new Promise<void>((resolve) => { resolveLead = resolve; }));

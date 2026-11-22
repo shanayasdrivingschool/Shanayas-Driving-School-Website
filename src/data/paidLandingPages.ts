@@ -1,3 +1,4 @@
+import { roadTestConfidenceProgramme } from "@/data/roadTestConfidence";
 import { googleReviews } from "@/data/googleReviews";
 
 export type PaidLandingPageId =
@@ -7,7 +8,8 @@ export type PaidLandingPageId =
   | "road-test"
   | "beginner"
   | "confidence"
-  | "icbc";
+  | "icbc"
+  | "road-test-confidence";
 
 export type PaidLandingGoal = "beginner" | "road-test" | "refresher" | "general";
 export type PaidLandingOptionalField = "testDate" | "licenceClass" | "serviceArea";
@@ -67,6 +69,7 @@ export type PaidLandingPageConfig = {
   pricingHeading: string;
   finalHeading: string;
   products: PaidLandingProduct[];
+  supportProgramme?: typeof roadTestConfidenceProgramme;
   benefits: { title: string; body: string }[];
   faqs: PaidLandingFaq[];
   testimonialIds: string[];
@@ -425,6 +428,56 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     serviceAreas: sharedAreas,
     serviceAreaIntro: "Class 5 and 7 lesson availability is confirmed for your area, licence stage and preferred time.",
     analytics: { contentGroup: "paid-landing-icbc", funnel: "licence-training-enquiry" },
+  },
+  {
+    id: "road-test-confidence",
+    path: "/lp/road-test-confidence",
+    adGroupNames: [],
+    seo: {
+      title: "Road Test Confidence Packages in Victoria | Shanaya’s",
+      description: "Compare $1,999 and $2,599 CAD + GST road-test packages: 15 initial training hours, conditional extra lessons and a test-day car option. Request a callback.",
+      canonicalPath: "/lp/road-test-confidence",
+      noindex: true,
+    },
+    hero: {
+      eyebrow: "Road Test Confidence · Greater Victoria",
+      h1: "Road-Test Training With Continued Support",
+      subhead: "Start with 15 hours of private driving lessons. If a qualifying road test doesn’t go your way, your package includes extra coaching to prepare for another attempt.",
+      proofPoints: ["Private 90-minute lessons", "Defined support for up to 4 attempts", "Choose training or training + test-day car"],
+      imageAsset: "/vehicles/school-car-parked-1280-89d295d67d.webp",
+    },
+    conversion: {
+      primaryCta: "Request a Callback",
+      formHeading: "Find Your Road Test Confidence Package",
+      formDescription: "Tell us how to reach you. We’ll help compare the two packages, check availability and explain the programme terms. No payment is taken here.",
+      defaultGoal: "road-test",
+      optionalFields: [],
+      offerTerms: roadTestConfidenceProgramme.conditions,
+      thankYouCopy: "Thank you! You’ll receive a call shortly. If you’d prefer to speak to us now, use the call button below.",
+    },
+    pricingHeading: "Choose Your Road Test Confidence Package",
+    finalHeading: "Let’s Find the Right Road-Test Support for You.",
+    products: [],
+    supportProgramme: roadTestConfidenceProgramme,
+    benefits: [
+      { title: "Know your starting point", body: "Ten private 90-minute lessons provide 15 hours of initial instruction." },
+      { title: "Understand the next step", body: "Additional lesson blocks become available after unsuccessful qualifying tests, within the four-attempt limit." },
+      { title: "Choose your test-day car option", body: "Compare training support alone with training plus school-car use for covered tests." },
+    ],
+    faqs: [
+      { question: "Do I receive all 30 hours from the start?", answer: "No. Both packages include 15 initial hours: ten lessons of 90 minutes. After an unsuccessful qualifying first test, five more lessons are included; after a second, three more; after a third, two more. That is up to 15 conditional extra hours and 30 hours in total. Each block is available for the next covered attempt, subject to programme conditions." },
+      { question: "What happens if I pass on my first attempt?", answer: "Your conditional retest support ends when you pass. The initial ten lessons are included regardless of the result. Outstanding payments and any refund rights are governed by your written purchase and refund terms; passing does not itself create a refund promise." },
+      { question: "Does this guarantee I will pass?", answer: "No. The package provides a defined amount of training and conditional retest support, not unlimited lessons or a guaranteed pass. ICBC determines your road-test result." },
+      { question: "Are the road-test car and ICBC fees included?", answer: "Both packages include the training vehicle during lessons. The $1,999 CAD + GST package excludes test-day vehicle rental. The $2,599 CAD + GST Plus package includes the school car for the first covered test and up to three retries following unsuccessful tests, subject to booking and coverage rules. All ICBC testing fees and applicable government charges are separate. Book the official road test directly with ICBC and coordinate school-car availability with our team.", link: { label: "ICBC road-test booking and fees", href: "https://www.icbc.com/driver-licensing/visit-dl-office/Book-a-road-test" } },
+      { question: "Can a beginner join, and where are lessons available?", answer: "The programme may suit different experience levels. Discuss your experience and training needs with the team before choosing a package; 15 initial hours may not meet every learner’s needs. Lessons are offered in Greater Victoria, including Victoria and Langford. Confirm eligible licence classes, pickup location, test centre, coverage dates and scheduling before you enrol." },
+      { question: "What if I need extra lessons or more than four attempts?", answer: "The package has no additional included coaching blocks after the fourth covered attempt. Further lessons or road-test vehicle services can be arranged separately at the applicable rate, subject to availability. You can also ask about extra training before an earlier attempt." },
+      { question: "Can I pay in instalments?", answer: "Eligible instalment options, including Klarna where available, may apply to your purchase. Ask the team which options are available for your package. Purchase limits, approval, interest or fees and repayment schedules are set by the provider. Approval is not guaranteed." },
+      { question: "What should I confirm before paying?", answer: "Ask the team to explain which tests qualify, the package coverage period, lesson-completion requirements, available test-day vehicle dates, and cancellation and refund terms. Review your written package terms before purchase. Requesting a callback does not book a test or commit you to buying a package.", link: { label: "School cancellation and rescheduling policy", href: "/policies/cancellation-and-rescheduling" } },
+    ],
+    testimonialIds: ["yogita-bang", "alfred-taban", "alexis-dumaresq"],
+    serviceAreas: ["Victoria", "Langford"],
+    serviceAreaIntro: "Discuss your Greater Victoria pickup location and preferred test centre with our team. Package coverage and vehicle availability are confirmed before booking.",
+    analytics: { contentGroup: "paid-landing-road-test-confidence", funnel: "road-test-confidence-enquiry" },
   },
 ];
 

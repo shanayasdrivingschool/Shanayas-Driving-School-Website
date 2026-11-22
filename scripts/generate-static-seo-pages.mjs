@@ -1984,6 +1984,16 @@ const renderPageHtml = (template, page, content) => {
     html = replaceFallback(html, page, () => [
       `<h1>${escapeHtml(paidLanding.hero.h1)}</h1>`,
       para(paidLanding.hero.subhead),
+      ...(paidLanding.supportProgramme ? [
+        `<h2>${escapeHtml(paidLanding.pricingHeading)}</h2>`,
+        ...paidLanding.supportProgramme.packages.flatMap((offer) => [
+          `<h3>${escapeHtml(offer.name)} — $${offer.price.toLocaleString("en-CA")} CAD + GST</h3>`,
+          para(offer.description), para(offer.testCar),
+        ]),
+        para(paidLanding.supportProgramme.conditions),
+        `<h2>What happens if you need another attempt?</h2>`,
+        ...paidLanding.supportProgramme.stages.map((stage) => para(`Before attempt ${stage.attempt}: ${stage.lessons} lessons, ${stage.hours} hours. ${stage.condition}. ${stage.detail}`)),
+      ] : []),
       `<h2>${escapeHtml(paidLanding.conversion.formHeading)}</h2>`,
       para(paidLanding.conversion.formDescription),
       `<p><a href="tel:+12505423673">Call (250) 542-3673</a>. Enable JavaScript and select Request a Callback to open the enquiry form.</p>`,

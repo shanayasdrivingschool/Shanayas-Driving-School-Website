@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent, type RefObject } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, Check, MapPin, MessageCircle, Phone, Star } from "lucide-react";
+import { RoadTestConfidencePackages, RoadTestConfidenceStages } from "@/components/RoadTestConfidenceOffer";
 import LandingMediaGallery from "@/components/LandingMediaGallery";
 import VehicleGallery from "@/components/VehicleGallery";
 import PaidLandingReviews from "@/components/PaidLandingReviews";
@@ -21,7 +22,7 @@ const primaryButton = "inline-flex min-h-[48px] items-center justify-center gap-
 const textLink = "inline-flex min-h-[44px] items-center gap-2 font-bold text-[#1d52a1] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200";
 const fieldClassName = "mt-1.5 min-h-[48px] w-full rounded-lg border border-slate-300 bg-white px-3.5 text-base text-slate-900 focus:border-[#1d52a1] focus:outline-none focus:ring-2 focus:ring-blue-200";
 type TrackingContext = { landingPageId: string; sourcePage: string; contentGroup: string; funnel: string };
-type CtaHandler = (location: string, trigger: HTMLElement) => void;
+type CtaHandler = (location: string, trigger: HTMLElement, packageName?: string) => void;
 
 const createLeadId = () => typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
   ? crypto.randomUUID() : `lead-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
@@ -67,12 +68,13 @@ const CallLink = ({ tracking, location, className = "", short = false }: { track
   </a>
 );
 
-const CallbackDialog = ({ config, tracking, open, onOpenChange, triggerRef }: {
+const CallbackDialog = ({ config, tracking, open, onOpenChange, triggerRef, selectedPackage }: {
   config: PaidLandingPageConfig;
   tracking: TrackingContext;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   triggerRef: RefObject<HTMLElement>;
+  selectedPackage?: string;
 }) => {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -116,7 +118,7 @@ const CallbackDialog = ({ config, tracking, open, onOpenChange, triggerRef }: {
         intent: "lesson_plan_request",
         sourcePage: tracking.sourcePage,
         goal: config.conversion.defaultGoal,
-        note: notes.trim() ? `Free callback requested. Notes: ${notes.trim()}` : "Free callback requested.",
+        note: ["Free callback requested.", config.supportProgramme ? "Programme: Road Test Confidence." : null, selectedPackage ? `Package interest: ${selectedPackage}.` : null, notes.trim() ? `Notes: ${notes.trim()}` : null].filter(Boolean).join(" "),
         marketingConsent: false,
         consentTimestamp: new Date().toISOString(),
         leadId: leadIdRef.current,
@@ -189,6 +191,7 @@ const CallbackDialog = ({ config, tracking, open, onOpenChange, triggerRef }: {
         <DialogDescription className={isSubmitted ? "sr-only" : "text-sm leading-relaxed text-slate-600"}>
           {isSubmitted ? "Your callback request was submitted successfully." : config.conversion.formDescription}
         </DialogDescription>
+        {selectedPackage && !isSubmitted && <p className="rounded-lg bg-blue-50 p-3 text-sm font-semibold text-[#1d52a1]">Package interest: {selectedPackage}</p>}
         {content}
       </DialogContent>
     </Dialog>
@@ -297,6 +300,7 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
   const callbackTriggerRef = useRef<HTMLElement>(null);
   const viewedPathRef = useRef("");
   const [callbackOpen, setCallbackOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<string>();
   const tracking = useMemo<TrackingContext>(() => ({ landingPageId: config.id, sourcePage: location.pathname, contentGroup: config.analytics.contentGroup, funnel: config.analytics.funnel }), [config, location.pathname]);
 
   useEffect(() => {
@@ -306,8 +310,9 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
     pushLandingView(tracking);
   }, [config.id, location.pathname, tracking]);
 
-  const onPrimaryCta: CtaHandler = (ctaLocation, trigger) => {
+  const onPrimaryCta: CtaHandler = (ctaLocation, trigger, packageName) => {
     pushLandingCtaClick(tracking, config.conversion.primaryCta, ctaLocation);
+    setSelectedPackage(packageName);
     callbackTriggerRef.current = trigger;
     setCallbackOpen(true);
   };
@@ -327,10 +332,16 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
               <p className="text-sm font-semibold text-blue-200">{config.hero.eyebrow}</p>
               <h1 id="landing-heading" className="mt-3 max-w-2xl text-[2rem] font-black leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.25rem]" style={{ textWrap: "balance" }}>{config.hero.h1}</h1>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">{config.hero.subhead}</p>
+              {config.supportProgramme && <div className="mt-5">
+                <p className="text-xl font-bold">Packages from ${config.supportProgramme.packages[0].price.toLocaleString("en-CA")} <span className="text-sm font-medium text-white/80">CAD + GST</span></p>
+                <p className="mt-2 text-sm leading-relaxed text-white/85">15 initial hours + up to 15 conditional extra hours. Test-day car included only with Plus; ICBC fees separate.</p>
+                <a href="#confidence-packages" className="mt-1 inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-blue-200 underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200">Compare the two packages <ArrowRight aria-hidden="true" className="h-4 w-4" /></a>
+              </div>}
               <div className="mt-5 flex flex-col gap-2 sm:flex-row">
                 <button type="button" onClick={(event) => onPrimaryCta("hero", event.currentTarget)} className={primaryButton}>Request a Callback <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
                 <CallLink tracking={tracking} location="hero" className="border border-white/40 hover:bg-white/10" />
               </div>
+              {config.supportProgramme && <p className="mt-3 text-sm text-white/80">No payment to enquire. We’ll confirm the package terms before you book.</p>}
               <div className="mt-5 hidden lg:block">
                 <ul className="space-y-2 text-sm text-white/80">{config.hero.proofPoints.map((point) => <li key={point} className="flex items-center gap-2"><Check className="h-4 w-4 text-blue-200" aria-hidden="true" />{point}</li>)}</ul>
               </div>
@@ -339,10 +350,11 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
 
           </div>
         </section>
+        {config.supportProgramme && <RoadTestConfidencePackages onPrimaryCta={onPrimaryCta} />}
         <PaidLandingReviews />
-        <PackageCards config={config} onPrimaryCta={onPrimaryCta} />
+        {!config.supportProgramme && <PackageCards config={config} onPrimaryCta={onPrimaryCta} />}
         <InstructorAndVehicle />
-        <HowItWorks config={config} />
+        {config.supportProgramme ? <RoadTestConfidenceStages /> : <HowItWorks config={config} />}
         <FAQAndAreas config={config} />
         <LandingMediaGallery />
         <section aria-labelledby="final-heading" className="bg-[#0B1A33] px-4 py-12 text-center text-white sm:px-6 sm:py-16">
@@ -360,7 +372,7 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
           <nav aria-label="Landing page policies" className="flex flex-wrap content-start gap-x-5 text-sm text-white/80">{[{ label: "Privacy Policy", path: "privacy-policy" }, { label: "Terms and Conditions", path: "terms-and-conditions" }, { label: "Cancellation Policy", path: "cancellation-and-rescheduling" }].map(({ label, path }) => <Link key={path} to={`/policies/${path}`} className="inline-flex min-h-[44px] items-center underline underline-offset-4">{label}</Link>)}<Link to="/contact" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Contact</Link></nav>
         </div>
       </footer>
-      <CallbackDialog key={location.pathname} config={config} tracking={tracking} open={callbackOpen} onOpenChange={setCallbackOpen} triggerRef={callbackTriggerRef} />
+      <CallbackDialog key={location.pathname} config={config} tracking={tracking} open={callbackOpen} onOpenChange={setCallbackOpen} triggerRef={callbackTriggerRef} selectedPackage={selectedPackage} />
       <div data-testid="mobile-callback-bar" className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/20 bg-[#0B1A33] px-4 pt-3 lg:hidden ${callbackOpen ? "hidden" : ""}`} style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}>
         <div className="mx-auto grid max-w-xl grid-cols-[1fr_auto] gap-2"><button type="button" onClick={(event) => onPrimaryCta("mobile-sticky", event.currentTarget)} className={primaryButton}>Request Callback</button><CallLink tracking={tracking} location="mobile-sticky" short className="border border-white/40 text-white" /></div>
       </div>

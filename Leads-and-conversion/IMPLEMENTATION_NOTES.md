@@ -1,3 +1,11 @@
+# New Road Test Confidence offer — 2026-11-23
+
+- Added `/lp/road-test-confidence/` using the shared paid landing layout, callback popup, reviews, car carousel and multi-item gallery. Existing seven routes and ad-group mappings remain unchanged. The new page compares the supplied $1,999 / $2,599 CAD + GST packages, makes the initial/conditional hours visible and carries package selection into callback notes.
+- Copy, claim log, business-rule questions and verification: [Road Test Confidence notes](ROAD_TEST_CONFIDENCE_NOTES.md). Removed Afterpay from this offer after checking Stripe’s Canadian transaction limit; financing remains conditional. No checkout product or purchase flow created.
+- Targeted lint, 19 landing tests, build/static metadata checks and four responsive browser checks passed. Publication: **implemented locally**, not pushed/deployed. Page quality: **Draft awaiting evidence/review** for material programme conditions; intent satisfaction: **Ready** for comparison and enquiry, with purchase eligibility still requiring confirmation.
+
+---
+
 # Shared landing-page release — live confirmed 2026-11-23
 
 - Published the approved universal changes to all seven `/lp/` routes: `driving-lessons-victoria`, `driving-school-near-me`, `driving-lesson-prices`, `icbc-road-test-preparation`, `beginner-driving-lessons`, `nervous-driver-lessons`, and `icbc-driving-lessons`; the legacy `/beginner-driving-lessons-victoria/` alias shares the same implementation.

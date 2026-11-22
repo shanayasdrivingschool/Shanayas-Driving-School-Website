@@ -126,6 +126,7 @@ const App = () => (
                 <Route path="/lp/beginner-driving-lessons" element={<PaidLandingPage pageId="beginner" />} />
                 <Route path="/lp/nervous-driver-lessons" element={<PaidLandingPage pageId="confidence" />} />
                 <Route path="/lp/icbc-driving-lessons" element={<PaidLandingPage pageId="icbc" />} />
+                <Route path="/lp/road-test-confidence" element={<PaidLandingPage pageId="road-test-confidence" />} />
                 <Route path="/nervous-driver-lessons-victoria" element={<SeoLandingPage pageId="nervous-driver-lessons-victoria" />} />
                 <Route path="/road-test-prep" element={<SeoLandingPage pageId="road-test-prep" />} />
                 <Route path="/road-test-prep-victoria" element={<SeoLandingPage pageId="road-test-prep-victoria" />} />
