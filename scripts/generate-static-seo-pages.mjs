@@ -1257,7 +1257,7 @@ const navGroups = [
 ];
 
 /* Blog routes are linked by the "Driving tips and guides" nav instead. */
-const navPages = () => pages.filter((page) => !page.path.startsWith("/blog"));
+const navPages = () => pages.filter((page) => !page.path.startsWith("/blog") && !page.path.startsWith("/lp/"));
 
 const navLabelFor = (page, content, currentPage) => {
   if (currentPage.path === "/driving-lessons/") {
@@ -1974,11 +1974,23 @@ const renderPageHtml = (template, page, content) => {
 
   const landing = content.landingPages.get(page.path);
   const product = content.products.get(page.path);
+  const paidLanding = [...content.paidLandingPages.values()].find((entry) =>
+    [entry.path, ...entry.aliases].some((path) => `${path}/` === page.path));
 
   html = setBlogNav(html, content.blogPosts);
   html = setSiteNav(html, page, content);
 
-  if (page.author) {
+  if (paidLanding) {
+    html = replaceFallback(html, page, () => [
+      `<h1>${escapeHtml(paidLanding.hero.h1)}</h1>`,
+      para(paidLanding.hero.subhead),
+      `<h2>${escapeHtml(paidLanding.conversion.formHeading)}</h2>`,
+      para(paidLanding.conversion.formDescription),
+      `<p><a href="tel:+12505423673">Call (250) 542-3673</a>. Enable JavaScript to request a free callback using the form.</p>`,
+      `<h2>Frequently Asked Questions</h2>`,
+      ...paidLanding.faqs.map((faq) => `<h3>${escapeHtml(faq.question)}</h3>${para(faq.answer)}`),
+    ].join("\n"));
+  } else if (page.author) {
     html = replaceFallback(html, page, () => buildAuthorBody(page.author, content));
   } else if (page.path === "/blog/") {
     html = replaceFallback(html, page, () => buildBlogIndexBody(page, content.blogPosts));
@@ -2094,6 +2106,19 @@ if (!beginnerPage || !paidBeginnerPage) {
 beginnerPage.title = paidBeginnerPage.seo.title;
 beginnerPage.description = paidBeginnerPage.seo.description;
 beginnerPage.faqs = paidBeginnerPage.faqs;
+beginnerPage.canonicalPath = `${paidBeginnerPage.path}/`;
+for (const paid of content.paidLandingPages.values()) {
+  pages.push({
+    path: `${paid.path}/`,
+    title: paid.seo.title,
+    description: paid.seo.description,
+    canonicalPath: `${paid.seo.canonicalPath}/`,
+    robots: "noindex, follow",
+    image: paid.hero.imageAsset ? absoluteUrl(paid.hero.imageAsset) : defaultImage,
+    faqs: paid.faqs,
+  });
+}
+
 
 /* Same rule for the FAQ hub: title, description and every question come out of
    src/data/siteFaqs.ts, so the crawler HTML and FAQPage schema physically cannot

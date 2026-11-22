@@ -13,6 +13,12 @@ import { knowledgeTestQuestionsVictoriaPost } from "./knowledgeTestQuestionsVict
 import { knowledgeTestPlanLangfordPost } from "./knowledgeTestPlanLangfordPost";
 import { knowledgeTestRoadSignsLangfordPost } from "./knowledgeTestRoadSignsLangfordPost";
 import { knowledgeTestConfidenceLangfordPost } from "./knowledgeTestConfidenceLangfordPost";
+import {
+  greaterVictoriaRouteAlertsPost,
+  letsGetVisiblePost,
+  malahatFogPost,
+  projectRedRibbonPost,
+} from "./currentDrivingNewsPosts";
 
 export type BlogPostData = {
   slug: string;
@@ -69,6 +75,10 @@ export const blogPosts: BlogPostData[] = [
   sixMilePileupPost,
   drivingLessonCountPost,
   drivingLessonCostsPost,
+  projectRedRibbonPost,
+  letsGetVisiblePost,
+  malahatFogPost,
+  greaterVictoriaRouteAlertsPost,
   {
     slug: "icbc-road-test-victoria-mckenzie-office",
     title: "ICBC's Victoria Road Test Office on McKenzie Avenue: What the Area Asks of You",

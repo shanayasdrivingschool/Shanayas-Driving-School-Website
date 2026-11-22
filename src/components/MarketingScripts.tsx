@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { captureLeadAttribution } from "@/lib/leadAttribution";
 
 type GtagCommand = (...args: unknown[]) => void;
 type FacebookPixelCommand = ((...args: unknown[]) => void) & {
@@ -84,6 +85,10 @@ const MarketingScripts = () => {
     installGoogleAnalytics();
     installMetaPixel();
   }, [isPrivateWorkspace]);
+
+  useEffect(() => {
+    if (!isPrivateWorkspace) captureLeadAttribution();
+  }, [isPrivateWorkspace, location.pathname, location.search]);
 
   return null;
 };

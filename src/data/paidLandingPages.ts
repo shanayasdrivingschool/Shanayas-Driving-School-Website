@@ -51,19 +51,21 @@ export type PaidLandingPageConfig = {
     h1: string;
     subhead: string;
     proofPoints: string[];
-    /* The current beginner-page asset is intentionally reused. The conversion
-       recommendations' requested photo replacements are outside this change. */
+    /* Social preview asset; not presented as an authentic instructor photograph. */
     imageAsset?: string;
     priceHighlights?: { label: string; detail: string }[];
   };
   conversion: {
     primaryCta: string;
     formHeading: string;
+    formDescription: string;
     defaultGoal: PaidLandingGoal;
     optionalFields: PaidLandingOptionalField[];
     offerTerms: string;
     thankYouCopy: string;
   };
+  pricingHeading: string;
+  finalHeading: string;
   products: PaidLandingProduct[];
   benefits: { title: string; body: string }[];
   faqs: PaidLandingFaq[];
@@ -74,16 +76,21 @@ export type PaidLandingPageConfig = {
 };
 
 const sharedOfferTerms =
-  "The 30-minute driving assessment is free, with no obligation to purchase a package. Availability varies by area and time, and your appointment is confirmed by our team after we contact you.";
+  "The callback is free. It is an enquiry, not a lesson booking. Lesson availability, prices and terms are confirmed before you book.";
 
 const sharedAreas = ["Victoria", "Langford", "Colwood", "Saanich", "View Royal", "Sidney"];
-const coreLandingProducts: PaidLandingProduct[] = [
-  { kind: "course", id: "beginner-driving-course" },
-  { kind: "course", id: "lesson-road-test-prep-course" },
-  { kind: "course", id: "make-your-own-class" },
-];
 
-export const paidLandingTestimonials: PaidLandingTestimonial[] = googleReviews;
+// Complete-sentence excerpts checked against the saved customer text in
+// SEO Blogs Data/reviews.md on 2026-11-23. The original snapshot is unchanged.
+const paidReviewExcerpts: Record<string, string> = {
+  "Yogita Bang": "The instructor was patient, knowledgeable, and made me feel comfortable even though I was nervous.",
+  "Alexis Dumaresq": "I’ve been taking lessons with Shanaya’s Driving School, and I’ve started feeling so much more confident behind the wheel.",
+  "Alfred Taban": "I had a great driving experience today. The instructor was really helpful in all ways. Besides, he is knowledgeable, and skilful.",
+  "Vanessa Nicdao": "I highly recommend this driving school! Azy, my son’s instructor is very patient, knowledgeable, and generous in sharing his expertise.",
+};
+export const paidLandingTestimonials: PaidLandingTestimonial[] = googleReviews.map((review) => ({
+  ...review, quote: paidReviewExcerpts[review.name] ?? review.quote,
+}));
 
 export const paidLandingPages: PaidLandingPageConfig[] = [
   {
@@ -93,7 +100,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     seo: {
       title: "Driving Lessons in Victoria, BC",
       description:
-        "Compare driving lesson options in Victoria and request a free assessment with Shanaya's Driving School.",
+        "Compare driving lesson options in Victoria and request a free callback with Shanaya's Driving School.",
       canonicalPath: "/lp/driving-lessons-victoria",
       noindex: true,
     },
@@ -102,28 +109,31 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       h1: "Driving Lessons in Victoria, BC",
       subhead:
         "Build safe driving habits with patient instruction and lesson options matched to your experience.",
-      proofPoints: ["ICBC-licensed instructors", "Dual-control training vehicles", "Genuine student reviews"],
+      proofPoints: ["Patient instruction", "Dual-control training vehicles", "Genuine student reviews"],
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
-      primaryCta: "Request Lesson Availability",
+      primaryCta: "Request a Free Callback",
       formHeading: "Find the Right Driving Lesson Plan",
+      formDescription: "Request a callback to discuss your experience, lesson options and availability.",
       defaultGoal: "general",
       optionalFields: ["serviceArea"],
       offerTerms: sharedOfferTerms,
-      thankYouCopy: "We received your request and will contact you to discuss your goals and available lesson times.",
+      thankYouCopy: "Your callback request has been received. We’ll contact you at the number provided to discuss your options and availability. Your lessons are not booked yet. For immediate help, please call us.",
     },
-    products: [...coreLandingProducts],
+    pricingHeading: "Compare Driving Lessons in Victoria",
+    finalHeading: "Let’s Find the Right Lessons for You.",
+    products: [{ kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "make-your-own-class" }, { kind: "course", id: "road-test-prep-course" }],
     benefits: [
-      { title: "A plan matched to your starting point", body: "Begin with an assessment so the next lesson focuses on the skills you actually need." },
+      { title: "A plan matched to your starting point", body: "Discuss your experience so your instructor can plan lessons around the skills you want to work on." },
       { title: "Practice in a dual-control vehicle", body: "Train in a school vehicle equipped so your instructor can intervene when needed." },
       { title: "Clear options before you pay", body: "Review the lesson length, price, inclusions and applicable policies before confirming a booking." },
     ],
     faqs: [
       { question: "What does a lesson cost?", answer: "Standard-area lessons are $89 CAD for 60 minutes or $133.50 CAD for 90 minutes, before GST. Package and fixed-course prices vary by inclusions." },
-      { question: "Do you teach Class 7 and Class 5 drivers?", answer: "ICBC's general directory lists Shanaya's Driving School in Langford for Class 5 and 7 driver training. The listing is not ICBC approval or endorsement." },
-      { question: "Where can lessons start?", answer: "Pickup and lesson-start arrangements depend on your address, preferred time and instructor availability. Add your area to the form so the team can confirm it." },
-      { question: "What happens after I submit the form?", answer: "The team contacts you to confirm your goals, assessment availability and the terms that apply before anything is booked." },
+      { question: "Do you teach Class 7 and Class 5 drivers?", answer: "Class 5 and 7 training options are listed in our catalogue. Tell us your licence stage when we call so we can discuss suitable lessons." },
+      { question: "Where can lessons start?", answer: "Pickup and lesson-start arrangements depend on your address, preferred time and instructor availability. Tell us your area during the callback so the team can confirm it." },
+      { question: "What happens after I submit the form?", answer: "The team calls you to discuss your goals, lesson availability and applicable terms before anything is booked." },
     ],
     testimonialIds: ["yogita-bang", "alfred-taban", "alexis-dumaresq"],
     serviceAreas: sharedAreas,
@@ -149,14 +159,17 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
-      primaryCta: "Check Lessons in My Area",
-      formHeading: "Request Lessons in Your Area",
+      primaryCta: "Request a Free Callback",
+      formHeading: "Find Lessons in Your Area",
+      formDescription: "Request a callback to check your pickup area, lesson options and availability.",
       defaultGoal: "general",
       optionalFields: ["serviceArea"],
       offerTerms: sharedOfferTerms,
-      thankYouCopy: "We received your request and will confirm whether your preferred area and time are available.",
+      thankYouCopy: "Your callback request has been received. We’ll contact you at the number provided to discuss your options and availability. Your lessons are not booked yet. For immediate help, please call us.",
     },
-    products: [...coreLandingProducts],
+    pricingHeading: "Find a Lesson That Fits Your Area and Goals",
+    finalHeading: "Let’s Talk About Lessons Near You.",
+    products: [{ kind: "course", id: "make-your-own-class" }, { kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "refresher-driving-course" }],
     benefits: [
       { title: "Start near familiar roads", body: "Tell us your pickup area so the team can check the right instructor route and availability." },
       { title: "Choose the right lesson type", body: "Use a custom lesson, beginner course or structured package according to your current goal." },
@@ -166,7 +179,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       { question: "Do you pick students up?", answer: "Pickup and drop-off are offered, but the exact address and time must be confirmed with the team before booking." },
       { question: "Do you serve Langford and Colwood?", answer: "Both Langford and Colwood are listed service areas. Availability still depends on the requested address, time and instructor schedule." },
       { question: "Are weekend lessons available?", answer: "Weekend and evening requests can be discussed. Submit your preferred timing and the team will confirm what is available rather than promising a slot online." },
-      { question: "How far ahead should I book?", answer: "Availability changes, so request your preferred start window as early as practical. The form lets you say whether you want to start within 7 days, within 30 days or are still researching." },
+      { question: "How far ahead should I book?", answer: "Availability changes, so request your preferred start window as early as practical. During your callback, tell us when you would like to start." },
     ],
     testimonialIds: ["yogita-bang", "alfred-taban", "vanessa-nicdao"],
     serviceAreas: [...sharedAreas, "Metchosin", "Sooke", "Duncan", "Salt Spring Island"],
@@ -196,14 +209,17 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       ],
     },
     conversion: {
-      primaryCta: "View Options & Request Availability",
-      formHeading: "Ask About a Lesson Plan",
+      primaryCta: "Request a Free Callback",
+      formHeading: "Ask About Lesson Prices",
+      formDescription: "Request a callback to compare lesson lengths, inclusions and the price for your area.",
       defaultGoal: "general",
       optionalFields: ["serviceArea"],
       offerTerms: sharedOfferTerms,
-      thankYouCopy: "We received your request and will contact you with the applicable availability, price and booking terms.",
+      thankYouCopy: "Your callback request has been received. We’ll contact you at the number provided to discuss your options and availability. Your lessons are not booked yet. For immediate help, please call us.",
     },
-    products: [...coreLandingProducts],
+    pricingHeading: "Compare Lesson Options and Prices",
+    finalHeading: "Find an Option That Fits Your Goals and Budget.",
+    products: [{ kind: "course", id: "make-your-own-class" }, { kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "lesson-road-test-prep-course" }],
     benefits: [
       { title: "Compare equal units", body: "Every option shows its lesson length, standard-area price and the service included." },
       { title: "Know the final terms", body: "Tax, location pricing and any purchase-specific conditions are shown before payment." },
@@ -211,7 +227,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     ],
     faqs: [
       { question: "Do prices include tax?", answer: "The prices shown on this page are in Canadian dollars and are before GST." },
-      { question: "Is the first assessment free?", answer: "The 30-minute driving assessment is free and does not require a package purchase. The team must confirm the appointment time and area." },
+      { question: "What does the free callback include?", answer: "A conversation about your goals, lesson options, prices and availability. The callback is free; driving lessons and evaluations are separate paid services." },
       { question: "Do you offer instalments?", answer: "The site lists 4-, 6-, 8- and 12-month installment options with different requirements. Eligibility and the written schedule must be confirmed before payment.", link: { label: "Review payment plan options", href: "/payment-plan-options" } },
       { question: "What if I cancel?", answer: "Cancellation, late-notice and rescheduling conditions depend on the current school policy and your accepted booking terms.", link: { label: "Read the cancellation policy", href: "/policies/cancellation-and-rescheduling" } },
     ],
@@ -234,29 +250,35 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     hero: {
       eyebrow: "Class 7 and Class 5 preparation",
       h1: "ICBC Road Test Preparation in Victoria",
-      subhead: "Practise road-test skills with a lesson plan based on your current driving and test timeline.",
+      subhead: "Feel confident and prepared for your road test with personalised driving lessons, clear feedback, and patient, professional instruction.",
       proofPoints: ["Focused practice options", "Mock evaluation available", "No pass guarantees"],
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
-      primaryCta: "Plan My Road Test Preparation",
-      formHeading: "Tell Us About Your Road Test",
+      primaryCta: "Request a Free Callback",
+      formHeading: "Need Help Before Your Road Test?",
+      formDescription: "Request a callback to discuss your test date, check availability, and find the right preparation for you.",
       defaultGoal: "road-test",
       optionalFields: ["testDate", "licenceClass", "serviceArea"],
       offerTerms: sharedOfferTerms,
-      thankYouCopy: "We received your road-test preparation request and will contact you to discuss timing and suitable options.",
+      thankYouCopy: "Your callback request has been received. We’ll contact you at the number provided to discuss your options and availability. Your lessons are not booked yet. For immediate help, please call us.",
     },
-    products: [...coreLandingProducts],
+    pricingHeading: "Choose the Right Road-Test Preparation",
+    finalHeading: "Your Road Test Is Coming Up. Let’s Get You Prepared.",
+    products: [{ kind: "course", id: "road-test-prep-course" }, { kind: "course", id: "mock-test-evaluation" }, { kind: "course", id: "lesson-road-test-prep-course" }],
     benefits: [
       { title: "Focus on observed weak areas", body: "Use feedback from an assessment or mock evaluation to decide what to practise next." },
       { title: "Plan around your test date", body: "Share the date if you have one so the team can explain realistic scheduling options." },
       { title: "Separate training from the ICBC test", body: "Shanaya's is an independent school and cannot guarantee or determine your official result." },
     ],
     faqs: [
-      { question: "How many lessons do I need before my test?", answer: "There is no universal lesson count. Your current skills, practice between lessons and remaining weak areas matter more than a fixed number." },
-      { question: "Can I use a school vehicle on test day?", answer: "The Road Test Package includes road-test preparation and a test-day vehicle, subject to booking availability and the written terms shown before payment." },
-      { question: "What is a mock test evaluation?", answer: "It is a school-provided practice evaluation with feedback. It is not an official ICBC test and does not guarantee the official result." },
-      { question: "What if my test is soon?", answer: "Add the date to the form. The team will confirm what can be scheduled without implying that a short timeline guarantees readiness." },
+      { question: "How many driving lessons do I need before my ICBC road test?", answer: "A callback lets us discuss your experience and preparation needs. An instructor can assess your driving and recommend areas to work on; a package or number of lessons does not guarantee a pass." },
+      { question: "Can I use your driving school car for my road test?", answer: "The Road Test Package includes a rental car for your ICBC road test. Confirm vehicle availability for your test date and location before booking.", link: { label: "View the Road Test Package", href: "/courses/lesson-road-test-prep-course" } },
+      { question: "What if my road test is coming up soon?", answer: "Call us with your test date and location. We will check available preparation and vehicle options. Availability and readiness cannot be guaranteed for a short deadline." },
+      { question: "What happens during a mock road-test evaluation?", answer: "A school-provided practice evaluation includes feedback on your driving and areas to improve. The catalogue offers 60- and 90-minute options. It is not an official ICBC test or result.", link: { label: "View mock evaluation options", href: "/courses/mock-test-evaluation" } },
+      { question: "Do you offer pickup and drop-off?", answer: "Pickup and drop-off arrangements must be confirmed for your address, lesson time and instructor availability. Discuss your location during the callback." },
+      { question: "What does the free callback include?", answer: "We discuss your test date, preparation goals, suitable options, pricing and availability. The phone conversation is free and does not book a lesson or include an in-car evaluation." },
+      { question: "What is included in the $250 road-test package?", answer: "The catalogue lists road-test preparation and a rental car for test day at $250 CAD before GST. Additional 60-minute practice lessons cost $89 CAD each before GST. Confirm preparation timing, your test location and pickup arrangements before booking.", link: { label: "Review package details and options", href: "/courses/lesson-road-test-prep-course" } },
     ],
     testimonialIds: ["alfred-taban", "yogita-bang", "alexis-dumaresq"],
     serviceAreas: sharedAreas,
@@ -271,7 +293,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     seo: {
       title: "Beginner Driving Lessons in Victoria, BC",
       description:
-        "Start beginner driving lessons in Victoria with a free assessment, dual-control training vehicle and clear lesson options.",
+        "Start beginner driving lessons in Victoria with a free callback to discuss your experience, lesson options and availability.",
       canonicalPath: "/lp/beginner-driving-lessons",
       noindex: true,
     },
@@ -279,23 +301,26 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       eyebrow: "Beginner driving instruction · Greater Victoria",
       h1: "Beginner Driving Lessons in Victoria, BC",
       subhead:
-        "Learn with a patient, ICBC-licensed driving instructor. Build safe driving habits at your pace with structured lessons in Greater Victoria.",
-      proofPoints: ["ICBC-licensed instructors", "Dual-control training vehicles", "Genuine student reviews"],
+        "Learn with patient instruction and clear feedback. Build safe driving habits at your pace with structured lessons in Greater Victoria.",
+      proofPoints: ["Patient instruction", "Dual-control training vehicles", "Genuine student reviews"],
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
-      primaryCta: "Request My Assessment",
-      formHeading: "Find the Right Beginner Lesson Plan",
+      primaryCta: "Request a Free Callback",
+      formHeading: "Ready for Your First Driving Lessons?",
+      formDescription: "Request a callback to discuss your experience, ask questions and plan your first lessons.",
       defaultGoal: "beginner",
       optionalFields: ["licenceClass", "serviceArea"],
       offerTerms: sharedOfferTerms,
-      thankYouCopy: "We received your assessment request and will contact you to discuss your experience and available times.",
+      thankYouCopy: "Your callback request has been received. We’ll contact you at the number provided to discuss your options and availability. Your lessons are not booked yet. For immediate help, please call us.",
     },
-    products: [...coreLandingProducts],
+    pricingHeading: "Choose Your First Driving Lessons",
+    finalHeading: "Your First Lessons Start With a Conversation.",
+    products: [{ kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "make-your-own-class" }, { kind: "course", id: "parking-course" }],
     benefits: [
       { title: "Start from your actual experience", body: "Tell us whether you are completely new or have practised before, then begin at an appropriate level." },
       { title: "Build skills in a clear order", body: "Structured options cover car control, road awareness, safe habits and focused practice." },
-      { title: "Choose before you commit", body: "Use the free assessment to discuss fit and receive a recommendation without an obligation to buy a package." },
+      { title: "Choose before you commit", body: "Use the free callback to discuss lesson options without an obligation to buy a package." },
     ],
     faqs: [
       { question: "Can I start with no driving experience?", answer: "Yes. Beginner options start with basic vehicle control and progress according to your experience and demonstrated skills." },
@@ -303,7 +328,6 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       { question: "How long are beginner lessons?", answer: "The current Beginner's Driving Course includes 10 lessons of 90 minutes. Single 60- and 90-minute options are also listed; confirm the selected duration before payment." },
       { question: "Can a parent request information or purchase lessons?", answer: "A parent can submit an enquiry or purchase for a learner. The team will confirm the learner's valid licence, service details and applicable consent before in-car training." },
       { question: "What licence do I need?", answer: "You must hold a valid licence that permits the planned in-car training and carry it during each practical lesson. The team confirms the applicable requirement before booking." },
-      { question: "How does the 30% limited-time offer work?", answer: "The Beginner's Driving Course is currently shown at 30% off for eligible standard-area bookings. You can also unlock 30% off custom 90-minute classes by selecting at least five in the same booking. Prices are before GST, and the offer cannot be combined with another promotion." },
     ],
     testimonialIds: ["yogita-bang", "alexis-dumaresq", "vanessa-nicdao"],
     serviceAreas: sharedAreas,
@@ -329,14 +353,17 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
-      primaryCta: "Talk About My Driving Goals",
-      formHeading: "Tell Us What You Want to Practise",
+      primaryCta: "Request a Free Callback",
+      formHeading: "Let’s Talk About Your Driving Goals",
+      formDescription: "Request a callback to discuss what feels difficult and the support you would like from your lessons.",
       defaultGoal: "refresher",
       optionalFields: ["serviceArea"],
       offerTerms: sharedOfferTerms,
-      thankYouCopy: "We received your request and will contact you to discuss a comfortable starting point and available times.",
+      thankYouCopy: "Your callback request has been received. We’ll contact you at the number provided to discuss your options and availability. Your lessons are not booked yet. For immediate help, please call us.",
     },
-    products: [...coreLandingProducts],
+    pricingHeading: "Choose Support for Your Next Drive",
+    finalHeading: "Take Your Next Step With Support.",
+    products: [{ kind: "course", id: "refresher-driving-course" }, { kind: "course", id: "confidence-booster-course" }, { kind: "course", id: "make-your-own-class" }],
     benefits: [
       { title: "Name the situation, not a label", body: "Tell us whether parking, busier roads, lane changes or returning after a break is the main concern." },
       { title: "Progress at a suitable pace", body: "The assessment helps identify a reasonable first environment and the next skill to practise." },
@@ -346,7 +373,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       { question: "What if I have not driven for years?", answer: "A refresher option can begin with an assessment of current habits and focus on the skills or traffic situations that need attention." },
       { question: "Can we focus on parking?", answer: "Yes. Parking can be selected as a lesson focus, and a dedicated Parking Course is also listed." },
       { question: "Can you accommodate nervous drivers?", answer: "The school offers confidence and refresher options with a supportive approach. Tell the team what situations concern you so they can discuss an appropriate starting point." },
-      { question: "How is my level assessed?", answer: "The free assessment is used to discuss your experience, observe current skills and explain suitable options. It is not an official ICBC test." },
+      { question: "How is my level assessed?", answer: "Discuss your experience during the free callback. Your instructor can then observe your driving during a booked lesson or evaluation and explain suitable next steps. A private evaluation is not an official ICBC test." },
     ],
     testimonialIds: ["alexis-dumaresq", "yogita-bang", "alfred-taban"],
     serviceAreas: sharedAreas,
@@ -367,27 +394,30 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     hero: {
       eyebrow: "Independent Class 5 and 7 instruction",
       h1: "ICBC-Focused Driving Lessons in Victoria",
-      subhead: "Learn B.C. driving rules and practise safe road habits with an ICBC-licensed instructor.",
-      proofPoints: ["Class 5 and 7 training", "Independent driving school", "No ICBC endorsement claim"],
+      subhead: "Learn B.C. driving rules and practise safe road habits with instruction matched to your experience.",
+      proofPoints: ["Class 5 and 7 training", "Independent driving school", "Clear lesson options"],
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
-      primaryCta: "Find My Training Plan",
-      formHeading: "Request a Class 5 or 7 Lesson Plan",
+      primaryCta: "Request a Free Callback",
+      formHeading: "Find Your Class 5 or 7 Lesson Plan",
+      formDescription: "Request a callback to discuss your licence stage, driving experience and training options.",
       defaultGoal: "general",
       optionalFields: ["licenceClass", "serviceArea"],
       offerTerms: sharedOfferTerms,
-      thankYouCopy: "We received your request and will contact you to discuss your licence class, goals and available training options.",
+      thankYouCopy: "Your callback request has been received. We’ll contact you at the number provided to discuss your options and availability. Your lessons are not booked yet. For immediate help, please call us.",
     },
-    products: [...coreLandingProducts],
+    pricingHeading: "Choose Training for Your Driving Goals",
+    finalHeading: "Let’s Plan Your Next Driving Lessons.",
+    products: [{ kind: "course", id: "make-your-own-class" }, { kind: "course", id: "road-test-prep-course" }, { kind: "course", id: "mock-test-evaluation" }],
     benefits: [
       { title: "Match training to your licence stage", body: "Share your Class 7 or Class 5 status so the team can discuss a relevant option." },
       { title: "Practise specific driving skills", body: "Use a focused lesson for observation, road positioning, parking or another identified area." },
       { title: "Understand the school's role", body: "Shanaya's provides private instruction. ICBC operates the official licence tests and does not endorse this page." },
     ],
     faqs: [
-      { question: "Does ICBC operate Shanaya's Driving School?", answer: "No. Shanaya's is an independent driving school. Its directory listing is a licensing record, not ICBC approval, recommendation or endorsement." },
-      { question: "Do you teach Class 7 and Class 5 drivers?", answer: "ICBC's general directory lists the school in Langford for Class 5 and 7 driver training. The team confirms the appropriate training for your current licence before booking." },
+      { question: "Does ICBC operate Shanaya's Driving School?", answer: "No. Shanaya's is an independent driving school. Private lessons and mock evaluations are separate from the official ICBC test." },
+      { question: "Do you teach Class 7 and Class 5 drivers?", answer: "Our catalogue includes Class 5 and 7 training options. The team confirms the appropriate lessons for your current licence before booking." },
       { question: "Can we practise a specific skill?", answer: "Yes. A custom-focus lesson can address an identified area such as parking, lane changes, observation or road positioning, subject to a safe and appropriate lesson plan." },
       { question: "Is road-test preparation included?", answer: "Road-test preparation is available as a separate course and in selected packages. Confirm the exact inclusions and price before purchase." },
     ],

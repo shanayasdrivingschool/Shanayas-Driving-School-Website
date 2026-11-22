@@ -1,3 +1,5 @@
+> Status note (2026-10-18): This is a historical plan; see [implementation and activation](meta-conversions-setup.md) for the code now implemented locally. See [the current repository review](meta-conversions-review.md) for website versus Instant Form requirements, the implemented student statuses, and retry/security corrections. Account settings and API details below are not currently verified.
+
 # Meta CRM Events (Conversions API for Leads) — Implementation Plan
 
 Connect Supabase `public.leads` to Meta's Conversions API so lead-quality signals flow back to

@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:meta": "vitest run src/lib/leadAttribution.test.ts src/lib/metaLeadTracking.test.ts src/test/metaConversions.test.ts && vitest run --config supabase/tests/vitest.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

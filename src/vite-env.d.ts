@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_RECAPTCHA_SITE_KEY?: string;
   readonly VITE_GA_MEASUREMENT_ID?: string;
   readonly VITE_META_PIXEL_ID?: string;
+  readonly VITE_META_LEAD_EVENTS_ENABLED?: string;
   readonly VITE_X_PROFILE_URL?: string;
   readonly VITE_LINKEDIN_PROFILE_URL?: string;
   readonly VITE_YOUTUBE_CHANNEL_URL?: string;

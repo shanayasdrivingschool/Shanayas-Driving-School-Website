@@ -26,7 +26,7 @@ describe("paid landing-page configuration", () => {
       expect(page.seo.canonicalPath).toBe(page.path);
       expect(page.products).toHaveLength(3);
       expect(page.faqs.length).toBeGreaterThanOrEqual(3);
-      expect(page.faqs.length).toBeLessThanOrEqual(6);
+      expect(page.faqs.length).toBeLessThanOrEqual(7);
 
       for (const alias of page.aliases ?? []) {
         expect(paidLandingPagesByPath[alias]?.id).toBe(page.id);
@@ -61,15 +61,12 @@ describe("paid landing-page configuration", () => {
     }
   });
 
-  it("shows only the three core lesson offers on every paid page", () => {
-    const expectedProducts = [
-      { kind: "course", id: "beginner-driving-course" },
-      { kind: "course", id: "lesson-road-test-prep-course" },
-      { kind: "course", id: "make-your-own-class" },
-    ];
-
-    for (const page of paidLandingPages) {
-      expect(page.products).toEqual(expectedProducts);
-    }
+  it("prioritises road-test services for test traffic and beginner lessons for beginners", () => {
+    const roadTest = paidLandingPages.find((page) => page.id === "road-test")!;
+    expect(roadTest.products.map((product) => product.id)).toEqual([
+      "road-test-prep-course", "mock-test-evaluation", "lesson-road-test-prep-course",
+    ]);
+    expect(paidLandingPages.find((page) => page.id === "beginner")!.products[0].id).toBe("beginner-driving-course");
+    expect(paidLandingPages.find((page) => page.id === "confidence")!.products[0].id).toBe("refresher-driving-course");
   });
 });

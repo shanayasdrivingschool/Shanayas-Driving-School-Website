@@ -44,6 +44,8 @@ import {
   adminRowButtonClassName,
 } from "@/components/admin/styles";
 
+import { getLeadSource } from "@/lib/leadAttribution";
+
 const leadTypeOptions: LeadType[] = ["contact", "student_assessment", "employee_application", "custom_package_request"];
 
 type LeadTypeFilter = "all" | LeadType;
@@ -106,6 +108,8 @@ const AdminLeads = () => {
   });
   const [search, setSearch] = useState("");
   const [leadType, setLeadType] = useState<LeadTypeFilter>("all");
+  const [source, setSource] = useState("all");
+  const sourceOptions = useMemo(() => Array.from(new Set((leadsQuery.data?.leads ?? []).map(getLeadSource))).sort(), [leadsQuery.data?.leads]);
   const [status, setStatus] = useState<"all" | LeadStatus>("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
@@ -122,12 +126,13 @@ const AdminLeads = () => {
       const effectiveLeadType = lead.requestType === "custom_package_request" ? "custom_package_request" : lead.leadType;
 
       if (leadType !== "all" && effectiveLeadType !== leadType) return false;
+      if (source !== "all" && getLeadSource(lead) !== source) return false;
       if (status !== "all" && lead.status !== status) return false;
-      if (!matchesSearch(search, [lead.fullName, lead.email, lead.phone, lead.sourcePage])) return false;
+      if (!matchesSearch(search, [lead.fullName, lead.email, lead.phone, lead.sourcePage, getLeadSource(lead)])) return false;
       if ((dateFrom || dateTo) && !isWithinDateRange(lead.createdAt, dateFrom, dateTo)) return false;
       return true;
     });
-  }, [dateFrom, dateTo, leadType, leadsQuery.data?.leads, search, status]);
+  }, [dateFrom, dateTo, leadType, leadsQuery.data?.leads, search, source, status]);
 
   const paginated = useMemo(
     () => paginateItems(filteredLeads, page, ADMIN_ROWS_PER_PAGE),
@@ -263,7 +268,7 @@ const AdminLeads = () => {
 
           <div className={adminSurfaceClassName}>
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5 xl:flex-1">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6 xl:flex-1">
                 <Input
                   value={search}
                   onChange={(event) => {
@@ -317,6 +322,16 @@ const AdminLeads = () => {
                         <SelectItem key={entry} value={entry}>{leadStatusLabels[entry]}</SelectItem>
                       ))}
                     </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                <Select value={source} onValueChange={(value) => { setSource(value); setPage(1); }}>
+                  <SelectTrigger aria-label="Lead source" className="h-12 rounded-xl border-slate-200">
+                    <SelectValue placeholder="Source" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All sources</SelectItem>
+                    {sourceOptions.map((entry) => <SelectItem key={entry} value={entry}>{entry}</SelectItem>)}
                   </SelectContent>
                 </Select>
 
@@ -380,7 +395,7 @@ const AdminLeads = () => {
                       <dt className="font-bold text-slate-500">Type</dt>
                       <dd className="text-slate-700">{leadTypeLabels[effectiveLeadType]}</dd>
                       <dt className="font-bold text-slate-500">Source</dt>
-                      <dd className="break-all text-slate-700">{lead.sourcePage}</dd>
+                      <dd className="break-all text-slate-700">{getLeadSource(lead)}<span className="block text-xs text-slate-500">{lead.sourcePage}</span></dd>
                       <dt className="font-bold text-slate-500">Submitted</dt>
                       <dd className="text-slate-700">{new Date(lead.createdAt).toLocaleString()}</dd>
                     </dl>
@@ -464,7 +479,7 @@ const AdminLeads = () => {
                               </div>
                               <div>
                                 <dt className="sr-only">Source</dt>
-                                <dd className="break-all">{lead.sourcePage}</dd>
+                                <dd className="break-all">{getLeadSource(lead)}<span className="block text-xs text-slate-500">{lead.sourcePage}</span></dd>
                               </div>
                               <div>
                                 <dt className="sr-only">Submitted</dt>
@@ -474,7 +489,7 @@ const AdminLeads = () => {
                           </div>
                         </TableCell>
                         <TableCell className="hidden md:table-cell">{leadTypeLabels[effectiveLeadType]}</TableCell>
-                        <TableCell className="hidden lg:table-cell">{lead.sourcePage}</TableCell>
+                        <TableCell className="hidden lg:table-cell">{getLeadSource(lead)}<span className="block text-xs text-slate-500">{lead.sourcePage}</span></TableCell>
                         <TableCell>
                           <div className="space-y-2">
                             <AdminStatusBadge label={leadStatusLabels[lead.status]} toneClassName={leadStatusTone[lead.status]} />

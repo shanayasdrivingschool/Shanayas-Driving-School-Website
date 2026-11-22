@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { sanitizeWebsiteTracking } from "../_shared/metaConversions.ts";
 import { buildCorsHeaders, readAllowedOrigins } from "../_shared/cors.ts";
 
 type LeadType = "contact" | "student_assessment" | "employee_application" | "custom_package_request";
@@ -472,6 +473,14 @@ Deno.serve(async (request) => {
   const captcha = await enforceCaptcha(lead, clientIp);
   if (!captcha.ok) {
     return jsonResponse(400, { error: "captcha_failed", reason: captcha.reason ?? "captcha_failed" }, corsHeaders);
+  }
+
+  // Replace any client-supplied network identity; never trust it from the JSON payload.
+  // The database trigger queues the saved lead, including the RPC and fallback paths.
+  if (lead.lead_type !== "employee_application") {
+    lead.payload.meta_tracking = sanitizeWebsiteTracking(
+      lead.payload.meta_tracking, request.headers.get("user-agent") ?? "", clientIp,
+    );
   }
 
   const { error } = await admin.rpc(SUBMIT_LEAD_FUNCTION, {

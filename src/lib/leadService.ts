@@ -1,5 +1,6 @@
 import { FunctionsFetchError, FunctionsHttpError, FunctionsRelayError } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
+import { prepareMetaLeadPayload, trackStoredMetaLead } from "@/lib/metaLeadTracking";
 
 type LeadType = "contact" | "student_assessment" | "employee_application" | "custom_package_request";
 type CaptchaProvider = "turnstile" | "recaptcha";
@@ -234,16 +235,19 @@ const getFunctionErrorMessage = async (error: unknown, response?: Response) => {
 const insertLead = async (lead: LeadInsert) => {
   const client = ensureSupabase();
 
+  const payload = lead.lead_type === "employee_application" ? lead.payload ?? {} : prepareMetaLeadPayload(lead.payload);
   const { error: functionError, response } = await client.functions.invoke(LEAD_SUBMIT_FUNCTION, {
-    body: lead,
+    body: { ...lead, payload },
   });
   if (functionError) {
     throw new Error(await getFunctionErrorMessage(functionError, response));
   }
+  if (lead.lead_type !== "employee_application") trackStoredMetaLead(payload);
 };
 
 const insertLeadDirect = async (lead: LeadInsert) => {
   const client = ensureSupabase();
+  const payload = lead.lead_type === "employee_application" ? lead.payload ?? {} : prepareMetaLeadPayload(lead.payload);
   const { error } = await client.from("leads").insert({
     lead_type: lead.lead_type,
     full_name: lead.full_name,
@@ -251,12 +255,13 @@ const insertLeadDirect = async (lead: LeadInsert) => {
     phone: lead.phone,
     source_page: lead.source_page,
     status: lead.status ?? "new",
-    payload: lead.payload ?? {},
+    payload,
   });
 
   if (error) {
     throw error;
   }
+  if (lead.lead_type !== "employee_application") trackStoredMetaLead(payload);
 };
 
 const statusMap: Record<string, EmployeeApplicationStatus> = {
