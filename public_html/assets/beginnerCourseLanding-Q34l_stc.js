@@ -1,0 +1,1 @@
+const a="https://www.google.com/maps/place/Shanaya's+Driving+School/@48.4514745,-123.5207662,17z/data=!4m8!3m7!1s0x548f0dbc0a227e83:0xf890ce589bc36216!8m2!3d48.451471!4d-123.5181913!9m1!1b1!16s%2Fg%2F11nk25xtf2",e=4.9,o=52,s="November 23, 2026";export{o as a,s as b,a as g,e as r};

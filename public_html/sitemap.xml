@@ -426,4 +426,28 @@
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
+  <url>
+    <loc>https://www.shanayasdrivingschool.com/blog/project-red-ribbon-sober-driving-pledge-victoria/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.shanayasdrivingschool.com/blog/lets-get-visible-greater-victoria-driver-pedestrian-checklist/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.shanayasdrivingschool.com/blog/fog-malahat-island-highway-driving-checklist/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.shanayasdrivingschool.com/blog/greater-victoria-roadwork-route-alerts-november-2026/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
