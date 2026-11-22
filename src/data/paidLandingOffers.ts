@@ -48,10 +48,3 @@ export const paidLandingOffers: Record<string, {
     highlights: ["Time to practise existing skills", "Discuss your pace with the instructor", "Feedback on your progress"],
   },
 };
-
-// Add only approved, authentic photographs and descriptive alt text here.
-// Null renders a neutral icon card, never a stock or generated staff photograph.
-export const paidLandingPhotos: {
-  instructor: { src: string; alt: string } | null;
-  vehicle: { src: string; alt: string } | null;
-} = { instructor: null, vehicle: null };

@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Suspense, lazy } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import PageTransition from "./components/PageTransition";
@@ -16,7 +16,7 @@ import { AdminAuthProvider } from "./components/admin/AdminAuthProvider";
 import { SeoAuthProvider } from "./components/seo/SeoAuthProvider";
 import ReferralTracker from "./components/affiliate/ReferralTracker";
 import ErrorBoundary from "./components/ErrorBoundary";
-import Index from "./pages/Index";
+const Index = lazy(() => import("./pages/Index"));
 import ServerError from "./pages/ServerError";
 
 /* Lazy like the routes it guards: it pulls in useAdminSession -> affiliateApi ->
@@ -82,6 +82,16 @@ const Unauthorized = lazy(() => import("./pages/Unauthorized"));
 const Forbidden = lazy(() => import("./pages/Forbidden"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+const BlogSeoManager = lazy(() => import("./components/BlogSeoManager"));
+
+// Only blog routes need the article catalogue and its live data query.
+const RouteSeoManager = () => {
+  const { pathname } = useLocation();
+  return /^\/blog(?:\/|$)/.test(pathname)
+    ? <Suspense fallback={null}><BlogSeoManager /></Suspense>
+    : <SeoManager />;
+};
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -91,7 +101,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <ScrollToTop />
-        <SeoManager />
+        <RouteSeoManager />
         <MarketingScripts />
         <ReferralTracker />
         <GlobalSectionReveal />

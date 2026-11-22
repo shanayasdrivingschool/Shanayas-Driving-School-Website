@@ -1986,7 +1986,7 @@ const renderPageHtml = (template, page, content) => {
       para(paidLanding.hero.subhead),
       `<h2>${escapeHtml(paidLanding.conversion.formHeading)}</h2>`,
       para(paidLanding.conversion.formDescription),
-      `<p><a href="tel:+12505423673">Call (250) 542-3673</a>. Enable JavaScript to request a free callback using the form.</p>`,
+      `<p><a href="tel:+12505423673">Call (250) 542-3673</a>. Enable JavaScript and select Request a Callback to open the enquiry form.</p>`,
       `<h2>Frequently Asked Questions</h2>`,
       ...paidLanding.faqs.map((faq) => `<h3>${escapeHtml(faq.question)}</h3>${para(faq.answer)}`),
     ].join("\n"));
@@ -2014,6 +2014,13 @@ const renderPageHtml = (template, page, content) => {
     html = replaceFallback(html, page, () => buildProductBody(product));
   } else {
     html = setFallbackContent(html, page);
+  }
+
+  // Campaign pages use a self-hosted variable Inter font. Start its Latin
+  // subset immediately and avoid the blocking Google Fonts stylesheet chain.
+  if (paidLanding) {
+    html = html.replace(/\s*<link\b[^>]*href="https:\/\/fonts\.(?:googleapis|gstatic)\.com[^"]*"[^>]*>/g, "");
+    html = html.replace("</head>", '<link rel="preload" href="/fonts/inter-latin-3100e775e8.woff2" as="font" type="font/woff2" crossorigin />\n  </head>');
   }
 
   // The hero poster is the LCP element on the homepage only. Strip its preload

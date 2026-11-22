@@ -1,14 +1,18 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type RefObject } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, Car, Check, MapPin, MessageCircle, Phone, Star, UserRound } from "lucide-react";
+import { ArrowRight, Check, MapPin, MessageCircle, Phone, Star } from "lucide-react";
+import LandingMediaGallery from "@/components/LandingMediaGallery";
+import VehicleGallery from "@/components/VehicleGallery";
+import PaidLandingReviews from "@/components/PaidLandingReviews";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { courseCatalogById } from "@/data/courseCatalog";
 import { createCourseLocationPricing, formatCoursePrice, getCourseAddOnLessonPrice } from "@/data/coursePricing";
-import { paidLandingPagesById, paidLandingTestimonialsById, type PaidLandingPageConfig, type PaidLandingPageId } from "@/data/paidLandingPages";
-import { paidLandingOffers, paidLandingPhotos } from "@/data/paidLandingOffers";
+import { paidLandingPagesById, type PaidLandingPageConfig, type PaidLandingPageId } from "@/data/paidLandingPages";
+import { paidLandingOffers } from "@/data/paidLandingOffers";
 import { googleReviewsUrl, rating, ratingCheckedOn, reviewCount } from "@/data/beginnerCourseLanding";
 import { getCaptchaVerification } from "@/lib/captcha";
 import { pushClickToCall, pushLandingCtaClick, pushLandingFormStart, pushLandingView, pushLeadConversion } from "@/lib/analytics";
-import { submitFreeTrialLead, type PaidLeadAttribution } from "@/lib/leadService";
+import type { PaidLeadAttribution } from "@/lib/leadService";
 
 const PHONE_DISPLAY = "(250) 542-3673";
 const PHONE_HREF = "tel:+12505423673";
@@ -17,7 +21,7 @@ const primaryButton = "inline-flex min-h-[48px] items-center justify-center gap-
 const textLink = "inline-flex min-h-[44px] items-center gap-2 font-bold text-[#1d52a1] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200";
 const fieldClassName = "mt-1.5 min-h-[48px] w-full rounded-lg border border-slate-300 bg-white px-3.5 text-base text-slate-900 focus:border-[#1d52a1] focus:outline-none focus:ring-2 focus:ring-blue-200";
 type TrackingContext = { landingPageId: string; sourcePage: string; contentGroup: string; funnel: string };
-type CtaHandler = (location: string) => void;
+type CtaHandler = (location: string, trigger: HTMLElement) => void;
 
 const createLeadId = () => typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
   ? crypto.randomUUID() : `lead-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
@@ -58,15 +62,22 @@ const readAttribution = (landingPageId: string): PaidLeadAttribution => {
 };
 
 const CallLink = ({ tracking, location, className = "", short = false }: { tracking: TrackingContext; location: string; className?: string; short?: boolean }) => (
-  <a href={PHONE_HREF} onClick={() => pushClickToCall(tracking, location)} className={`inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${className}`}>
+  <a href={PHONE_HREF} onClick={() => pushClickToCall(tracking, location)} className={`inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-3 text-sm font-bold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${className}`}>
     <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />{short ? "Call Now" : `Call ${PHONE_DISPLAY}`}
   </a>
 );
 
-const LeadForm = ({ config, tracking }: { config: PaidLandingPageConfig; tracking: TrackingContext }) => {
+const CallbackDialog = ({ config, tracking, open, onOpenChange, triggerRef }: {
+  config: PaidLandingPageConfig;
+  tracking: TrackingContext;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  triggerRef: RefObject<HTMLElement>;
+}) => {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-  const [callbackTime, setCallbackTime] = useState("");
+  const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -87,19 +98,25 @@ const LeadForm = ({ config, tracking }: { config: PaidLandingPageConfig; trackin
       setSubmitError("Please enter your full name and a phone number with at least 10 digits.");
       return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setSubmitError("Please enter a valid email address.");
+      return;
+    }
     submissionLock.current = true;
     setSubmitError("");
     setIsSubmitting(true);
     try {
       const captcha = await getCaptchaVerification("paid_landing_lead_submit");
+      // Keep the CRM client off the initial landing-page download.
+      const { submitFreeTrialLead } = await import("@/lib/leadService");
       await submitFreeTrialLead({
-        fullName, phone,
+        fullName, phone, email,
         // Preserve the existing CRM request type and event triggers. The note is
-        // surfaced in admin and lead emails, including the callback preference.
+        // surfaced in admin and lead emails, including the optional notes.
         intent: "lesson_plan_request",
         sourcePage: tracking.sourcePage,
         goal: config.conversion.defaultGoal,
-        note: `Free callback requested. Preferred callback time (Pacific time): ${callbackTime.trim() || "No preference"}.`,
+        note: notes.trim() ? `Free callback requested. Notes: ${notes.trim()}` : "Free callback requested.",
         marketingConsent: false,
         consentTimestamp: new Date().toISOString(),
         leadId: leadIdRef.current,
@@ -109,7 +126,7 @@ const LeadForm = ({ config, tracking }: { config: PaidLandingPageConfig; trackin
         captchaAction: captcha.action ?? undefined,
       });
       setIsSubmitted(true);
-      pushLeadConversion({ intent: "lesson_plan_request", sourcePage: tracking.sourcePage, emailProvided: false, leadId: leadIdRef.current, landingPageId: config.id });
+      pushLeadConversion({ intent: "lesson_plan_request", sourcePage: tracking.sourcePage, emailProvided: true, leadId: leadIdRef.current, landingPageId: config.id });
     } catch (error) {
       console.error("Paid landing callback request failed:", error);
       setSubmitError(`We could not send your request. Please try again or call ${PHONE_DISPLAY}.`);
@@ -119,17 +136,14 @@ const LeadForm = ({ config, tracking }: { config: PaidLandingPageConfig; trackin
     }
   };
 
-  if (isSubmitted) return (
+  const content = isSubmitted ? (
     <div ref={successRef} tabIndex={-1} role="status" className="rounded-xl bg-slate-50 p-5 focus:outline-none focus:ring-2 focus:ring-blue-300">
       <Check className="h-8 w-8 text-emerald-700" aria-hidden="true" />
-      <h3 className="mt-3 text-xl font-bold">Callback request received</h3>
       <p className="mt-3 text-sm leading-relaxed text-slate-600">{config.conversion.thankYouCopy}</p>
       <CallLink tracking={tracking} location="success" className="mt-4 border border-[#1d52a1] text-[#1d52a1]" />
     </div>
-  );
-
-  return (
-    <form aria-label="Request a free callback" onSubmit={handleSubmit} onFocusCapture={() => {
+  ) : (
+    <form aria-label="Request a callback" onSubmit={handleSubmit} onFocusCapture={() => {
       if (!formStartedRef.current) { formStartedRef.current = true; pushLandingFormStart(tracking); }
     }} className="space-y-4" aria-busy={isSubmitting}>
       <div>
@@ -141,49 +155,45 @@ const LeadForm = ({ config, tracking }: { config: PaidLandingPageConfig; trackin
         <input id={`${config.id}-phone`} name="phone" type="tel" inputMode="tel" autoComplete="tel" required maxLength={40} value={phone} onChange={(e) => setPhone(e.target.value)} className={fieldClassName} />
       </div>
       <div>
-        <label htmlFor={`${config.id}-callback-time`} className="text-sm font-bold">Preferred callback time <span className="font-normal text-slate-500">(optional)</span></label>
-        <input id={`${config.id}-callback-time`} name="callbackTime" type="text" maxLength={200} aria-describedby={`${config.id}-time-hint`} placeholder="e.g. Weekday afternoons" value={callbackTime} onChange={(e) => setCallbackTime(e.target.value)} className={fieldClassName} />
-        <p id={`${config.id}-time-hint`} className="mt-1 text-xs text-slate-500">Victoria / Pacific time. We’ll do our best to match your preference.</p>
+        <label htmlFor={`${config.id}-email`} className="text-sm font-bold">Email address <span className="font-normal text-slate-500">(required)</span></label>
+        <input id={`${config.id}-email`} name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} className={fieldClassName} />
+      </div>
+      <div>
+        <label htmlFor={`${config.id}-notes`} className="text-sm font-bold">Notes <span className="font-normal text-slate-500">(optional)</span></label>
+        <textarea id={`${config.id}-notes`} name="notes" rows={3} maxLength={2000} placeholder="Anything you’d like us to know" value={notes} onChange={(e) => setNotes(e.target.value)} className={`${fieldClassName} resize-y py-3`} />
       </div>
       <button type="submit" disabled={isSubmitting} className={`${primaryButton} w-full`}>
-        {isSubmitting ? "Sending request…" : "Request My Free Callback"}<ArrowRight className="h-4 w-4" aria-hidden="true" />
+        {isSubmitting ? "Sending request…" : "Request a Callback"}<ArrowRight className="h-4 w-4" aria-hidden="true" />
       </button>
       <p className="text-center text-sm text-slate-600">No payment required to enquire.</p>
       {submitError && <p ref={errorRef} tabIndex={-1} role="alert" className="rounded-lg bg-red-50 p-3 text-sm font-semibold text-red-800 focus:outline-none focus:ring-2 focus:ring-red-300">{submitError}</p>}
       <p className="text-xs leading-relaxed text-slate-500">By submitting, you ask Shanaya’s Driving School to contact you about this enquiry. <Link to="/policies/privacy-policy" className="text-[#1d52a1] underline underline-offset-2">Privacy policy</Link>.</p>
     </form>
   );
-};
 
-const Testimonials = ({ config }: { config: PaidLandingPageConfig }) => (
-  <section aria-labelledby="reviews-heading" className="bg-white py-12 sm:py-16">
-    <div className="mx-auto max-w-6xl px-4 sm:px-6">
-      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-        <h2 id="reviews-heading" className="max-w-2xl text-2xl font-black tracking-tight sm:text-3xl">Trusted by Learners Across Greater Victoria</h2>
-        <a href={googleReviewsUrl} target="_blank" rel="noopener noreferrer" className={`${textLink} shrink-0 text-sm`}>Read Google reviews <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
-      </div>
-      <p className="mt-3 text-sm text-slate-600">Selected Google review excerpts. These are individual experiences; results vary.</p>
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
-        {config.testimonialIds.slice(0, 3).map((id) => {
-          const review = paidLandingTestimonialsById[id];
-          if (!review?.quote) return null;
-          return (
-            <figure key={id} className="flex flex-col rounded-2xl border border-slate-200 bg-[#F7F8FA] p-6">
-              <div className="flex gap-1 text-[#996800]" role="img" aria-label={`${review.stars} out of 5 stars`}>
-                {Array.from({ length: review.stars ?? 0 }, (_, index) => <Star key={index} className="h-4 w-4 fill-current" aria-hidden="true" />)}
-              </div>
-              <blockquote className="my-4 flex-1 text-base leading-relaxed text-slate-700">“{review.quote}”</blockquote>
-              <figcaption className="border-t border-slate-200 pt-4">
-                <p className="font-bold">{review.name}</p>
-                <a href={review.reviewUrl ?? googleReviewsUrl} target="_blank" rel="noopener noreferrer" className={`${textLink} text-sm`} aria-label={`Read ${review.name}’s full Google review`}>Read full review <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
-              </figcaption>
-            </figure>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-);
+  // Form state lives outside the portalled content so closing and reopening
+  // the dialog preserves entered details, pending requests and confirmation.
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        className="max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] overflow-y-auto overscroll-contain rounded-2xl bg-white p-5 text-slate-950 sm:p-7 [&>button:last-child]:right-2 [&>button:last-child]:top-2 [&>button:last-child]:flex [&>button:last-child]:h-11 [&>button:last-child]:w-11 [&>button:last-child]:items-center [&>button:last-child]:justify-center"
+        onOpenAutoFocus={(event) => {
+          if (isSubmitted) { event.preventDefault(); successRef.current?.focus(); }
+        }}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          requestAnimationFrame(() => triggerRef.current?.focus({ preventScroll: true }));
+        }}
+      >
+        <DialogTitle className="pr-8 text-2xl font-black leading-tight">{isSubmitted ? "Callback request received" : "Request a Callback"}</DialogTitle>
+        <DialogDescription className={isSubmitted ? "sr-only" : "text-sm leading-relaxed text-slate-600"}>
+          {isSubmitted ? "Your callback request was submitted successfully." : config.conversion.formDescription}
+        </DialogDescription>
+        {content}
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const PackageCards = ({ config, onPrimaryCta }: { config: PaidLandingPageConfig; onPrimaryCta: CtaHandler }) => (
   <section aria-labelledby="pricing-heading" className="bg-[#F7F8FA] py-12 sm:py-16">
@@ -212,7 +222,7 @@ const PackageCards = ({ config, onPrimaryCta }: { config: PaidLandingPageConfig;
               </ul>
               {id === "lesson-road-test-prep-course" && <p className="mt-4 text-xs leading-relaxed text-slate-500">Optional 60-minute practice lessons: {formatCoursePrice(getCourseAddOnLessonPrice(course))} CAD + GST each. Confirm test-centre coverage and pickup arrangements when enquiring.</p>}
               <div className="mt-auto grid gap-1 pt-6">
-                <button type="button" onClick={() => onPrimaryCta(`product-${id}`)} className={primaryButton}>{id === "mock-test-evaluation" ? "Request a Callback" : "Check Availability"}</button>
+                <button type="button" onClick={(event) => onPrimaryCta(`product-${id}`, event.currentTarget)} className={primaryButton}>{id === "mock-test-evaluation" ? "Request a Callback" : "Check Availability"}</button>
                 <Link to={`/courses/${id}`} className={`${textLink} justify-center text-sm`}>View details & booking <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
               </div>
             </article>
@@ -237,19 +247,7 @@ const InstructorAndVehicle = () => (
         </ul>
         <Link to="/icbc-approved-driving-school" className={`${textLink} mt-4 text-sm`}>School licensing information <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        {([{ key: "instructor", label: "Your instructor", Icon: UserRound }, { key: "vehicle", label: "Your training vehicle", Icon: Car }] as const).map(({ key, label, Icon }) => {
-          const photo = paidLandingPhotos[key];
-          return (
-            <div key={key} className="overflow-hidden rounded-2xl bg-[#F0F4FA]">
-              {photo ? <img src={photo.src} alt={photo.alt} width={480} height={400} loading="lazy" decoding="async" className="aspect-[6/5] w-full object-cover" /> : (
-                <div className="flex aspect-[6/5] items-center justify-center" aria-hidden="true"><Icon className="h-14 w-14 text-[#1d52a1]" strokeWidth={1.25} /></div>
-              )}
-              <p className="px-4 pb-5 text-center text-sm font-bold text-[#0B1A33]">{label}</p>
-            </div>
-          );
-        })}
-      </div>
+      <VehicleGallery />
     </div>
   </section>
 );
@@ -286,7 +284,7 @@ const FAQAndAreas = ({ config }: { config: PaidLandingPageConfig }) => (
         <h2 className="mt-3 text-xl font-bold">{config.id === "road-test" ? "Road-Test Preparation Across Greater Victoria" : "Driving Lessons Across Greater Victoria"}</h2>
         <p className="mt-3 text-sm leading-relaxed text-slate-600">{config.serviceAreaIntro}</p>
         <ul className="mt-5 flex flex-wrap gap-2">{config.serviceAreas.map((area) => <li key={area} className="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm">{area}</li>)}</ul>
-        <p className="mt-5 text-xs leading-relaxed text-slate-500">Pickup arrangements and availability are confirmed for your address and preferred time.</p>
+        <p className="mt-5 text-xs leading-relaxed text-slate-600">Pickup arrangements and availability are confirmed for your address and preferred time.</p>
         <a href="https://www.google.com/maps?q=124-2770+Leigh+Rd,+Langford,+BC+V9B+4G1" target="_blank" rel="noopener noreferrer" className={`${textLink} mt-2 text-sm`}>View our Langford location <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
       </div>
     </div>
@@ -296,9 +294,9 @@ const FAQAndAreas = ({ config }: { config: PaidLandingPageConfig }) => (
 const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
   const config = paidLandingPagesById[pageId];
   const location = useLocation();
-  const formRef = useRef<HTMLDivElement>(null);
+  const callbackTriggerRef = useRef<HTMLElement>(null);
   const viewedPathRef = useRef("");
-  const [formVisible, setFormVisible] = useState(true);
+  const [callbackOpen, setCallbackOpen] = useState(false);
   const tracking = useMemo<TrackingContext>(() => ({ landingPageId: config.id, sourcePage: location.pathname, contentGroup: config.analytics.contentGroup, funnel: config.analytics.funnel }), [config, location.pathname]);
 
   useEffect(() => {
@@ -308,38 +306,29 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
     pushLandingView(tracking);
   }, [config.id, location.pathname, tracking]);
 
-  useEffect(() => {
-    const node = formRef.current;
-    if (!node || typeof IntersectionObserver === "undefined") return;
-    // Hide whenever any part of the form is visible, including its error state.
-    const observer = new IntersectionObserver(([entry]) => setFormVisible(entry.isIntersecting), { threshold: 0 });
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [config.id]);
-
-  const onPrimaryCta: CtaHandler = (ctaLocation) => {
+  const onPrimaryCta: CtaHandler = (ctaLocation, trigger) => {
     pushLandingCtaClick(tracking, config.conversion.primaryCta, ctaLocation);
-    formRef.current?.focus({ preventScroll: true });
-    formRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    callbackTriggerRef.current = trigger;
+    setCallbackOpen(true);
   };
 
   return (
-    <div className="bg-white text-slate-950 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-0">
+    <div className="paid-landing-page bg-white text-slate-950 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-0">
       <header className="border-b border-white/15 bg-[#0B1A33] text-white">
         <div className="mx-auto flex min-h-[72px] max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link to="/" className="max-w-[12rem] text-base font-black leading-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:max-w-none">Shanaya’s Driving School</Link>
-          <div className="flex items-center gap-3"><CallLink tracking={tracking} location="header" short className="border border-white/30" /><button type="button" onClick={() => onPrimaryCta("header")} className={`${primaryButton} hidden md:inline-flex`}>Request a Free Callback</button></div>
+          <div className="flex items-center gap-3"><CallLink tracking={tracking} location="header" short className="border border-white/30" /><button type="button" onClick={(event) => onPrimaryCta("header", event.currentTarget)} className={`${primaryButton} hidden md:inline-flex`}>Request a Callback</button></div>
         </div>
       </header>
       <main>
         <section aria-labelledby="landing-heading" className="bg-[#0B1A33] text-white">
-          <div className="mx-auto grid max-w-6xl gap-x-12 gap-y-6 px-4 py-7 sm:px-6 sm:py-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-start lg:py-16">
-            <div className="lg:pt-5">
+          <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
+            <div className="max-w-3xl">
               <p className="text-sm font-semibold text-blue-200">{config.hero.eyebrow}</p>
               <h1 id="landing-heading" className="mt-3 max-w-2xl text-[2rem] font-black leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.25rem]" style={{ textWrap: "balance" }}>{config.hero.h1}</h1>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">{config.hero.subhead}</p>
               <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-                <button type="button" onClick={() => onPrimaryCta("hero")} className={`${primaryButton} hidden lg:inline-flex`}>Request a Free Callback <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
+                <button type="button" onClick={(event) => onPrimaryCta("hero", event.currentTarget)} className={primaryButton}>Request a Callback <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
                 <CallLink tracking={tracking} location="hero" className="border border-white/40 hover:bg-white/10" />
               </div>
               <div className="mt-5 hidden lg:block">
@@ -347,24 +336,21 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
               </div>
               {rating && reviewCount ? <a href={googleReviewsUrl} target="_blank" rel="noopener noreferrer" className="mt-4 flex min-h-[44px] items-center gap-2 text-xs leading-relaxed text-white/75 underline underline-offset-4"><Star className="h-4 w-4 shrink-0 fill-amber-300 text-amber-300" aria-hidden="true" /><span>{rating}/5 from {reviewCount} Google reviews · checked {ratingCheckedOn}</span></a> : null}
             </div>
-            <div id="lead-form" ref={formRef} tabIndex={-1} aria-labelledby="callback-heading" className="scroll-mt-4 rounded-2xl bg-white p-5 text-slate-950 shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 sm:p-7">
-              <h2 id="callback-heading" className="text-xl font-black leading-tight sm:text-2xl">{config.conversion.formHeading}</h2>
-              <p className="mb-5 mt-2 text-sm leading-relaxed text-slate-600">{config.conversion.formDescription}</p>
-              <LeadForm key={location.pathname} config={config} tracking={tracking} />
-            </div>
+
           </div>
         </section>
-        <Testimonials config={config} />
+        <PaidLandingReviews />
         <PackageCards config={config} onPrimaryCta={onPrimaryCta} />
         <InstructorAndVehicle />
         <HowItWorks config={config} />
         <FAQAndAreas config={config} />
+        <LandingMediaGallery />
         <section aria-labelledby="final-heading" className="bg-[#0B1A33] px-4 py-12 text-center text-white sm:px-6 sm:py-16">
           <div className="mx-auto max-w-3xl">
             <MessageCircle className="mx-auto h-7 w-7 text-blue-200" aria-hidden="true" />
             <h2 id="final-heading" className="mt-4 text-2xl font-black tracking-tight sm:text-4xl">{config.finalHeading}</h2>
             <p className="mt-4 leading-relaxed text-white/80">Speak with our team about your {config.id === "road-test" ? "preparation" : "lesson"} options, availability and next steps.</p>
-            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={() => onPrimaryCta("final")} className={primaryButton}>Request a Free Callback</button><CallLink tracking={tracking} location="final" className="border border-white/40 hover:bg-white/10" /></div>
+            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={(event) => onPrimaryCta("final", event.currentTarget)} className={primaryButton}>Request a Callback</button><CallLink tracking={tracking} location="final" className="border border-white/40 hover:bg-white/10" /></div>
           </div>
         </section>
       </main>
@@ -374,9 +360,10 @@ const PaidLandingPage = ({ pageId }: { pageId: PaidLandingPageId }) => {
           <nav aria-label="Landing page policies" className="flex flex-wrap content-start gap-x-5 text-sm text-white/80">{[{ label: "Privacy Policy", path: "privacy-policy" }, { label: "Terms and Conditions", path: "terms-and-conditions" }, { label: "Cancellation Policy", path: "cancellation-and-rescheduling" }].map(({ label, path }) => <Link key={path} to={`/policies/${path}`} className="inline-flex min-h-[44px] items-center underline underline-offset-4">{label}</Link>)}<Link to="/contact" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Contact</Link></nav>
         </div>
       </footer>
-      {!formVisible && <div data-testid="mobile-callback-bar" className="fixed inset-x-0 bottom-0 z-40 border-t border-white/20 bg-[#0B1A33] px-4 pt-3 lg:hidden" style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}>
-        <div className="mx-auto grid max-w-xl grid-cols-[1fr_auto] gap-2"><button type="button" onClick={() => onPrimaryCta("mobile-sticky")} className={primaryButton}>Request Callback</button><CallLink tracking={tracking} location="mobile-sticky" short className="border border-white/40 text-white" /></div>
-      </div>}
+      <CallbackDialog key={location.pathname} config={config} tracking={tracking} open={callbackOpen} onOpenChange={setCallbackOpen} triggerRef={callbackTriggerRef} />
+      <div data-testid="mobile-callback-bar" className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/20 bg-[#0B1A33] px-4 pt-3 lg:hidden ${callbackOpen ? "hidden" : ""}`} style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}>
+        <div className="mx-auto grid max-w-xl grid-cols-[1fr_auto] gap-2"><button type="button" onClick={(event) => onPrimaryCta("mobile-sticky", event.currentTarget)} className={primaryButton}>Request Callback</button><CallLink tracking={tracking} location="mobile-sticky" short className="border border-white/40 text-white" /></div>
+      </div>
     </div>
   );
 };

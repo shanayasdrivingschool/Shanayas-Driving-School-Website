@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDown, Menu, Search, ShoppingCart, X } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useCart } from "@/components/cart/CartProvider";
-import { searchSite } from "@/data/siteSearch";
+import type { SiteSearchItem } from "@/data/siteSearch";
 
 type SiteHeaderProps = {
   tone?: "light" | "dark" | "brand";
@@ -79,7 +79,20 @@ const SiteHeader = ({ tone = "light", className = "" }: SiteHeaderProps) => {
   const cartCountLabel = itemCount > 99 ? "99+" : itemCount.toString();
   const shouldShowCartCount = itemCount > 0;
   const [searchQuery, setSearchQuery] = useState("");
-  const searchResults = searchSite(searchQuery, 6);
+  const [searchResults, setSearchResults] = useState<SiteSearchItem[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    setSearchResults([]);
+    if (searchQuery.trim()) {
+      // The search catalogue contains article bodies. Load it only when a
+      // visitor searches, rather than through the shared error-page header.
+      void import("@/data/siteSearch").then(({ searchSite }) => {
+        if (active) setSearchResults(searchSite(searchQuery, 6));
+      }).catch(() => { if (active) setSearchResults([]); });
+    }
+    return () => { active = false; };
+  }, [searchQuery]);
 
   const getPathFromHref = (href: string) => href.split("#")[0];
   const getHashFromHref = (href: string) => {

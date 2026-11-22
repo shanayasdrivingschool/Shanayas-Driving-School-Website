@@ -1,3 +1,5 @@
+@import "./paid-landing-font.css";
+
 /* Google Fonts are now loaded via <link> in index.html (preconnect + non-blocking),
    which avoids the render-blocking CSS @import chain. */
 
@@ -137,6 +139,16 @@
     overflow-x: clip;
   }
 
+  /* Paid landing pages use native sizing: 16px form fields avoid iOS focus
+     zoom, while 44px controls retain their intended touch-target dimensions. */
+  body:has(.paid-landing-page) {
+    font-family: "Landing Inter", Arial, sans-serif;
+  }
+
+  html:has(.paid-landing-page) {
+    font-size: 100%;
+  }
+
   img,
   picture,
   video,
@@ -168,6 +180,10 @@
     .site-page-scale {
       zoom: 1.1;
     }
+  }
+
+  .site-page-scale:has(.paid-landing-page) {
+    zoom: 1;
   }
 
   .gradient-text {

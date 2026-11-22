@@ -31,7 +31,6 @@ import {
   knowledgeTestPracticeFaqs,
 } from "@/data/knowledgeTestPractice";
 import { faqAnswerToPlainText } from "@/lib/faqAnswer";
-import { usePublicBlogPosts } from "@/lib/publicBlog";
 
 const SITE_ORIGIN = "https://www.shanayasdrivingschool.com";
 const SITE_NAME = "Shanaya's Driving School";
@@ -735,10 +734,10 @@ const getSeoForPath = (rawPathname: string, blogPosts: BlogPostData[]): SeoDetai
   };
 };
 
-const SeoManager = () => {
+const EMPTY_BLOG_POSTS: BlogPostData[] = [];
+
+const SeoManager = ({ blogPosts = EMPTY_BLOG_POSTS }: { blogPosts?: BlogPostData[] }) => {
   const location = useLocation();
-  const isPrivateWorkspace = /^\/(?:admin|seo)(?:\/|$)/.test(location.pathname);
-  const { posts: blogPosts } = usePublicBlogPosts(!isPrivateWorkspace);
   const seo = useMemo(() => getSeoForPath(location.pathname, blogPosts), [blogPosts, location.pathname]);
 
   useEffect(() => {
