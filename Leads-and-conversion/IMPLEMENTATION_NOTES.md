@@ -1,3 +1,14 @@
+# Shared landing-page release — live confirmed 2026-11-23
+
+- Published the approved universal changes to all seven `/lp/` routes: `driving-lessons-victoria`, `driving-school-near-me`, `driving-lesson-prices`, `icbc-road-test-preparation`, `beginner-driving-lessons`, `nervous-driver-lessons`, and `icbc-driving-lessons`; the legacy `/beginner-driving-lessons-victoria/` alias shares the same implementation.
+- Includes the callback popup (required name/phone/email, optional notes, requested success message and call option), removal of the instructor placeholder, twelve-review swipe carousel, two-photo car carousel, responsive multi-item photo/video gallery, compressed/lazy media and landing-page performance changes.
+- Source commit `0b110fa7`; committed build `7389f875` on `main`; deployment commit `16073c87` on `public_html`. Both branches were pushed successfully. Built in an isolated checkout to exclude unrelated service/branch-page changes in the shared working tree. No content pages were removed; retired files were fingerprinted JS/CSS bundles. No CRM/customer CSVs or unrelated drafts were committed.
+- Validation: full suite passed (84 tests across 14 files); production build generated 89 static routes. Sixteen release-browser checks passed locally, then the same sixteen passed on `https://www.shanayasdrivingschool.com` at 390px and 1440px: all seven pages plus alias, popup fields, no initial inline form, removed instructor placeholder, review/car carousel navigation, responsive end gallery, deferred video source and no page overflow. The live road-test HTML referenced the exact release entry bundle. External analytics/CRM requests were blocked during browser QA and no form was submitted. Submission/success handling was covered by mocked tests; this was not a new production CRM-delivery test.
+- Google Ads campaign settings were not accessed or modified; this release verifies the repository's seven paid landing destinations and legacy alias, not every ad/keyword Final URL in the account.
+- Limited-release page quality and intent satisfaction: **Ready** for consistent shared behaviour across these landing pages. Publication state: **live confirmed**, inspected 2026-11-23. Earlier broader conversion recommendations and factual/subject-review limitations still apply.
+
+---
+
 # Multi-item gallery layout correction — 2026-11-23
 
 - Owner requested multiple gallery items visible together. Updated the shared `LandingMediaGallery.tsx` to show both photos and the video side by side at desktop widths (1024px+), two items on tablets (640–1023px), and one item plus a preview of the next on phones. Individual media cards replace the large single-image frame; full photo framing remains intact.
