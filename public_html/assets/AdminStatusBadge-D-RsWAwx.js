@@ -1,0 +1,1 @@
+import{j as t,c as n}from"./index-Ng9MjSv7.js";const i=({label:e,toneClassName:s})=>t.jsx("span",{className:n("inline-flex items-center whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium",s),children:e});export{i as A};
