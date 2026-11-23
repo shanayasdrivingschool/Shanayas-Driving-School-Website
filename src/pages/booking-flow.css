@@ -1,6 +1,7 @@
 /* Scoped to Cart and Checkout content; the shared site shell keeps its styling.
    Polish guided by unslop by Damir Sokolovsky (@heydamir), CC BY 4.0. */
 .booking-flow {
+  margin-top: 24px;
   font-size: 16px;
   font-variant-numeric: tabular-nums;
 }
