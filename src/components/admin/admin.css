@@ -1,4 +1,6 @@
-/* Admin surfaces use a true 4px rhythm independently of the marketing site's rem scale. */
+/* Design polish guided by unslop by Damir Sokolovsky (@heydamir), CC BY 4.0.
+   https://heydamir.design/unslop
+   Admin surfaces use a true 4px rhythm independently of the marketing site's rem scale. */
 html:has(.admin-workspace) {
   font-size: 16px;
 }

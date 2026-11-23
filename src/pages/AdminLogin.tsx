@@ -60,12 +60,11 @@ const AdminLogin = () => {
         </div>
       </header>
 
-      <main className="mx-auto grid w-full max-w-6xl flex-1 content-center gap-8 px-4 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-16">
+      <main className="mx-auto grid w-full max-w-6xl flex-1 content-center gap-6 px-4 py-6 sm:gap-8 sm:px-8 sm:py-16 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-16">
         <section aria-labelledby="workspace-heading">
-          <p className="mb-4 border-l-4 border-[#1d52a1] pl-3 text-sm font-medium text-slate-600">School administration</p>
-          <h1 id="workspace-heading" className="max-w-md text-3xl font-medium leading-tight sm:text-4xl">The school’s day-to-day, in one place</h1>
+          <h1 id="workspace-heading" className="max-w-md border-l-4 border-[#1d52a1] pl-4 text-2xl font-medium leading-tight sm:text-4xl">School administration</h1>
           <p className="mt-4 max-w-md text-base leading-7 text-slate-600">Review enquiries and manage orders, affiliates, commissions, payouts, and suspicious activity</p>
-          <p className="mt-8 max-w-md border-t border-slate-200 pt-4 text-sm leading-6 text-slate-500">Use your administrator account. Affiliate accounts have a separate sign-in.</p>
+          <p className="mt-6 max-w-md border-t border-slate-200 pt-4 text-sm leading-6 text-slate-500">Use your administrator account. Affiliate accounts have a separate sign-in.</p>
         </section>
 
         <section aria-labelledby="signin-heading" className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
