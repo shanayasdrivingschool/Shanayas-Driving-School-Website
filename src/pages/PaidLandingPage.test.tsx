@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { featuredGoogleReviews } from "@/data/googleReviews";
+import { paidLandingVariants, getPaidLandingVariantUrl } from "@/data/paidLandingVariants";
 import PaidLandingPage from "./PaidLandingPage";
 import { paidLandingPages } from "@/data/paidLandingPages";
 import { submitFreeTrialLead } from "@/lib/leadService";
@@ -15,7 +16,7 @@ const renderPage = (pageId: "road-test" | "beginner" = "road-test") => render(
     <PaidLandingPage pageId={pageId} />
   </MemoryRouter>,
 );
-const openForm = () => fireEvent.click(screen.getAllByRole("button", { name: "Request a Callback", exact: true })[0]);
+const openForm = () => fireEvent.click(screen.getAllByRole("button", { name: "Request a Callback" })[0]);
 const fillForm = () => {
   fireEvent.focus(screen.getByLabelText(/Full name/));
   fireEvent.change(screen.getByLabelText(/Full name/), { target: { value: "Test Learner" } });
@@ -47,7 +48,11 @@ describe("paid landing callbacks", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(config.hero.h1);
     expect(view.container.querySelectorAll("main > section")).toHaveLength(8);
     expect(view.container.querySelector("footer")).toBeTruthy();
-    expect(screen.getAllByRole("figure")).toHaveLength(featuredGoogleReviews.length);
+    expect(view.container.querySelectorAll("#learner-review-slides figure")).toHaveLength(featuredGoogleReviews.length);
+    const sections = view.container.querySelectorAll("main > section");
+    expect(sections[1]).toHaveAttribute("aria-labelledby", "pricing-heading");
+    expect(sections[2]).toHaveAttribute("aria-labelledby", "reviews-heading");
+    if (!config.supportProgramme) expect(within(sections[0] as HTMLElement).getByLabelText("Standard lesson rates")).toHaveTextContent("$89 CAD");
     expect(screen.getByRole("button", { name: "Next reviews" })).toBeInTheDocument();
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -62,7 +67,7 @@ describe("paid landing callbacks", () => {
 
   it("carries the selected confidence package into the callback and stored enquiry", async () => {
     render(<MemoryRouter initialEntries={["/lp/road-test-confidence"]}><PaidLandingPage pageId="road-test-confidence" /></MemoryRouter>);
-    expect(screen.getByText(/Packages from/)).toHaveTextContent("$1,999");
+    expect(document.querySelector("#confidence-packages")).toHaveTextContent("$1,999");
     fireEvent.click(screen.getByRole("button", { name: "Request a Callback about Road Test Confidence Plus" }));
     const dialog = screen.getByRole("dialog");
     expect(within(dialog).getByText("Package interest: Road Test Confidence Plus")).toBeInTheDocument();
@@ -75,6 +80,36 @@ describe("paid landing callbacks", () => {
       attribution: expect.objectContaining({ landingPageId: "road-test-confidence" }),
     }));
     await waitFor(() => expect(within(dialog).getByRole("status")).toHaveTextContent("You’ll receive a call shortly"));
+  });
+
+  it("separates dialog opens from the first field edit and deduplicates engagement", async () => {
+    renderPage();
+    openForm();
+    const events = (name: string) => window.dataLayer.filter((event: { event?: string }) => event.event === name);
+    fireEvent.focus(screen.getByLabelText(/Full name/));
+    expect(events("callback_open")).toHaveLength(1);
+    expect(events("form_start")).toHaveLength(0);
+    fireEvent.change(screen.getByLabelText(/Full name/), { target: { value: "Learner" } });
+    fireEvent.change(screen.getByLabelText(/Phone number/), { target: { value: "2505550123" } });
+    expect(events("form_start")).toHaveLength(1);
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    openForm();
+    expect(events("callback_open")).toHaveLength(2);
+    expect(events("form_start")).toHaveLength(1);
+    expect(conversions()).toHaveLength(0);
+  });
+
+  it.each(paidLandingPages.filter((page) => !page.supportProgramme))("links $id course cards to their booking pages without opening a callback", (config) => {
+    render(<MemoryRouter initialEntries={[config.path]}><PaidLandingPage pageId={config.id} /></MemoryRouter>);
+    const links = screen.getAllByRole("link", { name: "Book Your Course Now" });
+    expect(links).toHaveLength(config.products.length);
+    links.forEach((link, index) => expect(link).toHaveAttribute("href", `/courses/${config.products[index].id}`));
+    fireEvent.click(links[0]);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(window.dataLayer.filter((event: { event?: string }) => event.event === "callback_open")).toHaveLength(0);
+    expect(window.dataLayer.find((event: { cta_name?: string }) => event.cta_name === "Book Your Course Now")).toMatchObject({ cta_location: `product-${config.products[0].id}` });
+    expect(submitFreeTrialLead).not.toHaveBeenCalled();
+    expect(conversions()).toHaveLength(0);
   });
 
   it("stores email, optional notes and attribution, and counts only a stored lead", async () => {
@@ -101,7 +136,7 @@ describe("paid landing callbacks", () => {
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
     expect(within(within(screen.getByRole("dialog")).getByRole("status")).getByRole("link", { name: /Call/ })).toHaveAttribute("href", "tel:+12505423673");
     expect(conversions()[0]).toMatchObject({ lead_email_provided: true });
-    fireEvent.click(screen.getByRole("button", { name: "Close", exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
     openForm();
     expect(within(screen.getByRole("dialog")).getByRole("status")).toHaveTextContent("You’ll receive a call shortly");
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
@@ -113,8 +148,8 @@ describe("paid landing callbacks", () => {
     renderPage();
     openForm();
     fillForm();
-    fireEvent.click(screen.getByRole("button", { name: "Close", exact: true }));
-    fireEvent.click(screen.getAllByRole("button", { name: "Check Availability" })[0]);
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    openForm();
     expect(screen.getByLabelText(/Full name/)).toHaveValue("Test Learner");
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     fireEvent.submit(screen.getByRole("form"));
@@ -176,5 +211,37 @@ describe("paid landing callbacks", () => {
     fireEvent.click(callLink);
     expect(window.dataLayer.filter((event: { event?: string }) => event.event === "click_to_call")).toHaveLength(1);
     expect(conversions()).toHaveLength(0);
+  });
+});
+
+
+describe("playbook variant enquiries", () => {
+  it.each(paidLandingVariants)("renders the $id audience without an inline form", (variant) => {
+    const view = render(<MemoryRouter initialEntries={[getPaidLandingVariantUrl(variant)]}><PaidLandingPage pageId={variant.pageId} /></MemoryRouter>);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(variant.heading);
+    expect(screen.getByRole("heading", { name: variant.choicesHeading })).toBeInTheDocument();
+    expect(view.container.querySelectorAll("main > section")).toHaveLength(8);
+    expect(screen.queryByRole("form")).not.toBeInTheDocument();
+    expect(view.container.querySelectorAll("main > section")[1]).toHaveAttribute("aria-labelledby", "pricing-heading");
+    expect(screen.getByRole("button", { name: "Next reviews" })).toBeInTheDocument();
+    expect(window.dataLayer.find((event: { event?: string }) => event.event === "landing_view")).toMatchObject({ landing_variant: variant.id });
+  });
+
+  it("preserves variant, chosen lesson, contact details and ad attribution through submission", async () => {
+    const variant = paidLandingVariants.find((v) => v.id === "specific-skills")!;
+    render(<MemoryRouter initialEntries={[getPaidLandingVariantUrl(variant)]}><PaidLandingPage pageId={variant.pageId} /></MemoryRouter>);
+    fireEvent.click(screen.getByRole("button", { name: "Request a callback about Lane changes and merging" }));
+    expect(screen.getByText("Lesson interest: Lane changes and merging")).toBeInTheDocument();
+    fillForm();
+    fireEvent.submit(screen.getByRole("form"));
+    await waitFor(() => expect(submitFreeTrialLead).toHaveBeenCalledTimes(1));
+    expect(submitFreeTrialLead).toHaveBeenCalledWith(expect.objectContaining({
+      note: "Free callback requested. Landing variant: specific-skills (Specific Driving Training). Lesson interest: Lane changes and merging. Notes: My test is next month.",
+      attribution: expect.objectContaining({ gclid: "test-click", utmCampaign: "test-campaign" }),
+    }));
+    await within(screen.getByRole("dialog")).findByRole("status");
+    expect(conversions()).toHaveLength(1);
+    expect(conversions()[0]).toMatchObject({ landing_variant: "specific-skills", landing_page_id: "icbc" });
+    expect(window.dataLayer.find((event: { event?: string }) => event.event === "form_start")).toMatchObject({ landing_variant: "specific-skills" });
   });
 });

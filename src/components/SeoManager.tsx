@@ -1,3 +1,4 @@
+import { branchByPath, buildBranchGraph } from "@/data/branchLocations";
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import type { BlogPostData } from "@/data/blogPosts";
@@ -18,6 +19,7 @@ import { courseCatalog } from "@/data/courseCatalog";
 import { optionalExtras } from "@/data/optionalExtras";
 import { packageCatalog } from "@/data/packageCatalog";
 import { sitePolicies } from "@/data/policies";
+import { applyPaidLandingVariant, getPaidLandingVariant } from "@/data/paidLandingVariants";
 import { paidLandingPagesByPath } from "@/data/paidLandingPages";
 import {
   seoLandingPagesByPath,
@@ -307,76 +309,6 @@ const toAbsoluteUrl = (value: string) => new URL(value, SITE_ORIGIN).toString();
 
 const toCanonicalPath = (path: string) => /^https:\/\//i.test(path) || path === "/" || path.endsWith("/") ? path : `${path}/`;
 
-const localBusinessJsonLd: JsonLdObject = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "DrivingSchool"],
-  "@id": `${SITE_ORIGIN}/#localbusiness`,
-  name: SITE_NAME,
-  url: `${SITE_ORIGIN}/`,
-  image: `${SITE_ORIGIN}/logos/For%20Social%20Media.jpg`,
-  logo: `${SITE_ORIGIN}/logos/Driving%20School%20Logo%20Horizontal.png`,
-  description: DEFAULT_DESCRIPTION,
-  telephone: "+1-250-542-3673",
-  email: "book@drivingschoolbc.ca",
-  priceRange: "$$",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "124-2770 Leigh Rd",
-    addressLocality: "Langford",
-    addressRegion: "BC",
-    postalCode: "V9B 4G1",
-    addressCountry: "CA",
-  },
-  areaServed: [
-    "Victoria, BC",
-    "Langford, BC",
-    "Colwood, BC",
-    "Saanich, BC",
-    "View Royal, BC",
-    "Sidney, BC",
-    "Metchosin, BC",
-    "Sooke, BC",
-    "Duncan, BC",
-    "Salt Spring Island, BC",
-  ],
-  sameAs: socialProfileUrls,
-  makesOffer: [
-    {
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Driving lessons",
-        areaServed: "Greater Victoria, BC",
-      },
-    },
-    {
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Class 5 and 7 road-test preparation",
-        areaServed: "Greater Victoria, BC",
-      },
-    },
-    {
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Defensive driving course",
-        areaServed: [
-          "Victoria, BC",
-          "Langford, BC",
-          "Colwood, BC",
-          "Sidney, BC",
-          "Metchosin, BC",
-          "Sooke, BC",
-          "Duncan, BC",
-          "Salt Spring Island, BC",
-        ],
-      },
-    },
-  ],
-};
-
 const findMetaByName = (name: string) =>
   document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
 
@@ -490,7 +422,7 @@ const buildPricingServiceJsonLd = (
       `When the ${offer.discountPercent}% promotion is active and applies to an eligible booking, the rate is $${offer.promotionalHourlyRate.toFixed(2)} ${offer.currency} plus GST.`,
     url: canonicalUrl,
     serviceType: "Driving instruction",
-    provider: { "@id": `${SITE_ORIGIN}/#localbusiness` },
+    provider: { "@id": `${SITE_ORIGIN}/#organization` },
     areaServed: ["Victoria, BC", "Langford, BC", "Colwood, BC", "Sidney, BC"],
     termsOfService: toAbsoluteUrl(offer.policyHref),
     offers: {
@@ -546,7 +478,7 @@ const buildArticleJsonLd = (
       : seo.article.reviewerName
         ? { reviewedBy: { "@type": "Person", name: seo.article.reviewerName } }
       : {}),
-    publisher: { "@id": `${SITE_ORIGIN}/#localbusiness` },
+    publisher: { "@id": `${SITE_ORIGIN}/#organization` },
   };
 };
 
@@ -706,6 +638,10 @@ const getSeoForPath = (rawPathname: string, blogPosts: BlogPostData[]): SeoDetai
     };
   }
 
+  const branch = branchByPath(path);
+  if (branch) return { title: branch.title, description: branch.description, path: branch.path, faqs: branch.faqs,
+    breadcrumbs: [{ name: "Home", path: "/" }, { name: branch.label, path: branch.path }] };
+  if (path === "/driving-lessons-langford") return { title: "Langford Campus | Shanaya's Driving School", description: "Visit our Langford Campus in British Columbia, Canada.", path, canonicalPath: "/locations/langford/", robots: "noindex, follow" };
   const landingPage = seoLandingPagesByPath[path];
   if (landingPage) {
       return {
@@ -738,7 +674,15 @@ const EMPTY_BLOG_POSTS: BlogPostData[] = [];
 
 const SeoManager = ({ blogPosts = EMPTY_BLOG_POSTS }: { blogPosts?: BlogPostData[] }) => {
   const location = useLocation();
-  const seo = useMemo(() => getSeoForPath(location.pathname, blogPosts), [blogPosts, location.pathname]);
+  const seo = useMemo(() => {
+    const baseSeo = getSeoForPath(location.pathname, blogPosts);
+    const base = paidLandingPagesByPath[location.pathname.replace(/\/$/, "")];
+    if (!base) return baseSeo;
+    const variant = getPaidLandingVariant(base.id, location.search);
+    if (!variant) return baseSeo;
+    const config = applyPaidLandingVariant(base, variant);
+    return { ...baseSeo, title: config.seo.title, description: config.seo.description, faqs: config.faqs };
+  }, [blogPosts, location.pathname, location.search]);
 
   useEffect(() => {
     const canonicalUrl = toAbsoluteUrl(toCanonicalPath(seo.canonicalPath ?? seo.path));
@@ -777,7 +721,7 @@ const SeoManager = ({ blogPosts = EMPTY_BLOG_POSTS }: { blogPosts?: BlogPostData
     setMetaByName("twitter:image", imageUrl);
     setMetaByName("twitter:image:alt", `${SITE_NAME} branded social preview`);
 
-    setJsonLd("local-business-schema", localBusinessJsonLd);
+    setJsonLd("local-business-schema", buildBranchGraph(seo.canonicalPath ?? seo.path, socialProfileUrls));
     setJsonLd("faq-schema", isCanonicalPage ? buildFaqJsonLd(seo.faqs) : null);
     setJsonLd(
       "pricing-service-schema",
@@ -787,7 +731,7 @@ const SeoManager = ({ blogPosts = EMPTY_BLOG_POSTS }: { blogPosts?: BlogPostData
     setJsonLd(
       "profile-page-schema",
       seo.author
-        ? buildProfilePageJsonLd(SITE_ORIGIN, seo.author, `${SITE_ORIGIN}/#localbusiness`)
+        ? buildProfilePageJsonLd(SITE_ORIGIN, seo.author, `${SITE_ORIGIN}/#organization`)
         : null,
     );
     setJsonLd("breadcrumb-schema", isCanonicalPage ? buildBreadcrumbJsonLd(seo.breadcrumbs) : null);

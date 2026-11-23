@@ -17,9 +17,9 @@ export const paidLandingOffers: Record<string, {
   },
   "lesson-road-test-prep-course": {
     title: "Road-Test Day Package",
-    description: "Road-test preparation and use of the school car for your ICBC road test.",
-    duration: "Preparation + test-day car rental",
-    highlights: ["Test-day vehicle, subject to availability", "Confirm preparation timing and test location before booking", "Additional practice lessons priced separately"],
+    description: "One hour of road-test preparation and use of the school car for your ICBC road test.",
+    duration: "1 hour of preparation + test-day car rental",
+    highlights: ["Test-day vehicle, subject to availability", "One hour of preparation included", "Additional practice lessons priced separately"],
   },
   "beginner-driving-course": {
     title: "Beginner’s Driving Course",

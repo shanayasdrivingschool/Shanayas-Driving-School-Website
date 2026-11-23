@@ -12,6 +12,7 @@ export const LEAD_SUBMIT_EVENT = "lead_submit";
 export const LANDING_VIEW_EVENT = "landing_view";
 export const CTA_CLICK_EVENT = "assessment_cta_click";
 export const FORM_START_EVENT = "form_start";
+export const CALLBACK_OPEN_EVENT = "callback_open";
 export const CLICK_TO_CALL_EVENT = "click_to_call";
 
 export type LeadConversion = {
@@ -25,9 +26,11 @@ export type LeadConversion = {
   leadId?: string;
   /** Paid landing page configuration ID, when the lead came from that funnel. */
   landingPageId?: string;
+  landingVariant?: string;
 };
 
 type LandingEventContext = {
+  landingVariant?: string;
   landingPageId: string;
   sourcePage: string;
   contentGroup: string;
@@ -44,6 +47,7 @@ const pushDataLayerEvent = (event: string, payload: Record<string, unknown>) => 
 export const pushLandingView = (context: LandingEventContext) => {
   pushDataLayerEvent(LANDING_VIEW_EVENT, {
     landing_page_id: context.landingPageId,
+    landing_variant: context.landingVariant ?? "control",
     lead_source_page: context.sourcePage,
     content_group: context.contentGroup,
     funnel: context.funnel,
@@ -57,6 +61,7 @@ export const pushLandingCtaClick = (
 ) => {
   pushDataLayerEvent(CTA_CLICK_EVENT, {
     landing_page_id: context.landingPageId,
+    landing_variant: context.landingVariant ?? "control",
     lead_source_page: context.sourcePage,
     content_group: context.contentGroup,
     funnel: context.funnel,
@@ -65,9 +70,22 @@ export const pushLandingCtaClick = (
   });
 };
 
+/** A dialog opening is separate from the visitor editing a contact field. */
+export const pushCallbackOpen = (context: LandingEventContext, ctaLocation: string) => {
+  pushDataLayerEvent(CALLBACK_OPEN_EVENT, {
+    landing_page_id: context.landingPageId,
+    landing_variant: context.landingVariant ?? "control",
+    lead_source_page: context.sourcePage,
+    content_group: context.contentGroup,
+    funnel: context.funnel,
+    cta_location: ctaLocation,
+  });
+};
+
 export const pushLandingFormStart = (context: LandingEventContext) => {
   pushDataLayerEvent(FORM_START_EVENT, {
     landing_page_id: context.landingPageId,
+    landing_variant: context.landingVariant ?? "control",
     lead_source_page: context.sourcePage,
     content_group: context.contentGroup,
     funnel: context.funnel,
@@ -77,6 +95,7 @@ export const pushLandingFormStart = (context: LandingEventContext) => {
 export const pushClickToCall = (context: LandingEventContext, ctaLocation: string) => {
   pushDataLayerEvent(CLICK_TO_CALL_EVENT, {
     landing_page_id: context.landingPageId,
+    landing_variant: context.landingVariant ?? "control",
     lead_source_page: context.sourcePage,
     content_group: context.contentGroup,
     funnel: context.funnel,
@@ -99,6 +118,7 @@ export const pushLeadConversion = ({
   emailProvided,
   leadId,
   landingPageId,
+  landingVariant,
 }: LeadConversion) => {
   pushDataLayerEvent(LEAD_SUBMIT_EVENT, {
     lead_intent: intent,
@@ -106,5 +126,6 @@ export const pushLeadConversion = ({
     lead_email_provided: emailProvided,
     lead_id: leadId,
     landing_page_id: landingPageId,
+    ...(landingPageId ? { landing_variant: landingVariant ?? "control" } : {}),
   });
 };

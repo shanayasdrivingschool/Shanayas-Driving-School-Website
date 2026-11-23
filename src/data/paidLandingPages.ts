@@ -1,4 +1,5 @@
 import { roadTestConfidenceProgramme } from "@/data/roadTestConfidence";
+import { STANDARD_SIXTY_MINUTE_RATE, STANDARD_NINETY_MINUTE_RATE, formatCoursePrice } from "@/data/coursePricing";
 import { googleReviews } from "@/data/googleReviews";
 
 export type PaidLandingPageId =
@@ -78,6 +79,11 @@ export type PaidLandingPageConfig = {
   analytics: { contentGroup: string; funnel: string };
 };
 
+const standardLessonPriceHighlights = [
+  { label: `${formatCoursePrice(STANDARD_SIXTY_MINUTE_RATE)} CAD`, detail: "60-minute lesson" },
+  { label: `${formatCoursePrice(STANDARD_NINETY_MINUTE_RATE)} CAD`, detail: "90-minute lesson" },
+];
+
 const sharedOfferTerms =
   "The callback is free. It is an enquiry, not a lesson booking. Lesson availability, prices and terms are confirmed before you book.";
 
@@ -113,6 +119,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       subhead:
         "Build safe driving habits with patient instruction and lesson options matched to your experience.",
       proofPoints: ["Patient instruction", "Dual-control training vehicles", "Genuine student reviews"],
+      priceHighlights: standardLessonPriceHighlights,
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
@@ -126,7 +133,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     },
     pricingHeading: "Compare Driving Lessons in Victoria",
     finalHeading: "Let’s Find the Right Lessons for You.",
-    products: [{ kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "make-your-own-class" }, { kind: "course", id: "road-test-prep-course" }],
+    products: [{ kind: "course", id: "make-your-own-class" }, { kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "road-test-prep-course" }],
     benefits: [
       { title: "A plan matched to your starting point", body: "Discuss your experience so your instructor can plan lessons around the skills you want to work on." },
       { title: "Practice in a dual-control vehicle", body: "Train in a school vehicle equipped so your instructor can intervene when needed." },
@@ -159,6 +166,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       h1: "Driving Lessons Near You in Greater Victoria",
       subhead: "Find driving instruction in Victoria, Langford, Colwood, Saanich and nearby communities we serve.",
       proofPoints: ["Area-specific availability", "Pickup options confirmed before booking", "Tap-to-call support"],
+      priceHighlights: standardLessonPriceHighlights,
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
@@ -205,11 +213,8 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       h1: "Driving Lesson Prices & Packages in Victoria",
       subhead: "Compare what is included, choose a lesson plan that fits your goals, and request current availability.",
       proofPoints: ["Published lesson lengths", "Prices shown before GST", "Itemized terms before payment"],
+      priceHighlights: standardLessonPriceHighlights,
       imageAsset: "/landing/driving-lessons-saanich.webp",
-      priceHighlights: [
-        { label: "$89 CAD", detail: "60-minute standard-area lesson + GST" },
-        { label: "$133.50 CAD", detail: "90-minute standard-area lesson + GST" },
-      ],
     },
     conversion: {
       primaryCta: "Request a Callback",
@@ -255,6 +260,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       h1: "ICBC Road Test Preparation in Victoria",
       subhead: "Feel confident and prepared for your road test with personalised driving lessons, clear feedback, and patient, professional instruction.",
       proofPoints: ["Focused practice options", "Mock evaluation available", "No pass guarantees"],
+      priceHighlights: standardLessonPriceHighlights,
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
@@ -281,7 +287,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       { question: "What happens during a mock road-test evaluation?", answer: "A school-provided practice evaluation includes feedback on your driving and areas to improve. The catalogue offers 60- and 90-minute options. It is not an official ICBC test or result.", link: { label: "View mock evaluation options", href: "/courses/mock-test-evaluation" } },
       { question: "Do you offer pickup and drop-off?", answer: "Pickup and drop-off arrangements must be confirmed for your address, lesson time and instructor availability. Discuss your location during the callback." },
       { question: "What does the free callback include?", answer: "We discuss your test date, preparation goals, suitable options, pricing and availability. The phone conversation is free and does not book a lesson or include an in-car evaluation." },
-      { question: "What is included in the $250 road-test package?", answer: "The catalogue lists road-test preparation and a rental car for test day at $250 CAD before GST. Additional 60-minute practice lessons cost $89 CAD each before GST. Confirm preparation timing, your test location and pickup arrangements before booking.", link: { label: "Review package details and options", href: "/courses/lesson-road-test-prep-course" } },
+      { question: "What is included in the $250 road-test package?", answer: "The $250 CAD package includes one hour of road-test preparation and a rental car for test day, before GST. Additional 60-minute practice lessons cost $89 CAD each before GST. Confirm your test location, vehicle availability and pickup arrangements before booking.", link: { label: "Review package details and options", href: "/courses/lesson-road-test-prep-course" } },
     ],
     testimonialIds: ["alfred-taban", "yogita-bang", "alexis-dumaresq"],
     serviceAreas: sharedAreas,
@@ -306,6 +312,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       subhead:
         "Learn with patient instruction and clear feedback. Build safe driving habits at your pace with structured lessons in Greater Victoria.",
       proofPoints: ["Patient instruction", "Dual-control training vehicles", "Genuine student reviews"],
+      priceHighlights: standardLessonPriceHighlights,
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
@@ -319,7 +326,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     },
     pricingHeading: "Choose Your First Driving Lessons",
     finalHeading: "Your First Lessons Start With a Conversation.",
-    products: [{ kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "make-your-own-class" }, { kind: "course", id: "parking-course" }],
+    products: [{ kind: "course", id: "make-your-own-class" }, { kind: "course", id: "beginner-driving-course" }, { kind: "course", id: "parking-course" }],
     benefits: [
       { title: "Start from your actual experience", body: "Tell us whether you are completely new or have practised before, then begin at an appropriate level." },
       { title: "Build skills in a clear order", body: "Structured options cover car control, road awareness, safe habits and focused practice." },
@@ -353,6 +360,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       h1: "Patient Lessons for Nervous & Returning Drivers",
       subhead: "Practise at your pace with supportive coaching focused on the situations that feel difficult.",
       proofPoints: ["Calm, respectful instruction", "Dual-control training vehicles", "Skill-focused lesson options"],
+      priceHighlights: standardLessonPriceHighlights,
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
@@ -366,7 +374,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     },
     pricingHeading: "Choose Support for Your Next Drive",
     finalHeading: "Take Your Next Step With Support.",
-    products: [{ kind: "course", id: "refresher-driving-course" }, { kind: "course", id: "confidence-booster-course" }, { kind: "course", id: "make-your-own-class" }],
+    products: [{ kind: "course", id: "make-your-own-class" }, { kind: "course", id: "refresher-driving-course" }, { kind: "course", id: "confidence-booster-course" }],
     benefits: [
       { title: "Name the situation, not a label", body: "Tell us whether parking, busier roads, lane changes or returning after a break is the main concern." },
       { title: "Progress at a suitable pace", body: "The assessment helps identify a reasonable first environment and the next skill to practise." },
@@ -399,6 +407,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
       h1: "ICBC-Focused Driving Lessons in Victoria",
       subhead: "Learn B.C. driving rules and practise safe road habits with instruction matched to your experience.",
       proofPoints: ["Class 5 and 7 training", "Independent driving school", "Clear lesson options"],
+      priceHighlights: standardLessonPriceHighlights,
       imageAsset: "/landing/driving-lessons-saanich.webp",
     },
     conversion: {
@@ -442,7 +451,7 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     hero: {
       eyebrow: "Road Test Confidence · Greater Victoria",
       h1: "Road-Test Training With Continued Support",
-      subhead: "Start with 15 hours of private driving lessons. If a qualifying road test doesn’t go your way, your package includes extra coaching to prepare for another attempt.",
+      subhead: "Start with 15 hours of private driving lessons. If you fail an ICBC Class 5 or Class 7 road test, your package includes extra coaching to prepare for another attempt.",
       proofPoints: ["Private 90-minute lessons", "Defined support for up to 4 attempts", "Choose training or training + test-day car"],
       imageAsset: "/vehicles/school-car-parked-1280-89d295d67d.webp",
     },
@@ -461,18 +470,19 @@ export const paidLandingPages: PaidLandingPageConfig[] = [
     supportProgramme: roadTestConfidenceProgramme,
     benefits: [
       { title: "Know your starting point", body: "Ten private 90-minute lessons provide 15 hours of initial instruction." },
-      { title: "Understand the next step", body: "Additional lesson blocks become available after unsuccessful qualifying tests, within the four-attempt limit." },
+      { title: "Understand the next step", body: "Additional lesson blocks become available after unsuccessful ICBC road tests, within the four-attempt limit." },
       { title: "Choose your test-day car option", body: "Compare training support alone with training plus school-car use for covered tests." },
     ],
     faqs: [
-      { question: "Do I receive all 30 hours from the start?", answer: "No. Both packages include 15 initial hours: ten lessons of 90 minutes. After an unsuccessful qualifying first test, five more lessons are included; after a second, three more; after a third, two more. That is up to 15 conditional extra hours and 30 hours in total. Each block is available for the next covered attempt, subject to programme conditions." },
+      { question: "Do I receive all 30 hours from the start?", answer: "No. Both packages include 15 initial hours: ten lessons of 90 minutes. After an unsuccessful first ICBC road test, five more lessons are included; after a second, three more; after a third, two more. That is up to 15 conditional extra hours and 30 hours in total. Each block is available for the next covered attempt, subject to programme conditions." },
       { question: "What happens if I pass on my first attempt?", answer: "Your conditional retest support ends when you pass. The initial ten lessons are included regardless of the result. Outstanding payments and any refund rights are governed by your written purchase and refund terms; passing does not itself create a refund promise." },
       { question: "Does this guarantee I will pass?", answer: "No. The package provides a defined amount of training and conditional retest support, not unlimited lessons or a guaranteed pass. ICBC determines your road-test result." },
       { question: "Are the road-test car and ICBC fees included?", answer: "Both packages include the training vehicle during lessons. The $1,999 CAD + GST package excludes test-day vehicle rental. The $2,599 CAD + GST Plus package includes the school car for the first covered test and up to three retries following unsuccessful tests, subject to booking and coverage rules. All ICBC testing fees and applicable government charges are separate. Book the official road test directly with ICBC and coordinate school-car availability with our team.", link: { label: "ICBC road-test booking and fees", href: "https://www.icbc.com/driver-licensing/visit-dl-office/Book-a-road-test" } },
-      { question: "Can a beginner join, and where are lessons available?", answer: "The programme may suit different experience levels. Discuss your experience and training needs with the team before choosing a package; 15 initial hours may not meet every learner’s needs. Lessons are offered in Greater Victoria, including Victoria and Langford. Confirm eligible licence classes, pickup location, test centre, coverage dates and scheduling before you enrol." },
+      { question: "Can a beginner join, and where are lessons available?", answer: "The programme may suit different experience levels. Discuss your experience and training needs with the team before choosing a package; 15 initial hours may not meet every learner’s needs. Lessons are offered in Greater Victoria, including Victoria and Langford. The programme is for Class 5 and Class 7 road-test preparation and has no expiry date. Confirm your pickup location, test centre and scheduling before you enrol." },
       { question: "What if I need extra lessons or more than four attempts?", answer: "The package has no additional included coaching blocks after the fourth covered attempt. Further lessons or road-test vehicle services can be arranged separately at the applicable rate, subject to availability. You can also ask about extra training before an earlier attempt." },
       { question: "Can I pay in instalments?", answer: "Eligible instalment options, including Klarna where available, may apply to your purchase. Ask the team which options are available for your package. Purchase limits, approval, interest or fees and repayment schedules are set by the provider. Approval is not guaranteed." },
-      { question: "What should I confirm before paying?", answer: "Ask the team to explain which tests qualify, the package coverage period, lesson-completion requirements, available test-day vehicle dates, and cancellation and refund terms. Review your written package terms before purchase. Requesting a callback does not book a test or commit you to buying a package.", link: { label: "School cancellation and rescheduling policy", href: "/policies/cancellation-and-rescheduling" } },
+      { question: "Does the package expire, and what counts as an unsuccessful test?", answer: "The package has no expiry date. An unsuccessful test means that the student fails an ICBC road test. For Class 5 and Class 7 preparation, the next included lesson block becomes available after that result, within the four-attempt limit. Conditional support ends when you pass or after your fourth covered attempt." },
+      { question: "What should I confirm before paying?", answer: "Confirm your test centre, any lesson-completion requirements, available test-day vehicle dates, and cancellation and refund terms. Review your written package terms before purchase. Requesting a callback does not book a test or commit you to buying a package.", link: { label: "School cancellation and rescheduling policy", href: "/policies/cancellation-and-rescheduling" } },
     ],
     testimonialIds: ["yogita-bang", "alfred-taban", "alexis-dumaresq"],
     serviceAreas: ["Victoria", "Langford"],

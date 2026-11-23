@@ -48,7 +48,7 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
               {page.eyebrow}
             </p>
             <h2 className="mt-3 text-4xl font-black leading-tight text-[#1d52a1] sm:text-5xl">
-              {page.h1}
+              {page.introTitle ?? page.h1}
             </h2>
             <div className="mt-6 space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
               {page.intro.map((paragraph) => (
@@ -138,6 +138,9 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
                     </li>
                   ))}
                 </ul>
+                {page.serviceAreaNote ? (
+                  <p className="mt-6 text-sm leading-relaxed text-slate-600">{page.serviceAreaNote}</p>
+                ) : null}
                 <Link
                   to="/contact"
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#1d52a1] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
@@ -185,6 +188,11 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
               <article key={section.title} className="rounded-[28px] bg-white p-6 shadow-sm sm:p-8">
                 <h3 className="text-2xl font-black text-slate-900">{section.title}</h3>
                 <p className="mt-4 text-base leading-relaxed text-slate-600">{section.body}</p>
+                {section.source ? (
+                  <a href={section.source.href} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm font-semibold text-[#1d52a1] underline underline-offset-4">
+                    {section.source.label}
+                  </a>
+                ) : null}
                 {section.bullets?.length ? (
                   <ul className="mt-5 space-y-3 text-sm font-semibold text-slate-700">
                     {section.bullets.map((bullet) => (
@@ -200,6 +208,72 @@ const SeoLandingPage = ({ pageId }: SeoLandingPageProps) => {
           </div>
         </div>
       </section>
+
+      {page.benefits?.length ? (
+        <section className="bg-white py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <h2 className="max-w-3xl text-3xl font-black leading-tight text-[#1d52a1] sm:text-4xl">{page.benefitsTitle}</h2>
+            <div className="mt-10 grid gap-8 md:grid-cols-3">
+              {page.benefits.map((benefit) => (
+                <div key={benefit.title} className="border-t-2 border-[#F5B13A] pt-5">
+                  <h3 className="text-xl font-bold text-slate-900">{benefit.title}</h3>
+                  <p className="mt-3 leading-relaxed text-slate-600">{benefit.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {page.lessonSteps?.length ? (
+        <section className="bg-[#F2F2F2] py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <h2 className="max-w-3xl text-3xl font-black leading-tight text-[#1d52a1] sm:text-4xl">{page.lessonStepsTitle}</h2>
+            <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {page.lessonSteps.map((step, index) => (
+                <li key={step.title}>
+                  <span aria-hidden="true" className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#1d52a1] text-lg font-bold text-white">{index + 1}</span>
+                  <h3 className="mt-5 text-xl font-bold text-slate-900">{step.title}</h3>
+                  <p className="mt-3 leading-relaxed text-slate-600">{step.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      ) : null}
+
+      {page.booking ? (
+        <section className="bg-white py-16 sm:py-20">
+          <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14">
+            <div>
+              <h2 className="text-3xl font-black leading-tight text-[#1d52a1] sm:text-4xl">{page.booking.title}</h2>
+              <p className="mt-5 leading-relaxed text-slate-600">{page.booking.body}</p>
+              <Link to="/apply" className={`${siteCtaPrimaryClassName} mt-6`}>Enquire about a lesson</Link>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-900">Details to discuss before booking</h3>
+              <ul className="mt-4 space-y-4">
+                {page.booking.checklist.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-slate-600">
+                    <CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-[#1d52a1]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-[#1d52a1]">
+                <Link to="/payment-plan-options" className="underline underline-offset-4">View payment plans</Link>
+                <Link to="/policies" className="underline underline-offset-4">Read our policies</Link>
+                <Link to="/contact" className="underline underline-offset-4">Contact us</Link>
+              </div>
+              {page.bookingSource ? (
+                <p className="mt-5 text-sm text-slate-600">
+                  Before choosing lessons, see <a href={page.bookingSource.href} target="_blank" rel="noopener noreferrer" className="text-[#1d52a1] underline underline-offset-4">{page.bookingSource.label}</a>.
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {page.faqs?.length ? (
         <section className="bg-white py-16 sm:py-20">

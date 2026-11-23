@@ -70,15 +70,19 @@ describe("paid landing-page configuration", () => {
     expect(offer.stages.reduce((sum, stage) => sum + stage.hours, 0)).toBe(30);
     expect(offer.stages[0].hours).toBe(15);
     expect(offer.conditions).toContain("Conditional support ends when you pass");
+    expect(offer.conditions).toContain("Class 5 and Class 7");
+    expect(offer.conditions).toContain("no package expiry date");
+    expect(offer.conditions).toContain("a failed ICBC road test");
+    expect(courseCatalogById["lesson-road-test-prep-course"].duration).toBe("1 hour of preparation + test-day car rental");
     expect(page.seo.noindex).toBe(true);
   });
 
-  it("prioritises road-test services for test traffic and beginner lessons for beginners", () => {
+  it("prioritises road-test services for test traffic and individual lessons before larger commitments", () => {
     const roadTest = paidLandingPages.find((page) => page.id === "road-test")!;
     expect(roadTest.products.map((product) => product.id)).toEqual([
       "road-test-prep-course", "mock-test-evaluation", "lesson-road-test-prep-course",
     ]);
-    expect(paidLandingPages.find((page) => page.id === "beginner")!.products[0].id).toBe("beginner-driving-course");
-    expect(paidLandingPages.find((page) => page.id === "confidence")!.products[0].id).toBe("refresher-driving-course");
+    expect(paidLandingPages.find((page) => page.id === "beginner")!.products[0].id).toBe("make-your-own-class");
+    expect(paidLandingPages.find((page) => page.id === "confidence")!.products[0].id).toBe("make-your-own-class");
   });
 });

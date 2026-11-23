@@ -8,7 +8,7 @@ import { googleReviewsUrl } from "@/data/beginnerCourseLanding";
 const textLink = "inline-flex min-h-[44px] items-center gap-2 font-bold text-[#1d52a1] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200";
 const arrowButton = "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#1d52a1] text-[#1d52a1] transition hover:bg-[#EAF0F8] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-300";
 
-export default function PaidLandingReviews() {
+export default function PaidLandingReviews({ reviews = featuredGoogleReviews, prioritised = false }: { reviews?: typeof featuredGoogleReviews; prioritised?: boolean }) {
   const [viewportRef, api] = useEmblaCarousel({ align: "start", slidesToScroll: "auto", loop: false });
   const [selected, setSelected] = useState(0);
   const [snapCount, setSnapCount] = useState(0);
@@ -39,7 +39,7 @@ export default function PaidLandingReviews() {
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <h2 id="reviews-heading" className="text-3xl font-black tracking-tight text-[#0B1A33] sm:text-4xl">5-Star Rated by Learners</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">Selected five-star Google review excerpts, newest first. These are individual experiences; results vary.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">{prioritised ? "Selected five-star Google review excerpts." : "Selected five-star Google review excerpts, newest first."} These are individual experiences; results vary.</p>
           </div>
           <a href={googleReviewsUrl} target="_blank" rel="noopener noreferrer" className={`${textLink} shrink-0 text-sm`}>See all Google reviews <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
         </div>
@@ -61,11 +61,11 @@ export default function PaidLandingReviews() {
           </div>
           <div ref={viewportRef} id="learner-review-slides" tabIndex={0} aria-describedby="review-navigation-hint" className="overflow-hidden rounded-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200">
             <div className="-ml-6 flex touch-pan-y">
-              {featuredGoogleReviews.map((review, index) => {
+              {reviews.map((review, index) => {
                 const photo = reviewImages[review.id];
                 const initials = review.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("");
                 return (
-                  <div key={review.id} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${featuredGoogleReviews.length}`} className="min-w-0 shrink-0 grow-0 basis-full pl-6 sm:basis-1/2 lg:basis-1/3">
+                  <div key={review.id} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${reviews.length}`} className="min-w-0 shrink-0 grow-0 basis-full pl-6 sm:basis-1/2 lg:basis-1/3">
                     <figure className="flex h-full flex-col border-l border-slate-200 px-5 py-1 sm:px-6">
                       <div className="flex items-center gap-1 text-[#A66B00]" role="img" aria-label="5 out of 5 stars">
                         {Array.from({ length: 5 }, (_, star) => <Star key={star} className="h-5 w-5 fill-current" aria-hidden="true" />)}

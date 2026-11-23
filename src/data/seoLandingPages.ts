@@ -1,3 +1,5 @@
+import { localLessonPages } from "./localLessonPages";
+
 export type SeoLandingPageId =
   | "driving-lessons"
   | "driving-lessons-langford"
@@ -20,6 +22,7 @@ export type SeoLandingPageSection = {
   title: string;
   body: string;
   bullets?: string[];
+  source?: SeoLandingPageSource;
 };
 
 export type SeoLandingPageFaq = {
@@ -67,6 +70,14 @@ export type SeoLandingPage = {
   heroImage: string;
   targetKeyword: string;
   intro: string[];
+  introTitle?: string;
+  serviceAreaNote?: string;
+  benefitsTitle?: string;
+  benefits?: SeoLandingPageSection[];
+  lessonStepsTitle?: string;
+  lessonSteps?: SeoLandingPageSection[];
+  booking?: { title: string; body: string; checklist: string[] };
+  bookingSource?: SeoLandingPageSource;
   sections: SeoLandingPageSection[];
   serviceAreaTitle?: string;
   serviceAreas?: string[];
@@ -83,6 +94,7 @@ export type SeoLandingPage = {
 };
 
 export const seoLandingPages: SeoLandingPage[] = [
+  ...localLessonPages.filter(page => page.id !== "driving-lessons-langford"),
   {
     id: "driving-lessons",
     path: "/driving-lessons",
@@ -132,154 +144,6 @@ export const seoLandingPages: SeoLandingPage[] = [
         question: "Are lessons aligned with ICBC road test expectations?",
         answer:
           "Yes. Lessons build the observation, control, parking, and road judgment habits ICBC examiners expect to see.",
-      },
-    ],
-  },
-  {
-    id: "driving-lessons-langford",
-    path: "/driving-lessons-langford",
-    title: "Driving Lessons Langford BC | Drive With Confidence",
-    metaDescription:
-      "Build confidence with professional driving lessons in Langford, BC. Book now to learn road skills, traffic rules, and safe driving techniques.",
-    eyebrow: "Langford driving lessons",
-    h1: "Driving lessons in Langford, BC",
-    heroDescription:
-      "Learn to drive with confidence across Langford and the Westshore, with calm, road-test-focused instruction on roundabouts, Goldstream Avenue traffic, highway merges, and parking from our local Langford hub.",
-    heroImage: "/landing/driving-lessons-langford.webp",
-    targetKeyword: "driving lessons Langford BC",
-    testimonial: {
-      quote:
-        "I started as a nervous beginner, and my instructor made every lesson calm, clear, and easy to follow.",
-      name: "Alyssa P.",
-      location: "Student · Langford",
-    },
-    serviceAreaTitle: "Langford and the Westshore",
-    serviceAreas: ["Langford", "Colwood", "View Royal", "Metchosin", "Sooke", "Victoria", "Sidney"],
-    intro: [
-      "Shanaya's Driving School serves Langford and the Westshore. Our main office and training hub is at 124-2770 Leigh Rd, Langford, BC V9B 4G1, so lessons for Langford learners can start close to home on the roads you already drive every day.",
-      "Langford driving has its own character: a growing number of roundabouts, busy stretches of Goldstream Avenue and Veterans Memorial Parkway, Trans-Canada Highway merges, and hilly routes around Bear Mountain. Our lessons build the skills these roads demand: smooth roundabout entries and exits, confident highway merging, hill starts, lane discipline, and calm decisions in Westshore traffic.",
-      "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a newer driver who wants to feel in control around the Westshore, we pace the training around you in a patient, dual-control car.",
-    ],
-    sections: [
-      {
-        title: "What Langford lessons cover",
-        body:
-          "Students start with the fundamentals and build toward the specific situations Langford drivers face most. Instructors demonstrate each skill, then give direct feedback after every practice segment.",
-        bullets: [
-          "Roundabout approach, lane choice, signalling, and safe exits",
-          "Trans-Canada Highway on-ramps, merging, and lane changes",
-          "Hill starts, grades, and parking around Bear Mountain and Westshore lots",
-        ],
-      },
-      {
-        title: "Local routes and practice areas",
-        body:
-          "Lessons use real Langford and Westshore roads: Goldstream Avenue, Veterans Memorial Parkway, and Jacklin Road for traffic practice, quieter Happy Valley and residential streets for beginners, and large commercial lots near Millstream and Costco for parking and low-speed control.",
-      },
-      {
-        title: "Starting from our Langford hub",
-        body:
-          "Because our office is in Langford, lessons can begin right in the Westshore with flexible pickup across Langford, Colwood, View Royal, and Metchosin. You practise on the same local roads you drive daily, which builds confidence faster than an unfamiliar training route.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Do lessons start close to Langford?",
-        answer:
-          "Yes. Our main training hub is at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar local roads.",
-      },
-      {
-        question: "Will I practise Langford's roundabouts?",
-        answer:
-          "Yes. Langford has many roundabouts, so entering, choosing the right lane, signalling, and exiting them safely is a core part of local lessons.",
-      },
-      {
-        question: "Do lessons cover the Trans-Canada Highway merges?",
-        answer:
-          "Yes. Once you are ready, lessons include highway on-ramps, merging, and lane changes at Westshore speeds so you feel confident on Highway 1.",
-      },
-    ],
-  },
-  {
-    id: "driving-lessons-colwood",
-    path: "/driving-lessons-colwood",
-    title: "Driving Lessons Colwood BC | Learn & Drive Confidently",
-    metaDescription:
-      "Improve your driving skills with professional driving lessons in Colwood, BC. Get practical, personalized instruction for safer and more confident driving.",
-    eyebrow: "Colwood driving lessons",
-    h1: "Driving lessons in Colwood, BC",
-    heroDescription:
-      "Learn to drive with confidence across Colwood and the Westshore, with calm, road-test-focused instruction on Sooke Road, the Colwood interchange, Ocean Boulevard, and Royal Bay's newer streets.",
-    heroImage: "/landing/driving-lessons-colwood.webp",
-    targetKeyword: "driving lessons Colwood BC",
-    testimonial: {
-      quote:
-        "Scheduling was flexible and the coaching style was patient. I improved every week and felt fully prepared.",
-      name: "Daniel M.",
-      location: "Student · Colwood",
-    },
-    serviceAreaTitle: "Colwood and the Westshore",
-    serviceAreas: ["Colwood", "Langford", "View Royal", "Royal Bay", "Metchosin", "Esquimalt", "Victoria"],
-    intro: [
-      "Shanaya's Driving School teaches new and returning drivers across Colwood and the Westshore. Our main training hub is just up the road at 124-2770 Leigh Rd, Langford, BC V9B 4G1, so Colwood learners can start close to home on the roads they drive every day.",
-      "Colwood driving has its own challenges: the busy Colwood interchange and the daily Colwood Crawl where the highways meet, Sooke Road and the Old Island Highway, Ocean Boulevard along Esquimalt Lagoon, the newer roundabouts and residential streets in Royal Bay, and the hills around Triangle Mountain. Our lessons build the skills these roads demand, from confident highway merging to smooth roundabout entries, hill starts, and calm decisions in commuter traffic.",
-      "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a driver who wants to feel more in control around the Westshore, we pace the training around you in a patient, dual-control car.",
-    ],
-    sections: [
-      {
-        title: "What Colwood lessons cover",
-        body:
-          "Students start with the fundamentals and build toward the situations Colwood drivers face most. Instructors demonstrate each skill, then give direct feedback after every practice segment.",
-        bullets: [
-          "Highway merging and lane changes around the Colwood interchange",
-          "Roundabout approach, lane choice, and safe exits in Royal Bay",
-          "Hill starts, grades, and parking around Triangle Mountain and local lots",
-        ],
-      },
-      {
-        title: "Local routes and practice areas",
-        body:
-          "Lessons use real Colwood and Westshore roads: Sooke Road and the Old Island Highway for traffic practice, Ocean Boulevard and quieter residential streets for beginners, Royal Bay's newer streets and roundabouts, and larger commercial lots for parking and low-speed control.",
-      },
-      {
-        title: "Starting from our Westshore hub",
-        body:
-          "Because our office is minutes away in Langford, lessons can begin right in the Westshore with flexible pickup across Colwood, Langford, View Royal, and Metchosin. You practise on the same local roads you drive daily, which builds confidence faster than an unfamiliar training route.",
-      },
-    ],
-    relatedLinksTitle: "Explore more driving lessons",
-    relatedLinks: [
-      {
-        label: "Driving lessons in Langford",
-        href: "/driving-lessons-langford",
-        description: "Our main training hub, minutes from Colwood in the Westshore.",
-      },
-      {
-        label: "Driving lessons in Victoria",
-        href: "/driving-lessons",
-        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
-      },
-      {
-        label: "Road test prep in Victoria",
-        href: "/road-test-prep-victoria",
-        description: "Get ready for your ICBC road test on local Saanich and Victoria routes.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Do lessons cover the Colwood interchange and highway merging?",
-        answer:
-          "Yes. Once you are ready, lessons include on-ramps, merging, and lane changes around the Colwood interchange so you feel confident in Westshore commuter traffic.",
-      },
-      {
-        question: "Will I practise Royal Bay's roundabouts?",
-        answer:
-          "Yes. Royal Bay and the wider Westshore have several roundabouts, so entering, choosing the right lane, signalling, and exiting them safely is part of local lessons.",
-      },
-      {
-        question: "Where do lessons start for Colwood learners?",
-        answer:
-          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
       },
     ],
   },
@@ -363,178 +227,6 @@ export const seoLandingPages: SeoLandingPage[] = [
         question: "Do you teach nervous or first-time drivers in Saanich?",
         answer:
           "Yes. Lessons are paced around each student, so nervous beginners can build control on quiet streets before moving into busier Saanich arterials.",
-      },
-    ],
-  },
-  {
-    id: "driving-lessons-view-royal",
-    path: "/driving-lessons-view-royal",
-    title: "Driving Lessons View Royal BC | Drive Smarter",
-    metaDescription:
-      "Learn safe and confident driving with professional driving lessons in View Royal, BC. Get practical instruction tailored to your driving needs.",
-    eyebrow: "View Royal driving lessons",
-    h1: "Driving lessons in View Royal, BC",
-    heroDescription:
-      "Learn to drive with confidence across View Royal and the Westshore, with calm, road-test-focused instruction on Highway 1, the Old Island Highway, the Helmcken interchange, and quieter streets near Thetis Lake.",
-    heroImage: "/landing/driving-lessons-view-royal.webp",
-    targetKeyword: "driving lessons View Royal BC",
-    testimonial: {
-      quote:
-        "My instructor was patient in busy traffic and helped me stay calm when lane changes felt stressful.",
-      name: "Noah C.",
-      location: "Student · Westshore",
-    },
-    serviceAreaTitle: "View Royal and the Westshore",
-    serviceAreas: ["View Royal", "Langford", "Colwood", "Esquimalt", "Victoria", "Saanich", "Metchosin"],
-    intro: [
-      "Shanaya's Driving School teaches new and returning drivers across View Royal, the gateway between Victoria and the Westshore. Our main training hub is minutes away at 124-2770 Leigh Rd, Langford, BC V9B 4G1, so View Royal learners can start close to home on the roads they drive every day.",
-      "View Royal driving means confident work on the Trans-Canada Highway and the Old Island Highway, smooth merging at the Helmcken Road interchange, and steady awareness around the Victoria General Hospital area and the Galloping Goose Trail crossings. Our lessons build these exact skills, along with lane changes, roundabouts, hill starts, and calm decisions in connector traffic.",
-      "Every lesson follows ICBC road test expectations while staying practical for daily driving. Whether you are a first-time learner working toward your N or a driver who wants to feel more in control on View Royal's busier roads, we pace the training around you in a patient, dual-control car.",
-    ],
-    sections: [
-      {
-        title: "What View Royal lessons cover",
-        body:
-          "Students start with the fundamentals and build toward the situations View Royal drivers face most. Instructors demonstrate each skill, then give direct feedback after every practice segment.",
-        bullets: [
-          "Highway merging and lane changes on Highway 1 and the Old Island Highway",
-          "Traffic awareness around the Victoria General Hospital area",
-          "Cyclist and pedestrian awareness at Galloping Goose Trail crossings",
-        ],
-      },
-      {
-        title: "Local routes and practice areas",
-        body:
-          "Lessons use real View Royal roads: the Island Highway and Admirals, Helmcken, and Burnside for traffic practice, quieter streets near Thetis Lake and Portage Inlet for beginners, and larger commercial lots for parking and low-speed control.",
-      },
-      {
-        title: "Starting from our Westshore hub",
-        body:
-          "Because our office is minutes away in Langford, lessons can begin right in the Westshore with flexible pickup across View Royal, Langford, Colwood, and Esquimalt. You practise on the same local roads you drive daily, which builds confidence faster than an unfamiliar training route.",
-      },
-    ],
-    relatedLinksTitle: "Explore more driving lessons",
-    relatedLinks: [
-      {
-        label: "Driving lessons in Langford",
-        href: "/driving-lessons-langford",
-        description: "Our main training hub, minutes from View Royal in the Westshore.",
-      },
-      {
-        label: "Driving lessons in Victoria",
-        href: "/driving-lessons",
-        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
-      },
-      {
-        label: "Road test prep in Victoria",
-        href: "/road-test-prep-victoria",
-        description: "Get ready for your ICBC road test on local Saanich and Victoria routes.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Do lessons cover Highway 1 merging in View Royal?",
-        answer:
-          "Yes. Once you are ready, lessons include on-ramps, merging, and lane changes on Highway 1 and the Old Island Highway so you feel confident in View Royal's connector traffic.",
-      },
-      {
-        question: "Are lessons available near the Victoria General Hospital area?",
-        answer:
-          "Yes. Lessons cover the busier roads around the hospital and the Island Highway corridor, as well as quieter streets nearby for building early confidence.",
-      },
-      {
-        question: "Where do lessons start for View Royal learners?",
-        answer:
-          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
-      },
-    ],
-  },
-  {
-    id: "nervous-driver-lessons-victoria",
-    path: "/nervous-driver-lessons-victoria",
-    title: "Nervous Driver Lessons Victoria | Build Confidence",
-    metaDescription:
-      "Feel more confident behind the wheel with supportive nervous driver lessons in Victoria. Build skills at a comfortable pace with practical guidance.",
-    eyebrow: "Nervous driver lessons",
-    h1: "Nervous driver lessons in Victoria, BC",
-    heroDescription:
-      "Anxious about driving? Learn at your own pace across Victoria with calm, patient, judgment-free instruction in a dual-control car, building real confidence one lesson at a time.",
-    heroImage: "/landing/nervous-driver-lessons-victoria.webp",
-    targetKeyword: "nervous driver lessons Victoria BC",
-    testimonial: {
-      quote:
-        "I started as a nervous beginner, and my instructor made every lesson calm, clear, and easy to follow.",
-      name: "Alyssa P.",
-      location: "Student · Langford",
-    },
-    serviceAreaTitle: "Victoria and Greater Victoria",
-    serviceAreas: ["Victoria", "Saanich", "Oak Bay", "Esquimalt", "Langford", "Colwood", "Sidney"],
-    intro: [
-      "Feeling anxious behind the wheel is far more common than most people think, and it is completely normal. Shanaya's Driving School helps nervous drivers across Victoria build calm, steady confidence at a pace that feels comfortable, without pressure or judgment.",
-      "Whether you are a first-time learner who feels overwhelmed, a licensed driver returning after years away, or someone who lost confidence after a scare or a collision, our instructors start where you are. Early lessons focus on quiet, low-traffic streets, and we only move into busier Victoria roads once you feel ready.",
-      "Every lesson is in a calm, dual-control car, so there is always a second set of controls for reassurance. The goal is not just to pass a test, but to help you feel genuinely safe and in control every time you drive.",
-    ],
-    sections: [
-      {
-        title: "How we help nervous drivers",
-        body:
-          "Nervous drivers do best with patience, clear explanations, and small wins that build on each other. Instructors keep the pressure low and mark progress at every step.",
-        bullets: [
-          "Start on quiet streets and progress only when you feel ready",
-          "Calm, judgment-free coaching with clear, simple instructions",
-          "Dual-control car for a reassuring second set of controls",
-        ],
-      },
-      {
-        title: "Who this is for",
-        body:
-          "Nervous driver lessons suit first-time learners who feel overwhelmed, drivers returning to the road after a long break, anyone rebuilding confidence after a collision or a scare, and students who feel anxious about the ICBC road test.",
-      },
-      {
-        title: "Building confidence at your pace",
-        body:
-          "There is no set timeline. Some drivers need a few sessions to settle in, while others build up gradually over several weeks. We adjust every lesson to your comfort level and the situations that make you most anxious, from busy intersections to highways and parking.",
-      },
-    ],
-    primaryCtaLabel: "Book a calm first lesson",
-    relatedLinksTitle: "Explore related lessons",
-    relatedLinks: [
-      {
-        label: "Confidence Booster Course",
-        href: "/courses/confidence-booster-course",
-        description: "A focused course to help anxious drivers feel comfortable and in control.",
-      },
-      {
-        label: "Beginner lessons and a free assessment drive",
-        href: "/beginner-driving-lessons-victoria",
-        description: "Never driven before? Start with a free assessment drive in a dual-control car.",
-      },
-      {
-        label: "Driving lessons in Victoria",
-        href: "/driving-lessons",
-        description: "Beginner-friendly, road-test-focused lessons across Greater Victoria.",
-      },
-      {
-        label: "Road test prep in Victoria",
-        href: "/road-test-prep-victoria",
-        description: "Calm, structured preparation for your ICBC road test.",
-      },
-    ],
-    faqs: [
-      {
-        question: "I get really anxious driving. Can you still help?",
-        answer:
-          "Yes. Many of our students start out very nervous. Lessons are paced slowly, begin on quiet streets, and move forward only when you feel ready, so you build confidence without pressure.",
-      },
-      {
-        question: "Can you help me drive again after a long break or a collision?",
-        answer:
-          "Yes. We regularly work with returning drivers and those rebuilding confidence after a scare. Lessons rebuild core skills step by step in a calm, dual-control car.",
-      },
-      {
-        question: "Do I have to go on busy roads or highways right away?",
-        answer:
-          "No. You set the pace. We stay on comfortable streets until you are ready, then introduce busier Victoria roads, roundabouts, and highways gradually.",
       },
     ],
   },

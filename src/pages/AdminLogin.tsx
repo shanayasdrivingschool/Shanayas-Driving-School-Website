@@ -1,15 +1,10 @@
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
-import AffiliatePortalLayout from "@/components/affiliate/AffiliatePortalLayout";
+import AdminBrand from "@/components/admin/AdminBrand";
+import "@/components/admin/admin.css";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
-import {
-  affiliateInputClassName,
-  affiliatePrimaryButtonClassName,
-  affiliateSecondaryButtonClassName,
-  affiliateSurfaceClassName,
-} from "@/components/affiliate/styles";
+import { adminInputClassName, adminPrimaryButtonClassName } from "@/components/admin/styles";
 import { useAdminSession } from "@/hooks/useAdminSession";
 import { signInAdmin } from "@/lib/affiliateApi";
 
@@ -44,7 +39,7 @@ const AdminLogin = () => {
 
     try {
       await signInAdmin(email, password);
-      toast.success("Admin access granted.");
+      toast.success("Signed in");
       navigate(redirectTarget, { replace: true });
     } catch (submitError) {
       const message = submitError instanceof Error ? submitError.message : "Unable to sign in as admin.";
@@ -55,63 +50,69 @@ const AdminLogin = () => {
   };
 
   return (
-    <AffiliatePortalLayout
-      eyebrow="Admin Access"
-      title={
-        <>
-          Enter the <span className="text-[#F5B13A]">admin control panel</span>
-        </>
-      }
-      description="Use a dedicated administrator account to manage the driving school database, referrals, payouts, and risk monitoring from one secure workspace."
-    >
-      <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-        <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-          <article className="rounded-[28px] border border-slate-200 bg-[#F2F2F2] p-6 shadow-sm sm:p-8">
-            <span className="inline-flex rounded-2xl bg-[#1d52a1]/10 p-3 text-[#1d52a1]">
-              <ShieldCheck className="h-6 w-6" aria-hidden="true" />
-            </span>
-            <h2 className="mt-5 text-3xl font-black text-slate-900">Dedicated admin workspace</h2>
-            <ul className="mt-6 space-y-4 text-sm leading-relaxed text-slate-700">
-              <li>Review all form submissions and stored payloads.</li>
-              <li>Manage affiliates, orders, commissions, payouts, and suspicious traffic.</li>
-              <li>Keep admin access fully separate from affiliate sign-in and affiliate portal accounts.</li>
-            </ul>
-          </article>
+    <div className="admin-workspace flex min-h-dvh flex-col bg-slate-50 font-body text-slate-900">
+      <header className="border-b border-slate-200 bg-white">
+        <div className="mx-auto flex min-h-20 max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-8">
+          <AdminBrand />
+          <Link to="/" className="shrink-0 rounded-lg px-3 py-3 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1]">
+            Website
+          </Link>
+        </div>
+      </header>
 
-          <article className={affiliateSurfaceClassName}>
-            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Admin login</p>
-            <h2 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl">Sign in securely</h2>
-            <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+      <main className="mx-auto grid w-full max-w-6xl flex-1 content-center gap-8 px-4 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-16">
+        <section aria-labelledby="workspace-heading">
+          <p className="mb-4 border-l-4 border-[#1d52a1] pl-3 text-sm font-medium text-slate-600">School administration</p>
+          <h1 id="workspace-heading" className="max-w-md text-3xl font-medium leading-tight sm:text-4xl">The school’s day-to-day, in one place</h1>
+          <p className="mt-4 max-w-md text-base leading-7 text-slate-600">Review enquiries and manage orders, affiliates, commissions, payouts, and suspicious activity</p>
+          <p className="mt-8 max-w-md border-t border-slate-200 pt-4 text-sm leading-6 text-slate-500">Use your administrator account. Affiliate accounts have a separate sign-in.</p>
+        </section>
+
+        <section aria-labelledby="signin-heading" className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 id="signin-heading" className="text-2xl font-medium">Admin sign-in</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Enter your staff account details</p>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-6" aria-busy={isSubmitting}>
+            <div className="space-y-2">
+              <label htmlFor="admin-email" className="block text-sm font-medium">Email</label>
               <input
+                id="admin-email"
+                name="email"
                 type="email"
+                autoComplete="username"
+                autoCapitalize="none"
+                spellCheck={false}
                 required
-                placeholder="Admin email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className={affiliateInputClassName}
+                className={adminInputClassName}
               />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="admin-password" className="block text-sm font-medium">Password</label>
               <input
+                id="admin-password"
+                name="password"
                 type="password"
+                autoComplete="current-password"
                 required
-                placeholder="Password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className={affiliateInputClassName}
+                className={adminInputClassName}
               />
-              {error ? <p className="text-sm font-semibold text-[#E6242A]">{error}</p> : null}
-              <div className="flex flex-wrap gap-3 pt-2">
-                <button type="submit" disabled={isSubmitting} className={affiliatePrimaryButtonClassName}>
-                  {isSubmitting ? "Signing in..." : "Enter admin panel"}
-                </button>
-                <Link to="/affiliate/login" className={affiliateSecondaryButtonClassName}>
-                  Affiliate login
-                </Link>
-              </div>
-            </form>
-          </article>
-        </div>
-      </section>
-    </AffiliatePortalLayout>
+            </div>
+            {error ? <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm leading-6 text-red-800">{error}</p> : null}
+            <button type="submit" disabled={isSubmitting} className={`${adminPrimaryButtonClassName} min-h-12 w-full sm:min-h-12`}>
+              {isSubmitting ? "Signing in…" : "Sign in"}
+            </button>
+            <div className="border-t border-slate-200 pt-4 text-center">
+              <Link to="/affiliate/login" className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-slate-600 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1]">
+                Affiliate sign-in
+              </Link>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
   );
 };
 

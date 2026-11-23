@@ -1,10 +1,13 @@
+import { renderBranchBody, renderBranchFooter } from "./render-branch-pages.mjs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadSiteContent } from "./load-site-content.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const distDir = path.resolve(__dirname, "../public_html");
+const distDir = process.env.SEO_OUTPUT_DIR
+  ? path.resolve(process.env.SEO_OUTPUT_DIR)
+  : path.resolve(__dirname, "../public_html");
 const sourceIndexPath = path.join(distDir, "index.html");
 
 const siteOrigin = "https://www.shanayasdrivingschool.com";
@@ -39,42 +42,6 @@ const socialProfileUrls = [
   optionalEnvUrl(process.env.VITE_YOUTUBE_CHANNEL_URL),
 ].filter(Boolean);
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "DrivingSchool"],
-  "@id": `${siteOrigin}/#localbusiness`,
-  name: siteName,
-  url: `${siteOrigin}/`,
-  image: defaultImage,
-  logo: `${siteOrigin}/logos/Driving%20School%20Logo%20Horizontal.png`,
-  description: defaultDescription,
-  telephone: "+1-250-542-3673",
-  email: "book@drivingschoolbc.ca",
-  priceRange: "$$",
-  address: {
-    "@type": "PostalAddress",
-    // Keep in sync with localBusinessJsonLd in src/components/SeoManager.tsx.
-    streetAddress: "124-2770 Leigh Rd",
-    addressLocality: "Langford",
-    addressRegion: "BC",
-    postalCode: "V9B 4G1",
-    addressCountry: "CA",
-  },
-  areaServed: [
-    "Victoria, BC",
-    "Langford, BC",
-    "Colwood, BC",
-    "Saanich, BC",
-    "View Royal, BC",
-    "Sidney, BC",
-    "Metchosin, BC",
-    "Sooke, BC",
-    "Duncan, BC",
-    "Salt Spring Island, BC",
-  ],
-  sameAs: socialProfileUrls,
-};
-
 const landingPages = [
   {
     path: "/driving-lessons/",
@@ -95,51 +62,11 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-langford/",
-    title: "Driving Lessons Langford BC | Drive With Confidence",
-    description:
-      "Build confidence with professional driving lessons in Langford, BC. Book now to learn road skills, traffic rules, and safe driving techniques.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-langford.webp",
-    faqs: [
-      {
-        question: "Do lessons start close to Langford?",
-        answer:
-          "Yes. Our main training hub is at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar local roads.",
-      },
-      {
-        question: "Will I practise Langford's roundabouts?",
-        answer:
-          "Yes. Langford has many roundabouts, so entering, choosing the right lane, signalling, and exiting them safely is a core part of local lessons.",
-      },
-      {
-        question: "Do lessons cover the Trans-Canada Highway merges?",
-        answer:
-          "Yes. Once you are ready, lessons include highway on-ramps, merging, and lane changes at Westshore speeds so you feel confident on Highway 1.",
-      },
-    ],
   },
   {
     path: "/driving-lessons-colwood/",
-    title: "Driving Lessons Colwood BC | Learn & Drive Confidently",
-    description:
-      "Improve your driving skills with professional driving lessons in Colwood, BC. Get practical, personalized instruction for safer and more confident driving.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-colwood.webp",
-    faqs: [
-      {
-        question: "Do lessons cover the Colwood interchange and highway merging?",
-        answer:
-          "Yes. Once you are ready, lessons include on-ramps, merging, and lane changes around the Colwood interchange so you feel confident in Westshore commuter traffic.",
-      },
-      {
-        question: "Will I practise Royal Bay's roundabouts?",
-        answer:
-          "Yes. Royal Bay and the wider Westshore have several roundabouts, so entering, choosing the right lane, signalling, and exiting them safely is part of local lessons.",
-      },
-      {
-        question: "Where do lessons start for Colwood learners?",
-        answer:
-          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar Colwood roads.",
-      },
-    ],
   },
   {
     path: "/driving-lessons-saanich/",
@@ -167,51 +94,11 @@ const landingPages = [
   },
   {
     path: "/driving-lessons-view-royal/",
-    title: "Driving Lessons View Royal BC | Drive Smarter",
-    description:
-      "Learn safe and confident driving with professional driving lessons in View Royal, BC. Get practical instruction tailored to your driving needs.",
     image: "https://www.shanayasdrivingschool.com/landing/driving-lessons-view-royal.webp",
-    faqs: [
-      {
-        question: "Do lessons cover Highway 1 merging in View Royal?",
-        answer:
-          "Yes. Once you are ready, lessons include on-ramps, merging, and lane changes on Highway 1 and the Old Island Highway so you feel confident in View Royal's connector traffic.",
-      },
-      {
-        question: "Are lessons available near the Victoria General Hospital area?",
-        answer:
-          "Yes. Lessons cover the busier roads around the hospital and the Island Highway corridor, as well as quieter streets nearby for building early confidence.",
-      },
-      {
-        question: "Where do lessons start for View Royal learners?",
-        answer:
-          "Our training hub is nearby at 124-2770 Leigh Rd, Langford, BC V9B 4G1, and lessons can begin from the Westshore so you practise on familiar View Royal roads.",
-      },
-    ],
   },
   {
     path: "/nervous-driver-lessons-victoria/",
-    title: "Nervous Driver Lessons Victoria | Build Confidence",
-    description:
-      "Feel more confident behind the wheel with supportive nervous driver lessons in Victoria. Build skills at a comfortable pace with practical guidance.",
     image: "https://www.shanayasdrivingschool.com/landing/nervous-driver-lessons-victoria.webp",
-    faqs: [
-      {
-        question: "I get really anxious driving. Can you still help?",
-        answer:
-          "Yes. Many of our students start out very nervous. Lessons are paced slowly, begin on quiet streets, and move forward only when you feel ready, so you build confidence without pressure.",
-      },
-      {
-        question: "Can you help me drive again after a long break or a collision?",
-        answer:
-          "Yes. We regularly work with returning drivers and those rebuilding confidence after a scare. Lessons rebuild core skills step by step in a calm, dual-control car.",
-      },
-      {
-        question: "Do I have to go on busy roads or highways right away?",
-        answer:
-          "No. You set the pace. We stay on comfortable streets until you are ready, then introduce busier Victoria roads, roundabouts, and highways gradually.",
-      },
-    ],
   },
   {
     path: "/road-test-prep/",
@@ -1108,7 +995,7 @@ const buildArticleSchema = (page, canonical, image, content) => {
       : page.article.reviewerName
         ? { reviewedBy: { "@type": "Person", name: page.article.reviewerName } }
       : {}),
-    publisher: { "@id": `${siteOrigin}/#localbusiness` },
+    publisher: { "@id": `${siteOrigin}/#organization` },
   };
 };
 
@@ -1145,7 +1032,7 @@ const buildPricingServiceSchema = (offer, canonical) => {
       `When the ${offer.discountPercent}% promotion is active and applies to an eligible booking, the rate is $${offer.promotionalHourlyRate.toFixed(2)} ${offer.currency} plus GST.`,
     url: canonical,
     serviceType: "Driving instruction",
-    provider: { "@id": `${siteOrigin}/#localbusiness` },
+    provider: { "@id": `${siteOrigin}/#organization` },
     areaServed: ["Victoria, BC", "Langford, BC", "Colwood, BC", "Sidney, BC"],
     termsOfService: absoluteUrl(offer.policyHref),
     offers: {
@@ -1379,12 +1266,14 @@ const replaceFallback = (html, page, buildBody) => {
 
   return html.replace(
     fallbackPattern,
-    () => `${match[1]}\n        ${buildBody()}\n        ${navs}\n      ${match[3]}`,
+    () => `${match[1]}\n        ${buildBody()}\n        ${renderBranchFooter(content.branchData)}\n        ${navs}\n      ${match[3]}`,
   );
 };
 
 const buildLandingBody = (landing) => {
   const parts = [`<h1>${escapeHtml(landing.h1)}</h1>`, para(landing.heroDescription)];
+
+  if (landing.introTitle) parts.push(`<h2>${escapeHtml(landing.introTitle)}</h2>`);
 
   landing.intro.forEach((text) => parts.push(para(text)));
 
@@ -1403,6 +1292,9 @@ const buildLandingBody = (landing) => {
   landing.sections.forEach((section) => {
     parts.push(`<section><h2>${escapeHtml(section.title)}</h2>`);
     parts.push(para(section.body));
+    if (section.source) {
+      parts.push(`<p><a href="${escapeHtml(section.source.href)}">${escapeHtml(section.source.label)}</a></p>`);
+    }
     parts.push(list(section.bullets ?? []));
     parts.push(`</section>`);
   });
@@ -1410,6 +1302,27 @@ const buildLandingBody = (landing) => {
   if (landing.serviceAreas.length) {
     parts.push(`<section><h2>${escapeHtml(landing.serviceAreaTitle ?? "Service areas")}</h2>`);
     parts.push(list(landing.serviceAreas));
+    if (landing.serviceAreaNote) parts.push(para(landing.serviceAreaNote));
+    parts.push(`</section>`);
+  }
+
+  if (landing.benefits.length) {
+    parts.push(`<section><h2>${escapeHtml(landing.benefitsTitle)}</h2>`);
+    landing.benefits.forEach((item) => parts.push(`<h3>${escapeHtml(item.title)}</h3>`, para(item.body)));
+    parts.push(`</section>`);
+  }
+  if (landing.lessonSteps.length) {
+    parts.push(`<section><h2>${escapeHtml(landing.lessonStepsTitle)}</h2><ol>`);
+    landing.lessonSteps.forEach((item) => parts.push(`<li><h3>${escapeHtml(item.title)}</h3>${para(item.body)}</li>`));
+    parts.push(`</ol></section>`);
+  }
+  if (landing.booking) {
+    parts.push(`<section><h2>${escapeHtml(landing.booking.title)}</h2>`, para(landing.booking.body));
+    parts.push(`<h3>Details to discuss before booking</h3>`, list(landing.booking.checklist));
+    parts.push(`<p><a href="${siteOrigin}/apply/">Enquire about a lesson</a> · <a href="${siteOrigin}/payment-plan-options/">View payment plans</a> · <a href="${siteOrigin}/policies/">Read our policies</a> · <a href="${siteOrigin}/contact/">Contact us</a></p>`);
+    if (landing.bookingSource) {
+      parts.push(`<p>Before choosing lessons, see <a href="${escapeHtml(landing.bookingSource.href)}">${escapeHtml(landing.bookingSource.label)}</a>.</p>`);
+    }
     parts.push(`</section>`);
   }
 
@@ -1944,7 +1857,7 @@ const renderPageHtml = (template, page, content) => {
     html = setMetaProperty(html, "article:modified_time", page.article.dateModified);
     html = setMetaProperty(html, "article:section", page.article.section);
   }
-  html = insertJsonLd(html, "local-business-schema", localBusinessSchema);
+  html = insertJsonLd(html, "local-business-schema", content.branchData.buildBranchGraph(page.canonicalPath ?? page.path, socialProfileUrls));
   html = insertJsonLd(html, "faq-schema", isCanonicalPage ? buildFaqSchema(page.faqs) : null);
   html = insertJsonLd(
     html,
@@ -1960,7 +1873,7 @@ const renderPageHtml = (template, page, content) => {
     html,
     "profile-page-schema",
     page.author
-      ? content.authorSchema.buildProfilePageJsonLd(siteOrigin, page.author, `${siteOrigin}/#localbusiness`)
+      ? content.authorSchema.buildProfilePageJsonLd(siteOrigin, page.author, `${siteOrigin}/#organization`)
       : null,
   );
   html = insertJsonLd(html, "breadcrumb-schema", isCanonicalPage ? buildBreadcrumbSchema(page.breadcrumbs) : null);
@@ -1984,6 +1897,8 @@ const renderPageHtml = (template, page, content) => {
     html = replaceFallback(html, page, () => [
       `<h1>${escapeHtml(paidLanding.hero.h1)}</h1>`,
       para(paidLanding.hero.subhead),
+      ...(paidLanding.hero.priceHighlights ? [para(paidLanding.hero.priceHighlights.map((rate) => `${rate.detail}: ${rate.label}`).join(" · ")), para("Standard-area rates + GST. Courses, packages and eligible discounts may differ.")] : []),
+      para("Free callback. No payment required to enquire."),
       ...(paidLanding.supportProgramme ? [
         `<h2>${escapeHtml(paidLanding.pricingHeading)}</h2>`,
         ...paidLanding.supportProgramme.packages.flatMap((offer) => [
@@ -2018,6 +1933,8 @@ const renderPageHtml = (template, page, content) => {
     html = replaceFallback(html, page, () => buildPolicyIndexBody(page, content.policies));
   } else if (post) {
     html = replaceFallback(html, page, () => buildBlogBody(post, page));
+  } else if (content.branchData.branchByPath(page.canonicalPath ?? page.path)) {
+    html = replaceFallback(html, page, () => renderBranchBody(content.branchData.branchByPath(page.canonicalPath ?? page.path), content.branchData));
   } else if (landing) {
     html = replaceFallback(html, page, () => buildLandingBody(landing));
   } else if (product) {
@@ -2066,10 +1983,22 @@ if (!/<p>\s*Shanaya's Driving School provides/i.test(template)) {
 
 const content = await loadSiteContent();
 const { blogPosts: blogContent, landingPages: landingContent } = content;
+for (const branch of content.branchData.branchLocations) {
+  pages.push({ path: branch.path, title: branch.title, description: branch.description, faqs: branch.faqs,
+    breadcrumbs: [{ name: "Home", path: "/" }, { name: branch.label, path: branch.path }] });
+}
+const legacyLangford = pages.find(page => page.path === "/driving-lessons-langford/");
+Object.assign(legacyLangford, { title: "Langford Campus | Shanaya's Driving School", description: "Visit our Langford Campus in British Columbia, Canada.", canonicalPath: "/locations/langford/", robots: "noindex, follow", faqs: [] });
 
 for (const page of pages) {
   const landing = landingContent.get(page.path);
   if (landing?.pricingOffer) page.pricingOffer = landing.pricingOffer;
+  // Expanded service pages share all metadata and FAQs with the React data.
+  if (landing?.booking) {
+    page.title = landing.title;
+    page.description = landing.description;
+    page.faqs = landing.faqs;
+  }
 }
 
 const practicePage = pages.find((page) => page.path === "/knowledge-test-practice/");

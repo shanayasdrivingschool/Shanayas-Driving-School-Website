@@ -1,4 +1,5 @@
-import { Facebook, Instagram, Linkedin, MapPin, Twitter, Youtube, type LucideIcon } from "lucide-react";
+import BranchOffices from "@/components/BranchOffices";
+import { Facebook, Instagram, Linkedin, Twitter, Youtube, type LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import BrandWaveDivider from "@/components/BrandWaveDivider";
 import { policyLinks } from "@/data/policies";
@@ -130,7 +131,7 @@ const SiteFooter = () => (
               <Link to="/driver-education-training">Driver Education &amp; Training</Link>
             </li>
             <li>
-              <Link to="/driving-lessons-langford">Driving Lessons Langford</Link>
+              <Link to="/locations/langford/">Driving Lessons Langford</Link>
             </li>
             <li>
               <Link to="/driving-lessons-colwood">Driving Lessons Colwood</Link>
@@ -219,17 +220,7 @@ const SiteFooter = () => (
         </div>
       </div>
 
-      <div className="w-full max-w-[320px] text-left">
-        <p className="mb-4 text-left text-lg font-bold uppercase text-black md:text-xl">Our Address</p>
-        <p className="flex items-start gap-2 font-semibold text-white">
-          <MapPin size={16} className="mt-1" /> 124-2770 Leigh Rd, Langford, BC V9B 4G1
-        </p>
-      </div>
-
-      <div className="w-full text-left">
-        <p className="mb-4 text-left text-lg font-bold uppercase text-black md:text-xl">Call us now!</p>
-        <p className="text-left text-xl font-black text-[#F5B13A] md:text-2xl">250-542-3673</p>
-      </div>
+      <BranchOffices />
     </div>
     <p className="relative z-[2] mt-12 text-center text-xs font-semibold text-white/60">
       Copyright (c) 2026 Shanaya's Driving School. All rights reserved.

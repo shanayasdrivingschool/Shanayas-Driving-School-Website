@@ -1,0 +1,25 @@
+import { mkdir, writeFile } from "node:fs/promises";
+import { createServer } from "vite";
+import { renderBranchBody, renderBranchFooter, escapeBranchHtml as e } from "./render-branch-pages.mjs";
+
+const output = "docs/branch-pages";
+const server = await createServer({ configFile: false, server: { middlewareMode: true }, appType: "custom" });
+const css = `body{font:17px/1.65 system-ui,sans-serif;color:#182536;max-width:1080px;margin:auto;padding:32px 22px}h1,h2,h3{line-height:1.2;color:#173f78}h1{font-size:2.4rem}h2{margin-top:2rem}section,article{margin:2rem 0}a{color:#174d91}address{font-style:normal}li{margin:.65rem 0}.actions{display:flex;gap:16px;flex-wrap:wrap}.actions a{padding:12px 20px;border:1px solid #173f78;border-radius:28px;font-weight:700;text-decoration:none}.branch-offices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}.branch-footer{border-top:1px solid #cbd5e1;margin-top:48px}.branch-footer section{min-width:0}.branch-footer a{overflow-wrap:anywhere}pre{padding:20px;background:#f3f5f7;overflow:auto;font-size:14px} .part{border-top:3px solid #173f78;padding-top:28px;margin-top:48px}@media(max-width:600px){.branch-offices{grid-template-columns:1fr}h1{font-size:2rem}}`;
+try {
+  const data = await server.ssrLoadModule("/src/data/branchLocations.ts");
+  await mkdir(output, { recursive: true });
+  const footer = `<style>.branch-offices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem}.branch-offices address{font-style:normal}.branch-offices a{overflow-wrap:anywhere}@media(max-width:640px){.branch-offices{grid-template-columns:1fr}}</style>\n${renderBranchFooter(data)}`;
+  await writeFile(`${output}/footer.html`, footer);
+  const report = [];
+  for (const [index, branch] of data.branchLocations.entries()) {
+    const graph = data.buildBranchGraph(branch.path);
+    const json = JSON.stringify(graph, null, 2);
+    await writeFile(`${output}/${branch.id}.schema.json`, `${json}\n`);
+    const body = renderBranchBody(branch, data);
+    const html = `<!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${e(branch.title)}</title><meta name="description" content="${e(branch.description)}"><link rel="canonical" href="${data.BRAND_ORIGIN}${branch.path}"><style>${css}</style><script type="application/ld+json">${json.replaceAll("<", "\\u003c")}</script></head><body><main>${body}</main>${renderBranchFooter(data)}</body></html>`;
+    await writeFile(`${output}/${branch.id}.html`, html);
+    report.push(`<section class="part" id="${branch.id}"><h1>Part ${index + 1}: ${e(branch.label)} landing page</h1><p><strong>Target URL:</strong> ${e(data.BRAND_ORIGIN + branch.path)}</p><h2>1. SEO metadata</h2><p><strong>Title (${branch.title.length} characters):</strong> ${e(branch.title)}</p><p><strong>Description (${branch.description.length} characters):</strong> ${e(branch.description)}</p><h2>2–6. Landing-page copy</h2>${body}<h2>7. JSON-LD schema</h2><p>Use this page-specific graph. LocalBusiness is the supported Schema.org type; the requested #driving-school entity ID is retained. The shared Organization has no branch address.</p><pre><code>${e(`<script type="application/ld+json">\n${json}\n</script>`)}</code></pre></section>`);
+  }
+  await writeFile(`${output}/branch-copy-and-schema.html`, `<!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shanaya's branch landing pages and schema</title><style>${css}</style></head><body><header><h1>Two campuses, one driving school</h1><p>Landing-page copy, separate branch schema and a two-column footer for Greater Victoria, British Columbia, Canada. Prepared November 23, 2026.</p><p>Schema correction: DrivingSchool is not a defined Schema.org type. These graphs use LocalBusiness with unique branch IDs and a shared parent Organization. Coordinates are the place pins from the supplied Maps links, not surveyed entrance measurements. Structured data cannot guarantee ranking or AI recognition.</p><p>The website implementation includes a working on-page request form; the standalone copy files contain its heading and prompt, with direct call/email links.</p><nav><a href="#langford">Part 1: Langford</a> · <a href="#victoria-james-bay">Part 2: Victoria</a> · <a href="#footer-snippet">Part 3: Footer</a></nav></header><main>${report.join("\n")}<section class="part" id="footer-snippet"><h1>Part 3: Site-wide footer and navigation</h1>${renderBranchFooter(data)}<h2>Reusable HTML and responsive styles</h2><pre><code>${e(footer)}</code></pre><h2>Navigation links</h2><pre><code>${e('<nav aria-label="Locations">\n  <a href="/locations/langford/">Langford Campus (Westshore)</a>\n  <a href="/locations/victoria-james-bay/">Victoria Campus (James Bay)</a>\n</nav>')}</code></pre></section></main></body></html>`);
+  console.log(`Exported both landing pages, JSON-LD graphs, footer snippet and three-part copy to ${output}.`);
+} finally { await server.close(); }

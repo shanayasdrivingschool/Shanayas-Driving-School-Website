@@ -1,3 +1,4 @@
+import { branchLocations } from "@/data/branchLocations";
 import { blogPosts } from "@/data/blogPosts";
 import { courseCatalog } from "@/data/courseCatalog";
 import { packageCatalog } from "@/data/packageCatalog";
@@ -114,6 +115,7 @@ const blogSearchItems: SiteSearchItem[] = blogPosts.map((post) => ({
 export const siteSearchIndex: SiteSearchItem[] = [
   ...staticSearchItems,
   ...seoLandingSearchItems,
+  ...branchLocations.map(branch => ({ title: branch.label, description: branch.description, href: branch.path, type: "Page" as const, keywords: [branch.city, branch.street, ...branch.areas] })),
   ...packageSearchItems,
   ...courseSearchItems,
   ...blogSearchItems,

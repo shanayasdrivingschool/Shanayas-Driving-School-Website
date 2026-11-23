@@ -372,8 +372,8 @@ export const siteFaqs: SiteFaq[] = [
     category: "pricing-booking",
     question: "Can I use or rent a driving-school car for my ICBC road test?",
     answer:
-      "Yes. The current catalogue has a stand-alone [road-test-day vehicle](/road-test-vehicle) at $250 for a dual-control school car, and a combined lesson, road-test preparation and rental course at $350 in its 60-minute format or $450 in its 90-minute one. Prices are before GST. Book the vehicle only once your [ICBC appointment is confirmed](#book-reschedule-or-cancel-road-test), since availability depends on service area, instructor, vehicle and the written terms. And booking our car doesn't guarantee ICBC will accept it. The examiner applies [ICBC's test-day vehicle rules](#vehicle-refused-at-road-test) on the day.",
-    keywords: ["rent a car", "car rental", "borrow a car", "$250", "$350", "$450", "use your car", "school car"],
+      "Yes. The [Road Test Package](/courses/lesson-road-test-prep-course) includes one hour of preparation and the school car for your ICBC road test at $250 CAD before GST. Additional 60-minute practice lessons cost $89 CAD each before GST. Book the vehicle only once your [ICBC appointment is confirmed](#book-reschedule-or-cancel-road-test), since availability depends on service area, instructor, vehicle and the written terms. And booking our car doesn't guarantee ICBC will accept it. The examiner applies [ICBC's test-day vehicle rules](#vehicle-refused-at-road-test) on the day.",
+    keywords: ["rent a car", "car rental", "borrow a car", "$250", "one hour of preparation", "use your car", "school car"],
   },
   {
     id: "how-to-book-and-pickup",

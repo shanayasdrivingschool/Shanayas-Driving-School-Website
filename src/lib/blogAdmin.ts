@@ -336,7 +336,7 @@ export const buildBlogSchemaPreview = (post: AdminBlogPostUpsertInput) => {
     ...(post.coverImageUrl ? { image: absoluteUrl(post.coverImageUrl) } : {}),
     ...(post.publishedAt ? { datePublished: post.publishedAt } : {}),
     author: { "@type": "Organization", name: post.authorName || "Shanaya's Driving School" },
-    publisher: { "@id": "https://www.shanayasdrivingschool.com/#localbusiness" },
+    publisher: { "@id": "https://www.shanayasdrivingschool.com/#organization" },
     articleSection: post.category,
     inLanguage: "en-CA",
   };

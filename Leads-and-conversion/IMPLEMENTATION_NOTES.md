@@ -1,3 +1,63 @@
+# Course-card booking buttons — November 23, 2026
+
+The owner requested “Book Your Course Now” on the ordinary landing-page course cards, opening the corresponding course page. The shared cards now link directly to `/courses/<course-id>` and retain CTA-click tracking. Removed the duplicate details/booking link. This supersedes the course-card callback behaviour documented below; general callback controls and enquiry-only package options retain their existing behaviour.
+
+Evidence: owner instruction and screenshot checked November 23, 2026; destinations checked against the configured course IDs. No price or offer terms changed. Targeted ESLint and all 34 page tests passed, including destination checks for all seven ordinary landing-page configurations. Production build and static generation for 92 routes passed. Chromium checks at 320, 390 and 1440 pixels confirmed navigation to the beginner course page without opening a callback, preserved $1,335/$934.50 pricing and no landing-page horizontal overflow. The 390px button was visually inspected.
+
+Limited-edit page quality: **Ready**. Intent satisfaction: **Ready**. Publication: **implemented locally**, not live confirmed. Evidence: `tmp/landing-improvements/booking-cta-tests.log`, `booking-cta-build.log`, `booking-cta-browser.json` and `booking-cta-390.png`. This is a focused interaction check, not a new full-page editorial review.
+
+---
+
+# Original-price display — November 23, 2026
+
+Owner requested the crossed-out $1,335 price beside the discounted Beginner’s Driving Course price. Updated the shared paid-page product card to render the existing `originalLabel` with semantic strikethrough alongside the current price, plus screen-reader labels for regular/discounted prices. The catalogue calculation remains 10 × $133.50 = $1,335; 30% off = $934.50 CAD before GST. Eligibility copy is retained. This is a focused presentation change; no rate or promotion was changed or independently reverified. The component applies wherever the discounted course is shown on the paid landing pages.
+
+Publication: **implemented locally**. Targeted ESLint and the production build/static generation passed. Chromium checks at 320, 390 and 1440 pixels confirmed the $1,335 strikethrough, $934.50 current price and no horizontal overflow; the 390px card was visually inspected. Limited-edit page quality and intent satisfaction: **Ready**. This does not establish live deployment or a new full-page content review.
+
+---
+
+# Landing-page audit improvements implemented — November 23, 2026
+
+Scope: all eight paid landing configurations, all eleven explicit playbook variants and the legacy beginner alias. User requested implementation of the preceding skill audit. Existing callback-modal, required name/phone/email, optional notes, car/review carousels and media gallery requirements remain intact. No ad-account settings or deployment changed.
+
+## Changes
+
+- All seven standard lesson-page heroes now show the 60/90-minute standard-area rates, CAD and GST conditions. Rates use the existing pricing constants. The owner explicitly requested that Road Test Confidence prices remain in its package section, without a hero price summary.
+- Lesson/package choices immediately follow the hero on every version, ahead of the full review carousel. The car/review hero panel now applies to controls too, with intent-relevant existing excerpts. It is desktop-only; phones retain concise trust copy and the dated aggregate link. All twelve featured review excerpts remain available in the carousel, with wording/attribution intact.
+- Original product buttons now say Request a Callback and preserve the exact chosen offer in the dialog and stored enquiry note. This aligns the action with the callback process. Single personalised lessons precede larger beginner/confidence commitments. Ordinary course cards use expandable supporting detail; prices, duration, description and material discount conditions stay visible.
+- Near-me heroes now show Langford and James Bay addresses. All shared location/footer blocks include both branches, using `branchLocations.ts`; pickup/timing/travel-charge confirmation remains explicit.
+- Clarified that catalogue discounts apply to eligible self-funded standard-area bookings, excluding sponsored/third-party-funded enrolments, and linked the promotion policy. Existing prices/discount percentage were retained; no new expiry, urgency or availability promise was invented.
+- Added `callback_open`; `form_start` now occurs on the first field edit rather than autofocus. Reopening retains entered details and does not duplicate first-edit or successful-lead events. Existing CTA/call/lead events remain; GTM/GA4 configuration was not changed.
+- Replaced variant process/info-topic selections with concrete lesson options. Kept standard preparation/mock prices and restored the now-confirmed $250 test-day price to the road-test variant.
+- Owner confirmed Class 5/7 eligibility, no package expiry, failed ICBC road tests as the trigger for conditional extra lessons, and one hour of preparation within the separate $250 test-day package. Updated catalogue, landing offer/FAQs, variant, company knowledge and one conflicting general FAQ ($350/$450 language removed). The initial static HTML now includes standard hero rates and the clarified offer copy. See `ROAD_TEST_CONFIDENCE_NOTES.md` for remaining written-purchase conditions.
+
+## Evidence and claim log
+
+| Change / claim | Inspected source | Checked / effective | Limits |
+| --- | --- | --- | --- |
+| $89 / 60 min; $133.50 / 90 min, CAD before GST | `coursePricing.ts`, `policies.ts`; published service policy inspected during the preceding audit | November 23, 2026; policy effective April 1, 2026 | Standard-area rates, not a guarantee of availability or a typical lesson count |
+| Two campuses / addresses | Dated owner confirmation in `COMPANY_KNOWLEDGE.md`; `branchLocations.ts` | November 23, 2026 | Pickup/address/timing and any travel charges confirmed separately |
+| Discount eligibility | `policies.ts` promotions policy and its published page, inspected in the preceding audit; catalogue pricing | November 23, 2026 | Current percentage retained from catalogue. No independent new promotion-date verification or manufactured end date |
+| Class 5/7; no expiry; failed ICBC test definition; one-hour $250 preparation | Owner's explicit reply during this implementation | November 23, 2026 | Test-centre/vehicle availability and written purchase/refund or lesson-completion details remain booking-specific; no new legal or instructor review claimed |
+| Existing learner proof | `googleReviews.ts`, saved raw November 23 Google snapshot and `SEO Blogs Data/reviews.md`, inspected in the preceding audit | November 23, 2026 | Excerpts reordered, not rewritten; no new Google refresh, individual-result guarantee or programme-specific outcome claim |
+
+## Verification
+
+- Final targeted tests: **51 passed across four files**. Added regression checks for product context through mocked saved enquiries on all seven original pages, offer-before-review order, first-edit engagement versus dialog opening, and owner-confirmed terms. One earlier run concurrent with the build timed out; the sequential final run passed.
+- Targeted ESLint passed. Diff whitespace checked with CRLF recognised for the existing catalogue/FAQ files.
+- Production build succeeded in `tmp/landing-improvements/build`; static generator produced **92 routes**. The existing large-chunk warning remains. Verified static standard-rate, noindex and owner-confirmed offer text. This build contains the current workspace, including pre-existing branch/site work; it is not an isolated deployment package.
+- **80 real Chromium cases passed:** eight controls, eleven variants and the legacy alias at 320, 390, 768 and 1440 pixels. Checks covered expected H1, noindex, offer/review order, rates/terms, both branches, no page overflow/runtime exceptions, modal bounds, required fields, selection context, opening-versus-edit events, retained form values, returned keyboard focus, review/car navigation, twelve review excerpts and deferred video source.
+- **19 distinct internal destinations returned success locally.** Visual inspection included the mobile pricing hero/offer cards, Confidence hero, desktop Victoria hero and road-test variant callback. External analytics/CRM requests were blocked; no real lead, call, payment or ad-account change occurred. Successful lead delivery remains covered by mocks, not a new production CRM test. No new Lighthouse/field-speed score is claimed.
+- Measured at 390 × 844: pricing comparison starts at **708 px**, previously 1,266; the price variant comparison starts at **743 px**, previously 1,629. These are layout measurements, not conversion-uplift estimates.
+
+## Handoff
+
+Limited-change page quality: **Ready** for the checked shared layout, contact flow, supplied business clarifications and matching metadata. Intent satisfaction: **Ready** for comparing available information and requesting a callback. This is a scoped implementation review, not blanket factual/subject approval of every existing claim. Complete programme-specific written purchase/refund and any lesson-completion terms remain **Draft awaiting evidence/review** before accepting that purchase; the page directs readers to confirm them. Recheck promotion applicability before running a new offer campaign.
+
+Publication: **implemented locally**, inspected November 23, 2026. Preview: `http://127.0.0.1:4181/landing-preview.html`. No push, live deployment or Google Ads Final URL change. The earlier live audit is historical evidence for the prior release, not confirmation that these edits are published. Query variants remain explicit opt-ins; verify live content and variant events when deploying. Maintenance: recheck after offer/branch changes and validate callback/first-edit/lead reporting when GTM consumes the new event.
+
+---
+
 # New Road Test Confidence offer — 2026-11-23
 
 - Added `/lp/road-test-confidence/` using the shared paid landing layout, callback popup, reviews, car carousel and multi-item gallery. Existing seven routes and ad-group mappings remain unchanged. The new page compares the supplied $1,999 / $2,599 CAD + GST packages, makes the initial/conditional hours visible and carries package selection into callback notes.

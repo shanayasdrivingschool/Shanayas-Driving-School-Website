@@ -1,13 +1,15 @@
 import { useEffect, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { LogOut, Shield } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
 import { ADMIN_NAV_LINKS } from "@/lib/adminPanel";
 import { prefetchAdminRoute } from "@/lib/adminQueries";
 import { preloadAdminRouteModule, preloadAdminRouteModules } from "@/lib/adminRouteModules";
 import { signOutAdmin } from "@/lib/affiliateApi";
 import { cn } from "@/lib/utils";
+import AdminBrand from "./AdminBrand";
+import "./admin.css";
 
 type AdminPortalShellProps = {
   pageTitle: string;
@@ -50,98 +52,60 @@ const AdminPortalShell = ({ pageTitle, pageDescription, children }: AdminPortalS
   };
 
   return (
-    <div className="min-h-dvh bg-slate-50 text-slate-900">
-      {/* One slim bar carries identity and the account actions, replacing the hero. */}
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[100rem] items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-2.5">
-            <Shield className="h-5 w-5 text-[#1d52a1]" aria-hidden="true" />
-            <span className="text-sm font-black tracking-tight text-slate-900">Admin</span>
-          </div>
-
+    <div className="admin-workspace min-h-dvh bg-slate-50 font-body text-slate-900">
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
+        <div className="mx-auto flex min-h-16 max-w-[100rem] flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-8">
+          <AdminBrand />
           <div className="flex items-center gap-2">
-            <span className="hidden max-w-[16rem] truncate text-xs text-slate-500 sm:block">
-              {user?.email ?? "Authenticated admin"}
+            <span className="mr-2 hidden max-w-64 truncate text-xs text-slate-500 md:block">
+              {user?.email ?? "Administrator"}
             </span>
-            <Link
-              to="/"
-              className="rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1]"
-            >
+            <Link to="/" className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] sm:min-h-9">
               Website
             </Link>
-            <button
-              type="button"
-              onClick={() => void handleSignOut()}
-              className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold text-[#E6242A] transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E6242A]"
-            >
-              <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
+            <button type="button" onClick={() => void handleSignOut()} className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] sm:min-h-9">
+              <LogOut className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
               Sign out
             </button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto max-w-[100rem] px-4 py-6 sm:px-6">
-        <div className="grid gap-6 lg:grid-cols-[13rem_1fr] lg:items-start">
-          {/* The navigation no longer sits inside a card. A list of links does not need a
-              bordered, shadowed container to be understood as a list of links. */}
-          <aside className="-mx-4 overflow-x-auto px-4 sm:-mx-6 sm:px-6 lg:sticky lg:top-[4.25rem] lg:mx-0 lg:overflow-visible lg:px-0">
-            <div>
-              {/* Every item used to carry a filled grey background, so twelve solid blocks
-                  competed with the one that mattered and the current page barely stood out.
-                  Resting state is now plain; the fill is reserved for where you actually
-                  are, which is the only item that needs to be found at a glance. */}
-              <nav aria-label="Admin sections" className="flex gap-2 pb-2 lg:mt-6 lg:block lg:space-y-1 lg:pb-0">
-                {ADMIN_NAV_LINKS.map((link) => (
-                  <NavLink
-                    key={link.to}
-                    to={link.to}
-                    onMouseEnter={() => warmRoute(link.to)}
-                    onFocus={() => warmRoute(link.to)}
-                    onPointerDown={() => warmRoute(link.to)}
-                    className={({ isActive }) =>
-                      cn(
-                        "flex shrink-0 items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold transition-colors lg:gap-3",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d52a1] focus-visible:ring-offset-2",
-                        isActive
-                          ? "bg-[#1d52a1] text-white"
-                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
-                      )
-                    }
-                  >
-                    {({ isActive }) => (
-                      <>
-                        {/* A bar rather than a colour change alone: position and shape read
-                            instantly, and the state survives for anyone who cannot rely on
-                            the colour difference. */}
-                        <span
-                          aria-hidden="true"
-                          className={cn(
-                            "hidden h-5 w-1 shrink-0 rounded-full transition-colors lg:block",
-                            isActive ? "bg-[#F5B13A]" : "bg-transparent",
-                          )}
-                        />
-                        {link.label}
-                      </>
-                    )}
-                  </NavLink>
-                ))}
-              </nav>
-
-            </div>
+      <div className="mx-auto max-w-[100rem] px-4 py-6 sm:px-8 sm:py-8">
+        <div className="grid gap-8 lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start">
+          <aside className="min-w-0 lg:sticky lg:top-24">
+            <nav aria-label="Admin sections" className="flex gap-1 overflow-x-auto pb-2 lg:max-h-[calc(100dvh-8rem)] lg:flex-col lg:overflow-y-auto lg:p-1">
+              {ADMIN_NAV_LINKS.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  onMouseEnter={() => warmRoute(link.to)}
+                  onFocus={() => warmRoute(link.to)}
+                  onPointerDown={() => warmRoute(link.to)}
+                  className={({ isActive }) => cn(
+                    "flex min-h-11 shrink-0 items-center gap-3 whitespace-nowrap rounded-lg border px-3 py-2 text-sm transition-colors lg:min-h-9 lg:py-1",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1d52a1]",
+                    isActive ? "border-slate-200 bg-white font-medium text-slate-900" : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+                  )}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span aria-hidden="true" className={cn("h-4 w-1 shrink-0 rounded-sm", isActive ? "bg-[#1d52a1]" : "bg-transparent")} />
+                      {link.label}
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
           </aside>
 
-          <div className="min-w-0 space-y-5">
-            {/* A heading and a line of context. This was a bordered, shadowed card carrying
-                an "Operations center" eyebrow above the same words -- a label for the panel
-                you are already looking at. */}
+          <main className="min-w-0 space-y-6">
             <div>
-              <h1 className="text-xl font-black tracking-tight text-slate-900 sm:text-2xl">{pageTitle}</h1>
-              <p className="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">{pageDescription}</p>
+              <h1 className="text-3xl font-medium leading-tight text-slate-900">{pageTitle}</h1>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{pageDescription}</p>
             </div>
-
             {children}
-          </div>
+          </main>
         </div>
       </div>
     </div>

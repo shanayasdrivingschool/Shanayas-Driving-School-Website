@@ -6,7 +6,7 @@ type AdminStatusBadgeProps = {
 };
 
 const AdminStatusBadge = ({ label, toneClassName }: AdminStatusBadgeProps) => (
-  <span className={cn("inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide", toneClassName)}>
+  <span className={cn("inline-flex items-center whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium", toneClassName)}>
     {label}
   </span>
 );

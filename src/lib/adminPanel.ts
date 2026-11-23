@@ -13,7 +13,7 @@ export const ADMIN_NAV_LINKS = [
   { label: "Dashboard", to: "/admin/dashboard" },
   { label: "Invoices", to: "/admin/invoices" },
   { label: "Courses", to: "/admin/courses" },
-  { label: "Knowledge Test", to: "/admin/knowledge-test" },
+  { label: "Knowledge test", to: "/admin/knowledge-test" },
   { label: "Leads", to: "/admin/leads" },
   { label: "Coupons", to: "/admin/coupons" },
   { label: "Affiliates", to: "/admin/affiliates" },
@@ -21,7 +21,7 @@ export const ADMIN_NAV_LINKS = [
   { label: "Orders", to: "/admin/orders" },
   { label: "Commissions", to: "/admin/commissions" },
   { label: "Payouts", to: "/admin/payouts" },
-  { label: "Rate Limits", to: "/admin/rate-limits" },
+  { label: "Rate limits", to: "/admin/rate-limits" },
 ] as const;
 
 export const leadTypeLabels: Record<LeadType, string> = {

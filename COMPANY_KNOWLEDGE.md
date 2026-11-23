@@ -15,6 +15,19 @@ This document summarizes company data currently published or embedded in the web
 
 ## 2. Public Contact Information
 
+### Current physical branches — owner confirmation November 23, 2026
+
+Both branches operate under Shanaya's Driving School, share **250-542-3673** and **book@drivingschoolbc.ca**, and operate **9:00 AM–9:00 PM Monday to Sunday**. This dated instruction supersedes the older single-office summary and the note that hours were not known.
+
+| Branch | Exact address | Branch page | Maps |
+| --- | --- | --- | --- |
+| Langford Campus (Westshore) | Unit 124, 2770 Leigh Rd, Langford, BC V9B 4G1, Canada | /locations/langford/ | https://maps.app.goo.gl/dAwuQFZEFyyi8jt17 |
+| Victoria Campus (James Bay) | 503 Niagara St, Victoria, BC V8V 2G4, Canada | /locations/victoria-james-bay/ | https://maps.app.goo.gl/vF3YEBfLAFXMs7hc6 |
+
+Owner-confirmed shared services: Class 7 learner/novice preparation, Class 5 road-test preparation where required, automatic dual-control vehicles, highway/downtown confidence lessons and door-to-door student pickup. Confirm individual scheduling and any travel charges when booking. Branch-specific service areas and Maps place-pin coordinates are recorded in `src/data/branchLocations.ts` and `SEO Blogs Data/BRANCH_LOCATION_PAGES_NOTES.md`. The two offices are physical branches, not two names for one address. Shared contact details do not merge their identity.
+
+The new branch URLs are implemented locally; this record does not establish deployment. The original Langford shorthand address below remains equivalent to its exact branch address; it does not describe James Bay.
+
 - Primary email: book@drivingschoolbc.ca
 - Primary phone: +1 (250) 542-3673
 - Public vanity phone label: 250-LICENSE
@@ -113,7 +126,7 @@ Base lesson rates defined in code:
 - Knowledge Test Prep Course: $300 all tiers
 - Parking Course: $400.50 standard/regional, $490.50 island
 - Make Your Own Class: $133.50 standard/regional, $163.50 island
-- Road Test Package: $250 base all tiers (ICBC road test prep + our car on test day, no lessons included), plus $89 per optional 60-minute lesson, up to 10 lessons. Base price and copy live in `src/data/courseCatalog.ts`, not the `courses` table, which cannot represent the add-on model
+- Road Test Package: $250 base all tiers (one hour of road-test preparation + our car on test day; duration confirmed by owner November 23, 2026), plus $89 per optional 60-minute lesson, up to 10 lessons. Base price and copy live in `src/data/courseCatalog.ts`, not the `courses` table, which cannot represent the add-on model
 - Road Test Prep Course: $133.50 standard/regional, $163.50 island
 - New to Canada: $400.50 standard/regional, $490.50 island
 - Defensive Driving Course: $667.50 standard/regional, $817.50 island
@@ -189,7 +202,7 @@ These are important if you plan to train another AI on this company:
   - Referral terms say participation is open to people age 16+
   - Signup UI accepts ages 13-100 and requires guardian consent for minors
 - The About page contains named team members with stock-photo style content. Treat those names as website marketing content unless independently verified.
-- No public business hours were found in the codebase.
+- Historical note: no public business hours had been found. Superseded by the November 23, 2026 owner confirmation in section 2.
 - No founder, ownership, or incorporation details were found in the codebase.
 
 ## 11. Recommended Safe AI Summary
@@ -213,3 +226,11 @@ Use this short summary if another AI needs a clean company introduction:
 - `src/pages/AffiliateSignup.tsx`
 - `src/lib/affiliateProgram.ts`
 - `src/pages/Careers.tsx`
+
+## 13. Road Test Confidence — owner clarification November 23, 2026
+
+- Eligible training: Class 5 and Class 7 road-test preparation.
+- The package has no expiry date. Conditional support still ends on passing or after the fourth covered attempt; no unlimited training is promised.
+- An unsuccessful test means the student fails an ICBC road test. The next included block follows that result within the existing 10 + 5 + 3 + 2 lesson schedule.
+- The separate $250 CAD + GST test-day package includes one hour of preparation plus the school car. Optional additional lessons remain separately priced.
+- Source: explicit owner reply in the landing-page improvement task on November 23, 2026. No blanket test-centre or vehicle availability was confirmed; coordinate those with the team. Programme-specific written cancellation/refund and any lesson-completion conditions are not defined by this clarification.

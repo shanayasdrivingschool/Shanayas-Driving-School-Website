@@ -33,6 +33,13 @@ const navItems: NavItem[] = [
   { label: "Courses", href: "/courses", activePrefixes: ["/courses", "/course-quiz"] },
   { label: "About", href: "/about", activePrefixes: ["/about"] },
   {
+    label: "Locations",
+    children: [
+      { label: "Langford Campus (Westshore)", href: "/locations/langford/", activePrefixes: ["/locations/langford"] },
+      { label: "Victoria Campus (James Bay)", href: "/locations/victoria-james-bay/", activePrefixes: ["/locations/victoria-james-bay"] },
+    ],
+  },
+  {
     label: "Resources",
     children: [
       { label: "Driver's Licence Guide", href: "/blog/newcomers-guide-bc", activePrefixes: ["/blog/newcomers-guide-bc"] },

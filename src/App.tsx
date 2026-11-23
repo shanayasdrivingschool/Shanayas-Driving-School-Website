@@ -52,6 +52,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const AuthorProfile = lazy(() => import("./pages/AuthorProfile"));
 const SearchPage = lazy(() => import("./pages/Search"));
 const Faq = lazy(() => import("./pages/Faq"));
+const BranchLandingPage = lazy(() => import("./pages/BranchLandingPage"));
 const SeoLandingPage = lazy(() => import("./pages/SeoLandingPage"));
 const BeginnerDrivingLessons = lazy(() => import("./pages/BeginnerDrivingLessons"));
 const PaidLandingPage = lazy(() => import("./pages/PaidLandingPage"));
@@ -114,7 +115,9 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/driving-lessons" element={<SeoLandingPage pageId="driving-lessons" />} />
-                <Route path="/driving-lessons-langford" element={<SeoLandingPage pageId="driving-lessons-langford" />} />
+                <Route path="/driving-lessons-langford" element={<Navigate to="/locations/langford/" replace />} />
+                <Route path="/locations/langford" element={<BranchLandingPage branchId="langford" />} />
+                <Route path="/locations/victoria-james-bay" element={<BranchLandingPage branchId="victoria-james-bay" />} />
                 <Route path="/driving-lessons-colwood" element={<SeoLandingPage pageId="driving-lessons-colwood" />} />
                 <Route path="/driving-lessons-saanich" element={<SeoLandingPage pageId="driving-lessons-saanich" />} />
                 <Route path="/driving-lessons-view-royal" element={<SeoLandingPage pageId="driving-lessons-view-royal" />} />
@@ -174,6 +177,7 @@ const App = () => (
                 <Route path="/affiliate/terms-and-conditions" element={<ReferralTerms />} />
                 <Route path="/affiliate/login" element={<AffiliateLogin />} />
                 <Route path="/affiliate/dashboard" element={<AffiliateAuthProvider><AffiliateDashboard /></AffiliateAuthProvider>} />
+                <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="/admin/login" element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
                 <Route path="/seo/login" element={<SeoAuthProvider><SeoLogin /></SeoAuthProvider>} />
                 {import.meta.env.DEV ? (

@@ -71,6 +71,7 @@ export const loadSiteContent = async () => {
       server.ssrLoadModule("/src/data/knowledgeTestPractice.ts"),
     ]);
 
+    const branchData = await server.ssrLoadModule("/src/data/branchLocations.ts");
     const renderedCodePosts = activeBlogPosts.map((post) => [
       post.slug,
       {
@@ -104,6 +105,7 @@ export const loadSiteContent = async () => {
       /* Named content authors, plus the schema builders src/ uses for them, so
          the crawler HTML emits the same Person graph React does rather than a
          second hand-written copy. */
+      branchData,
       authors: publishedAuthors,
       resolveAuthor,
       authorSchema,
@@ -169,6 +171,14 @@ export const loadSiteContent = async () => {
             description: page.metaDescription,
             faqs: page.faqs ?? [],
             h1: page.h1,
+            introTitle: page.introTitle,
+            serviceAreaNote: page.serviceAreaNote,
+            benefitsTitle: page.benefitsTitle,
+            benefits: page.benefits ?? [],
+            lessonStepsTitle: page.lessonStepsTitle,
+            lessonSteps: page.lessonSteps ?? [],
+            booking: page.booking,
+            bookingSource: page.bookingSource,
             heroDescription: page.heroDescription,
             intro: page.intro ?? [],
             sections: page.sections ?? [],

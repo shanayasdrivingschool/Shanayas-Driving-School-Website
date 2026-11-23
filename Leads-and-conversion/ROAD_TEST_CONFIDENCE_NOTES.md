@@ -1,3 +1,18 @@
+# Owner clarifications incorporated — November 23, 2026
+
+This update supersedes the earlier unresolved licence-class, expiry, unsuccessful-test and preparation-duration notes below. Source: the owner's explicit reply during the landing-page implementation task, checked November 23, 2026.
+
+- Road Test Confidence covers Class 5 and Class 7 road-test preparation.
+- There is no package expiry date. Conditional extra support still ends on passing or after the fourth covered attempt, consistent with the supplied schedule.
+- An unsuccessful test means the student fails an ICBC road test. The next included lesson block follows that result within the existing limit; no no-show or cancelled appointment is represented as a failed test.
+- The separate $250 CAD + GST Road Test Package includes one hour of preparation plus the test-day car. This does not change either Confidence package's price or allowance. Updated the shared catalogue, landing offer/FAQs, road-test variant and conflicting general FAQ.
+- Test-centre and vehicle availability remain subject to confirmation. Written programme-specific purchase/refund and any lesson-completion conditions are not defined by this clarification; they remain questions to resolve before a purchase is accepted, not invented public terms.
+- Owner confirmed that Confidence prices should remain in the package section, without a hero price summary. Preserve that exception to the general hero-rate change.
+
+Publication of these clarifications: **implemented locally**. No deployment in this task. The earlier audit confirmed the previous offer page live; that does not establish publication of these edits. See `IMPLEMENTATION_NOTES.md` for final shared validation.
+
+---
+
 # Road Test Confidence landing page — working brief
 
 Date: 2026-11-23. Responsible organization: Shanaya’s Driving School.
@@ -50,3 +65,17 @@ Initial publication state: implemented locally when built; no deployment request
 - Real Chromium checks passed at 320, 390, 768 and 1440px: no initial form, two price cards before reviews, conditional copy, both package callback triggers, required name/phone/email and optional notes, bounded dialog, stage totals, review and car carousel navigation, gallery present with deferred MP4 source, and no horizontal overflow or page errors. Mobile hero/pricing and desktop hero/stage screenshots were visually inspected. External requests were blocked and no production lead was submitted.
 - Page quality: **Draft awaiting evidence/review** for eligibility, expiry, qualifying-attempt and written purchase conditions. Intent satisfaction: **Ready** for comparing the supplied two offers and requesting a callback; complete purchase eligibility still depends on those business rules. No new instructor/subject review is claimed.
 - Publication state: **implemented locally**, inspected 2026-11-23. Preview: `http://127.0.0.1:4173/lp/road-test-confidence/`. No push, deployment, live publication or Google Ads Final URL change performed for this new offer.
+
+## Hero simplification — 2026-11-23
+Owner requested removal of the pictured hero block. Removed the “Packages from $1,999” line, initial/conditional hours summary and “Compare the two packages” anchor from `src/pages/PaidLandingPage.tsx`. Package cards retain their prices and terms. No new factual claim introduced. Updated the existing callback test to check the price in the package section.
+
+Focused verification: 26 landing-page tests passed; production preview rebuilt; browser checks at 390 and 1440px confirmed the block is absent, both package prices and hero callback remain, and there is no horizontal overflow. Page quality: **Ready** for this limited removal. Intent satisfaction: **Ready** for the requested hero simplification. Publication: **implemented locally**, preview `http://127.0.0.1:4177/lp/road-test-confidence/`; no live publication performed or verified.
+
+## Package-section paragraph removal — 2026-11-23
+Removed the owner-highlighted paragraph below the package cards, beginning “Start with 15 hours” and ending “before you enrol”, from `src/components/RoadTestConfidenceOffer.tsx`. This focused deletion introduces no claims; the package cards, staged support explanation and FAQs retain the underlying terms. Production preview rebuilt and checked at 390/1440px: paragraph absent, prices/callback present, no horizontal overflow. Page quality and intent satisfaction: **Ready** for this limited requested edit. Publication: **implemented locally**, not live confirmed.
+
+## Instalment-panel emphasis — 2026-11-23
+Made the existing payment-options section a contrasting navy panel with a larger white heading, more spacing and a prominent white callback button. Preserved the exact financing copy, provider conditions and `confidence-instalments` tracking action. UI/UX skill guidance applied for readable contrast and touch targets; no financial offer or claim changed. Build and targeted ESLint passed. Browser checks at 320/390/1440px confirmed no overflow, readable terms, a button at least 52px high, callback opening and the existing CTA event. Visually inspected mobile and desktop panel screenshots. Page quality/intent satisfaction: **Ready** for this scoped visual edit. Publication: **implemented locally**, not live confirmed; preview remains on port 4177.
+
+## Remove “Your next step” — 2026-11-23
+Removed the owner-highlighted heading, callback explanation and policy link below the retest stages in `RoadTestConfidenceOffer.tsx`. No new factual claims introduced. Source inspection and whitespace check passed; production preview rebuilt successfully. Page quality/intent satisfaction: **Ready** for this focused deletion. Publication: **implemented locally**, not live confirmed.
