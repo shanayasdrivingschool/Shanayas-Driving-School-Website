@@ -32,9 +32,11 @@ The supplied social screenshot is a research lead, not publication evidence or a
 
 ## Verification and publication
 
-- Current state: implemented locally; publication not yet verified.
+- Current state: **live confirmed**, November 24, 2026: https://www.shanayasdrivingschool.com/blog/victoria-transit-strike-november-27-2026/.
 - Page quality: **Ready** for this dated announcement. Official source checking, metadata and mobile/desktop rendering checks passed; no instructor review is claimed or required for the logistical scope.
 - Intent satisfaction: **Ready**. The article answers the service-scope question early, names exceptions and offers a whole-trip planning checklist.
 - Source files are the maintained article; this note does not duplicate a separate Markdown article body.
 
 Validation: targeted ESLint passed; all 114 tests in 17 files passed. Production build generated 93 routes and 24 blog posts. Chromium at 390 and 1440px confirmed the article heading, canonical, title, publication schema, exceptions, contact link, blog-index card and loaded cover image; no horizontal overflow or JavaScript errors. Mobile article and desktop listing were visually inspected. The original cover was adjusted to match the listing aspect ratio. Evidence is in `tmp/transit-blog-20261124/`.
+
+Publication verification: published through the existing `public_html` deployment branch, release `048d6ce4` (build/source commit `d49ef505`). After host propagation, the canonical article HTML, blog index, sitemap, cover image, main JavaScript and CSS all matched the local build byte-for-byte. The article and its sitemap entry were present without a cache-busting query. See `tmp/transit-blog-20261124/live-results.json`. No indexing or ranking claim, social-media post, instructor review or automated monitoring is implied.
