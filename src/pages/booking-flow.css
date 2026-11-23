@@ -1,0 +1,125 @@
+/* Scoped to Cart and Checkout content; the shared site shell keeps its styling.
+   Polish guided by unslop by Damir Sokolovsky (@heydamir), CC BY 4.0. */
+.booking-flow {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.booking-flow :is(h1, h2, h3, p, span, a) {
+  overflow-wrap: anywhere;
+}
+
+.booking-flow :is(h1, h2, h3) {
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.booking-flow :is(button, a, input):focus-visible {
+  outline: 2px solid #1d52a1;
+  outline-offset: 3px;
+}
+
+.booking-flow :is(button, a, input) {
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.booking-flow button,
+.booking-flow .booking-primary,
+.booking-flow .booking-secondary {
+  min-height: 44px;
+}
+
+.booking-flow .booking-primary {
+  min-height: 48px;
+  background: #1d52a1;
+}
+
+.booking-flow .booking-primary:hover {
+  background: #17488d;
+}
+
+.booking-flow .booking-secondary {
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #334155;
+}
+
+.booking-flow .booking-secondary:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.booking-flow .booking-input {
+  font-size: 16px;
+}
+
+.booking-flow .booking-input:focus {
+  border-color: #1d52a1;
+}
+
+.booking-flow svg {
+  flex-shrink: 0;
+  stroke-width: 1.5;
+}
+
+.booking-flow .cart-columns > *,
+.booking-flow .checkout-columns > * {
+  min-width: 0;
+}
+
+.booking-flow .booking-panel {
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.booking-flow .cart-recommendations article {
+  min-width: 0;
+}
+
+.booking-flow .cart-line {
+  border: 1px solid #e2e8f0;
+}
+
+.booking-flow .text-xs {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.booking-flow .text-sm {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.booking-flow .text-base {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (max-width: 639px) {
+  .booking-flow .booking-panel {
+    padding: 20px;
+  }
+
+  .booking-flow .cart-line-row {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .booking-flow .cart-line-content {
+    display: contents;
+  }
+
+  .booking-flow .cart-line-actions {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .booking-flow :is(button, a, input, svg) {
+    transition: none;
+  }
+}

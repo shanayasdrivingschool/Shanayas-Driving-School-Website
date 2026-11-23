@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Elements, PaymentElement, PaymentMethodMessagingElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { CheckCircle2, ChevronRight, CreditCard } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronRight, CreditCard } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { useCheckoutSelection } from "@/hooks/useCheckoutSelection";
-import { formatCoursePrice } from "@/data/coursePricing";
+import "./booking-flow.css";
 import { STUDENT_SERVICE_POLICY_PATH, STUDENT_SERVICE_POLICY_VERSION } from "@/data/policies";
 import { getCaptchaVerification } from "@/lib/captcha";
 import { findPublicCouponByCode } from "@/lib/couponService";
@@ -28,10 +28,17 @@ import { submitCheckoutOrder, type CheckoutAssessmentInput } from "@/lib/checkou
 import { ESTIMATED_GST_RATE, type CartItem } from "@/lib/cart";
 import { isStripeConfigured, stripePromise } from "@/lib/stripeClient";
 
-const cardClassName = "rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8";
-const sectionHeadingClassName = "text-2xl font-black text-slate-900 sm:text-3xl";
+const formatCoursePrice = new Intl.NumberFormat("en-CA", {
+  style: "currency",
+  currency: "CAD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+}).format;
+
+const cardClassName = "booking-panel rounded-2xl border border-slate-200 bg-white p-5 sm:p-6";
+const sectionHeadingClassName = "text-2xl font-semibold text-slate-900";
 const inputClass =
-  "h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-slate-800 outline-none transition-colors focus:border-[#1d52a1]";
+  "booking-input h-[48px] min-w-0 w-full rounded-lg border border-slate-300 bg-white px-4 text-[16px] text-slate-900 transition-colors";
 const AUTO_PREPARE_DEBOUNCE_MS = 900;
 
 const getItemSelectionSignature = (item: CartItem) =>
@@ -179,11 +186,11 @@ const getPreparationErrorMessage = (error: unknown, isInvoiceCheckout = false) =
   }
 
   if (message.includes("missing_stripe_secret_key")) {
-    return "Stripe is not fully configured on the backend. Add the live secret key and retry.";
+    return "Payment is temporarily unavailable. Please contact the school or try again later.";
   }
 
   if (message.includes("coupon_not_applied_to_payment")) {
-    return "The payment service did not apply the selected coupon. Retry loading payment after deploying the latest payment function.";
+    return "The payment service could not apply your coupon. Please retry loading payment.";
   }
 
   if (message.includes("invoice_not_found") || message.includes("invalid_invoice_token")) {
@@ -207,7 +214,7 @@ const getPreparationErrorMessage = (error: unknown, isInvoiceCheckout = false) =
   }
 
   if (isInvoiceCheckout && message.includes("invalid_items")) {
-    return "The payment service is not using the latest invoice checkout function yet. Redeploy the create-payment-intent function and retry.";
+    return "The invoice payment could not be prepared. Please contact the school or try again later.";
   }
 
   if (import.meta.env.DEV && error instanceof Error && error.message.trim().length > 0) {
@@ -271,8 +278,8 @@ const PaymentFormPreview = ({
   isPreparingPayment: boolean;
 }) => (
   <div className="mt-6">
-    <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5">
-      <p className="text-base font-bold text-slate-900">
+    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+      <p className="text-base font-medium text-slate-900">
         {isPreparingPayment
           ? "Loading secure payment methods..."
           : isBillingDetailsComplete
@@ -281,9 +288,9 @@ const PaymentFormPreview = ({
       </p>
       <p className="mt-2 text-sm leading-relaxed text-slate-600">
         {isPreparingPayment
-          ? "Stripe is preparing the live payment form for this order."
+          ? "Your payment options will appear here shortly."
           : isBillingDetailsComplete
-            ? "The live Stripe payment form will replace this preview automatically."
+            ? "Your payment options will appear here when they are ready."
             : "Card, Affirm, and Afterpay / Clearpay options will appear at checkout when eligible."}
       </p>
     </div>
@@ -419,8 +426,7 @@ const PaymentSubmissionPanel = ({
             automatically to the confirmation page after payment completes.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-slate-600">
-            If Afterpay / Clearpay still does not appear below, Stripe has marked the order ineligible or the method
-            is not enabled in the current Stripe environment.
+            Available payment methods depend on your order and eligibility.
           </p>
         </div>
       </div>
@@ -429,8 +435,8 @@ const PaymentSubmissionPanel = ({
         id="submit"
         type="submit"
         disabled={!stripe || !elements || isSubmitting}
-        className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3 text-sm font-bold text-white transition-colors ${
-          !stripe || !elements || isSubmitting ? "cursor-not-allowed bg-slate-300" : "bg-[#E6242A] hover:bg-[#C41E23]"
+        className={`inline-flex w-full items-center justify-center gap-2 rounded-lg px-8 py-3 text-sm font-medium text-white transition-colors ${
+          !stripe || !elements || isSubmitting ? "cursor-not-allowed bg-slate-300" : "bg-[#1d52a1] hover:bg-[#17488d]"
         }`}
       >
         {isSubmitting ? "Processing payment..." : `Pay ${formatCoursePrice(amountDueToday)} now`}
@@ -443,6 +449,7 @@ const PaymentSubmissionPanel = ({
 };
 
 const Checkout = () => {
+  const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
   const {
     activeItems,
     goToCart,
@@ -608,7 +615,7 @@ const Checkout = () => {
             colorPrimary: "#1d52a1",
             colorText: "#0f172a",
             colorDanger: "#E6242A",
-            borderRadius: "18px",
+            borderRadius: "8px",
           },
         },
       }
@@ -894,8 +901,8 @@ const Checkout = () => {
     <main className="bg-[#F8FAFC] text-[#202121]">
       <SiteHeader tone="brand" />
 
-      <section className="bg-[#F8FAFC] py-10 sm:py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="booking-flow checkout-flow bg-[#F8FAFC] py-8 sm:py-12">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-8">
             <div className="flex items-center gap-2 text-[13px] text-slate-500">
               <Link to="/" className="transition-colors hover:text-[#1d52a1]">
@@ -914,72 +921,70 @@ const Checkout = () => {
             </div>
             <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">
-                  {isInvoiceCheckout ? "Private invoice" : "Secure payment"}
-                </p>
-                <h1 className="mt-3 text-[2.3rem] font-black leading-none tracking-[-0.04em] text-slate-900 sm:text-[3rem]">
+                {isInvoiceCheckout ? <p className="text-sm text-slate-500">Private invoice</p> : null}
+                <h1 className="text-[32px] font-semibold leading-none text-slate-900 sm:text-[40px]">
                   Checkout
                 </h1>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
                   {isInvoiceCheckout
-                    ? "Review the private invoice, complete billing information, and finish payment inside the secure Stripe form."
-                    : "Review your booking details, complete billing information, and finish payment inside the secure Stripe form."}
+                    ? "Review your invoice and enter your billing details to continue to payment."
+                    : "Review your lessons and enter your billing details to continue to payment."}
                 </p>
               </div>
             </div>
           </div>
           <div className="mt-8">
           {invoiceQuery.isLoading ? (
-            <div className="mx-auto max-w-3xl rounded-[32px] border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
-              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#1d52a1]/15 text-[#1d52a1]">
+            <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
+              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-lg bg-[#1d52a1]/15 text-[#1d52a1]">
                 <CheckCircle2 className="h-8 w-8" />
               </span>
-              <h2 className="mt-5 text-3xl font-black text-slate-900">Loading private invoice</h2>
+              <h2 className="mt-5 text-3xl font-semibold text-slate-900">Loading private invoice</h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
                 We&apos;re verifying the invoice details and preparing the secure checkout.
               </p>
             </div>
           ) : shouldShowInvoiceUnavailable ? (
-            <div className="mx-auto max-w-3xl rounded-[32px] border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
-              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#E6242A]/10 text-[#E6242A]">
+            <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
+              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-lg bg-[#E6242A]/10 text-[#E6242A]">
                 <CreditCard className="h-8 w-8" />
               </span>
-              <h2 className="mt-5 text-3xl font-black text-slate-900">Private invoice unavailable</h2>
+              <h2 className="mt-5 text-3xl font-semibold text-slate-900">Private invoice unavailable</h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{invoiceLookupError}</p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center justify-center rounded-full bg-[#1d52a1] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                  className="inline-flex items-center justify-center rounded-lg bg-[#1d52a1] px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-[#17488d]"
                 >
                   Contact the school
                 </Link>
                 <Link
                   to="/"
-                  className="inline-flex items-center justify-center rounded-full border-2 border-slate-300 px-8 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
+                  className="inline-flex items-center justify-center rounded-lg border-2 border-slate-300 px-8 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
                 >
                   Back to homepage
                 </Link>
               </div>
             </div>
           ) : shouldShowCatalogEmptyState ? (
-            <div className="mx-auto max-w-3xl rounded-[32px] border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
-              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#1d52a1]/15 text-[#1d52a1]">
+            <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
+              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-lg bg-[#1d52a1]/15 text-[#1d52a1]">
                 <CheckCircle2 className="h-8 w-8" />
               </span>
-              <h2 className="mt-5 text-3xl font-black text-slate-900">Choose a course or package before checkout</h2>
+              <h2 className="mt-5 text-3xl font-semibold text-slate-900">Choose a course or package before checkout</h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
                 Select one of the available training options first so the checkout page can show the correct order summary and payment amount.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   to="/packages"
-                  className="inline-flex items-center justify-center rounded-full bg-[#1d52a1] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                  className="inline-flex items-center justify-center rounded-lg bg-[#1d52a1] px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-[#17488d]"
                 >
                   Browse packages
                 </Link>
                 <Link
                   to="/courses"
-                  className="inline-flex items-center justify-center rounded-full border-2 border-slate-300 px-8 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
+                  className="inline-flex items-center justify-center rounded-lg border-2 border-slate-300 px-8 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
                 >
                   Browse courses
                 </Link>
@@ -987,20 +992,35 @@ const Checkout = () => {
             </div>
           ) : (
             <>
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.75fr)] lg:items-start">
-              <div className="order-2 space-y-6 lg:order-1">
+                <button
+                  type="button"
+                  aria-expanded={isSummaryExpanded}
+                  aria-controls="checkout-summary"
+                  onClick={() => setIsSummaryExpanded((expanded) => !expanded)}
+                  className="checkout-summary-toggle mb-6 flex w-full items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left lg:hidden"
+                >
+                  <span className="flex items-center gap-2 text-sm font-medium text-[#1d52a1]">
+                    {isSummaryExpanded ? "Hide order summary" : "Show order summary"}
+                    <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${isSummaryExpanded ? "rotate-180" : ""}`} />
+                  </span>
+                  <span className="shrink-0 text-right">
+                    <span className="block text-xs text-slate-500">Total (CAD)</span>
+                    <span className="text-lg font-semibold tabular-nums text-slate-900">{formatCoursePrice(summaryValues.total)}</span>
+                  </span>
+                </button>
+            <div className="checkout-columns grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.75fr)] lg:items-start">
+              <div className="order-2 min-w-0 space-y-6 lg:order-1">
                 <div className="space-y-6">
                   <section className={cardClassName}>
-                    <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Billing details</p>
-                    <h2 className="mt-3 text-2xl font-black text-slate-900 sm:text-3xl">Billing information</h2>
+                    <h2 className="text-2xl font-semibold text-slate-900">Billing information</h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                      Enter your billing contact details and address so the secure payment methods can load correctly.
+                      Enter the contact details and address for your payment.
                     </p>
 
                     {isInvoiceCheckout && activeInvoice ? (
                       <div className="mt-6 rounded-2xl border border-[#1d52a1]/15 bg-[#1d52a1]/5 p-4">
-                        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1d52a1]">Private invoice</p>
-                        <p className="mt-2 text-base font-black text-slate-900">{activeInvoice.title}</p>
+                        <p className="text-xs font-semibold text-[#1d52a1]">Private invoice</p>
+                        <p className="mt-2 text-base font-semibold text-slate-900">{activeInvoice.title}</p>
                         {activeInvoice.customerEmail ? (
                           <p className="mt-1 text-sm text-slate-600">Issued for {activeInvoice.customerEmail}</p>
                         ) : null}
@@ -1019,15 +1039,18 @@ const Checkout = () => {
                         </label>
                         <input
                           id="checkout-full-name"
+                          autoComplete="billing name"
                           type="text"
                           value={formValues.fullName}
+                          aria-invalid={shouldShowError("fullName") && Boolean(errors.fullName)}
+                          aria-describedby={shouldShowError("fullName") && errors.fullName ? "checkout-error-fullName" : undefined}
                           onBlur={() => markTouched("fullName")}
                           onChange={(event) => updateField("fullName", event.target.value)}
                           placeholder="Enter your billing name"
                           className={inputClass}
                         />
                         {shouldShowError("fullName") && errors.fullName ? (
-                          <p className="mt-2 text-sm text-red-500">{errors.fullName}</p>
+                          <p id="checkout-error-fullName" className="mt-2 text-sm text-red-700">{errors.fullName}</p>
                         ) : null}
                       </div>
 
@@ -1038,15 +1061,18 @@ const Checkout = () => {
                           </label>
                           <input
                             id="checkout-phone"
+                          autoComplete="billing tel"
                             type="tel"
                             value={formValues.phone}
-                            onBlur={() => markTouched("phone")}
+                            aria-invalid={shouldShowError("phone") && Boolean(errors.phone)}
+                          aria-describedby={shouldShowError("phone") && errors.phone ? "checkout-error-phone" : undefined}
+                          onBlur={() => markTouched("phone")}
                             onChange={(event) => updateField("phone", event.target.value)}
                             placeholder="+1 (250) 542-3673"
                             className={inputClass}
                           />
                           {shouldShowError("phone") && errors.phone ? (
-                            <p className="mt-2 text-sm text-red-500">{errors.phone}</p>
+                            <p id="checkout-error-phone" className="mt-2 text-sm text-red-700">{errors.phone}</p>
                           ) : null}
                         </div>
 
@@ -1056,15 +1082,18 @@ const Checkout = () => {
                           </label>
                           <input
                             id="checkout-email"
+                          autoComplete="billing email"
                             type="email"
                             value={formValues.email}
-                            onBlur={() => markTouched("email")}
+                            aria-invalid={shouldShowError("email") && Boolean(errors.email)}
+                          aria-describedby={shouldShowError("email") && errors.email ? "checkout-error-email" : undefined}
+                          onBlur={() => markTouched("email")}
                             onChange={(event) => updateField("email", event.target.value)}
                             placeholder="you@example.com"
                             className={inputClass}
                           />
                           {shouldShowError("email") && errors.email ? (
-                            <p className="mt-2 text-sm text-red-500">{errors.email}</p>
+                            <p id="checkout-error-email" className="mt-2 text-sm text-red-700">{errors.email}</p>
                           ) : null}
                         </div>
                       </div>
@@ -1075,15 +1104,18 @@ const Checkout = () => {
                         </label>
                         <input
                           id="checkout-address-line-1"
+                          autoComplete="billing address-line1"
                           type="text"
                           value={formValues.addressLine1}
+                          aria-invalid={shouldShowError("addressLine1") && Boolean(errors.addressLine1)}
+                          aria-describedby={shouldShowError("addressLine1") && errors.addressLine1 ? "checkout-error-addressLine1" : undefined}
                           onBlur={() => markTouched("addressLine1")}
                           onChange={(event) => updateField("addressLine1", event.target.value)}
                           placeholder="Street address"
                           className={inputClass}
                         />
                         {shouldShowError("addressLine1") && errors.addressLine1 ? (
-                          <p className="mt-2 text-sm text-red-500">{errors.addressLine1}</p>
+                          <p id="checkout-error-addressLine1" className="mt-2 text-sm text-red-700">{errors.addressLine1}</p>
                         ) : null}
                       </div>
 
@@ -1094,15 +1126,18 @@ const Checkout = () => {
                           </label>
                           <input
                             id="checkout-city"
+                          autoComplete="billing address-level2"
                             type="text"
                             value={formValues.city}
-                            onBlur={() => markTouched("city")}
+                            aria-invalid={shouldShowError("city") && Boolean(errors.city)}
+                          aria-describedby={shouldShowError("city") && errors.city ? "checkout-error-city" : undefined}
+                          onBlur={() => markTouched("city")}
                             onChange={(event) => updateField("city", event.target.value)}
                             placeholder="Victoria"
                             className={inputClass}
                           />
                           {shouldShowError("city") && errors.city ? (
-                            <p className="mt-2 text-sm text-red-500">{errors.city}</p>
+                            <p id="checkout-error-city" className="mt-2 text-sm text-red-700">{errors.city}</p>
                           ) : null}
                         </div>
 
@@ -1112,15 +1147,18 @@ const Checkout = () => {
                           </label>
                           <input
                             id="checkout-province"
+                          autoComplete="billing address-level1"
                             type="text"
                             value={formValues.province}
-                            onBlur={() => markTouched("province")}
+                            aria-invalid={shouldShowError("province") && Boolean(errors.province)}
+                          aria-describedby={shouldShowError("province") && errors.province ? "checkout-error-province" : undefined}
+                          onBlur={() => markTouched("province")}
                             onChange={(event) => updateField("province", event.target.value)}
                             placeholder="BC"
                             className={inputClass}
                           />
                           {shouldShowError("province") && errors.province ? (
-                            <p className="mt-2 text-sm text-red-500">{errors.province}</p>
+                            <p id="checkout-error-province" className="mt-2 text-sm text-red-700">{errors.province}</p>
                           ) : null}
                         </div>
                       </div>
@@ -1131,15 +1169,18 @@ const Checkout = () => {
                         </label>
                         <input
                           id="checkout-postal-code"
+                          autoComplete="billing postal-code"
                           type="text"
                           value={formValues.postalCode}
+                          aria-invalid={shouldShowError("postalCode") && Boolean(errors.postalCode)}
+                          aria-describedby={shouldShowError("postalCode") && errors.postalCode ? "checkout-error-postalCode" : undefined}
                           onBlur={() => markTouched("postalCode")}
                           onChange={(event) => updateField("postalCode", event.target.value)}
                           placeholder="V8X 1A1"
                           className={inputClass}
                         />
                         {shouldShowError("postalCode") && errors.postalCode ? (
-                          <p className="mt-2 text-sm text-red-500">{errors.postalCode}</p>
+                          <p id="checkout-error-postalCode" className="mt-2 text-sm text-red-700">{errors.postalCode}</p>
                         ) : null}
                       </div>
 
@@ -1149,9 +1190,11 @@ const Checkout = () => {
                             id="checkout-consent"
                             type="checkbox"
                             checked={formValues.consent}
-                            onBlur={() => markTouched("consent")}
+                            aria-invalid={shouldShowError("consent") && Boolean(errors.consent)}
+                          aria-describedby={shouldShowError("consent") && errors.consent ? "checkout-error-consent" : undefined}
+                          onBlur={() => markTouched("consent")}
                             onChange={(event) => updateField("consent", event.target.checked)}
-                            className="mt-1 h-4 w-4 rounded border-slate-300 text-[#1d52a1] focus:ring-[#1d52a1]"
+                            className="mt-1 h-[20px] w-[20px] shrink-0 rounded border-slate-300 accent-[#1d52a1]"
                           />
                           <span className="text-sm leading-relaxed text-slate-700 sm:text-base">
                             I confirm that I reviewed and agree to the{" "}
@@ -1186,14 +1229,14 @@ const Checkout = () => {
                         </label>
 
                         {shouldShowError("consent") && errors.consent ? (
-                          <p className="mt-3 text-sm text-red-500">{errors.consent}</p>
+                          <p id="checkout-error-consent" className="mt-3 text-sm text-red-700">{errors.consent}</p>
                         ) : null}
                       </div>
                     </div>
 
                     {!isStripeConfigured ? (
                       <p className="mt-3 text-sm font-semibold text-[#E6242A]">
-                        Stripe publishable key is missing from the frontend environment.
+                        Payment is temporarily unavailable. Please contact the school or try again later.
                       </p>
                     ) : null}
 
@@ -1205,10 +1248,9 @@ const Checkout = () => {
 
                 <section className={cardClassName}>
                   <div className="flex items-start gap-3">
-                    <CreditCard className="mt-1 h-5 w-5 text-[#1d52a1]" />
+                    <CreditCard className="mt-1 h-[20px] w-[20px] shrink-0 text-slate-500" />
                     <div>
-                      <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Payment details</p>
-                      <h2 className={`mt-2 ${sectionHeadingClassName}`}>Secure payment</h2>
+                      <h2 className={sectionHeadingClassName}>Secure payment</h2>
                       <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
                         Pay by card, Affirm, or Afterpay / Clearpay inside the same secure Stripe checkout.
                       </p>
@@ -1257,7 +1299,7 @@ const Checkout = () => {
                             setBlockedAutoPrepareKey(null);
                             void preparePayment();
                           }}
-                          className="inline-flex items-center justify-center rounded-full border border-[#1d52a1] px-5 py-2.5 text-sm font-bold text-[#1d52a1] transition-colors hover:bg-[#1d52a1] hover:text-white"
+                          className="inline-flex items-center justify-center rounded-lg border border-[#1d52a1] px-5 py-2.5 text-sm font-medium text-[#1d52a1] transition-colors hover:bg-[#1d52a1] hover:text-white"
                         >
                           Retry loading payment
                         </button>
@@ -1267,22 +1309,23 @@ const Checkout = () => {
                 </section>
               </div>
 
-              <aside className="order-1 space-y-6 lg:order-2 lg:sticky lg:top-10">
-                <section className={cardClassName}>
-                  <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Order summary</p>
-                  <h2 className={`mt-3 ${sectionHeadingClassName}`}>Your booking total</h2>
+              <aside className={`${isSummaryExpanded ? "block" : "hidden"} order-1 min-w-0 lg:order-2 lg:block`}>
 
-                  <div className="mt-6 space-y-4 rounded-2xl border border-slate-200 bg-[#F8FAFC] p-5">
+                <div id="checkout-summary" className="space-y-6">
+                <section className={cardClassName}>
+                  <h2 className={sectionHeadingClassName}>Your booking total</h2>
+
+                  <div className="mt-6 space-y-4">
                     <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
                       <span>{isInvoiceCheckout ? "Invoice amount" : "Subtotal"}</span>
-                      <span className="font-bold text-slate-900">
+                      <span className="font-medium text-slate-900">
                         {formatCoursePrice(summaryValues.subtotalBeforeDiscount)}
                       </span>
                     </div>
                     {!isInvoiceCheckout && summaryValues.bundleDiscountAmount > 0 ? (
                       <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
                         <span>{summaryValues.bundleDiscountPercent}% lesson savings</span>
-                        <span className="font-bold text-[#1d52a1]">
+                        <span className="font-medium text-[#1d52a1]">
                           -{formatCoursePrice(summaryValues.bundleDiscountAmount)}
                         </span>
                       </div>
@@ -1290,7 +1333,7 @@ const Checkout = () => {
                     {!isInvoiceCheckout && summaryValues.couponDiscountAmount > 0 ? (
                       <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
                         <span>Coupon savings</span>
-                        <span className="font-bold text-[#1d52a1]">
+                        <span className="font-medium text-[#1d52a1]">
                           -{formatCoursePrice(summaryValues.couponDiscountAmount)}
                         </span>
                       </div>
@@ -1298,7 +1341,7 @@ const Checkout = () => {
                     {!isInvoiceCheckout ? (
                       <div className="flex items-center justify-between gap-4 text-sm text-slate-600 sm:text-base">
                         <span>Estimated GST</span>
-                        <span className="font-bold text-slate-900">{formatCoursePrice(summaryValues.estimatedTaxes)}</span>
+                        <span className="font-medium text-slate-900">{formatCoursePrice(summaryValues.estimatedTaxes)}</span>
                       </div>
                     ) : activeInvoice?.description ? (
                       <p className="text-sm leading-relaxed text-slate-600">{activeInvoice.description}</p>
@@ -1309,13 +1352,13 @@ const Checkout = () => {
                     )}
                     <div className="border-t border-slate-300 pt-4">
                       <div className="flex items-center justify-between gap-4">
-                        <span className="text-base font-black uppercase tracking-[0.12em] text-slate-900">Total due</span>
-                        <span className="text-3xl font-black text-[#E6242A]">{formatCoursePrice(summaryValues.total)}</span>
+                        <span className="text-base font-semibold text-slate-900">Total due (CAD)</span>
+                        <span className="text-3xl font-semibold tabular-nums text-slate-900">{formatCoursePrice(summaryValues.total)}</span>
                       </div>
                     </div>
                     {!isInvoiceCheckout ? (
                     <div className="border-t border-slate-300 pt-4">
-                      <p className="text-xs font-black uppercase tracking-wide text-slate-500">Coupon code</p>
+                      <label htmlFor="checkout-coupon" className="text-sm font-medium text-slate-600">Coupon code</label>
                       <div className="mt-2 flex flex-col gap-3 sm:flex-row">
                         <input
                           type="text"
@@ -1334,14 +1377,15 @@ const Checkout = () => {
                               resetPreparedPayment();
                             }
                           }}
-                          placeholder="Enter coupon code"
+                          id="checkout-coupon"
+                          placeholder="Coupon code"
                           className={`${inputClass} sm:flex-1`}
                         />
                         {appliedCoupon ? (
                           <button
                             type="button"
                             onClick={removeCoupon}
-                            className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                            className="inline-flex items-center justify-center rounded-lg border border-slate-300 px-6 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
                           >
                             Remove coupon
                           </button>
@@ -1350,8 +1394,8 @@ const Checkout = () => {
                             type="button"
                             onClick={applyCoupon}
                             disabled={isApplyingCoupon}
-                            className={`inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-bold text-white transition-colors ${
-                              isApplyingCoupon ? "cursor-wait bg-slate-400" : "bg-[#1d52a1] hover:bg-[#17488d]"
+                            className={`booking-secondary inline-flex shrink-0 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                              isApplyingCoupon ? "cursor-wait opacity-60" : ""
                             }`}
                           >
                             {isApplyingCoupon ? "Checking..." : "Apply coupon"}
@@ -1371,10 +1415,9 @@ const Checkout = () => {
                 </section>
 
                 <section className={cardClassName}>
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex min-w-0 flex-wrap items-start justify-between gap-4">
                     <div>
-                      <p className="text-sm font-black uppercase tracking-[0.16em] text-[#E6242A]">Product details</p>
-                      <h2 className="mt-3 text-2xl font-black text-slate-900">
+                      <h2 className="text-2xl font-semibold text-slate-900">
                         {isInvoiceCheckout ? "Invoice details" : "Items in your order"}
                       </h2>
                     </div>
@@ -1382,7 +1425,7 @@ const Checkout = () => {
                     {editSelectionHref ? (
                       <Link
                         to={editSelectionHref}
-                        className="text-sm font-bold text-[#1d52a1] transition-colors hover:text-[#17488d]"
+                        className="text-sm font-medium text-[#1d52a1] transition-colors hover:text-[#17488d]"
                       >
                         Edit selection
                       </Link>
@@ -1390,7 +1433,7 @@ const Checkout = () => {
                       <button
                         type="button"
                         onClick={goToCart}
-                        className="text-sm font-bold text-[#1d52a1] transition-colors hover:text-[#17488d]"
+                        className="text-sm font-medium text-[#1d52a1] transition-colors hover:text-[#17488d]"
                       >
                         Edit cart
                       </button>
@@ -1400,9 +1443,9 @@ const Checkout = () => {
                   <div className="mt-6 divide-y divide-slate-200">
                     {isInvoiceCheckout && activeInvoice ? (
                       <article className="py-4 first:pt-0 last:pb-0">
-                        <div className="flex items-start justify-between gap-4">
+                        <div className="flex min-w-0 flex-wrap items-start justify-between gap-4">
                           <div className="min-w-0">
-                            <h3 className="text-base font-black leading-tight text-slate-900">{activeInvoice.title}</h3>
+                            <h3 className="text-base font-semibold leading-tight text-slate-900">{activeInvoice.title}</h3>
                             {activeInvoice.customerName ? (
                               <p className="mt-1 text-sm text-slate-500">Issued for {activeInvoice.customerName}</p>
                             ) : null}
@@ -1417,7 +1460,7 @@ const Checkout = () => {
                           </div>
 
                           <div className="shrink-0 text-right">
-                            <p className="text-lg font-black text-slate-900">
+                            <p className="text-lg font-semibold text-slate-900">
                               {formatCoursePrice(activeInvoice.amount)}
                             </p>
                           </div>
@@ -1440,9 +1483,9 @@ const Checkout = () => {
                           </div>
 
                           <div className="min-w-0 flex-1">
-                            <div className="flex items-start justify-between gap-4">
+                            <div className="flex min-w-0 flex-wrap items-start justify-between gap-4">
                               <div className="min-w-0">
-                                <h3 className="text-base font-black leading-tight text-slate-900">{item.title}</h3>
+                                <h3 className="text-base font-semibold leading-tight text-slate-900">{item.title}</h3>
                                 <p className="mt-1 text-sm text-slate-500">{item.locationName}</p>
                                 <p className="mt-2 text-sm text-slate-600">
                                   Qty {item.quantity}
@@ -1466,7 +1509,7 @@ const Checkout = () => {
                               </div>
 
                               <div className="shrink-0 text-right">
-                                <p className="text-lg font-black text-slate-900">
+                                <p className="text-lg font-semibold text-slate-900">
                                   {formatCoursePrice(item.price * item.quantity)}
                                 </p>
                               </div>
@@ -1477,6 +1520,7 @@ const Checkout = () => {
                     })}
                   </div>
                 </section>
+                </div>
               </aside>
             </div>
             </>

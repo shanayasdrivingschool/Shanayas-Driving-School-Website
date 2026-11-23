@@ -6,16 +6,32 @@ import SiteHeader from "@/components/SiteHeader";
 import { useCart } from "@/components/cart/CartProvider";
 import { useToast } from "@/components/ui/use-toast";
 import { courseCatalog, courseCatalogById } from "@/data/courseCatalog";
-import { formatCoursePrice } from "@/data/coursePricing";
+import "./booking-flow.css";
 import { getCoursePriceForTier } from "@/data/coursePricing";
-import { optionalExtras } from "@/data/optionalExtras";
+import { optionalExtras, type OptionalExtra } from "@/data/optionalExtras";
 import { getPackageIncludedCourses } from "@/data/packageCatalog";
 import { officeLocation } from "@/data/serviceLocations";
 import { ESTIMATED_GST_RATE } from "@/lib/cart";
 import { clearCheckoutPaymentSession } from "@/lib/checkoutPaymentSession";
 
+const formatCoursePrice = new Intl.NumberFormat("en-CA", {
+  style: "currency",
+  currency: "CAD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+}).format;
+
+type ExtraRecommendation = Omit<OptionalExtra, "price"> & {
+  cartItemType: "course" | "extra" | null;
+  cartProductId: string | null;
+  price: number | null;
+  mappedCourseTitle: string | null;
+  viewHref: string;
+  isAlreadyInCart: boolean;
+};
+
 const quantityButtonClass =
-  "inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-white/80 hover:text-[#1d52a1]";
+  "inline-flex h-[44px] w-[44px] items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-white/80 hover:text-[#1d52a1]";
 
 const Cart = () => {
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
@@ -51,7 +67,7 @@ const Cart = () => {
     .sort((left, right) => right.score - left.score || left.course.title.localeCompare(right.course.title))
     .slice(0, 3)
     .map(({ course }) => course);
-  const optionalExtraRecommendations = optionalExtras.flatMap((extra) => {
+  const optionalExtraRecommendations = optionalExtras.flatMap<ExtraRecommendation>((extra) => {
     if (extra.courseId) {
       const mappedCourse = courseCatalogById[extra.courseId];
       if (!mappedCourse) {
@@ -150,28 +166,28 @@ const Cart = () => {
     <main className="bg-white text-[#202121]">
       <SiteHeader tone="brand" />
 
-      <section className="bg-white py-8 sm:py-12">
+      <section className="booking-flow cart-flow bg-white py-8 sm:py-12">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div>
           {!hasItems ? (
-            <div className="mx-auto max-w-3xl rounded-[28px] border border-slate-200 bg-white p-7 text-center shadow-sm sm:p-8">
-              <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#1d52a1]/15 text-[#1d52a1]">
+            <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:p-8">
+              <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-lg bg-[#1d52a1]/15 text-[#1d52a1]">
                 <ShoppingCart className="h-7 w-7" />
               </span>
-              <h2 className="mt-4 text-[1.75rem] font-black text-slate-900">Your cart is empty</h2>
+              <h1 className="mt-4 text-2xl font-semibold text-slate-900">Your cart is empty</h1>
               <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
                 Add a course, package, or optional extra first so you can review the booking details here and continue to checkout.
               </p>
-              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   to="/packages"
-                  className="inline-flex items-center justify-center rounded-full bg-[#1d52a1] px-7 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#17488d]"
+                  className="inline-flex items-center justify-center rounded-lg bg-[#1d52a1] px-7 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#17488d]"
                 >
                   Browse packages
                 </Link>
                 <Link
                   to="/courses"
-                  className="inline-flex items-center justify-center rounded-full border-2 border-slate-300 px-7 py-2.5 text-sm font-bold text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
+                  className="inline-flex items-center justify-center rounded-lg border-2 border-slate-300 px-7 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:border-[#1d52a1] hover:text-[#1d52a1]"
                 >
                   Browse courses
                 </Link>
@@ -179,7 +195,7 @@ const Cart = () => {
             </div>
           ) : (
             <>
-              <div className="mb-7 border-b border-slate-200 pb-5">
+              <div className="mb-6 border-b border-slate-200 pb-5">
                 <div className="flex items-center gap-2 text-[13px] text-slate-500">
                   <Link to="/" className="transition-colors hover:text-[#1d52a1]">
                     Home
@@ -189,14 +205,14 @@ const Cart = () => {
                 </div>
                 <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <h1 className="text-[2.3rem] font-black uppercase leading-none tracking-[-0.04em] text-slate-900 sm:text-[3rem]">
+                    <h1 className="text-[32px] font-semibold leading-none text-slate-900 sm:text-[40px]">
                       Your cart
                     </h1>
                   </div>
 
                   <Link
                     to="/packages"
-                    className="inline-flex items-center gap-2 self-start rounded-full px-2 py-2 text-[13px] font-bold text-slate-700 transition-colors hover:text-[#1d52a1] sm:self-auto"
+                    className="inline-flex items-center gap-2 self-start rounded-lg px-2 py-2 text-[13px] font-medium text-slate-700 transition-colors hover:text-[#1d52a1] sm:self-auto"
                   >
                     Continue shopping
                     <ArrowRight className="h-4 w-4" />
@@ -204,8 +220,8 @@ const Cart = () => {
                 </div>
               </div>
 
-              <div className="grid gap-6 xl:grid-cols-[minmax(0,1.28fr)_minmax(300px,0.72fr)] xl:items-start">
-                <section className="bg-white">
+              <div className="cart-columns grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.28fr)_minmax(300px,0.72fr)] xl:items-start">
+                <section className="min-w-0 bg-white">
                   <div className="divide-y divide-slate-200">
                     {items.map((item) => {
                       const lineTotal = item.price * item.quantity;
@@ -215,9 +231,9 @@ const Cart = () => {
 
                       return (
                         <article key={item.key} className="py-5 first:pt-0 last:pb-0">
-                          <div className="rounded-[20px] bg-[#fafafa] px-3 py-3 sm:px-4">
-                            <div className="flex items-start gap-3">
-                              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[14px] bg-white sm:h-[78px] sm:w-[78px]">
+                          <div className="cart-line rounded-2xl bg-[#fafafa] p-4">
+                            <div className="cart-line-row flex items-start gap-3">
+                              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-white sm:h-20 sm:w-20">
                                 <img
                                   src={item.image}
                                   alt={item.title}
@@ -227,20 +243,20 @@ const Cart = () => {
                                 />
                               </div>
 
-                              <div className="min-w-0 flex-1">
+                              <div className="cart-line-content min-w-0 flex-1">
                                 <div className="flex items-start justify-between gap-3">
                                   <div className="min-w-0">
                                     <Link
                                       to={item.editHref}
-                                      className="block truncate text-[15px] font-bold leading-tight text-slate-900 transition-colors hover:text-[#1d52a1] sm:text-base"
+                                      className="block break-words text-[15px] font-medium leading-tight text-slate-900 transition-colors hover:text-[#1d52a1] sm:text-base"
                                     >
                                       {item.title}
                                     </Link>
-                                    <p className="mt-1 text-[11px] leading-tight text-slate-500">{item.locationName}</p>
-                                    <p className="mt-0.5 text-[11px] leading-tight text-slate-500">
+                                    <p className="mt-1 text-xs leading-tight text-slate-500">{item.locationName}</p>
+                                    <p className="mt-0.5 text-xs leading-tight text-slate-500">
                                       {item.secondaryMetricLabel}: {item.secondaryMetricValue}
                                     </p>
-                                    <p className="mt-2 text-[1.35rem] font-black leading-none text-slate-900">
+                                    <p className="mt-2 text-xl font-semibold leading-none text-slate-900">
                                       {formatCoursePrice(lineTotal)}
                                     </p>
                                   </div>
@@ -248,18 +264,18 @@ const Cart = () => {
                                   <button
                                     type="button"
                                     onClick={() => handleRemoveItem(item.key)}
-                                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#E6242A] transition-colors hover:bg-[#E6242A]/5 hover:text-[#C41E23]"
+                                    className="inline-flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-[#E6242A]/5 hover:text-[#C41E23]"
                                     aria-label={`Remove ${item.title}`}
                                   >
                                     <Trash2 className="h-4 w-4" />
                                   </button>
                                 </div>
 
-                                <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                                <div className="cart-line-actions mt-3 flex flex-wrap items-center justify-between gap-3">
                                   <button
                                     type="button"
                                     onClick={() => toggleItemDetails(item.key)}
-                                    className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-500 transition-colors hover:text-[#1d52a1]"
+                                    className="inline-flex items-center min-h-[44px] gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-[#1d52a1]"
                                     aria-expanded={isExpanded}
                                     aria-controls={`cart-item-details-${item.key}`}
                                   >
@@ -269,7 +285,7 @@ const Cart = () => {
                                     />
                                   </button>
 
-                                  <div className="inline-flex items-center rounded-full bg-white px-1 py-1 shadow-[inset_0_0_0_1px_rgba(226,232,240,1)]">
+                                  <div className="inline-flex items-center rounded-lg bg-white px-1 py-1 shadow-[inset_0_0_0_1px_rgba(226,232,240,1)]">
                                     <button
                                       type="button"
                                       onClick={() => handleUpdateQuantity(item.key, item.quantity - 1)}
@@ -278,7 +294,7 @@ const Cart = () => {
                                     >
                                       <Minus className="h-4 w-4" />
                                     </button>
-                                    <span className="min-w-[2.75rem] text-center text-[13px] font-black text-slate-900">
+                                    <span className="min-w-[2.75rem] text-center text-[14px] font-medium tabular-nums text-slate-900">
                                       {item.quantity}
                                     </span>
                                     <button
@@ -297,7 +313,7 @@ const Cart = () => {
                             {isExpanded ? (
                               <div
                                 id={`cart-item-details-${item.key}`}
-                                className="mt-4 grid gap-2 border-t border-slate-200 pt-4 text-[12px] text-slate-600 sm:grid-cols-2"
+                                className="mt-4 grid gap-2 border-t border-slate-200 pt-4 text-xs text-slate-600 sm:grid-cols-2"
                               >
                                 <p>
                                   <span className="font-semibold text-slate-900">Level:</span> {item.levelLabel}
@@ -336,40 +352,40 @@ const Cart = () => {
                   </div>
                 </section>
 
-                <aside>
-                  <section className="rounded-[28px] border border-slate-200 bg-white p-5 sm:p-6">
-                    <h2 className="text-[1.75rem] font-black leading-none text-slate-900">Order Summary</h2>
+                <aside className="min-w-0">
+                  <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+                    <h2 className="text-2xl font-semibold leading-none text-slate-900">Order summary</h2>
 
                     <div className="mt-6 space-y-4">
                       <div className="flex items-center justify-between gap-4 text-sm text-slate-600">
                         <span>Subtotal</span>
-                        <span className="font-black text-slate-900">
+                        <span className="font-semibold text-slate-900">
                           {formatCoursePrice(pricingSummary.subtotalBeforeDiscount)}
                         </span>
                       </div>
                       {pricingSummary.bundleDiscountAmount > 0 ? (
                         <div className="flex items-center justify-between gap-4 text-sm text-slate-600">
                           <span>{pricingSummary.bundleDiscountPercent}% lesson savings</span>
-                          <span className="font-black text-[#1d52a1]">
+                          <span className="font-semibold text-[#1d52a1]">
                             -{formatCoursePrice(pricingSummary.bundleDiscountAmount)}
                           </span>
                         </div>
                       ) : null}
                       <div className="flex items-center justify-between gap-4 text-sm text-slate-600">
                         <span>{gstLabel}</span>
-                        <span className="font-black text-slate-900">{formatCoursePrice(estimatedTaxes)}</span>
+                        <span className="font-semibold text-slate-900">{formatCoursePrice(estimatedTaxes)}</span>
                       </div>
                       <div className="border-t border-slate-200 pt-4">
                         <div className="flex items-center justify-between gap-4">
-                          <span className="text-[1.5rem] font-black leading-none text-slate-900">Total</span>
-                          <span className="text-[2.1rem] font-black leading-none text-slate-900">{formatCoursePrice(total)}</span>
+                          <span className="text-xl font-semibold leading-none text-slate-900">Total (CAD)</span>
+                          <span className="text-3xl font-semibold leading-none text-slate-900">{formatCoursePrice(total)}</span>
                         </div>
                       </div>
                     </div>
 
                     <Link
                       to="/checkout"
-                      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#111111] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-black"
+                      className="booking-primary mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-medium text-white transition-colors"
                     >
                       Go to checkout
                       <ArrowRight className="h-4 w-4" />
@@ -379,9 +395,9 @@ const Cart = () => {
               </div>
 
               {optionalExtraRecommendations.length > 0 || relatedCourses.length > 0 ? (
-                <section className="mt-14 space-y-8">
+                <section className="cart-recommendations mt-12 space-y-8">
                   <div className="border-b border-slate-200 pb-5">
-                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Often bought together</h2>
+                    <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Optional extras</h2>
                   </div>
 
                   {optionalExtraRecommendations.length > 0 ? (
@@ -390,15 +406,15 @@ const Cart = () => {
                         {optionalExtraRecommendations.map((extra) => (
                           <article
                             key={extra.id}
-                            className="flex h-full flex-col rounded-[24px] border border-slate-200 bg-white p-5"
+                            className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5"
                           >
                             <div className="flex-1">
-                              <h3 className="text-lg font-black leading-tight text-slate-900">{extra.title}</h3>
+                              <h3 className="text-lg font-semibold leading-tight text-slate-900">{extra.title}</h3>
                               <p className="mt-3 text-[13px] leading-relaxed text-slate-600">{extra.description}</p>
                             </div>
 
                             <div className="mt-auto pt-5">
-                              <span className="block text-lg font-black text-slate-900">
+                              <span className="block text-lg font-semibold text-slate-900">
                                 {extra.price === null ? "Request pricing" : formatCoursePrice(extra.price)}
                               </span>
                               <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -413,14 +429,14 @@ const Cart = () => {
                                         extra.mappedCourseTitle,
                                       )
                                     }
-                                    className="inline-flex items-center justify-center rounded-full bg-[#111111] px-4 py-2 text-[13px] font-bold text-white transition-colors hover:bg-black"
+                                    className="inline-flex items-center justify-center booking-secondary rounded-lg px-4 py-2 text-sm font-medium transition-colors"
                                   >
                                     {extra.isAlreadyInCart ? "Add another" : "Add to cart"}
                                   </button>
                                 ) : (
                                   <Link
                                     to={extra.viewHref}
-                                    className="inline-flex items-center justify-center rounded-full bg-[#111111] px-4 py-2 text-[13px] font-bold text-white transition-colors hover:bg-black"
+                                    className="inline-flex items-center justify-center booking-secondary rounded-lg px-4 py-2 text-sm font-medium transition-colors"
                                   >
                                     {extra.actionLabel ?? "Contact us"}
                                   </Link>
@@ -428,7 +444,7 @@ const Cart = () => {
                                 {extra.viewHref ? (
                                   <Link
                                     to={extra.viewHref}
-                                    className="inline-flex items-center gap-2 text-[13px] font-bold text-slate-700 transition-colors hover:text-[#1d52a1]"
+                                    className="inline-flex items-center gap-2 text-[13px] font-medium text-slate-700 transition-colors hover:text-[#1d52a1]"
                                   >
                                     View details
                                     <ArrowRight className="h-4 w-4" />
@@ -446,7 +462,7 @@ const Cart = () => {
                     <div>
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                         <div>
-                          <h3 className="text-xl font-black text-slate-900 sm:text-2xl">Related courses</h3>
+                          <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">Related courses</h3>
                           <p className="mt-2 text-sm leading-relaxed text-slate-600">
                             Add another lesson block if you want to keep building around the same focus areas.
                           </p>
@@ -454,7 +470,7 @@ const Cart = () => {
 
                         <Link
                           to="/courses"
-                          className="inline-flex items-center gap-2 self-start rounded-full px-2 py-2 text-[13px] font-bold text-slate-700 transition-colors hover:text-[#1d52a1] sm:self-auto"
+                          className="inline-flex items-center gap-2 self-start rounded-lg px-2 py-2 text-[13px] font-medium text-slate-700 transition-colors hover:text-[#1d52a1] sm:self-auto"
                         >
                           View all courses
                           <ArrowRight className="h-4 w-4" />
@@ -463,38 +479,38 @@ const Cart = () => {
 
                       <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {relatedCourses.map((course) => (
-                          <article key={course.id} className="flex h-full flex-col overflow-hidden rounded-[24px] border border-slate-200 bg-white">
+                          <article key={course.id} className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white">
                             <div className="h-48 overflow-hidden bg-slate-100">
                               <img
                                 src={course.image}
                                 alt={course.title}
                                 loading="lazy"
                                 decoding="async"
-                                className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                                className="h-full w-full object-cover "
                               />
                             </div>
 
                             <div className="flex flex-1 flex-col p-4">
-                              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#1d52a1]">{course.level}</p>
-                              <h3 className="mt-2 text-lg font-black leading-tight text-slate-900">{course.title}</h3>
+                              <p className="text-xs font-semibold text-[#1d52a1]">{course.level}</p>
+                              <h3 className="mt-2 text-lg font-semibold leading-tight text-slate-900">{course.title}</h3>
                               <p className="mt-2 text-[13px] text-slate-600">{course.detail}</p>
                               <p className="mt-3 text-[13px] leading-relaxed text-slate-600">{course.description}</p>
 
-                              <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-                                <span className="shrink-0 text-lg font-black text-slate-900">
+                              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4">
+                                <span className="shrink-0 text-lg font-semibold text-slate-900">
                                   {formatCoursePrice(getCoursePriceForTier(course, defaultPricingTier))}
                                 </span>
-                                <div className="flex shrink-0 items-center gap-3">
+                                <div className="flex flex-wrap items-center gap-3">
                                   <button
                                     type="button"
                                     onClick={() => handleAddRelatedCourse(course.id, course.title)}
-                                    className="inline-flex items-center justify-center rounded-full bg-[#111111] px-4 py-2 text-[13px] font-bold text-white transition-colors hover:bg-black"
+                                    className="inline-flex items-center justify-center booking-secondary rounded-lg px-4 py-2 text-sm font-medium transition-colors"
                                   >
                                     Add to cart
                                   </button>
                                   <Link
                                     to={`/courses/${course.id}`}
-                                    className="inline-flex items-center gap-2 text-[13px] font-bold text-slate-700 transition-colors hover:text-[#1d52a1]"
+                                    className="inline-flex items-center gap-2 text-[13px] font-medium text-slate-700 transition-colors hover:text-[#1d52a1]"
                                   >
                                     View course
                                     <ArrowRight className="h-4 w-4" />
