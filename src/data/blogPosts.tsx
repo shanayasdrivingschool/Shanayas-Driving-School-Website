@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { victoriaTransitStrikePost } from "./victoriaTransitStrikePost";
 import { Link } from "react-router-dom";
 import { adultLearnersVictoriaPost } from "./adultLearnersVictoriaPost";
 import { drivingLessonCostsPost } from "./drivingLessonCostsPost";
@@ -62,6 +63,7 @@ export type BlogPostData = {
 };
 
 export const blogPosts: BlogPostData[] = [
+  victoriaTransitStrikePost,
   knowledgeTestStudyVictoriaPost,
   knowledgeTestQuestionsVictoriaPost,
   knowledgeTestPlanLangfordPost,
