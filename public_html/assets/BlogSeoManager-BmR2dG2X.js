@@ -1,0 +1,1 @@
+import{j as t,bO as s}from"./index-BO2dJSzc.js";import{u as r}from"./publicBlog-B767ibQV.js";import"./useQuery-BL7cBwXm.js";import"./blogPosts-jtbcf0Ew.js";import"./beginnerCourseLanding-Q34l_stc.js";import"./blogHtml-BWBqK1ql.js";function u(){const{posts:o}=r();return t.jsx(s,{blogPosts:o})}export{u as default};
