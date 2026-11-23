@@ -13,12 +13,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.shanayasdrivingschool.com/driving-lessons-langford/</loc>
-    <lastmod>2026-08-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://www.shanayasdrivingschool.com/driving-lessons-colwood/</loc>
     <lastmod>2026-08-02</lastmod>
     <changefreq>monthly</changefreq>
@@ -425,6 +419,12 @@
     <lastmod>2026-11-19</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.shanayasdrivingschool.com/locations/langford/</loc>
+  </url>
+  <url>
+    <loc>https://www.shanayasdrivingschool.com/locations/victoria-james-bay/</loc>
   </url>
   <url>
     <loc>https://www.shanayasdrivingschool.com/blog/project-red-ribbon-sober-driving-pledge-victoria/</loc>

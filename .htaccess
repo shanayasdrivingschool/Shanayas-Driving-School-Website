@@ -40,6 +40,7 @@
 
   RewriteRule ^blog/how-to-pass-driving-test-victoria-bc/?$ /blog/pass-road-test/ [R=301,L]
   RewriteRule ^newcomers-guide/?$ /blog/newcomers-guide-bc/ [R=301,L]
+  RewriteRule ^driving-lessons-langford/?$ /locations/langford/ [R=301,L]
   RewriteRule ^defensive-driving/?$ - [G,L]
 
   RewriteRule ^index\.html$ - [L]
