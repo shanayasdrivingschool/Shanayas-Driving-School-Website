@@ -1843,7 +1843,7 @@ const renderPageHtml = (template, page, content) => {
   html = setMetaName(html, "twitter:title", page.title);
   html = setMetaName(html, "twitter:description", page.description);
   html = setMetaName(html, "twitter:image", image);
-  html = setMetaName(html, "twitter:image:alt", `${siteName} branded social preview`);
+  html = setMetaName(html, "twitter:image:alt", page.imageAlt ?? `${siteName} branded social preview`);
   html = setMetaProperty(html, "og:type", type);
   html = setMetaProperty(html, "og:locale", "en_CA");
   html = setMetaProperty(html, "og:site_name", siteName);
@@ -1851,7 +1851,7 @@ const renderPageHtml = (template, page, content) => {
   html = setMetaProperty(html, "og:title", page.title);
   html = setMetaProperty(html, "og:description", page.description);
   html = setMetaProperty(html, "og:image", image);
-  html = setMetaProperty(html, "og:image:alt", `${siteName} branded social preview`);
+  html = setMetaProperty(html, "og:image:alt", page.imageAlt ?? `${siteName} branded social preview`);
   if (page.article && isCanonicalPage) {
     html = setMetaProperty(html, "article:published_time", page.article.datePublished);
     html = setMetaProperty(html, "article:modified_time", page.article.dateModified);
@@ -2152,6 +2152,7 @@ for (const [slug, post] of blogContent) {
   page.description = post.description;
   page.type = "article";
   page.image = post.heroImage ? absoluteUrl(post.heroImage) : defaultImage;
+  page.imageAlt = post.heroImageAlt;
   page.robots = post.robots ?? "index, follow";
   page.canonicalPath = post.canonicalPath;
   page.faqs = post.faqSchemaEnabled === false ? [] : post.faqs ?? [];

@@ -31,6 +31,10 @@ export type BlogPostData = {
   canonicalPath?: string;
   description: string;
   heroImage: string;
+  heroImageAlt?: string;
+  heroImageSrcSet?: string;
+  heroImageWidth?: number;
+  heroImageHeight?: number;
   /* Organization byline, used whenever the post has no published named author. */
   author: string;
   /* Ids from src/data/authors.ts. A named person replaces the organization in the

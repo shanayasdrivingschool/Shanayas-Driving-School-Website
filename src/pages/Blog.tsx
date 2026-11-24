@@ -166,7 +166,10 @@ const Blog = () => {
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl">
                     <img
                       src={lead.heroImage}
-                      alt={lead.title}
+                      srcSet={lead.heroImageSrcSet}
+                      width={lead.heroImageWidth}
+                      height={lead.heroImageHeight}
+                      alt={lead.heroImageAlt ?? lead.title}
                       loading="lazy"
                       decoding="async"
                       sizes="(min-width: 1024px) 50vw, 100vw"
@@ -245,7 +248,10 @@ const Blog = () => {
                           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl">
                             <img
                               src={post.heroImage}
-                              alt={post.title}
+                              srcSet={post.heroImageSrcSet}
+                              width={post.heroImageWidth}
+                              height={post.heroImageHeight}
+                              alt={post.heroImageAlt ?? post.title}
                               loading="lazy"
                               decoding="async"
                               sizes="(min-width: 640px) 13rem, 100vw"

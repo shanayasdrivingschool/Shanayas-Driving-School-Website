@@ -356,7 +356,10 @@ const BlogPost = () => {
                     <div className="relative h-48 w-full overflow-hidden">
                       <img
                         src={related.heroImage}
-                        alt={related.title}
+                        srcSet={related.heroImageSrcSet}
+                        width={related.heroImageWidth}
+                        height={related.heroImageHeight}
+                        alt={related.heroImageAlt ?? related.title}
                         loading="lazy"
                         decoding="async"
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

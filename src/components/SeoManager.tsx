@@ -154,6 +154,7 @@ type SeoDetails = {
   path: string;
   canonicalPath?: string;
   image?: string;
+  imageAlt?: string;
   type?: "website" | "article";
   robots?: "index, follow" | "noindex, follow" | "noindex, nofollow";
   faqs?: SeoLandingPageFaq[];
@@ -580,6 +581,7 @@ const getSeoForPath = (rawPathname: string, blogPosts: BlogPostData[]): SeoDetai
         title: post.seoTitle ?? withBrand(post.title),
         description: post.description,
         image: post.heroImage,
+        imageAlt: post.heroImageAlt,
         faqs: post.faqSchemaEnabled === false ? undefined : post.faqs,
         path,
         canonicalPath: post.canonicalPath,
@@ -703,7 +705,7 @@ const SeoManager = ({ blogPosts = EMPTY_BLOG_POSTS }: { blogPosts?: BlogPostData
     setMetaByProperty("og:title", seo.title);
     setMetaByProperty("og:description", seo.description);
     setMetaByProperty("og:image", imageUrl);
-    setMetaByProperty("og:image:alt", `${SITE_NAME} branded social preview`);
+    setMetaByProperty("og:image:alt", seo.imageAlt ?? `${SITE_NAME} branded social preview`);
 
     if (seo.article && isCanonicalPage) {
       setMetaByProperty("article:published_time", seo.article.datePublished);
@@ -719,7 +721,7 @@ const SeoManager = ({ blogPosts = EMPTY_BLOG_POSTS }: { blogPosts?: BlogPostData
     setMetaByName("twitter:title", seo.title);
     setMetaByName("twitter:description", seo.description);
     setMetaByName("twitter:image", imageUrl);
-    setMetaByName("twitter:image:alt", `${SITE_NAME} branded social preview`);
+    setMetaByName("twitter:image:alt", seo.imageAlt ?? `${SITE_NAME} branded social preview`);
 
     setJsonLd("local-business-schema", buildBranchGraph(seo.canonicalPath ?? seo.path, socialProfileUrls));
     setJsonLd("faq-schema", isCanonicalPage ? buildFaqJsonLd(seo.faqs) : null);

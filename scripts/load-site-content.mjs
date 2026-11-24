@@ -92,6 +92,7 @@ export const loadSiteContent = async () => {
         category: post.category,
         faqs: post.faqs,
         heroImage: post.heroImage,
+        heroImageAlt: post.heroImageAlt,
         relatedSlugs: post.relatedSlugs ?? [],
         robots: post.robots ?? "index, follow",
         schemaType: post.schemaType ?? "BlogPosting",
