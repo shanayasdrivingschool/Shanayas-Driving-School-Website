@@ -671,7 +671,7 @@ const Index = () => {
             </h2>
 
             <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {blogPosts.map((post) => (
+              {blogPosts.slice(0, 3).map((post) => (
                 <Link
                   key={post.slug}
                   to={`/blog/${post.slug}`}
@@ -680,7 +680,9 @@ const Index = () => {
                   <div className="relative h-56 w-full overflow-hidden">
                     <img
                       src={post.heroImage.replace("w=1400", "w=600")}
-                      alt={post.title}
+                      srcSet={post.heroImageSrcSet}
+                      sizes="(min-width: 1024px) 352px, (min-width: 640px) calc((100vw - 80px) / 2), calc(100vw - 32px)"
+                      alt={post.heroImageAlt ?? post.title}
                       loading="lazy"
                       decoding="async"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -699,6 +701,15 @@ const Index = () => {
                   </div>
                 </Link>
               ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link
+                to="/blog"
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#1d52a1] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#174291] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1d52a1]"
+              >
+                View more
+                <span className="sr-only"> blog posts</span>
+              </Link>
             </div>
           </div>
         </section>
